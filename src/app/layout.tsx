@@ -2,9 +2,17 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Jost } from "next/font/google";
+import { Poppins } from "next/font/google";
+import { AuthProvider } from "@/components/AuthContext";
 
-const jost = Jost({
+// const jost = Jost({
+//   subsets: ["latin"],
+//   display: "swap",
+// });
+
+const poppins = Poppins({
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
   display: "swap",
 });
 
@@ -31,10 +39,12 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${jost.className}`}
+      className={poppins.className}
     >
       <body>
-        {children}
+        <AuthProvider>
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );
