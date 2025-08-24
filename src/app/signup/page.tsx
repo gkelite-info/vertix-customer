@@ -140,7 +140,7 @@ function Page() {
         <>
             <div className="bg-white lg:h-[100vh] flex justify-center items-center">
                 <div className="flex lg:h-[100%] lg:w-[100%] lg:p-3">
-                    <div className="bg-[url('/login.png')] bg-cover bg-center lg:w-[50%] flex justify-center items-center lg:h-[100%] lg:rounded-4xl">
+                    <div className="bg-[url('/signup.png')] bg-cover bg-center lg:w-[50%] flex justify-center items-center lg:h-[100%] lg:rounded-4xl">
                         <h1 className="text-black lg:mb-90 font-medium">Join Vertix for Hassle-Free Tax Filing.</h1>
                     </div>
                     <div className="bg-red-00 lg:w-[50%] lg:h-[100%] lg:p-4 lg:gap-3 flex flex-col items-center justify-center">
