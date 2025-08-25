@@ -4,6 +4,8 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useAuth } from "../AuthContext";
+import { MdArrowDropDown } from "react-icons/md";
+import { IoMdArrowDropright } from "react-icons/io";
 
 
 function Header() {
@@ -40,7 +42,67 @@ function Header() {
                 </div>
                 <div className="bg-red-00 lg:h-[100%] lg:w-[80%] flex justify-center items-center lg:gap-10">
                     <Link href='/' className={linkClass('/')}>Home</Link>
-                    <Link href='/about' className={linkClass('/about')}>About</Link>
+                    <Link href='/screens/about' className={linkClass('/screens/about')}>About</Link>
+                    <div className="relative lg:h-[100%] group flex items-center cursor-pointer">
+                        <div className="flex items-center">
+                            <Link href='/screens/services' className={linkClass('/screens/services')}>
+                                Services
+                            </Link>
+                            <MdArrowDropDown className="text-black text-xl ml-1" />
+                        </div>
+                        <div className="absolute top-full left-0 hidden group-hover:block bg-white shadow-md rounded w-40 z-50">
+                            <ul className="flex flex-col text-black">
+                                <li>
+                                    <div className="flex items-center justify-between lg:pr-1 hover:bg-gray-100 hover:rounded">
+                                        <Link href="/screens/services/tax" className="block px-4 py-2 lg:text-sm">Tax</Link>
+                                        <IoMdArrowDropright className="text-black text-lg" />
+                                    </div>
+                                    <div className="absolute top-0 left-full hidden group-hover/submenu:block bg-red-600 shadow-md rounded w-100 z-50">
+                                        <ul className="flex flex-col text-black">
+                                            <li>
+                                                <Link href="/screens/services/tax/income" className="block px-4 py-2 hover:bg-gray-100">
+                                                    Income Tax
+                                                </Link>
+                                            </li>
+                                            <li>
+                                                <Link href="/screens/services/tax/gst" className="block px-4 py-2 hover:bg-gray-100">
+                                                    GST
+                                                </Link>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li>
+                                    <Link href="/screens/services/service" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Service</Link>
+                                </li>
+                                <li>
+                                    <Link href="/screens/services/goods" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Goods</Link>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div className="relative group lg:h-[100%] flex items-center cursor-pointer">
+                        <div className="flex items-center">
+                            <Link href='/screens/research' className={linkClass('/screens/research')}>Research</Link>
+                            <MdArrowDropDown className="text-black text-xl cursor-pointer" />
+                        </div>
+                        <div className="absolute top-full left-0 hidden group-hover:block bg-white shadow-md rounded mt-0 w-55 z-50">
+                            <ul className="flex flex-col text-black">
+                                <li>
+                                    <div className="flex items-center justify-between lg:pr-1 hover:bg-gray-100"><Link href="/screens/services/tax" className="block px-4 py-2 lg:text-sm">Health Care</Link><IoMdArrowDropright className="text-black text-lg" /></div>
+                                </li>
+                                <li>
+                                    <Link href="/screens/services/service" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Bank Account Reporting</Link>
+                                </li>
+                                <li>
+                                    <Link href="/screens/services/goods" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Goods</Link>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <Link href='/screens/contact' className={linkClass('/screens/contact')}>Contact</Link>
                 </div>
                 <div className="bg-gray-00 lg:h-[100%] flex justify-center items-center lg:w-[10%]">
                     {isAuthenticated ? (
@@ -52,7 +114,7 @@ function Header() {
                         </button>
                     ) : (
                         <Link
-                            href="/login"
+                            href="/screens/login"
                             className="bg-blue-500 text-white px-4 py-2 rounded"
                         >
                             Sign In

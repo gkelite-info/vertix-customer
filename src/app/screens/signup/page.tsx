@@ -45,7 +45,7 @@ function Page() {
     };
 
     const handlelogin = () => {
-        router.push('/login');
+        router.push('/screens/login');
     }
 
     const handleEmailChange = (e: { target: { value: any; }; }) => {

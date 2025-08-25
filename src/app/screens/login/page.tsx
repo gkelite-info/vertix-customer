@@ -85,7 +85,7 @@ function Page() {
     };
 
     const handlesignUp = () => {
-        router.push('/signup')
+        router.push('/screens/signup')
     }
 
     return (
