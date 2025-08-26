@@ -1,0 +1,13 @@
+
+function Page() {
+    return (
+        <>
+            <div className="flex flex-col justify-start">
+                <div className="flex flex-col bg-yellow-400 lg:p-4 overflow-y-auto">
+                    Its services page
+                </div>
+            </div>
+        </>
+    )
+}
+export default Page;

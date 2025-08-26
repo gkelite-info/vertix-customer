@@ -45,7 +45,7 @@ function Page() {
     };
 
     const handlelogin = () => {
-        router.push('/screens/login');
+        router.push('/login');
     }
 
     const handleEmailChange = (e: { target: { value: any; }; }) => {
@@ -73,7 +73,6 @@ function Page() {
 
     const handleCountryChange = (e: { target: { id: any; value: any; }; }) => {
         const { id, value } = e.target;
-        // setFormData(prevData => ({ ...prevData, [id]: value }));
         setFormData(prev => ({ ...prev, country: e.target.value }));
     };
 
