@@ -36,8 +36,8 @@ function Header() {
 
     return (
         <>
-            <div className="flex justify-center bg-white sticky z-50 top-0">
-                <header className="bg-[#1D2B48] sticky top-0 z-50 shadow-lg lg:mt-5 lg:h-15 lg:w-[95%] rounded-full flex items-center px-3 lg:gap-5">
+            <div className="flex justify-center items-center bg-white sticky z-100 top-0 lg:h-25">
+                <header className="bg-[#1D2B48] sticky top-0 z-50 shadow-lg lg:mt-0 lg:h-15 lg:w-[95%] rounded-full flex items-center px-3 lg:gap-5">
                     {/* <div className="bg-pink-400 lg:h-[90%] lg:w-[10%] flex items-center lg:rounded-full justify-center">
                         <p className="text-black">Logo</p>
                     </div> */}
@@ -97,7 +97,7 @@ function Header() {
                                         <Link href="/standard_guarantee" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Standard Guarantee</Link>
                                     </li>
                                     <li>
-                                        <Link href="/services/goods" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Safeguarding your Information</Link>
+                                        <Link href="/safeguarding_info" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Safeguarding your Information</Link>
                                     </li>
                                     <li>
                                         <Link href="/tax_planning" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Tax Planning</Link>
@@ -128,19 +128,19 @@ function Header() {
                                         </div>
                                     </li>
                                     <li>
-                                        <Link href="/services/goods" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Small Business</Link>
+                                        <Link href="/small_business" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Small Business</Link>
                                     </li>
                                     <li>
-                                        <Link href="/services/goods" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Tax Payers Living Abroad</Link>
+                                        <Link href="/abroad_taxpayers" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Tax Payers Living Abroad</Link>
                                     </li>
                                     <li>
-                                        <Link href="/services/goods" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Taxes for NON-Citizens</Link>
+                                        <Link href="/tax_nonresidents" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Taxes for NON-Citizens</Link>
                                     </li>
                                     <li>
-                                        <Link href="/services/goods" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Itin</Link>
+                                        <Link href="/itin" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Itin</Link>
                                     </li>
                                     <li>
-                                        <Link href="/services/goods" className="block px-4 py-2 hover:bg-gray-100 hover:rounded lg:text-sm">Financial accounts outside the United States</Link>
+                                        <Link href="/financial_accounts" className="block px-4 py-2 hover:bg-gray-100 hover:rounded lg:text-sm">Financial accounts outside the United States</Link>
                                     </li>
                                 </ul>
                             </div>
@@ -155,23 +155,23 @@ function Header() {
                                 <ul className="flex flex-col text-black">
                                     <li>
                                         <div className="flex items-center justify-between lg:pr-1 hover:bg-gray-100 hover:rounded">
-                                            <Link href="/services/tax" className="block px-4 py-2 lg:text-sm">Health Care</Link>
+                                            <Link href="/healthcare" className="block px-4 py-2 lg:text-sm">Health Care</Link>
                                         </div>
                                     </li>
                                     <li>
-                                        <Link href="/services/service" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Bank Account Reporting</Link>
+                                        <Link href="/bankaccount_reporting" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Bank Account Reporting</Link>
                                     </li>
                                     <li>
-                                        <Link href="/services/goods" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Reti</Link>
+                                        <Link href="/reit" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Reti</Link>
                                     </li>
                                     <li>
-                                        <Link href="/services/goods" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Tax Treaties</Link>
+                                        <Link href="/tax_treaties" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Tax Treaties</Link>
                                     </li>
                                     <li>
-                                        <Link href="/services/goods" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Elections</Link>
+                                        <Link href="/elections" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Elections</Link>
                                     </li>
                                     <li>
-                                        <Link href="/services/goods" className="block px-4 py-2 hover:bg-gray-100 hover:rounded lg:text-sm">Unreimbursed Expenses</Link>
+                                        <Link href="/unreimbursed_expenses" className="block px-4 py-2 hover:bg-gray-100 hover:rounded lg:text-sm">Unreimbursed Expenses</Link>
                                     </li>
                                 </ul>
                             </div>

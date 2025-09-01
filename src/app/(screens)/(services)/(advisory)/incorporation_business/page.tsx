@@ -20,63 +20,6 @@ function Page() {
                         <img src="/aboutpage.png" alt="aboutpage.png" className="lg:h-[100%] lg:w-[74%] lg:rounded-lg" />
                     </div>
                 </div>
-
-                <div className="bg-red-00 lg:w-[90%] flex flex-wrap justify-between lg:gap-10 lg:mt-15">
-                    <div className="bg-[#F7F7F7] flex flex-col items-start lg:h-[20%] lg:w-[30%] lg:p-5 lg:rounded-2xl lg:gap-5 lg:shadow-lg hover:shadow-xl">
-                        <div className="bg-[#E1E2E5] lg:p-2 lg:w-[14%] lg:rounded-full flex justify-center items-center">
-                            <Users size={25} weight="fill" className="text-[#1D2B48]" />
-                        </div>
-                        <div className="bg-yellow-00">
-                            <h3 className="text-[#1D2B48] font-semibold">Our Team</h3>
-                            <p className="text-sm lg:mt-2 text-[#1C2A46] font-regular">Skilled professionals including CAs, CPAs, Management Graduates, Enrolled Agents, and Lawyers with Big 4 and top consulting experience.</p>
-                        </div>
-                    </div>
-                    <div className="bg-[#F7F7F7] flex flex-col items-start lg:w-[30%] lg:p-5 lg:rounded-2xl lg:gap-5 lg:shadow-lg hover:shadow-xl">
-                        <div className="bg-[#E1E2E5] lg:p-2 lg:w-[14%] lg:rounded-full flex justify-center items-center">
-                            <Handshake size={25} weight="fill" className="text-[#1D2B48]" />
-                        </div>
-                        <div className="bg-yellow-00">
-                            <h3 className="text-[#1D2B48] font-semibold">Client Relationships</h3>
-                            <p className="text-sm lg:mt-2 text-[#1C2A46] font-regular">We’ve built lasting client trust through professionalism blended with a personal touch.</p>
-                        </div>
-                    </div>
-                    <div className="bg-[#F7F7F7] flex flex-col items-start lg:h-[20%] lg:w-[30%] lg:p-5 lg:rounded-2xl lg:gap-5 lg:shadow-lg hover:shadow-xl">
-                        <div className="bg-[#E1E2E5] lg:p-2 lg:w-[14%] lg:rounded-full flex justify-center items-center">
-                            <Note size={25} weight="fill" className="text-[#1D2A47]" />
-                        </div>
-                        <div className="bg-yellow-00">
-                            <h3 className="text-[#1D2B48] font-semibold">Advisory & Compliance</h3>
-                            <p className="text-sm lg:mt-2 text-[#1C2A46] font-regular">Comprehensive advisory and compliance services, with experts having 10+ years of experience and extensive training.</p>
-                        </div>
-                    </div>
-                    <div className="bg-[#F7F7F7] flex flex-col items-start lg:w-[30%] lg:p-5 lg:rounded-2xl lg:gap-5 lg:shadow-lg hover:shadow-xl">
-                        <div className="bg-[#E1E2E5] lg:p-2 lg:w-[14%] lg:rounded-full flex justify-center items-center">
-                            <Globe size={25} weight="fill" className="text-[#1D2A47]" />
-                        </div>
-                        <div className="bg-yellow-00">
-                            <h3 className="text-[#1D2B48] font-semibold">Client Focus</h3>
-                            <p className="text-sm lg:mt-2 text-[#1C2A46] font-regular">Serving both owner-managed businesses and large multinational corporations with equal dedication.</p>
-                        </div>
-                    </div>
-                    <div className="bg-[#F7F7F7] flex flex-col items-start lg:w-[30%] lg:p-5 lg:rounded-2xl lg:gap-5 lg:shadow-lg hover:shadow-xl">
-                        <div className="bg-[#E1E2E5] lg:p-2 lg:w-[14%] lg:rounded-full flex justify-center items-center">
-                            <Buildings size={25} weight="fill" className="text-[#1D2A47]" />
-                        </div>
-                        <div className="bg-yellow-00">
-                            <h3 className="text-[#1D2B48] font-semibold">Multi-Skilled Firm</h3>
-                            <p className="text-sm lg:mt-2 text-[#1C2A46] font-regular">A multi-disciplined firm offering a wide range of industry-focused business solutions.</p>
-                        </div>
-                    </div>
-                    <div className="bg-[#F7F7F7] flex flex-col items-start lg:h-[20%] lg:w-[30%] lg:p-5 lg:rounded-2xl lg:gap-5 lg:shadow-lg hover:shadow-xl">
-                        <div className="bg-[#E1E2E5] lg:p-2 lg:w-[14%] lg:rounded-full flex justify-center items-center">
-                            <Star size={25} weight="fill" className="text-[#1D2A47]" />
-                        </div>
-                        <div className="bg-yellow-00">
-                            <h3 className="text-[#1D2B48] font-semibold">People & Expertise</h3>
-                            <p className="text-sm lg:mt-2 text-[#1C2A46] font-regular">Dynamic young graduates combined with seasoned executives deliver world-class expertise to solve complex business problems.</p>
-                        </div>
-                    </div>
-                </div>
             </div>
         </>
     )
