@@ -77,8 +77,13 @@ function Page() {
             }
 
             login(data.token);
-            // alert("Logged in successfully ✅");
-            router.push('/');
+            
+            if (!data.is_consent_filled) {
+                router.push('/consent');
+            } else {
+                router.push('/');
+            }
+
         } catch (err) {
             setError("Invalid credentials");
         }
