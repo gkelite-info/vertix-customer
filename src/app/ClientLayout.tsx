@@ -7,7 +7,7 @@ import Footer from "@/components/footer/page";
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
-  const hideLayoutRoutes = ["/login", "/signup"];
+  const hideLayoutRoutes = ["/login", "/signup", "/consent"];
 
   const shouldHideLayout = hideLayoutRoutes.includes(pathname);
 
