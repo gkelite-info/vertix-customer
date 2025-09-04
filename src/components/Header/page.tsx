@@ -34,13 +34,14 @@ function Header() {
         }
     };
 
+    const handlerefer = () =>{
+        router.push('/mainLayout');
+    }
+
     return (
         <>
             <div className="flex justify-center items-center bg-white sticky z-100 top-0 lg:h-25">
                 <header className="bg-[#1D2B48] sticky top-0 z-50 shadow-lg lg:mt-0 lg:h-15 lg:w-[95%] rounded-full flex items-center px-3 lg:gap-5">
-                    {/* <div className="bg-pink-400 lg:h-[90%] lg:w-[10%] flex items-center lg:rounded-full justify-center">
-                        <p className="text-black">Logo</p>
-                    </div> */}
                     <div className="bg-red-00 lg:h-[100%] lg:w-[80%] flex justify-center items-center lg:gap-10">
                         <Link href='/' className={`${linkClass('/')} text-white`}>Home</Link>
                         <Link href='/about' className={`${linkClass('/about')} text-white`}>About us</Link>
@@ -179,7 +180,7 @@ function Header() {
 
                         <Link href='/contact' className={`${linkClass('/contact')} text-white`}>Contact</Link>
                     </div>
-                    <button className="lg:text-sm font-medium lg:px-2 bg-white text-black lg:w-[13%] lg:h-[65%] lg:rounded-full cursor-pointer">
+                    <button className="font-medium lg:px-2 bg-white text-black lg:w-[13%] lg:h-[65%] lg:rounded-full cursor-pointer" onClick={handlerefer}>
                         Refer a Friend
                     </button>
                     <div className="bg-gray-00 lg:h-[100%] flex justify-center items-center lg:w-[10%]">

@@ -6,7 +6,7 @@ import { Buildings, Globe, Handshake, Note, Star, Users } from "phosphor-react";
 function About() {
     return (
         <>
-            <div className="flex flex-col items-center bg-[#FFFEFE] overflow-y-auto lg:px-4 lg:gap-2">
+            <div className="flex flex-col items-center bg-[#FFFEFE] overflow-y-auto lg:px-4 lg:gap-2 lg:pb-10">
                 <div className="lg:h-[20%] lg:w-[45%] flex flex-col items-center lg:mt-10">
                     <h1 className="border border-b-4 border-l-0 border-t-0 border-r-0 text-[#1D2B48] text-xl font-bold lg:w-[17%]">About us</h1>
                     <p className="text-[#1C2A46] lg:text-sm lg:mt-3 text-center">We focus on clients. We take pride in our ability to provide quality services  whether they are an owner-managed business or a large multinational corporation.</p>

@@ -95,6 +95,7 @@ function Page() {
         }
         if (!formData.password) {
             alert("Password is required!");
+
             return;
         }
         if (!formData.confirmPassword) {
@@ -103,6 +104,11 @@ function Page() {
         }
         if (formData.password !== formData.confirmPassword) {
             alert("Passwords do not match!");
+            setFormData(prev => ({
+                ...prev,
+                password: "",
+                confirmPassword: ""
+            }));
             return;
         }
         if (!formData.country) {
@@ -124,7 +130,6 @@ function Page() {
             if (!res.ok) {
                 throw new Error(data.message || "Signup failed");
             }
-
             alert("Registration successful!");
             router.push("/login");
         } catch (err: any) {
@@ -253,7 +258,6 @@ function Page() {
                                         <h5 className="font-medium text-[#979797] text-sm lg:w-[100%]">Already have an account ? </h5>
                                         <p className="font-medium text-sm text-black border border-b-1 border-l-0 border-r-0 border-t-0 cursor-pointer" onClick={handlelogin}>Login</p>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
