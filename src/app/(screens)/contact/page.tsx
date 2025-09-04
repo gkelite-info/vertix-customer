@@ -11,7 +11,7 @@ function Page() {
             </div>
 
             {/* Contact Section */}
-            <section id="contact" className="py-0 bg-white">
+            <section id="contact" className="py-0 bg-white lg:pb-10">
                 {/* Map */}
                 <div className="mb-10">
                     <iframe

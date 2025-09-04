@@ -6,7 +6,7 @@ import { Buildings, Globe, Handshake, Note, Star, Users } from "phosphor-react";
 function Page() {
     return (
         <>
-            <div className="flex flex-col items-center bg-[#FFFEFE] overflow-y-auto lg:px-4 lg:gap-2">
+            <div className="flex flex-col items-center bg-[#FFFEFE] overflow-y-auto lg:px-4 lg:gap-2 lg:pb-10">
                 <div className="lg:h-[20%] lg:w-[45%] flex flex-col items-center lg:mt-10">
                     <h1 className="border border-b-4 border-l-0 border-t-0 border-r-0 text-[#1D2B48] text-xl font-bold lg:w-[74%]">THE FIVE”WS” AND ONE “H” OF TAX LIENS</h1>
                 </div>
@@ -59,63 +59,6 @@ function Page() {
                     
                     <p className="lg:mt-2 text-[#1C2A46] lg:text-sm">I’ve had many stressed-out and worried people with delinquent tax debts sitting across from me at my office. Sometimes the IRS or state tax department has placed a lien on their property or levied on a bank account or garnished wages. They’ve come looking for help. They have made the first step…the most important one…stop ignoring the IRS or the state about their tax debt. The next step is to get professional help if you need it.</p>
                     <p className="lg:mt-2 text-[#1C2A46] lg:text-sm">Please give us a call or send us a message to find out if we can help you. We provide a free, one hour consultation to visit with you about your particular situation. No fee will be due unless you engage us to represent you.</p>
-                </div>
-
-                <div className="bg-red-00 lg:w-[90%] flex flex-wrap justify-between lg:gap-10 lg:mt-15">
-                    <div className="bg-[#F7F7F7] flex flex-col items-start lg:h-[20%] lg:w-[30%] lg:p-5 lg:rounded-2xl lg:gap-5 lg:shadow-lg hover:shadow-xl">
-                        <div className="bg-[#E1E2E5] lg:p-2 lg:w-[14%] lg:rounded-full flex justify-center items-center">
-                            <Users size={25} weight="fill" className="text-[#1D2B48]" />
-                        </div>
-                        <div className="bg-yellow-00">
-                            <h3 className="text-[#1D2B48] font-semibold">Our Team</h3>
-                            <p className="text-sm lg:mt-2 text-[#1C2A46] font-regular">Skilled professionals including CAs, CPAs, Management Graduates, Enrolled Agents, and Lawyers with Big 4 and top consulting experience.</p>
-                        </div>
-                    </div>
-                    <div className="bg-[#F7F7F7] flex flex-col items-start lg:w-[30%] lg:p-5 lg:rounded-2xl lg:gap-5 lg:shadow-lg hover:shadow-xl">
-                        <div className="bg-[#E1E2E5] lg:p-2 lg:w-[14%] lg:rounded-full flex justify-center items-center">
-                            <Handshake size={25} weight="fill" className="text-[#1D2B48]" />
-                        </div>
-                        <div className="bg-yellow-00">
-                            <h3 className="text-[#1D2B48] font-semibold">Client Relationships</h3>
-                            <p className="text-sm lg:mt-2 text-[#1C2A46] font-regular">We’ve built lasting client trust through professionalism blended with a personal touch.</p>
-                        </div>
-                    </div>
-                    <div className="bg-[#F7F7F7] flex flex-col items-start lg:h-[20%] lg:w-[30%] lg:p-5 lg:rounded-2xl lg:gap-5 lg:shadow-lg hover:shadow-xl">
-                        <div className="bg-[#E1E2E5] lg:p-2 lg:w-[14%] lg:rounded-full flex justify-center items-center">
-                            <Note size={25} weight="fill" className="text-[#1D2A47]" />
-                        </div>
-                        <div className="bg-yellow-00">
-                            <h3 className="text-[#1D2B48] font-semibold">Advisory & Compliance</h3>
-                            <p className="text-sm lg:mt-2 text-[#1C2A46] font-regular">Comprehensive advisory and compliance services, with experts having 10+ years of experience and extensive training.</p>
-                        </div>
-                    </div>
-                    <div className="bg-[#F7F7F7] flex flex-col items-start lg:w-[30%] lg:p-5 lg:rounded-2xl lg:gap-5 lg:shadow-lg hover:shadow-xl">
-                        <div className="bg-[#E1E2E5] lg:p-2 lg:w-[14%] lg:rounded-full flex justify-center items-center">
-                            <Globe size={25} weight="fill" className="text-[#1D2A47]" />
-                        </div>
-                        <div className="bg-yellow-00">
-                            <h3 className="text-[#1D2B48] font-semibold">Client Focus</h3>
-                            <p className="text-sm lg:mt-2 text-[#1C2A46] font-regular">Serving both owner-managed businesses and large multinational corporations with equal dedication.</p>
-                        </div>
-                    </div>
-                    <div className="bg-[#F7F7F7] flex flex-col items-start lg:w-[30%] lg:p-5 lg:rounded-2xl lg:gap-5 lg:shadow-lg hover:shadow-xl">
-                        <div className="bg-[#E1E2E5] lg:p-2 lg:w-[14%] lg:rounded-full flex justify-center items-center">
-                            <Buildings size={25} weight="fill" className="text-[#1D2A47]" />
-                        </div>
-                        <div className="bg-yellow-00">
-                            <h3 className="text-[#1D2B48] font-semibold">Multi-Skilled Firm</h3>
-                            <p className="text-sm lg:mt-2 text-[#1C2A46] font-regular">A multi-disciplined firm offering a wide range of industry-focused business solutions.</p>
-                        </div>
-                    </div>
-                    <div className="bg-[#F7F7F7] flex flex-col items-start lg:h-[20%] lg:w-[30%] lg:p-5 lg:rounded-2xl lg:gap-5 lg:shadow-lg hover:shadow-xl">
-                        <div className="bg-[#E1E2E5] lg:p-2 lg:w-[14%] lg:rounded-full flex justify-center items-center">
-                            <Star size={25} weight="fill" className="text-[#1D2A47]" />
-                        </div>
-                        <div className="bg-yellow-00">
-                            <h3 className="text-[#1D2B48] font-semibold">People & Expertise</h3>
-                            <p className="text-sm lg:mt-2 text-[#1C2A46] font-regular">Dynamic young graduates combined with seasoned executives deliver world-class expertise to solve complex business problems.</p>
-                        </div>
-                    </div>
                 </div>
             </div>
         </>

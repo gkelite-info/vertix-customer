@@ -6,7 +6,7 @@ import { Airplane, Briefcase, Buildings, Clock, CreditCard, Envelope, Globe, Han
 function Page() {
     return (
         <>
-            <div className="flex flex-col items-center bg-[#FFFEFE] overflow-y-auto lg:px-4 lg:gap-2">
+            <div className="flex flex-col items-center bg-[#FFFEFE] overflow-y-auto lg:px-4 lg:gap-2 lg:pb-10">
                 <div className="lg:h-[20%] lg:w-[45%] flex flex-col items-center lg:mt-10">
                     <h1 className="border border-b-4 border-l-0 border-t-0 border-r-0 text-[#1D2B48] text-xl font-bold lg:w-[42%]">TAX PROBLEM SOLVING</h1>
                 </div>
