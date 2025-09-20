@@ -14,7 +14,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   return (
     <>
       {!shouldHideLayout && <Header />}
-      <main>{children}</main>
+        <main>{children}</main>
       {!shouldHideLayout && <Footer />}
     </>
   );

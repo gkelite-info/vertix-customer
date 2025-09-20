@@ -178,13 +178,20 @@ function Page() {
                                     />
                                 </div>
                                 <div className="lg:w-[100%] lg:h-[10%] flex items-center border border-b-2 border-l-0 border-t-0 border-r-0 border-[#D0D0D0] lg:gap-2">
-                                    <Icon icon="line-md:phone-filled" className="text-[#979797] w-6 h-6" />
+                                    {/* <Icon icon="line-md:phone-filled" className="text-[#979797] w-6 h-6" /> */}
+                                    <select name="countrycode" id="countrycode" className="text-[#1D2B48] text-black h-5 w-15 flex items-center focus:outline-none">
+                                        <option value="+">+</option>
+                                        <option value="+91">+91</option>
+                                        <option value="+1">+1</option>
+                                        <option value="+44">+44</option>
+                                        <option value="+61">+61</option>
+                                    </select>
                                     <input
                                         id="phone"
                                         value={formData.phone}
                                         onChange={handlePhoneChange}
                                         placeholder="Enter your Mobile number"
-                                        className="lg:h-[100%] lg:w-[100%] text-black font-medium lg:p-2 lg:ml-2 border-none focus:outline-none focus:ring-0"
+                                        className="lg:h-[100%] lg:w-[100%] text-black font-medium lg:p-2 border-none focus:outline-none focus:ring-0"
                                     />
                                 </div>
                                 <div className="lg:w-[100%] lg:h-[10%] flex items-center border border-b-2 border-l-0 border-t-0 border-r-0 border-[#D0D0D0] lg:pr-2 lg:gap-2">
@@ -219,22 +226,6 @@ function Page() {
                                         onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                                     />
                                 </div>
-                                <div className="lg:w-[100%] lg:h-[10%] flex items-center border border-b-2 border-l-0 border-t-0 border-r-0 border-[#D0D0D0] lg:gap-4">
-                                    <Icon icon="tdesign:location-filled" className="text-[#979797] w-5 h-5" />
-                                    <select
-                                        id="country"
-                                        value={formData.country}
-                                        onChange={handleCountryChange}
-                                        className="lg:w-[100%] lg:mr-2.5 p-2 text-[#979797] font-medium border-none outline-none focus:ring-0"
-                                    >
-                                        <option value="">Select Country</option>
-                                        {countries.map((country, index) => (
-                                            <option key={index} value={country}>
-                                                {country}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
                                 <div className="flex items-center space-x-3">
                                     <input
                                         id="remember"
@@ -250,7 +241,7 @@ function Page() {
                                 <div className="bg-green-00 lg:h-[20%] flex flex-col lg:gap-2 lg:mt-2 items-center">
                                     <button
                                         type="button"
-                                        className="lg:h-[65%] lg:w-[100%] text-lg font-medium lg:rounded-full bg-[#1D2B48] cursor-pointer" onClick={handleSignup}>
+                                        className="text-white lg:h-[65%] lg:w-[100%] text-lg font-medium lg:rounded-full bg-[#1D2B48] cursor-pointer" onClick={handleSignup}>
                                         Create Account !
                                     </button>
 

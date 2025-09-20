@@ -28,13 +28,13 @@ function Header() {
     }, [pathname]);
 
     const handleLogout = () => {
-        const confirmed = window.confirm("Are you sure you want to logout?");
+        const confirmed = window.confirm("Are you sure you want to signout?");
         if (confirmed) {
             logout();
         }
     };
 
-    const handlerefer = () =>{
+    const handlerefer = () => {
         router.push('/mainLayout');
     }
 
@@ -187,9 +187,9 @@ function Header() {
                         {isAuthenticated ? (
                             <button
                                 onClick={handleLogout}
-                                className="bg-red-500 text-white font-medium px-4 py-2 lg:rounded-full"
+                                className="cursor-pointer bg-red-500 hover:bg-red-600 text-white font-medium px-4 py-2 lg:rounded-full"
                             >
-                                Logout
+                                Signout
                             </button>
                         ) : (
                             <Link

@@ -2,14 +2,13 @@
 
 import { Buildings, ChartBar, CheckCircle, CreditCard, Globe, GlobeHemisphereWest, GraduationCap, Handshake, LockKey, Money, Notepad, PhoneCall, Shield, ThumbsUp, Users, UsersThree, Wrench } from "phosphor-react";
 
-
 function Page() {
   return (
     <>
       <div className="bg-white flex flex-col items-center lg:pb-15">
         <section className="relative bg-cover bg-center h-screen flex items-center justify-center" style={{ backgroundImage: "url('/Home_img.png')", width: '100%' }}>
           <div className="flex flex-col text-center lg:gap-5">
-            <h1 className="font-bold lg:text-4xl text-center">Welcome to Vertix TAX Solutions your <br /> trusted partner in taxes.</h1>
+            <h1 className="text-white font-bold lg:text-4xl text-center">Welcome to Vertix TAX Solutions your <br /> trusted partner in taxes.</h1>
             <p className="text-[#AEAEAE] text-sm">Managing taxes can be overwhelming endless forms, changing rules, and tight <br /> deadlines. At Vertix TAX Solutions, our mission is simple: take the stress out of taxes.</p>
           </div>
         </section>

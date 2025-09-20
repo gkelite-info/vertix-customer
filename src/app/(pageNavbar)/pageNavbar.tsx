@@ -22,7 +22,7 @@ type PageNavbarProps = {
 function Page({ activeTab, setActiveTab }: PageNavbarProps) {
   const tabs = [
     { id: "service", label: "Add Service Year", icon: CalendarDots, width: "lg:w-[18%]" },
-    { id: "fee-status", label: "Fee Status", icon: Files, width: "lg:w-[13%]" },
+    { id: "file-status", label: "File Status", icon: Files, width: "lg:w-[13%]" },
     { id: "organizer", label: "Tax Organizer", icon: Folder, width: "lg:w-[17%]" },
     { id: "uploaded-by-vertix", label: "Document Uploaded by Vertix", icon: Upload, width: "lg:w-[27%]" },
     { id: "summary", label: "Fee & Tax Summary", icon: FileArrowUp, width: "lg:w-[18%]" },
@@ -36,7 +36,7 @@ function Page({ activeTab, setActiveTab }: PageNavbarProps) {
 
   return (
     <div className="flex bg-[#1D2B48] lg:p-2 lg:h-35 lg:w-full items-center justify-center">
-      <div className="bg-white lg:w-[90%] lg:h-[90%] rounded-lg lg:p-3 flex lg:gap-2 flex-wrap items-center justify-between">
+      <div className="bg-[#FFFEFE] lg:w-[90%] lg:h-[90%] rounded-lg lg:p-3 flex lg:gap-2 flex-wrap items-center justify-between">
         {tabs.map(({ id, label, icon: Icon, width }) => {
           const isActive = activeTab === id;
           return (

@@ -4,7 +4,7 @@ import { useState } from "react";
 import YearSelector from "../YearSelector/page"
 import { Confetti, CurrencyCircleDollar, Eye, File, Wrench } from "phosphor-react";
 
-function FeeStatusPage() {
+export default function FileStatusPage() {
     const [selectedYear, setSelectedYear] = useState<number | null>(null);
     return (
         <>
@@ -70,4 +70,3 @@ function FeeStatusPage() {
         </>
     )
 }
-export default FeeStatusPage

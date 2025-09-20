@@ -4,8 +4,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import PageNavbar from "../pageNavbar";
 
 import AddServicePage from "../AddServicePage/page";
-import FeeStatusPage from "../FeeStatusPage/page";
-import OrganizerPage from "../TaxOrganizer/page";
+import FileStatusPage from "../FileStatusPage/page";
+import OrganizerPage from "../(TaxOrganizer)/taxorganizer";
 import VertixTaxPage from "../VertixDocUpload/page";
 import FeeTaxSummary from "../FeeTaxSummary/page";
 import ReferAFriend from "../ReferAFriend/page";
@@ -30,10 +30,9 @@ function MainLayout() {
   return (
     <div>
       <PageNavbar activeTab={activeTab} setActiveTab={setActiveTab} />
-
       <div>
         {activeTab === "service" && <AddServicePage />}
-        {activeTab === "fee-status" && <FeeStatusPage />}
+        {activeTab === "file-status" && <FileStatusPage />}
         {activeTab === "organizer" && <OrganizerPage />}
         {activeTab === "uploaded-by-vertix" && <VertixTaxPage />}
         {activeTab === "summary" && <FeeTaxSummary />}
