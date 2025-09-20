@@ -16,15 +16,13 @@ const Footer = () => {
                             Vertix Tax
                         </Link>
                         <div className="mt-4 space-y-2 text-gray-300 text-sm">
-                            <p>Opp: Pillar No. 1421 Street,</p>
-                            <p>6-3-865/1/2, 4th Floor Greenland Apartments,</p>
                             <p>Begumpet, Hyderabad, Telangana</p>
                             <p>500016.</p>
                             <p>
-                                <strong>Phone:</strong> +91 9000266832, +91 7093256562
+                                <strong>Phone:</strong> +91 9999999992, +91 7070707070
                             </p>
                             <p>
-                                <strong>Email:</strong> hr@gkeliteinfo.com
+                                <strong>Email:</strong> Vertixtaxsolutions@gmail.com
                             </p>
                         </div>
                         <div className="flex gap-4 mt-4">
@@ -90,7 +88,7 @@ const Footer = () => {
                         <ul className="space-y-2 text-gray-300 text-sm">
                             <li>
                                 <Link href="/service-details/ai_services" className="hover:text-white">
-                                    AI Services
+                                    Lorem Ipsum
                                 </Link>
                             </li>
                             <li>
@@ -98,22 +96,22 @@ const Footer = () => {
                                     href="/service-details/dynamic_Digital_marketing_solutions"
                                     className="hover:text-white"
                                 >
-                                    Digital Marketing
+                                    Lorem Ipsum
                                 </Link>
                             </li>
                             <li>
                                 <Link href="/service-details/b2b_b2c_sales_mastery" className="hover:text-white">
-                                    B2B &amp; B2C Sales
+                                    Lorem Ipsum
                                 </Link>
                             </li>
                             <li>
                                 <Link href="/service-details/bpo_services" className="hover:text-white">
-                                    BPO Service
+                                    Lorem Ipsum
                                 </Link>
                             </li>
                             <li>
                                 <Link href="/service-details/hr_consultancy" className="hover:text-white">
-                                    HR Consultancy
+                                    Lorem Ipsum
                                 </Link>
                             </li>
                         </ul>

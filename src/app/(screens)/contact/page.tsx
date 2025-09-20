@@ -26,37 +26,37 @@ function Page() {
                 <div className="container mx-auto px-4">
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
                         {/* Contact Info */}
-                        <div className="space-y-6 shadow-2xl">
+                        <div className="space-y-6 shadow-2xl pt-5 rounded-lg">
                             <div>
-                                <h3 className="text-xl font-semibold text-[#1D2B48]">Get in touch</h3>
-                                <p className="text-white">For any concerns, please contact us.</p>
+                                <h3 className="text-xl font-semibold text-[#1D2B48] text-center">Get in touch</h3>
+                                <p className="text-black text-center">For any concerns, please contact us.</p>
                             </div>
 
-                            <div className="flex items-start gap-3">
+                            <div className="flex items-start gap-3 pl-2">
                                 <span className="text-indigo-600 text-xl">📍</span>
                                 <div>
                                     <h4 className="font-semibold text-[#1D2B48]">Location:</h4>
                                     <p className="text-[#1D2B48]">
-                                        6-3-865/1/2, 3rd Floor Greenland Apartments, Begumpet,
+                                        Begumpet,
                                         Hyderabad, Telangana, 500016.
                                     </p>
                                 </div>
                             </div>
 
-                            <div className="flex items-start gap-3">
+                            <div className="flex items-start gap-3 pl-2">
                                 <span className="text-indigo-600 text-xl">✉️</span>
                                 <div>
                                     <h4 className="font-semibold text-[#1D2B48]">Email:</h4>
-                                    <p className="text-[#1D2B48]">hr@gkeliteinfo.com</p>
+                                    <p className="text-[#1D2B48]">Vertixtaxsolutions@gmail.com</p>
                                 </div>
                             </div>
 
-                            <div className="flex items-start gap-3">
+                            <div className="flex items-start gap-3 pl-2">
                                 <span className="text-indigo-600 text-xl">📞</span>
                                 <div>
                                     <h4 className="font-semibold text-[#1D2B48]">Call:</h4>
                                     <p className="text-[#1D2B48]">
-                                        +91 9000266832 <br /> +91 7093256562
+                                        +91 9898989898 <br /> +91 7070707070
                                     </p>
                                 </div>
                             </div>
