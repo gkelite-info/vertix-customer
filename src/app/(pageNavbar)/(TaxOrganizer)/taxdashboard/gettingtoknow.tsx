@@ -85,7 +85,7 @@ export default function GettingToKnow() {
                             </div>
                         </div>
                     <div className="flex bg-green-00 w-[90%] mt-5 h-10 items-center justify-between">
-                        <h4 className="text-[#1D2B48] font-medium">SSN/ ITIN Number</h4>
+                        <h4 className="text-[#1D2B48] font-medium">SSN/ITIN Number</h4>
                         <input type="text"
                             placeholder="XXX-XXX-XXXX"
                             className="border bg-red-00 rounded-md text-[#616161] border-[#B5B5B5] w-[50%] h-[100%] px-3 text-sm focus:outline-none"
