@@ -4,15 +4,59 @@ import { useState } from "react"
 import YearSelector from "../YearSelector/YearSelector"
 
 function DocumentUploaded() {
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  const [selectedDocType, setSelectedDocType] = useState<string>("")
+
   const [, setSelectedYear] = useState<number | null>(null)
 
   const [, setFileName] = useState<string>("")
 
+  // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (e.target.files && e.target.files[0]) {
+  //     setFileName(e.target.files[0].name)
+  //   }
+  // }
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setFileName(e.target.files[0].name)
+      setSelectedFile(e.target.files[0])
     }
   }
+
+  const handleDocTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedDocType(e.target.value)
+  }
+
+  const handleUpload = async () => {
+    if (!selectedFile || !selectedDocType) {
+      alert("Please select a file and document type")
+      return
+    }
+
+    const userId = localStorage.getItem("userId")
+    if (!userId) {
+      alert("User not logged in")
+      return
+    }
+
+    const formData = new FormData()
+    formData.append("file", selectedFile)
+    formData.append("docType", selectedDocType)
+    formData.append("userId", userId)
+
+    try {
+      const res = await fetch("/uploads/upload", {
+        method: "POST",
+        body: formData,
+      })
+      const data = await res.json()
+      alert("File uploaded successfully: " + data.photoURL)
+    } catch (err) {
+      console.error(err)
+      alert("Upload failed")
+    }
+  }
+
 
   return (
     <>
@@ -41,13 +85,27 @@ function DocumentUploaded() {
             <div className="w-[35%]">
               <h5 className="text-[#1D2B48] font-medium">DOCUMENT TYPE :</h5>
             </div>
-            <select className="border border-gray-300 text-[#616161] font-medium lg:w-[65%] px-2 text-sm lg:h-[85%] rounded cursor-pointer shadow-sm">
+            <select className="border border-gray-300 text-[#616161] font-medium lg:w-[65%] px-2 text-sm lg:h-[85%] rounded cursor-pointer shadow-sm"
+              value={selectedDocType}
+              onChange={handleDocTypeChange}
+            >
               <option value="">SELECT ONE</option>
-              <option value="2021">2021</option>
-              <option value="2022">2022</option>
-              <option value="2023">2023</option>
-              <option value="2024">2024</option>
-              <option value="2025">2025</option>
+              <option value="fbar">FBAR Organizer</option>
+              <option value="tacOrganizer">Tax Organizer Document</option>
+              <option value="w2">W-2</option>
+              <option value="interestIncome">Interest Income</option>
+              <option value="dividendIncome">Dividend Income</option>
+              <option value="1099-g">1099-G</option>
+              <option value="1099-b">1099-B</option>
+              <option value="1099-misc">1099-MISC</option>
+              <option value="mortgageInterest">Mortgage Interest</option>
+              <option value="1098-t">1098-T</option>
+              <option value="foreignTaxCertificates">Foreign Tax Certificate</option>
+              <option value="indianDocument">Indian Document</option>
+              <option value="priorYearTaxReturn">Prior Year Tax Return</option>
+              <option value="id">ID</option>
+              <option value="notice">Notice/Letter</option>
+              <option value="others">Others</option>
             </select>
           </div>
 
@@ -71,10 +129,10 @@ function DocumentUploaded() {
             </div>
             <div className="bg-green-00 w-[65%] flex flex-col items-center">
               <textarea
-                placeholder="Enter your text"
+                placeholder="Comment about document"
                 className="w-[100%] text-sm h-32 p-3 text-[#616161] border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
-              <button className="mt-4 font-medium w-[60%] text-sm bg-[#1D2B48] text-white px-5 py-2 rounded-lg flex gap-2 hover:bg-[#2c3e65] justify-center items-center cursor-pointer">
+              <button className="mt-4 font-medium w-[60%] text-sm bg-[#1D2B48] text-white px-5 py-2 rounded-lg flex gap-2 hover:bg-[#2c3e65] justify-center items-center cursor-pointer" onClick={handleUpload}>
                 SUBMIT FEEDBACK
               </button>
             </div>
@@ -84,4 +142,4 @@ function DocumentUploaded() {
     </>
   )
 }
-export default DocumentUploaded
+export default DocumentUploaded;

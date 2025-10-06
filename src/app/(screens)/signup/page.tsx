@@ -56,7 +56,7 @@ import { Icon } from "@iconify/react"
 //   "New Zealand",
 // ]
 
-function Page() {
+export default function Page() {
   const router = useRouter()
 
   const [formData, setFormData] = useState({
@@ -66,7 +66,6 @@ function Page() {
     phone: "",
     password: "",
     confirmPassword: "",
-    country: "",
   })
   // const [error, setError] = useState("");
   const [, setLoading] = useState(false)
@@ -145,10 +144,6 @@ function Page() {
         password: "",
         confirmPassword: "",
       }))
-      return
-    }
-    if (!formData.country) {
-      alert("Please select a country!")
       return
     }
 
@@ -325,4 +320,3 @@ function Page() {
     </>
   )
 }
-export default Page
