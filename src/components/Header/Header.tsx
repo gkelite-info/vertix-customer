@@ -30,6 +30,7 @@ function Header() {
     const confirmed = window.confirm("Are you sure you want to signout?")
     if (confirmed) {
       logout()
+      router.push('/login')
     }
   }
 
