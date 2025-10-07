@@ -2,19 +2,17 @@
 
 import { useState } from "react";
 import YearSelector from "../YearSelector/YearSelector";
-import { postBankInformation } from "@/api-requests/customers/bank"; // make sure the path is correct
+import { postBankInformation } from "@/api-requests/customers/bank";
 
 export default function BankInformation() {
   const [selectedYear, setSelectedYear] = useState<number | null>(null);
   const [formData, setFormData] = useState({
-    customerId: "12345",
     belongsTo: "",
     holderName: "",
     bankName: "",
     accountNumber: "",
     routingNumber: "",
     accountType: "",
-    updatedBy: "User",
   });
 
   const [loading, setLoading] = useState(false);
@@ -31,6 +29,16 @@ export default function BankInformation() {
     try {
       const res = await postBankInformation(formData);
       setMessage(res.message || "Bank information updated successfully");
+
+      setFormData({
+        belongsTo: "",
+        holderName: "",
+        bankName: "",
+        accountNumber: "",
+        routingNumber: "",
+        accountType: "",
+      })
+
     } catch (error: any) {
       setMessage(error.response?.data?.message || "Failed to update bank information");
     } finally {
@@ -82,7 +90,6 @@ export default function BankInformation() {
           </select>
         </div>
 
-        {/* Holder Name */}
         <div className="bg-red-00 flex items-center justify-between gap-3 h-[10%] w-[35%] mt-2">
           <div className="w-[35%]">
             <h5 className="text-[#1D2B48] font-medium text-end pr-1.5">
@@ -99,7 +106,6 @@ export default function BankInformation() {
           />
         </div>
 
-        {/* Bank Name */}
         <div className="bg-red-00 flex items-center justify-between gap-3 h-[10%] w-[35%] mt-2">
           <div className="w-[35%]">
             <h5 className="text-[#1D2B48] font-medium text-end pr-1.5">
@@ -116,7 +122,6 @@ export default function BankInformation() {
           />
         </div>
 
-        {/* Account Number */}
         <div className="bg-red-00 flex items-center justify-between gap-2 h-[10%] w-[35%] mt-2">
           <div className="w-[35%] bg-red-00">
             <h5 className="text-[#1D2B48] font-medium text-end pr-1.5">
@@ -133,7 +138,6 @@ export default function BankInformation() {
           />
         </div>
 
-        {/* Account Type */}
         <div className="bg-red-00 flex items-center justify-between gap-3 h-[10%] w-[35%] mt-2">
           <div className="w-[35%]">
             <h5 className="text-[#1D2B48] font-medium text-end pr-1.5">
@@ -153,10 +157,8 @@ export default function BankInformation() {
           </select>
         </div>
 
-        {/* Message */}
-        {message && <p className="text-red-600 mt-3">{message}</p>}
+        {message && <p className="text-green-600 mt-3">{message}</p>}
 
-        {/* Buttons */}
         <div className="mt-4 flex h-[10%] w-[40%] gap-3 rounded-lg">
           <button
             onClick={handleSubmit}
@@ -167,14 +169,12 @@ export default function BankInformation() {
           </button>
           <button
             onClick={() => setFormData({
-              customerId: "12345",
               belongsTo: "",
               holderName: "",
               bankName: "",
               accountNumber: "",
               routingNumber: "",
               accountType: "",
-              updatedBy: "2",
             })}
             className="font-medium w-[60%] h-[100%] text-sm bg-gray-400 text-white px-5 py-2 hover:bg-gray-500 rounded-lg flex gap-2 justify-center items-center cursor-pointer"
           >
