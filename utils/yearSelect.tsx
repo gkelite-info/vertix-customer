@@ -1,9 +1,27 @@
 "use client"
+import { getCustomer } from "@/api-requests/customers/customerApi";
 import YearSelector from "@/app/(pageNavbar)/YearSelector/YearSelector"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 export default function YearSelect() {
-  const [selectedYear, setSelectedYear] = useState<number | null>(null)
+  const [selectedYear, setSelectedYear] = useState<number | null>(null);
+  const [name, setName] = useState("");
+  const [customerId, setCustomerId] = useState<string | number>("");
+
+  useEffect(() => {
+    const fetchCustomer = async () => {
+      try {
+        const res = await getCustomer();
+        setName(res.firstname);
+        setCustomerId(res.customerId);
+      } catch (error) {
+        console.error("Failed to fetch customer")
+        throw error
+      }
+    }
+    fetchCustomer();
+  }, []);
+
 
   return (
     <>
@@ -20,8 +38,8 @@ export default function YearSelect() {
               Tax Management Dashboard
             </h3>
             <div className="flex justify-between lg:gap-5 bg-green-00 lg:w-[100%]">
-              <h5 className="text-[#585E68] font-medium">Name: User</h5>
-              <h5 className="text-[#585E68] font-medium">Client Id: 12345</h5>
+              <h5 className="text-[#585E68] font-medium text-sm">Name: {name}</h5>
+              <h5 className="text-[#585E68] font-medium text-sm">Client Id: {customerId}</h5>
             </div>
           </div>
         </div>
