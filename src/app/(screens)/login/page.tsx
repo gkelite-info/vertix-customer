@@ -136,6 +136,11 @@ export default function Page() {
                     onChange={handlePasswordChange}
                     placeholder="Enter your password"
                     className="w-full font-medium p-2 ml-2 border-none focus:outline-none text-black"
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        handleLogin();
+                      }
+                    }}
                   />
                   <Icon
                     icon={showPassword ? "ri:eye-line" : "ri:eye-close-line"}
@@ -171,7 +176,7 @@ export default function Page() {
               </div>
               <div className="flex flex-col gap-4 items-center">
                 <button
-                  className="text-white h-12 w-full text-base sm:text-lg font-medium rounded-full bg-[#1D2B48] hover:bg-opacity-90 transition duration-150"
+                  className="cursor-pointer text-white h-12 w-full text-base sm:text-lg font-medium rounded-full bg-[#1D2B48] hover:bg-opacity-90 transition duration-150"
                   onClick={handleLogin}
                 >
                   Login
