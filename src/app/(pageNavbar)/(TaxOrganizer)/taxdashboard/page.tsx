@@ -5,7 +5,7 @@ import GettingToKnow from "./gettingtoknow"
 import AboutYou from "./aboutYou"
 import Dependents from "./dependents"
 import ResidencyDetails from "./resendencyDetails"
-import IncomeDetails from "./incomeDetails"
+import IncomeDetails from "./incomeDetails/page"
 import DeductionDetails from "./deductionDetails"
 import FBAR_FATCA from "./fbar_fatca"
 
