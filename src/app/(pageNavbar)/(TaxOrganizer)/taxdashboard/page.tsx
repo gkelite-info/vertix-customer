@@ -6,7 +6,7 @@ import AboutYou from "./aboutYou"
 import Dependents from "./dependents"
 import ResidencyDetails from "./resendencyDetails"
 import IncomeDetails from "./incomeDetails/page"
-import DeductionDetails from "./deductionDetails"
+import DeductionDetails from "./deductionDetails/page"
 import FBAR_FATCA from "./fbar_fatca"
 
 type Tab =
