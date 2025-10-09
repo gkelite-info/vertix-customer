@@ -1,15 +1,20 @@
 'use client';
 
 import { useState } from "react";
+import ThreeOptionToggle from "../../../../../utils/threeOptionToggle";
 
 
 export default function GettingToKnow() {
     const [isMarried, setIsMarried] = useState(false);
     const [citizen, setCitizen] = useState(false);
+    const [spouseSSN, setSpouseSSN] = useState("");
+    const [yourSSN, setYourSSN] = useState("");
+
+    
 
     return (
         <>
-            <div className="bg-red-00 flex flex-col items-center h-auto">
+            <div className="bg-red-00 flex flex-col items-center">
                 <h2 className="text-[#1D2B48] font-semibold text-xl">GETTING TO KNOW YOU</h2>
                 <div className="flex flex-col bg-white w-[100%] items-center">
                     <div className="flex bg-green-00 w-[90%] mt-5 h-10 items-center justify-between">
@@ -71,19 +76,16 @@ export default function GettingToKnow() {
                         </div>
                     </div>
                     <div className="bg-red-00 w-[90%] h-8 flex justify-between items-center mt-5">
-                            <h3 className="text-[#1D2B48] font-medium">Do you have</h3>
-                            <div className="flex w-[50%] h-[100%] bg-blue-400 rounded-md">
-                                <div className="flex items-center justify-center rounded-l-md h-[100%] w-[33%] bg-[#2F3F5F]">
-                                    <h4 className="text-sm">SSN</h4>
-                                </div>
-                                <div className="flex items-center justify-center h-[100%] w-[33%] bg-[#E8E8E8] border-[#BCBCBC]">
-                                    <h4 className="text-[#3E3E3E] text-sm">ITIN</h4>
-                                </div>
-                                <div className="flex items-center rounded-r-md justify-center h-[100%] w-[34%] bg-[#E8E8E8] border-[#BCBCBC]">
-                                    <h4 className="text-[#3E3E3E] text-sm">NEED TO APPLY</h4>
-                                </div>
-                            </div>
+                        <h3 className="text-[#1D2B48] font-medium">Do you have</h3>
+                        <div className="flex w-[50%] h-[100%] bg-blue-400 rounded-md">
+                            <ThreeOptionToggle
+                                options={["SSN", "ITIN", "NEED TO APPLY"]}
+                                initial={yourSSN}
+                                onChange={(value) => setYourSSN(value)}
+                                style="w-[100%]"
+                            />
                         </div>
+                    </div>
                     <div className="flex bg-green-00 w-[90%] mt-5 h-10 items-center justify-between">
                         <h4 className="text-[#1D2B48] font-medium">SSN/ITIN Number</h4>
                         <input type="text"
@@ -136,8 +138,8 @@ export default function GettingToKnow() {
                         />
                     </div>
                 </div>
-                <div className="bg-green-00 w-[90%] mt-15">
-                    <h3 className="text-[#1D2B48] font-semibold">File Status :</h3>
+                <div className="bg-green-00 w-[90%] mt-10">
+                    <h3 className="text-[#1D2B48] font-semibold text-start">File Status :</h3>
                     <div className="bg-red-00 flex gap-9 items-center mt-2">
                         <h4 className="text-[#3E3E3E] font-medium text-sm">Were you married on the last day of 2024 tax year ?</h4>
                         <div className="flex items-center gap-2">
@@ -228,15 +230,12 @@ export default function GettingToKnow() {
                         <div className="bg-red-00 w-[100%] h-8 flex justify-between items-center mt-5">
                             <h3 className="text-[#1D2B48] font-medium">Do your Spouse have</h3>
                             <div className="flex w-[50%] h-[100%] bg-blue-400 rounded-md">
-                                <div className="flex items-center justify-center rounded-l-md h-[100%] w-[33%] bg-[#2F3F5F]">
-                                    <h4 className="text-sm">SSN</h4>
-                                </div>
-                                <div className="flex items-center justify-center h-[100%] w-[33%] bg-[#E8E8E8] border-[#BCBCBC]">
-                                    <h4 className="text-[#3E3E3E] text-sm">ITIN</h4>
-                                </div>
-                                <div className="flex items-center rounded-r-md justify-center h-[100%] w-[34%] bg-[#E8E8E8] border-[#BCBCBC]">
-                                    <h4 className="text-[#3E3E3E] text-sm">NEED TO APPLY</h4>
-                                </div>
+                                <ThreeOptionToggle
+                                    options={["SSN", "ITIN", "NEED TO APPLY"]}
+                                    initial={spouseSSN}
+                                    onChange={(value) => setSpouseSSN(value)}
+                                    style="w-[100%]"
+                                />
                             </div>
                         </div>
 
@@ -285,8 +284,8 @@ export default function GettingToKnow() {
                             </select>
                         </div>
                     </div>
-                    <div className="bg-red-00 mt-4 flex flex-col gap-2">
-                        <h3 className="text-[#1D2B48] font-semibold">Address Details</h3>
+                    <div className="bg-red-00 mt-4 flex flex-col gap-2 text-start">
+                        <h3 className="text-[#1D2B48] font-semibold ">Address Details</h3>
                         <p className="text-xs text-[#1D2B48] font-medium">Please input address to be reported on tax returns. This is used for communication purpose, so request you to input your current address.</p>
                     </div>
                 </div>

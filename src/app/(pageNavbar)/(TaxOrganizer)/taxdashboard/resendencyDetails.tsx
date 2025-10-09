@@ -14,10 +14,10 @@ export default function ResidencyDetails() {
                 <div className="flex flex-col items-start">
                     <h4 className="text-[#1D2B48] font-semibold">Tax Payers Residency</h4>
                     <div className="bg-green-00 w-[90%] p-2 h-30 mt-4 rounded-lg border-1 border-[#B5B5B5] flex flex-col justify-between">
-                        <div className="h-[20%] bg-indigo-00 p-1">
+                        <div className="h-[20%] bg-indigo-00 p-1 text-start">
                             <h3 className="text-[#1D2B48] font-semibold text-sm">2025</h3>
                         </div>
-                        <div className="h-[80%] bg-yellow-00 gap-3 flex items-end rounded-b-lg">
+                        <div className="h-[80%] bg-yellow-00 gap-3 flex items-end rounded-b-lg text-start">
                             <div className="flex flex-col justify-between bg-pink-00 w-[20%] h-[75%] rounded-md p-1">
                                 <p className="text-[#2F3F5F] font-medium text-sm">From Date</p>
                                 <div className="bg-green-00 h-[60%] flex items-center shadow-lg rounded-md p-1">
@@ -77,14 +77,14 @@ export default function ResidencyDetails() {
                         </div>
                     </div>
                     <div className="bg-green-00 mt-5 w-[90%]">
-                        <h3 className="text-[#1D2B48] font-semibold">Notes</h3>
+                        <h3 className="text-[#1D2B48] font-semibold text-start">Notes</h3>
                         <div className="rounded-md h-30 border border-[#B5B5B5] mt-2">
                         </div>
                     </div>
-                    <div className="bg-red-00 w-[90%] mt-3 flex items-center justify-center gap-3">
+                    {/* <div className="bg-red-00 w-[90%] mt-3 flex items-center justify-center gap-3">
                         <button className="bg-[#1D2B48] rounded-md p-2 py-3 w-[25%] text-[#FFFEFE] font-medium text-sm">Previous</button>
                         <button className="bg-[#1D2B48] rounded-md p-2 py-3 w-[25%] text-[#FFFEFE] font-medium text-sm">Next</button>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </>
