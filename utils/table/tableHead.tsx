@@ -1,7 +1,10 @@
 "use client";
 
-export default function TableHead() {
-    const columns = ["Belongs To", "Holder Name", "Bank Name", "Account Number", "Routing Number", "Account Type"];
+type TableHeadProps = {
+    columns: string[];
+}
+
+export default function TableHead({ columns }: TableHeadProps) {
 
     return (
         <thead>

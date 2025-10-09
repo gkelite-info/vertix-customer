@@ -92,6 +92,15 @@ export default function BankInformation({ customerId }: BankInformationProps) {
     return <div className="flex justify-center items-center h-[100vh]">Loading bank data...</div>;
   }
 
+  const columns = [
+    "Belongs To",
+    "Holder Name",
+    "Bank Name",
+    "Account Number",
+    "Routing Number",
+    "Account Type",
+  ]
+
   return (
     <div className="bg-white lg:h-[100vh]">
       <YearSelect />
@@ -204,6 +213,7 @@ export default function BankInformation({ customerId }: BankInformationProps) {
       ) : (
         <BankDetailsTable
           data={bankRecords}
+          columns={columns}
           onUpdateClick={() => setBankDataExists(false)}
         />
       )}

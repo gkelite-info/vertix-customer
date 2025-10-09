@@ -5,15 +5,17 @@ import TableBody from "./tableBody";
 
 type BankDetailsTableProps = {
   data: Record<string, any>[];
+  columns: string[];
   onUpdateClick: () => void;
 };
 
-export default function BankDetailsTable({ data, onUpdateClick }: BankDetailsTableProps) {
+
+export default function BankDetailsTable({ data, columns, onUpdateClick }: BankDetailsTableProps) {
   return (
     <div className="bg-white flex flex-col items-center justify-start lg:h-[80%] pt-5 w-full">
       <h2 className="font-semibold text-[#1D2B48] text-xl mb-4">Your Bank Details</h2>
       <table className="border-collapse border border-gray-300 w-[75%] text-left">
-        <TableHead />
+        <TableHead columns={columns} />
         <TableBody data={data} />
       </table>
       {/* <button

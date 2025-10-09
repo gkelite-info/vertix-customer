@@ -44,8 +44,8 @@ function ReferAFriend() {
               <h2 className="text-[#1D2B48] font-semibold text-xl">
                 Refer a Friend
               </h2>
-              <form className="w-full max-w-lg mt-3 bg-white shadow-md rounded-lg p-5">
-                <div className="mb-4 flex items-center gap-3">
+              <form className="w-full max-w-lg mt-3 bg-white shadow-md flex flex-col items-center rounded-lg p-5">
+                <div className="mb-4 flex items-center gap-3 w-[90%]">
                   <label className="block text-sm font-medium text-[#1D2B48] w-[40%] text-end">
                     FIRSTNAME :
                   </label>
@@ -55,7 +55,7 @@ function ReferAFriend() {
                     placeholder="Enter firstname"
                   />
                 </div>
-                <div className="mb-4 flex items-center gap-3">
+                <div className="mb-4 flex items-center gap-3 w-[90%]">
                   <label className="block text-sm font-medium text-[#1D2B48] w-[40%] text-end">
                     LASTNAME :
                   </label>
@@ -65,7 +65,7 @@ function ReferAFriend() {
                     placeholder="Enter lastname"
                   />
                 </div>
-                <div className="mb-4 flex items-center gap-3">
+                <div className="mb-4 flex items-center gap-3 w-[90%]">
                   <label className="block text-sm font-medium text-[#1D2B48] w-[40%] text-end">
                     EMAIL :
                   </label>
@@ -75,7 +75,7 @@ function ReferAFriend() {
                     placeholder="Enter email"
                   />
                 </div>
-                <div className="mb-4 flex items-center gap-3">
+                <div className="mb-4 flex items-center gap-3 w-[90%]">
                   <label className="block text-sm font-medium text-[#1D2B48] w-[40%] text-end">
                     PHONE :
                   </label>
@@ -90,12 +90,12 @@ function ReferAFriend() {
                     <option value="+81">+81</option>
                   </select>
                   <input
-                    type="text"
+                    type="number"
                     className="w-[74.5%] border border-gray-300 rounded text-[#1D2B48] px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
                     placeholder="Enter phone"
                   />
                 </div>
-                <div className="mb-4 flex items-center gap-3">
+                <div className="mb-4 flex items-center gap-3 w-[90%]">
                   <label className="block text-sm font-medium text-[#1D2B48] w-[40%] text-end">
                     ALTERNATE NUMBER :
                   </label>
@@ -110,7 +110,7 @@ function ReferAFriend() {
                     <option value="+81">+81</option>
                   </select>
                   <input
-                    type="text"
+                    type="number"
                     className="w-[74.5%] border border-gray-300 rounded text-[#1D2B48] px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
                     placeholder="Alternate number"
                   />
