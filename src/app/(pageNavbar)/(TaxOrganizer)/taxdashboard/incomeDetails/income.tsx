@@ -23,10 +23,10 @@ export default function IncomeDetails() {
                         <p style={{ fontSize: 10, color: "#1D2B48", fontWeight: '500' }}>Note : Please Upload W2 Form(S) in the Portal</p>
                     </div>
                     <div className="bg-indigo-00 w-[33%] flex items-center justify-center">
-                        <ToggleSwitch />
+                        <ToggleSwitch labelLeft="No" labelRight="Yes" />
                     </div>
                     <div className="bg-indigo-00 w-[33%] flex items-center justify-center">
-                        <ToggleSwitch />
+                        <ToggleSwitch labelLeft="No" labelRight="Yes" />
                     </div>
                 </div>
             </div>
