@@ -19,7 +19,7 @@ export default function IncomeDetails() {
                 </div>
                 <div className="bg-blue-00 h-[70%] flex justify-between">
                     <div className="bg-indigo-00 w-[33%] flex flex-col gap-2 justify-between pt-4">
-                        <h4 className="text-[#585E68] text-xs">Wages, Salary, Tips</h4>
+                        <h4 className="text-[#585E68] text-xs text-start ml-1">Wages, Salary, Tips</h4>
                         <p style={{ fontSize: 10, color: "#1D2B48", fontWeight: '500' }}>Note : Please Upload W2 Form(S) in the Portal</p>
                     </div>
                     <div className="bg-indigo-00 w-[33%] flex items-center justify-center">

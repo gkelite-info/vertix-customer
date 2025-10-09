@@ -6,7 +6,7 @@ export default function MedicalExpenses() {
     return (
         <>
             <div className="bg-pink-00 w-[100%] mt-5">
-                <h3 className="text-[#3E3E3E] font-medium text-sm">Did you incur medical expenses for the 2024?</h3>
+                <h3 className="text-[#3E3E3E] font-medium text-sm text-start">Did you incur medical expenses for the 2024?</h3>
                 <div className="flex items-center justify-between py-1 mt-2">
                     <h5 className="text-[#616161] font-medium text-sm">Did you own  a home in USA which is used as personal residence</h5>
                     <ToggleSwitch labelLeft="No" labelRight="Yes" />

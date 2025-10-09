@@ -32,23 +32,20 @@ export default function TaxDashboard() {
   ]
 
   return (
-    <div className="bg-white lg:h-auto pb-7">
-      <YearSelect />
-      <div className="flex justify-center gap-5 mt-3">
+    <div className="bg-pink-00 lg:h-auto mt-0 pb-7 w-[100%]">
+      <div className="flex justify-center gap-5 mt-3 bg-green-00">
         <div className="bg-[#FFFEFE] w-[28%] h-102 p-2 pt-4 pb-4 rounded-lg text-center flex flex-col items-center shadow-md">
           <h3 className="text-[#1D2B48] font-semibold mb-4">
             Tax Organizer Dashboard
           </h3>
-
           {tabs.map((tab) => (
             <button
               key={tab}
-              onClick={() => setActiveTab(tab)} // <-- correct: pass the tab value
-              className={`block w-[90%] text-left px-3 py-2 rounded-md mb-2 cursor-pointer ${
-                activeTab === tab
-                  ? "bg-[#4F46E5] text-white font-medium"
-                  : "bg-[#E8E8E8] text-[#1D2B48] font-medium hover:bg-blue-500/30"
-              }`}
+              onClick={() => setActiveTab(tab)}
+              className={`block w-[90%] text-left px-3 py-2 rounded-md mb-2 cursor-pointer ${activeTab === tab
+                ? "bg-[#2F3F5F] text-white font-medium"
+                : "bg-[#E8E8E8] text-[#1D2B48] font-medium hover:bg-blue-500/30"
+                }`}
             >
               {tab}
             </button>
