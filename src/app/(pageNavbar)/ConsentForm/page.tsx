@@ -5,10 +5,10 @@ import YearSelect from "../../../../utils/yearSelect"
 function ConsentForm() {
   return (
     <>
-      <div className="bg-white lg:h-[100vh]">
+      <div className="bg-white pb-7">
         <YearSelect />
         <div className="bg-red-00 flex flex-col justify-start items-center lg:h-[80%] lg:pt-5 text-center">
-          <div className="bg-green-00 flex flex-col w-[65%] text-center">
+          <div className="bg-green-00 flex flex-col w-[90%] text-center">
             <h2 className="font-semibold text-[#1D2B48] text-lg">User</h2>
             <p className="text-start text-xs mt-5 text-[#616161]">
               Federal law requires this consent form be provided to you. Unless

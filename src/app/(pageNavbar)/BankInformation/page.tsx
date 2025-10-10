@@ -3,8 +3,8 @@
 import { useState, useEffect } from "react";
 import { getBankInformation, postBankInformation } from "@/api-requests/customers/bank";
 import { useAuth } from "@/components/AuthContext";
-import BankDetailsTable from "../../../../utils/table/page";
 import YearSelect from "../../../../utils/yearSelect";
+import TableComponent from "../../../../utils/table/page";
 
 type BankInformationProps = {
   customerId: number | string;
@@ -93,7 +93,7 @@ export default function BankInformation({ customerId }: BankInformationProps) {
   }
 
   return (
-    <div className="bg-white lg:h-[100vh]">
+    <div className="bg-white h-[100vh]">
       <YearSelect />
       {!bankDataExists ? (
         <div className="bg-red-00 flex flex-col justify-start items-center lg:h-[80%] lg:pt-5 text-center">
@@ -202,7 +202,7 @@ export default function BankInformation({ customerId }: BankInformationProps) {
           </div>
         </div>
       ) : (
-        <BankDetailsTable
+        <TableComponent
           data={bankRecords}
           onUpdateClick={() => setBankDataExists(false)}
         />

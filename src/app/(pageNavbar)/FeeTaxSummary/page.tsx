@@ -33,7 +33,7 @@ export default function FeeTaxSummary() {
 
         <div
           className={`flex flex-col items-center p-3 
-            ${activeTab === "fee" ? "w-[30%]" : "w-[80%]"}
+            ${activeTab === "fee" ? "w-[35%]" : "w-[80%]"}
           `}
         >
           <h2 className="text-[#1D2B48] font-semibold text-xl">

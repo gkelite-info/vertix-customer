@@ -8,6 +8,8 @@ import ResidencyDetails from "./resendencyDetails"
 import IncomeDetails from "./incomeDetails/page"
 import DeductionDetails from "./deductionDetails/page"
 import FBAR_FATCA from "./fbar_fatca"
+import { ArrowBendUpLeft } from "phosphor-react"
+import { useRouter } from "next/navigation"
 
 type Tab =
   | "Getting to know you"
@@ -19,6 +21,8 @@ type Tab =
   | "FBAR/FATCA"
 
 export default function TaxDashboard() {
+  const router = useRouter();
+
   const [activeTab, setActiveTab] = useState<Tab>("Getting to know you")
 
   const tabs: Tab[] = [
@@ -31,13 +35,21 @@ export default function TaxDashboard() {
     "FBAR/FATCA",
   ]
 
+  const handleBack = () => {
+    router.back()
+  }
+
   return (
-    <div className="bg-pink-00 lg:h-auto mt-0 pb-7 w-[100%]">
+    <div className="bg-white mt-0 pb-7 w-[100%]">
+      <YearSelect style="justify-end" />
       <div className="flex justify-center gap-5 mt-3 bg-green-00">
         <div className="bg-[#FFFEFE] w-[28%] h-102 p-2 pt-4 pb-4 rounded-lg text-center flex flex-col items-center shadow-md">
-          <h3 className="text-[#1D2B48] font-semibold mb-4">
-            Tax Organizer Dashboard
-          </h3>
+          <div className="flex items-center bg-red-00 h-10 gap-6 w-[90%] mb-2">
+            <ArrowBendUpLeft size={22} weight="fill" color="#1D2A46" className="cursor-pointer" onClick={handleBack}/>
+            <h3 className="text-[#1D2B48] font-semibold">
+              Tax Organizer Dashboard
+            </h3>
+          </div>
           {tabs.map((tab) => (
             <button
               key={tab}
@@ -52,7 +64,7 @@ export default function TaxDashboard() {
           ))}
         </div>
 
-        <div className="bg-indigo-00 shadow-md w-[60%] rounded-lg p-4 overflow-y-auto">
+        <div className="bg-indigo-00 shadow-md w-[60%] rounded-lg p-4 overflow-y-auto scrollbar-hide">
           {activeTab === "Getting to know you" && <GettingToKnow />}
           {activeTab === "About You" && <AboutYou />}
           {activeTab === "Dependents" && <Dependents />}

@@ -2,7 +2,6 @@
 
 import { useRouter, useSearchParams } from "next/navigation"
 import PageNavbar from "../pageNavbar"
-
 import AddServicePage from "../AddServicePage/page"
 import FileStatusPage from "../FileStatusPage/page"
 import OrganizerPage from "../(TaxOrganizer)/taxorganizer"
@@ -37,19 +36,21 @@ function Content() {
   }
 
   return (
-    <div>
+    <div className="bg-green-00 flex justify-between">
       <PageNavbar activeTab={activeTab} setActiveTab={setActiveTab} />
-      {activeTab === "service" && <AddServicePage />}
-      {activeTab === "file-status" && <FileStatusPage />}
-      {activeTab === "organizer" && <OrganizerPage />}
-      {activeTab === "uploaded-by-vertix" && <VertixTaxPage />}
-      {activeTab === "summary" && <FeeTaxSummary />}
-      {activeTab === "bank-info" && <BankInformation />}
-      {activeTab === "uploaded" && <DocumentUploaded />}
-      {activeTab === "refer" && <ReferAFriend />}
-      {activeTab === "messages" && <Messages />}
-      {activeTab === "feedback" && <Feedback />}
-      {activeTab === "consent" && <ConsentForm />}
+      <div className="bg-red-00 w-[74%]">
+        {activeTab === "service" && <AddServicePage />}
+        {activeTab === "file-status" && <FileStatusPage />}
+        {activeTab === "organizer" && <OrganizerPage />}
+        {activeTab === "uploaded-by-vertix" && <VertixTaxPage />}
+        {activeTab === "summary" && <FeeTaxSummary />}
+        {activeTab === "bank-info" && <BankInformation customerId={""} />}
+        {activeTab === "uploaded" && <DocumentUploaded />}
+        {activeTab === "refer" && <ReferAFriend />}
+        {activeTab === "messages" && <Messages />}
+        {activeTab === "feedback" && <Feedback />}
+        {activeTab === "consent" && <ConsentForm />}
+      </div>
     </div>
   )
 }

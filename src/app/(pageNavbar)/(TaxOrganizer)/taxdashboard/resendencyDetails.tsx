@@ -10,7 +10,7 @@ export default function ResidencyDetails() {
 
     return (
         <>
-            <div className="bg-red-00 ">
+            <div className="bg-red-00">
                 <div className="flex flex-col items-start">
                     <h4 className="text-[#1D2B48] font-semibold">Tax Payers Residency</h4>
                     <div className="bg-green-00 w-[90%] p-2 h-30 mt-4 rounded-lg border-1 border-[#B5B5B5] flex flex-col justify-between">

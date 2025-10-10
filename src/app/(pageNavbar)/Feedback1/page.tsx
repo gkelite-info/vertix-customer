@@ -38,7 +38,7 @@ export default function Feedback() {
       <div className="bg-white lg:h-[100vh]">
         <YearSelect />
         <div className="bg-red-00 flex flex-col justify-start items-center lg:h-[80%] lg:pt-5 text-center">
-          <div className="bg-red-00 flex items-center justify-start gap-3 lg:pl-11 h-[10%] w-[35%]">
+          <div className="bg-red-00 flex items-center justify-start gap-3 lg:pl-11 h-[10%] w-[44%]">
             <h5 className="text-[#1D2B48] font-medium">Service :</h5>
             <select className="border border-gray-300 text-[#616161] font-medium lg:w-[77.5%] px-2 text-sm lg:h-[85%] rounded cursor-pointer shadow-sm"
               value={serviceType}
@@ -57,9 +57,9 @@ export default function Feedback() {
               <option value="compliance_filing">Compliance Filing (ROC, etc.)</option>
             </select>
           </div>
-          <div className="flex bg-pink-00 w-[35%] justify-center gap-3 mt-3">
+          <div className="flex bg-pink-00 w-[44%] justify-between gap-3 mt-3">
             <h5 className="mt-3 font-medium text-[#1D2B48]">Description :</h5>
-            <div className="bg-green-00 w-[70%] flex flex-col items-center">
+            <div className="bg-green-00 w-[70%] pr-1 flex flex-col items-center">
               <textarea
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}

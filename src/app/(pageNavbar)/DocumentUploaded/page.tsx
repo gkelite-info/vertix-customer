@@ -53,7 +53,7 @@ function DocumentUploaded() {
       <div className="bg-white lg:h-[100vh]">
         <YearSelect />
         <div className="bg-red-00 flex flex-col justify-start items-center lg:h-[80%] lg:pt-5 text-center">
-          <div className="bg-red-00 flex items-center justify-between gap-3 h-[10%] w-[35%]">
+          <div className="bg-red-00 flex items-center justify-between gap-3 h-[10%] w-[44%]">
             <div className="w-[35%]">
               <h5 className="text-[#1D2B48] font-medium">DOCUMENT TYPE :</h5>
             </div>
@@ -81,7 +81,7 @@ function DocumentUploaded() {
             </select>
           </div>
 
-          <div className="bg-red-00 flex items-center justify-between gap-3 h-[10%] w-[35%] mt-3">
+          <div className="bg-red-00 flex items-center justify-between gap-3 h-[10%] w-[44%] mt-3">
             <div className="w-[35%]">
               <h5 className="text-[#1D2B48] font-medium text-end pr-1.5">
                 DOCUMENT :
@@ -93,7 +93,7 @@ function DocumentUploaded() {
               className="border border-gray-300 pt-1.5 text-[#616161] font-medium px-2 text-sm lg:w-[65%] lg:h-[85%] flex items-center rounded cursor-pointer shadow-sm file:mr-3 file:py-1 file:px-3 file:rounded file:border-0 file:text-sm file:font-medium file:bg-blue-600 file:text-white hover:file:bg-blue-700 file:cursor-pointer"
             />
           </div>
-          <div className="flex bg-pink-00 w-[35%] justify-center gap-3 mt-3">
+          <div className="flex bg-pink-00 w-[44%] justify-center gap-3 mt-3">
             <div className="w-[35%] bg-white text-end pr-1.5">
               <h5 className="mt-3 font-medium text-[#1D2B48]">
                 DESCRIPTIONS :
@@ -104,7 +104,7 @@ function DocumentUploaded() {
                 placeholder="Comment about document"
                 className="w-[100%] text-sm h-32 p-3 text-[#616161] border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
-              <button className="mt-4 font-medium w-[60%] text-sm bg-[#1D2B48] text-white px-5 py-2 rounded-lg flex gap-2 hover:bg-[#2c3e65] justify-center items-center cursor-pointer" onClick={handleUpload}>
+              <button className="mt-4 font-medium w-[65%] text-sm bg-[#1D2B48] text-white px-5 py-2 rounded-lg flex gap-2 hover:bg-[#2c3e65] justify-center items-center cursor-pointer" onClick={handleUpload}>
                 SUBMIT FEEDBACK
               </button>
             </div>
