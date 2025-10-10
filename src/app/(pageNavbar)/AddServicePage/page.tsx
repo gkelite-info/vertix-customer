@@ -9,7 +9,7 @@ function AddServicePage() {
       <div className="bg-white lg:h-[100vh] flex flex-col items-center">
         <YearSelect />
         <div className="bg-red-00 flex justify-center items-start lg:h-[80%] lg:w-[100%] lg:pt-5">
-          <div className="bg-green-00 flex flex-col justify-between items-center text-center lg:h-[39%] lg:w-[40%] lg:gap-2">
+          <div className="bg-green-00 flex flex-col justify-between items-center text-center lg:h-[39%] lg:w-[50%] lg:gap-2">
             <div className="flex flex-col lg:gap-1">
               <h3 className="text-[#1D2B48] font-semibold text-lg">
                 Add Service

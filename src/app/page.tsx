@@ -12,7 +12,6 @@ function Page() {
             <p className="text-[#AEAEAE] text-sm">Managing taxes can be overwhelming endless forms, changing rules, and tight <br /> deadlines. At Vertix TAX Solutions, our mission is simple: take the stress out of taxes.</p>
           </div>
         </section>
-        {/* why client choose us */}
         <div className="lg:mt-10 bg-white flex flex-col items-center lg:gap-4 text-center">
           <h3 className="text-[#1D2B48] text-2xl font-bold">Why Clients Trust Us</h3>
           <p className="text-[#545E74]">Tax services aren’t just about crunching numbers they’re about trust, clarity, and <br /> peace of mind. Here’s why thousands choose us every year:</p>
@@ -90,7 +89,6 @@ function Page() {
             </div>
           </div>
         </div>
-        {/* Our Services */}
         <div className="lg:mt-10 bg-white flex flex-col items-center lg:gap-4 text-center">
           <h3 className="text-[#1D2B48] text-2xl font-bold">Our Services</h3>
           <p className="text-[#545E74]">We offer end-to-end tax solutions designed for individuals, families, and businesses alike</p>
@@ -164,7 +162,6 @@ function Page() {
           </span>
         </div>
 
-        {/* How it Works */}
         <div className="lg:mt-10 bg-red-00 flex flex-col items-center justify-center lg:w-[100%] lg:gap-4 text-center">
           <h3 className="text-[#1D2B48] text-2xl font-bold">How It Works</h3>
           <p className="text-[#545E74]">We offer end-to-end tax solutions designed for individuals, families, and businesses alike</p>

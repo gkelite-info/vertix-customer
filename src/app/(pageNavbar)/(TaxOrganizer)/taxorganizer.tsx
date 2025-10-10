@@ -2,14 +2,21 @@
 import { useState } from "react";
 import YearSelect from "../../../../utils/yearSelect";
 import TaxDashboard from "./taxdashboard/page";
+import { useRouter } from "next/navigation";
 
 export default function OrganizerPage() {
+    const router = useRouter();
+
     const [showMessage, setShowMessage] = useState(false);
 
+    const handlebutton = () =>{
+        router.push('/taxdashboard')
+    }
+
     return (
-        <div className="bg-white">
-            <YearSelect />
-            <div className="bg-red-00 py-4 flex flex-col justify-start items-center lg:h-[80%] text-center">
+        <div className="bg-white h-[100vh]">
+            <YearSelect style="justify-center"/>
+            <div className="bg-red-00 py-4 flex flex-col justify-start items-center text-center">
                 {!showMessage ? (
                     <>
                         <p className="text-[#1C2945] text-sm font-medium lg:mt-3">
@@ -19,14 +26,14 @@ export default function OrganizerPage() {
                         </p>
                         <button
                             className="bg-[#1D2B47] text-sm font-medium h-10 lg:mt-7 rounded-lg p-2 cursor-pointer"
-                            onClick={() => setShowMessage(true)}
+                            onClick={handlebutton}
                         >
-                            TAX ORGANIXER FOR 2024 TAX YEAR
+                            TAX ORGANIZER FOR 2024 TAX YEAR
                         </button>
                     </>
                 ) : (
                     <>
-                        <TaxDashboard />
+                        {/* <TaxDashboard /> */}
                     </>
                 )}
             </div>
