@@ -10,7 +10,7 @@ type BankInformationProps = {
   customerId: number | string;
 };
 
-export default function BankInformation({ customerId }: BankInformationProps) {
+export default function BankingInformation({ customerId }: BankInformationProps) {
 
   const [formValues, setFormValues] = useState({
     belongsTo: "",

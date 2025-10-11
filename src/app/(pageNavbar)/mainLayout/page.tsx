@@ -2,18 +2,18 @@
 
 import { useRouter, useSearchParams } from "next/navigation"
 import PageNavbar from "../pageNavbar"
-import AddServicePage from "../AddServicePage/page"
-import FileStatusPage from "../FileStatusPage/page"
-import OrganizerPage from "../(TaxOrganizer)/taxorganizer"
 import VertixTaxPage from "../VertixDocUpload/page"
-import FeeTaxSummary from "../FeeTaxSummary/page"
 import ReferAFriend from "../ReferAFriend/page"
-import Messages from "../Messages/page"
 import Feedback from "../Feedback1/page"
-import ConsentForm from "../ConsentForm/page"
-import DocumentUploaded from "../DocumentUploaded/page"
-import BankInformation from "../BankInformation/page"
 import { Suspense } from "react"
+import ManageFilingYear from "../ManageFilingYear/page"
+import FileProgressTracker from "../FileProgressTracker/page"
+import TaxPreparationGuide from "../(TaxPreparationGuide)/TaxPreparationGuide"
+import PaymentTaxSummary from "../PaymentTaxSummary/page"
+import BankingInformation from "../BankingInformation/page"
+import MyDocuments from "../MyDocuments/page"
+import Chats from "../Chats/page"
+import AuthorizationConsent from "../AuthorizationConsent/page"
 
 function MainLayout() {
   return (
@@ -23,7 +23,7 @@ function MainLayout() {
   )
 }
 
-function Content() {
+export default function Content() {
   const router = useRouter()
   const searchParams = useSearchParams()
 
@@ -38,21 +38,20 @@ function Content() {
   return (
     <div className="bg-green-00 flex justify-between">
       <PageNavbar activeTab={activeTab} setActiveTab={setActiveTab} />
-      <div className="bg-red-00 w-[74%]">
-        {activeTab === "service" && <AddServicePage />}
-        {activeTab === "file-status" && <FileStatusPage />}
-        {activeTab === "organizer" && <OrganizerPage />}
+      <div className="bg-red-00 w-[76%]">
+        {activeTab === "service" && <ManageFilingYear />}
+        {activeTab === "file-status" && <FileProgressTracker />}
+        {activeTab === "organizer" && <TaxPreparationGuide />}
         {activeTab === "uploaded-by-vertix" && <VertixTaxPage />}
-        {activeTab === "summary" && <FeeTaxSummary />}
-        {activeTab === "bank-info" && <BankInformation customerId={""} />}
-        {activeTab === "uploaded" && <DocumentUploaded />}
+        {activeTab === "summary" && <PaymentTaxSummary />}
+        {activeTab === "bank-info" && <BankingInformation customerId={""} />}
+        {activeTab === "uploaded" && <MyDocuments />}
         {activeTab === "refer" && <ReferAFriend />}
-        {activeTab === "messages" && <Messages />}
+        {activeTab === "messages" && <Chats />}
         {activeTab === "feedback" && <Feedback />}
-        {activeTab === "consent" && <ConsentForm />}
+        {activeTab === "consent" && <AuthorizationConsent />}
       </div>
     </div>
   )
 }
 
-export default MainLayout

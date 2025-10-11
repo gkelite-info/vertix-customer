@@ -21,17 +21,17 @@ type PageNavbarProps = {
 
 function Page({ activeTab, setActiveTab }: PageNavbarProps) {
   const tabs = [
-    { id: "service", label: "Add Service Year", icon: CalendarDots, width: "lg:w-[100%]" },
-    { id: "file-status", label: "File Status", icon: Files, width: "lg:w-[100%]" },
-    { id: "organizer", label: "Tax Organizer", icon: Folder, width: "lg:w-[100%]" },
+    { id: "service", label: "Manage Filing Year", icon: CalendarDots, width: "lg:w-[100%]" },
+    { id: "file-status", label: "Filing Progress Tracker", icon: Files, width: "lg:w-[100%]" },
+    { id: "organizer", label: "Tax Preparation Guide", icon: Folder, width: "lg:w-[100%]" },
     { id: "uploaded-by-vertix", label: "Document Uploaded by Vertix", icon: Upload, width: "lg:w-[100%]" },
-    { id: "summary", label: "Fee & Tax Summary", icon: FileArrowUp, width: "lg:w-[100%]" },
-    { id: "bank-info", label: "Bank Information", icon: ClipboardText, width: "lg:w-[100%]" },
-    { id: "uploaded", label: "Document Uploaded", icon: Cloud, width: "lg:w-[100%]" },
+    { id: "summary", label: "Payment & Tax Summary", icon: FileArrowUp, width: "lg:w-[100%]" },
+    { id: "bank-info", label: "Banking Details", icon: ClipboardText, width: "lg:w-[100%]" },
+    { id: "uploaded", label: "My Documents", icon: Cloud, width: "lg:w-[100%]" },
     { id: "refer", label: "Refer a Friend", icon: UserPlus, width: "lg:w-[100%]" },
-    { id: "messages", label: "Messages", icon: ChatCenteredText, width: "lg:w-[100%]" },
+    { id: "messages", label: "Chats or Secure Messaging", icon: ChatCenteredText, width: "lg:w-[100%]" },
     { id: "feedback", label: "Feedback", icon: ChatCircleText, width: "lg:w-[100%]" },
-    { id: "consent", label: "Consent Form", icon: File, width: "lg:w-[100%]" },
+    { id: "consent", label: "Authorization & Consent Form", icon: File, width: "lg:w-[100%]" },
   ];
 
   return (
@@ -47,7 +47,7 @@ function Page({ activeTab, setActiveTab }: PageNavbarProps) {
                 ${isActive ? "bg-[#1D2B48] text-white" : "bg-[#E8E8E8] text-[#1D2B48]"}`}
             >
               <Icon size={23} weight="fill" className={isActive ? "text-white" : "text-[#1D2B48]"} />
-              <span>{label}</span>
+              <span className="text-sm">{label}</span>
             </div>
           );
         })}

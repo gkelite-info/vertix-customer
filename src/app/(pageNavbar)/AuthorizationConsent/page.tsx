@@ -2,7 +2,7 @@
 
 import YearSelect from "../../../../utils/yearSelect"
 
-function ConsentForm() {
+export default function AuthorizationConsent() {
   return (
     <>
       <div className="bg-white pb-7">
@@ -82,4 +82,3 @@ function ConsentForm() {
     </>
   )
 }
-export default ConsentForm

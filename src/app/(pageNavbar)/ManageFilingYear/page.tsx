@@ -2,7 +2,7 @@
 
 import YearSelect from "../../../../utils/yearSelect"
 
-function AddServicePage() {
+export default function ManageFilingYear() {
 
   return (
     <>
@@ -39,4 +39,3 @@ function AddServicePage() {
     </>
   )
 }
-export default AddServicePage

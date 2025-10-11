@@ -3,7 +3,7 @@
 import { useState } from "react"
 import YearSelect from "../../../../utils/yearSelect"
 
-function DocumentUploaded() {
+export default function MyDocuments() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [selectedDocType, setSelectedDocType] = useState<string>("")
 
@@ -114,4 +114,3 @@ function DocumentUploaded() {
     </>
   )
 }
-export default DocumentUploaded;

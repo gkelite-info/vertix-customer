@@ -4,7 +4,7 @@ import YearSelect from "../../../../utils/yearSelect";
 import TaxDashboard from "./taxdashboard/page";
 import { useRouter } from "next/navigation";
 
-export default function OrganizerPage() {
+export default function TaxPreparationGuide() {
     const router = useRouter();
 
     const [showMessage, setShowMessage] = useState(false);
