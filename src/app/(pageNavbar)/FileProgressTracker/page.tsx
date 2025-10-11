@@ -9,7 +9,7 @@ import {
 } from "phosphor-react"
 import YearSelect from "../../../../utils/yearSelect"
 
-export default function FileStatusPage() {
+export default function FileProgressTracker() {
   return (
     <>
       <div className="bg-white lg:h-[100vh]">

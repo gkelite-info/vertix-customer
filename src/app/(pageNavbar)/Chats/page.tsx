@@ -10,7 +10,7 @@ interface MessageInput {
   year?: number;
 }
 
-export default function Messages() {
+export default function Chats() {
 
   const [message, setMessage] = useState<MessageInput>({ content: "", year: undefined });
   const [feedback, setFeedback] = useState("");

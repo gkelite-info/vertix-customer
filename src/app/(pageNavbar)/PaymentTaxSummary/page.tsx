@@ -3,7 +3,7 @@
 import { useState } from "react"
 import YearSelect from "../../../../utils/yearSelect"
 
-export default function FeeTaxSummary() {
+export default function PaymentTaxSummary() {
   const [activeTab, setActiveTab] = useState<"fee" | "tax">("fee")
 
   return (
