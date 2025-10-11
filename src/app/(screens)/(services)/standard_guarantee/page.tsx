@@ -1,6 +1,5 @@
 "use client"
 
-import Image from "next/image"
 import { CheckCircle, CreditCard, Warning } from "phosphor-react"
 
 function Page() {
@@ -19,7 +18,7 @@ function Page() {
               className="lg:h-[45%] lg:w-[40%] lg:rounded-2xl lg:shadow-lg hover:shadow-xl cursor-pointer"
             >
               <div className="bg-red-00 flex flex-col items-center justify-around lg:h-[100%] lg:w-[100%] lg:p-5 lg:rounded-2xl lg:shadow-lg hover:shadow-xl cursor-pointer">
-                <div className="bg-blue-200 lg:p-2 lg:h-[49%] lg:w-[35%] lg:rounded-full flex justify-center items-center">
+                <div className="bg-blue-200 lg:p-2 lg:h-[49%] lg:w-[29%] lg:rounded-full flex justify-center items-center">
                   <Warning size={30} weight="fill" className="text-[#1D2B48]" />
                 </div>
                 <div className="bg-yellow-00 lg:h-[30%] lg:w-full flex justify-center items-center">
@@ -32,7 +31,7 @@ function Page() {
               className="lg:h-[45%] lg:w-[40%] lg:rounded-2xl lg:shadow-lg hover:shadow-xl cursor-pointer"
             >
               <div className="bg-red-00 flex flex-col items-center justify-around lg:h-[100%] lg:w-[100%] lg:p-5 lg:rounded-2xl lg:shadow-lg hover:shadow-xl cursor-pointer">
-                <div className="bg-blue-200 lg:p-2 lg:h-[49%] lg:w-[35%] lg:rounded-full flex justify-center items-center">
+                <div className="bg-blue-200 lg:p-2 lg:h-[49%] lg:w-[29%] lg:rounded-full flex justify-center items-center">
                   <CheckCircle
                     size={30}
                     weight="fill"
@@ -49,7 +48,7 @@ function Page() {
               className="lg:h-[45%] lg:w-[40%] lg:rounded-2xl lg:shadow-lg hover:shadow-xl cursor-pointer"
             >
               <div className="bg-red-00 flex flex-col items-center justify-around lg:h-[100%] lg:w-[100%] lg:p-5 lg:rounded-2xl lg:shadow-lg hover:shadow-xl cursor-pointer">
-                <div className="bg-blue-200 lg:p-2 lg:h-[49%] lg:w-[35%] lg:rounded-full flex justify-center items-center">
+                <div className="bg-blue-200 lg:p-2 lg:h-[49%] lg:w-[29%] lg:rounded-full flex justify-center items-center">
                   <CreditCard
                     size={30}
                     weight="fill"
@@ -63,14 +62,11 @@ function Page() {
             </a>
           </div>
           <div className="lg:w-[40%] bg-red-00 flex justify-center">
-            {/* <img src="/aboutpage.png" alt="aboutpage.png" className="lg:h-[100%] lg:w-[74%] lg:rounded-lg" /> */}
-            <Image
-              src="/aboutpage.png"
-              width={1200}
-              height={800}
-              alt="aboutpage.png"
+            <img src="/guarantee.jpg"
+              alt="guarantee.jpg"
               className="lg:h-[100%] lg:w-[74%] lg:rounded-lg"
             />
+
           </div>
         </div>
         <div className="bg-green-00 lg:w-[90%]">

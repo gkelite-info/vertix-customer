@@ -207,7 +207,7 @@ function Header() {
                       href="/itin"
                       className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
                     >
-                      Itin
+                      ITIN
                     </Link>
                   </li>
                   <li>
@@ -235,6 +235,22 @@ function Header() {
               <div className="absolute top-full left-0 hidden group-hover:block bg-white shadow-md rounded mt-0 w-55 z-50">
                 <ul className="flex flex-col text-black">
                   <li>
+                    <Link
+                      href="/tax_treaties"
+                      className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
+                    >
+                      Tax Treaties
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/elections"
+                      className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
+                    >
+                      Elections
+                    </Link>
+                  </li>
+                  <li>
                     <div className="flex items-center justify-between lg:pr-1 hover:bg-gray-100 hover:rounded">
                       <Link
                         href="/healthcare"
@@ -257,23 +273,7 @@ function Header() {
                       href="/reit"
                       className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
                     >
-                      Reti
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="/tax_treaties"
-                      className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
-                    >
-                      Tax Treaties
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="/elections"
-                      className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
-                    >
-                      Elections
+                      REIT
                     </Link>
                   </li>
                   <li>

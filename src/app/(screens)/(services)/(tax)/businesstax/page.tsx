@@ -1,6 +1,5 @@
 "use client"
 
-import Image from "next/image"
 import { Bank, ChartPieSlice, Handshake } from "phosphor-react"
 
 function Page() {
@@ -19,7 +18,7 @@ function Page() {
               className="lg:h-[45%] lg:w-[40%] lg:rounded-2xl lg:shadow-lg hover:shadow-xl cursor-pointer"
             >
               <div className="bg-red-00 flex flex-col items-center justify-around lg:h-[100%] lg:w-[100%] lg:p-5 lg:rounded-2xl lg:shadow-lg hover:shadow-xl cursor-pointer">
-                <div className="bg-blue-200 lg:p-2 lg:h-[49%] lg:w-[35%] lg:rounded-full flex justify-center items-center">
+                <div className="bg-blue-200 lg:p-2 lg:h-[44%] lg:w-[35%] lg:rounded-full flex justify-center items-center">
                   <Handshake
                     size={30}
                     weight="fill"
@@ -27,7 +26,7 @@ function Page() {
                   />
                 </div>
                 <div className="bg-yellow-00 lg:h-[30%] lg:w-full flex justify-center items-center">
-                  <h3 className="text-[#1D2B48] font-semibold">Partnership</h3>
+                  <h3 className="text-[#1D2B48] font-semibold text-lg">Partnership</h3>
                 </div>
               </div>
             </a>
@@ -36,7 +35,7 @@ function Page() {
               className="lg:h-[45%] lg:w-[40%] lg:rounded-2xl lg:shadow-lg hover:shadow-xl cursor-pointer"
             >
               <div className="bg-red-00 flex flex-col items-center justify-around lg:h-[100%] lg:w-[100%] lg:p-5 lg:rounded-2xl lg:shadow-lg hover:shadow-xl cursor-pointer">
-                <div className="bg-blue-200 lg:p-2 lg:h-[49%] lg:w-[35%] lg:rounded-full flex justify-center items-center">
+                <div className="bg-blue-200 lg:p-2 lg:h-[44%] lg:w-[35%] lg:rounded-full flex justify-center items-center">
                   <ChartPieSlice
                     size={30}
                     weight="fill"
@@ -44,7 +43,7 @@ function Page() {
                   />
                 </div>
                 <div className="bg-yellow-00 lg:h-[30%] lg:w-full flex justify-center items-center">
-                  <h3 className="text-[#1D2B48] font-semibold">
+                  <h3 className="text-[#1D2B48] font-semibold text-lg">
                     S Corporation
                   </h3>
                 </div>
@@ -55,11 +54,11 @@ function Page() {
               className="lg:h-[45%] lg:w-[40%] lg:rounded-2xl lg:shadow-lg hover:shadow-xl cursor-pointer"
             >
               <div className="bg-red-00 flex flex-col items-center justify-around lg:h-[100%] lg:w-[100%] lg:p-5 lg:rounded-2xl lg:shadow-lg hover:shadow-xl cursor-pointer">
-                <div className="bg-blue-200 lg:p-2 lg:h-[49%] lg:w-[35%] lg:rounded-full flex justify-center items-center">
+                <div className="bg-blue-200 lg:p-2 lg:h-[44%] lg:w-[35%] lg:rounded-full flex justify-center items-center">
                   <Bank size={30} weight="fill" className="text-[#1D2B48]" />
                 </div>
                 <div className="bg-yellow-00 lg:h-[30%] lg:w-full flex justify-center items-center">
-                  <h3 className="text-[#1D2B48] font-semibold">
+                  <h3 className="text-[#1D2B48] font-semibold text-lg">
                     C Corporation
                   </h3>
                 </div>
@@ -67,15 +66,8 @@ function Page() {
             </a>
           </div>
           <div className="lg:w-[40%] bg-red-00 flex justify-center">
-            {/* <img
-              src="/aboutpage.png"
-              alt="aboutpage.png"
-              className="lg:h-[100%] lg:w-[74%] lg:rounded-lg"
-            /> */}
-            <Image
-              src="/aboutpage.png"
-              width={1200}
-              height={800}
+            <img
+              src="/business_tax.jpg"
               alt="aboutpage.png"
               className="lg:h-[100%] lg:w-[74%] lg:rounded-lg"
             />

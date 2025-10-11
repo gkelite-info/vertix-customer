@@ -3,7 +3,7 @@ import { getCustomer } from "@/api-requests/customers/customerApi";
 import YearSelector from "@/app/(pageNavbar)/YearSelector/YearSelector"
 import { useEffect, useState } from "react"
 
-export default function YearSelect({ style = "justify-end" }: { style: string }) {
+export default function YearSelect({ style = "justify-end" }: { style?: string }) {
   const [selectedYear, setSelectedYear] = useState<number | null>(null);
   const [name, setName] = useState("");
   const [customerId, setCustomerId] = useState<string | number>("");
