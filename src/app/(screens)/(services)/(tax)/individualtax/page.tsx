@@ -1,6 +1,5 @@
 "use client"
 
-import Image from "next/image"
 import {
   Airplane,
   Briefcase,
@@ -20,13 +19,13 @@ function Page() {
           </h1>
         </div>
         <div className="bg-yellow-00 lg:w-[90%] lg:mt-10 flex">
-          <div className="lg:w-[60%] lg:pt-5 lg:pr-7 flex flex-wrap lg:gap-5">
+          <div className="lg:w-[60%] bg-yellow-00 lg:pt-5 lg:pr-7 flex flex-wrap lg:gap-5">
             <a
               href="#individuals"
               className="lg:h-[35%] lg:w-[30%] lg:rounded-2xl lg:shadow-lg hover:shadow-xl cursor-pointer"
             >
               <div className="bg-red-00 flex flex-col items-center justify-around lg:h-[100%] lg:w-[100%] lg:p-5 lg:rounded-2xl lg:shadow-lg hover:shadow-xl cursor-pointer">
-                <div className="bg-blue-200 lg:p-2 lg:h-[49%] lg:w-[35%] lg:rounded-full flex justify-center items-center">
+                <div className="bg-blue-200 lg:p-2 lg:h-[42%] lg:w-[35%] lg:rounded-full flex justify-center items-center">
                   <User size={28} weight="fill" className="text-[#1D2B48]" />
                 </div>
                 <div className="bg-yellow-00 lg:h-[30%] lg:w-full flex justify-center items-center">
@@ -39,7 +38,7 @@ function Page() {
               className="lg:h-[35%] lg:w-[30%] lg:rounded-2xl lg:shadow-lg hover:shadow-xl cursor-pointer"
             >
               <div className="bg-red-00 flex flex-col items-center justify-around lg:h-[100%] lg:w-[100%] lg:p-5 lg:rounded-2xl lg:shadow-lg hover:shadow-xl cursor-pointer">
-                <div className="bg-blue-200 lg:p-2 lg:h-[49%] lg:w-[35%] lg:rounded-full flex justify-center items-center">
+                <div className="bg-blue-200 lg:p-2 lg:h-[42%] lg:w-[35%] lg:rounded-full flex justify-center items-center">
                   <UsersThree
                     size={28}
                     weight="fill"
@@ -58,7 +57,7 @@ function Page() {
               className="lg:h-[35%] lg:w-[30%] lg:rounded-2xl lg:shadow-lg hover:shadow-xl cursor-pointer"
             >
               <div className="bg-red-00 flex flex-col items-center justify-around lg:h-[100%] lg:w-[100%] lg:p-5 lg:rounded-2xl lg:shadow-lg hover:shadow-xl cursor-pointer">
-                <div className="bg-blue-200 lg:p-2 lg:h-[49%] lg:w-[35%] lg:rounded-full flex justify-center items-center">
+                <div className="bg-blue-200 lg:p-2 lg:h-[42%] lg:w-[35%] lg:rounded-full flex justify-center items-center">
                   <Briefcase
                     size={28}
                     weight="fill"
@@ -77,7 +76,7 @@ function Page() {
               className="lg:h-[35%] lg:w-[30%] lg:rounded-2xl lg:shadow-lg hover:shadow-xl cursor-pointer"
             >
               <div className="bg-red-00 flex flex-col items-center justify-around lg:h-[100%] lg:w-[100%] lg:p-5 lg:rounded-2xl lg:shadow-lg hover:shadow-xl cursor-pointer">
-                <div className="bg-blue-200 lg:p-2 lg:h-[49%] lg:w-[35%] lg:rounded-full flex justify-center items-center">
+                <div className="bg-blue-200 lg:p-2 lg:h-[42%] lg:w-[35%] lg:rounded-full flex justify-center items-center">
                   <IdentificationCard
                     size={28}
                     weight="fill"
@@ -96,7 +95,7 @@ function Page() {
               className="lg:h-[35%] lg:w-[30%] lg:rounded-2xl lg:shadow-lg hover:shadow-xl cursor-pointer"
             >
               <div className="bg-red-00 flex flex-col items-center justify-around lg:h-[100%] lg:w-[100%] lg:p-5 lg:rounded-2xl lg:shadow-lg hover:shadow-xl cursor-pointer">
-                <div className="bg-blue-200 lg:p-2 lg:h-[49%] lg:w-[35%] lg:rounded-full flex justify-center items-center">
+                <div className="bg-blue-200 lg:p-2 lg:h-[42%] lg:w-[35%] lg:rounded-full flex justify-center items-center">
                   <Airplane
                     size={26}
                     weight="fill"
@@ -115,7 +114,7 @@ function Page() {
               className="lg:h-[35%] lg:w-[30%] lg:rounded-2xl lg:shadow-lg hover:shadow-xl cursor-pointer"
             >
               <div className="bg-red-00 flex flex-col items-center justify-around lg:h-[100%] lg:w-[100%] lg:p-5 lg:rounded-2xl lg:shadow-lg hover:shadow-xl cursor-pointer">
-                <div className="bg-blue-200 lg:p-2 lg:h-[49%] lg:w-[35%] lg:rounded-full flex justify-center items-center">
+                <div className="bg-blue-200 lg:p-2 lg:h-[42%] lg:w-[35%] lg:rounded-full flex justify-center items-center">
                   <WarningCircle
                     size={28}
                     weight="fill"
@@ -131,17 +130,8 @@ function Page() {
             </a>
           </div>
           <div className="lg:w-[40%] bg-red-00 flex justify-center">
-            {/* <img
-              src="/aboutpage.png"
-              alt="aboutpage.png"
-              className="lg:h-[100%] lg:w-[74%] lg:rounded-lg"
-            /> */}
-            <Image
-              src="/aboutpage.png"
-              width={1200}
-              height={800}
-              alt="aboutpage.png"
-              className="lg:h-[100%] lg:w-[74%] lg:rounded-lg"
+            <img src="individual_tax.jpg" alt="individual_tax.jpg" 
+            className="lg:h-[100%] lg:w-[74%] lg:rounded-lg"
             />
           </div>
         </div>
