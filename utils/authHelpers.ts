@@ -1,11 +1,10 @@
-import jwt_decode from "jwt-decode"; 
-
+import { jwtDecode } from "jwt-decode";
 
 interface TokenPayload {
-  customerId: string;        // customerId
-  name: string;      // user name
-  email?: string;    // optional
-  exp?: number;      // expiry
+  customerId: string; // customerId
+  name: string;       // user name
+  email?: string;     // optional
+  exp?: number;       // expiry
 }
 
 export const getUserFromToken = (): TokenPayload | null => {
@@ -13,7 +12,7 @@ export const getUserFromToken = (): TokenPayload | null => {
   if (!token) return null;
 
   try {
-    const decoded = jwt_decode<TokenPayload>(token);
+    const decoded = jwtDecode<TokenPayload>(token);
     return decoded;
   } catch (error) {
     console.error("Invalid token", error);
