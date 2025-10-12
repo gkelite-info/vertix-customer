@@ -44,7 +44,7 @@ export default function Content() {
         {activeTab === "organizer" && <TaxPreparationGuide />}
         {activeTab === "uploaded-by-vertix" && <VertixTaxPage />}
         {activeTab === "summary" && <PaymentTaxSummary />}
-        {activeTab === "bank-info" && <BankingInformation customerId={""} />}
+        {/* /* {activeTab === "bank-info" && <BankingInformation customerId={""} />} */ */}
         {activeTab === "uploaded" && <MyDocuments />}
         {activeTab === "refer" && <ReferAFriend />}
         {activeTab === "messages" && <Chats />}
