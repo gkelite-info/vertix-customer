@@ -29,7 +29,10 @@ export default function BankingInformationPage() {
 
     const fetchBankData = async () => {
       try {
-        const res = await getBankInformation(user?.id || "");
+        // const res = await getBankInformation(user?.id || "");
+        // Use optional chaining + type assertion to avoid TS error
+        const res = await getBankInformation((user as any)?.id || "");
+
 
         if (res.data && Array.isArray(res.data) && res.data.length > 0) {
           const firstRecord = res.data[0];
