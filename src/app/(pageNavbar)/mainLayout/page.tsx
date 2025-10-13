@@ -5,25 +5,15 @@ import PageNavbar from "../pageNavbar"
 import VertixTaxPage from "../VertixDocUpload/page"
 import ReferAFriend from "../ReferAFriend/page"
 import Feedback from "../Feedback1/page"
-import { Suspense } from "react"
 import ManageFilingYear from "../ManageFilingYear/page"
 import FileProgressTracker from "../FileProgressTracker/page"
 import TaxPreparationGuide from "../(TaxPreparationGuide)/TaxPreparationGuide"
 import PaymentTaxSummary from "../PaymentTaxSummary/page"
-import BankingInformation from "../BankingInformation/page"
 import MyDocuments from "../MyDocuments/page"
 import Chats from "../Chats/page"
 import AuthorizationConsent from "../AuthorizationConsent/page"
 
-function MainLayout() {
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <Content />
-    </Suspense>
-  )
-}
-
-export default function Content() {
+export default function MainLayout() {
   const router = useRouter()
   const searchParams = useSearchParams()
 
@@ -44,7 +34,6 @@ export default function Content() {
         {activeTab === "organizer" && <TaxPreparationGuide />}
         {activeTab === "uploaded-by-vertix" && <VertixTaxPage />}
         {activeTab === "summary" && <PaymentTaxSummary />}
-        {/* {activeTab === "bank-info" && <BankingInformation customerId={""} />} */}
         {activeTab === "uploaded" && <MyDocuments />}
         {activeTab === "refer" && <ReferAFriend />}
         {activeTab === "messages" && <Chats />}
@@ -54,4 +43,3 @@ export default function Content() {
     </div>
   )
 }
-
