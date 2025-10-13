@@ -6,13 +6,15 @@ import { useEffect, useState } from "react"
 import { useAuth } from "../AuthContext"
 import { MdArrowDropDown } from "react-icons/md"
 import { IoMdArrowDropright } from "react-icons/io"
+import LogoutModal from "../logoutModal/page"
 
 function Header() {
   const router = useRouter()
 
   const pathname = usePathname()
   const [, setIsLoggedIn] = useState(false)
-  const { isAuthenticated, logout } = useAuth()
+  const { isAuthenticated, logout } = useAuth();
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   const linkClass = (href: string) =>
     `relative text-black font-medium
@@ -26,17 +28,23 @@ function Header() {
     setIsLoggedIn(!!token)
   }, [pathname])
 
+<<<<<<< Updated upstream
   const handleLogout = () => {
     const confirmed = window.confirm("Are you sure you want to signout?")
     if (confirmed) {
       logout()
       router.push("/login")
     }
+=======
+  const handleLogout = () => setShowLogoutModal(true)
+  const confirmLogout = () => {
+    logout()
+    setShowLogoutModal(false)
+    router.push("/login")
+>>>>>>> Stashed changes
   }
+  const cancelLogout = () => setShowLogoutModal(false)
 
-  const handlerefer = () => {
-    router.push("/mainLayout")
-  }
 
   return (
     <>
@@ -292,12 +300,12 @@ function Header() {
               Contact
             </Link>
           </div>
-          <button
+          {/* <button
             className="font-medium lg:px-2 bg-white text-black lg:w-[13%] lg:h-[65%] lg:rounded-full cursor-pointer"
             onClick={handlerefer}
           >
             Refer a Friend
-          </button>
+          </button> */}
           <div className="bg-gray-00 lg:h-[100%] flex justify-center items-center lg:w-[10%]">
             {isAuthenticated ? (
               <button
@@ -317,6 +325,11 @@ function Header() {
           </div>
         </header>
       </div>
+      <LogoutModal
+        isOpen={showLogoutModal}
+        onConfirm={confirmLogout}
+        onCancel={cancelLogout}
+      />
     </>
   )
 }

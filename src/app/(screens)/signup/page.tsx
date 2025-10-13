@@ -165,7 +165,7 @@ export default function Page() {
       if (!res.ok) {
         throw new Error(data.message || "Signup failed")
       }
-      toast.error("Registration successful!")
+      toast.success("Registration successful!")
       router.push("/login")
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
@@ -300,7 +300,7 @@ export default function Page() {
                 <div className="bg-green-00 lg:h-[20%] flex flex-col lg:gap-2 lg:mt-2 items-center">
                   <button
                     type="button"
-                    className="text-white lg:h-[65%] lg:w-[100%] text-lg font-medium lg:rounded-full bg-[#1D2B48] cursor-pointer"
+                    className="text-white lg:h-[50%] lg:w-[100%] text-lg font-medium lg:rounded-full bg-[#1D2B48] cursor-pointer"
                     onClick={handleSignup}
                   >
                     Create Account !
