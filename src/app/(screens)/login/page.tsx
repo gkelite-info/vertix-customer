@@ -3,6 +3,7 @@ import { useAuth } from "@/components/AuthContext"
 import { Icon } from "@iconify/react/dist/iconify.js"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
+import toast from "react-hot-toast"
 
 export default function Page() {
   const router = useRouter()
@@ -44,12 +45,14 @@ export default function Page() {
   const handleLogin = async () => {
     try {
       if (!email) {
-        setError("Email required to login")
+        //setError("Email required to login")
+        toast.error("Email required to login")
         return
       }
 
       if (!password) {
-        setError("Password is required.")
+        //setError("Password is required.")
+        toast.error("Password is required")
         return
       }
 
@@ -62,18 +65,17 @@ export default function Page() {
         }
       )
 
-
       const data = await res.json()
-      if (!res.ok) {
-        if (res.status === 404) {
-          setError("New user? Create an account.")
-        } else if (res.status === 401) {
-          setError("Password is incorrect.")
-        } else {
-          setError(data.message || "Login failed")
-        }
-        return
-      }
+      // if (!res.ok) {
+      //   if (res.status === 404) {
+      //     setError("New user? Create an account.")
+      //   } else if (res.status === 401) {
+      //     setError("Password is incorrect.")
+      //   } else {
+      //     setError(data.message || "Login failed")
+      //   }
+      //   return
+      // }
 
       login(data.token)
 
@@ -84,7 +86,8 @@ export default function Page() {
       }
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {
-      setError("Invalid credentials or server error")
+      //setError("Invalid credentials or server error")
+      toast.error("Invalid credentials or server error")
     }
   }
 
@@ -138,7 +141,7 @@ export default function Page() {
                     className="w-full font-medium p-2 ml-2 border-none focus:outline-none text-black"
                     onKeyDown={(e) => {
                       if (e.key === "Enter") {
-                        handleLogin();
+                        handleLogin()
                       }
                     }}
                   />
@@ -149,9 +152,7 @@ export default function Page() {
                   />
                 </div>
                 {passwordError && (
-                  <p className="text-red-500 text-xs mt-1">
-                    {passwordError}
-                  </p>
+                  <p className="text-red-500 text-xs mt-1">{passwordError}</p>
                 )}
               </div>
               <div className="flex justify-between items-center mt-6 mb-8">
@@ -193,11 +194,9 @@ export default function Page() {
                   </p>
                 </div>
               </div>
-              {error && (
-                <p className="text-red-500 text-center mt-4 text-sm">
-                  {error}
-                </p>
-              )}
+              {/* {error && (
+                <p className="text-red-500 text-center mt-4 text-sm">{error}</p>
+              )} */}
             </div>
           </div>
         </div>

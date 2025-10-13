@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import YearSelect from "../../../../utils/yearSelect"
+import toast from "react-hot-toast"
 
 export default function MyDocuments() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
@@ -19,13 +20,13 @@ export default function MyDocuments() {
 
   const handleUpload = async () => {
     if (!selectedFile || !selectedDocType) {
-      alert("Please select a file and document type")
+      toast.error("Please select a file and document type")
       return
     }
 
     const userId = localStorage.getItem("userId")
     if (!userId) {
-      alert("User not logged in")
+      toast.error("User not logged in")
       return
     }
 
@@ -40,13 +41,12 @@ export default function MyDocuments() {
         body: formData,
       })
       const data = await res.json()
-      alert("File uploaded successfully: " + data.photoURL)
+      toast.success("File uploaded successfully: " + data.photoURL)
     } catch (err) {
       console.error(err)
-      alert("Upload failed")
+      toast.error("Upload failed")
     }
   }
-
 
   return (
     <>
@@ -57,7 +57,8 @@ export default function MyDocuments() {
             <div className="w-[45%]">
               <h5 className="text-[#1D2B48] font-medium">DOCUMENT TYPE :</h5>
             </div>
-            <select className="border border-gray-300 text-[#616161] font-medium lg:w-[65%] px-2 text-sm lg:h-[85%] rounded cursor-pointer shadow-sm"
+            <select
+              className="border border-gray-300 text-[#616161] font-medium lg:w-[65%] px-2 text-sm lg:h-[85%] rounded cursor-pointer shadow-sm"
               value={selectedDocType}
               onChange={handleDocTypeChange}
             >
@@ -72,7 +73,9 @@ export default function MyDocuments() {
               <option value="1099-misc">1099-MISC</option>
               <option value="mortgageInterest">Mortgage Interest</option>
               <option value="1098-t">1098-T</option>
-              <option value="foreignTaxCertificates">Foreign Tax Certificate</option>
+              <option value="foreignTaxCertificates">
+                Foreign Tax Certificate
+              </option>
               <option value="indianDocument">Indian Document</option>
               <option value="priorYearTaxReturn">Prior Year Tax Return</option>
               <option value="id">ID</option>
@@ -104,7 +107,10 @@ export default function MyDocuments() {
                 placeholder="Comment about document"
                 className="w-[100%] text-sm h-32 p-3 text-[#616161] border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
-              <button className="mt-4 font-medium w-[75%] text-sm bg-[#1D2B48] text-white px-5 py-2 rounded-lg flex gap-2 hover:bg-[#2c3e65] justify-center items-center cursor-pointer" onClick={handleUpload}>
+              <button
+                className="mt-4 font-medium w-[75%] text-sm bg-[#1D2B48] text-white px-5 py-2 rounded-lg flex gap-2 hover:bg-[#2c3e65] justify-center items-center cursor-pointer"
+                onClick={handleUpload}
+              >
                 SUBMIT FEEDBACK
               </button>
             </div>
