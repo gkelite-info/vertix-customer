@@ -1,5 +1,7 @@
 "use client"
 
+export const dynamic = "force-dynamic"  // important
+
 import { useRouter, useSearchParams } from 'next/navigation'
 import PageNavbar from "../pageNavbar"
 import ManageFilingYear from "../ManageFilingYear/page"
@@ -13,7 +15,7 @@ import Chats from "../Chats/page"
 import Feedback from "../Feedback1/page"
 import AuthorizationConsent from "../AuthorizationConsent/page"
 
-export default function ClientMainLayout() {
+export default function MainLayoutPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
 
