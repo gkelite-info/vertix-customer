@@ -40,8 +40,8 @@ function Header() {
   return (
     <>
       <div className="flex justify-center items-center bg-white sticky z-100 top-0 lg:h-25">
-        <header className="bg-[#1D2B48] sticky top-0 z-50 shadow-lg lg:mt-0 lg:h-15 lg:w-[95%] rounded-full flex items-center px-3 lg:gap-5">
-          <div className="bg-red-400 lg:h-[100%] lg:w-[80%] flex justify-center items-center lg:gap-10">
+        <header className="bg-[#1D2B48] sticky top-0 z-50 shadow-lg lg:mt-0 lg:h-15 lg:w-[95%] rounded-full flex justify-between items-center px-3 lg:gap-5">
+          <div className="bg-red-00 lg:h-[100%] lg:w-[80%] flex justify-center items-center lg:gap-10">
             <Link href="/" className={`${linkClass("/")} text-white`}>
               Home
             </Link>

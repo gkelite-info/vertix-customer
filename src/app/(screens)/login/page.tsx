@@ -96,65 +96,84 @@ export default function Page() {
   // }
 
   const handleLogin = async () => {
-  try {
-    let hasError = false;
+    try {
+      let hasError = false;
 
-    // Email validation
-    if (!email) {
-      toast.error("Email is required.");
-      hasError = true;
-    } else if (!/^\S+@\S+\.\S+$/.test(email)) {
-      toast.error("Please enter a valid email address.");
-      hasError = true;
-    }
+      // Email validation
+      if (!email) {
+        toast.error("Email is required.");
+        hasError = true;
+      } else if (!/^\S+@\S+\.\S+$/.test(email)) {
+        toast.error("Please enter a valid email address.");
+        hasError = true;
+      }
 
-    // Password validation
-    if (!password) {
-      toast.error("Password is required.");
-      hasError = true;
-    } else if (password.length < 6) {
-      toast.error("Password must be at least 6 characters.");
-      hasError = true;
-    }
+      // Password validation
+      if (!password) {
+        toast.error("Password is required.");
+        hasError = true;
+      } else if (password.length < 6) {
+        toast.error("Password must be at least 6 characters.");
+        hasError = true;
+      }
 
-    if (hasError) return;
+      if (hasError) return;
 
-    const res = await fetch(
-      "http://localhost:5000/api/v1/vertix/customer/login",
-      {
+      const res = await fetch("http://localhost:5000/api/v1/vertix/customer/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
+      });
+
+      // Parse response safely
+      let data;
+      try {
+        data = await res.json();
+      } catch {
+        throw new Error("Invalid response format from server");
       }
-    );
 
-    const data = await res.json();
+      if (!res.ok) {
+        // Handle invalid credentials or other client-side errors (4xx)
+        if (res.status === 401 || res.status === 403) {
+          toast.error("Invalid email or password.");
+        }
+        // Handle server-side errors (5xx)
+        else if (res.status >= 500) {
+          toast.error("Server error — please try again later.");
+        }
+        // Handle other cases
+        else if (data?.error === "User not found") {
+          toast.error("User not found / Create an account.");
+        } else if (data?.error === "Password is incorrect") {
+          toast.error("Password is incorrect.");
+        } else {
+          toast.error(data?.message || "Login failed. Please try again.");
+        }
+        return;
+      }
 
-    if (!res.ok) {
-      if (data.error === "User not found") {
-        toast.error("User not found / Create an account.");
-      } else if (data.error === "Password is incorrect") {
-        toast.error("Password is incorrect.");
+      // Successful login
+      login(data.token);
+
+      if (!data.is_consent_filled) {
+        router.push("/consent");
       } else {
-        toast.error(data.message || "Login failed");
+        router.push("/construction");
+        setTimeout(() => {
+          toast.success("Login successful");
+        }, 1000);
       }
-      return;
-    }
 
-    login(data.token);
-
-    if (!data.is_consent_filled) {
-      router.push("/consent");
-    } else {
-      router.push("/construction");
-      setTimeout(() => {
-        toast.success("Login successful");
-      }, 1000);
+    } catch (err: any) {
+      console.error("Login error:", err);
+      if (err.message.includes("NetworkError") || err.message.includes("fetch")) {
+        toast.error("Unable to connect to the server. Please check your connection.");
+      } else {
+        toast.error("An unexpected error occurred. Please try again.");
+      }
     }
-  } catch (err) {
-    toast.error("Invalid credentials or server error");
-  }
-};
+  };
 
 
   const handlesignUp = () => {
