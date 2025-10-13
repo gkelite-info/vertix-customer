@@ -12,6 +12,7 @@ import ReferAFriend from '../ReferAFriend/page'
 import Chats from '../Chats/page'
 import Feedback from '../Feedback1/page'
 import AuthorizationConsent from '../AuthorizationConsent/page'
+import BankingInformationPage from '../BankingInformation/page'
 
 export default function MainLayoutContent() {
     const router = useRouter()
@@ -33,6 +34,7 @@ export default function MainLayoutContent() {
                 {activeTab === "file-status" && <FileProgressTracker />}
                 {activeTab === "organizer" && <TaxPreparationGuide />}
                 {activeTab === "uploaded-by-vertix" && <VertixTaxPage />}
+                {activeTab === "bank-info" && <BankingInformationPage />}
                 {activeTab === "summary" && <PaymentTaxSummary />}
                 {activeTab === "uploaded" && <MyDocuments />}
                 {activeTab === "refer" && <ReferAFriend />}

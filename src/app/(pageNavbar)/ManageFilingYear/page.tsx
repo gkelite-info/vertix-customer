@@ -30,7 +30,7 @@ export default function ManageFilingYear() {
                 <option value="2025">2025</option>
               </select>
             </div>
-            <button className="bg-[#1D2B48] font-medium lg:w-[40%] lg:h-[25%] cursor-pointer hover:bg-[#2c3e65] rounded-lg text-sm">
+            <button className="bg-[#1D2B48] text-white font-medium lg:w-[40%] lg:h-[25%] cursor-pointer hover:bg-[#2c3e65] rounded-lg text-sm">
               ADD NEW SERVICE
             </button>
           </div>
