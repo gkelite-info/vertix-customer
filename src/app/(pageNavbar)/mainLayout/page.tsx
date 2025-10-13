@@ -7,7 +7,6 @@ import FileProgressTracker from "../FileProgressTracker/page"
 import TaxPreparationGuide from "../(TaxPreparationGuide)/TaxPreparationGuide"
 import VertixTaxPage from "../VertixDocUpload/page"
 import PaymentTaxSummary from "../PaymentTaxSummary/page"
-// import BankingInformation from "../BankingInformation/page"
 import MyDocuments from "../MyDocuments/page"
 import ReferAFriend from "../ReferAFriend/page"
 import Chats from "../Chats/page"
@@ -35,7 +34,6 @@ export default function ClientMainLayout() {
         {activeTab === "organizer" && <TaxPreparationGuide />}
         {activeTab === "uploaded-by-vertix" && <VertixTaxPage />}
         {activeTab === "summary" && <PaymentTaxSummary />}
-        {/* {activeTab === "bank-info" && <BankingInformation customerId={""} />} */}
         {activeTab === "uploaded" && <MyDocuments />}
         {activeTab === "refer" && <ReferAFriend />}
         {activeTab === "messages" && <Chats />}
@@ -45,4 +43,3 @@ export default function ClientMainLayout() {
     </div>
   )
 }
-
