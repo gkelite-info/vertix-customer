@@ -30,7 +30,7 @@ function Header() {
     const confirmed = window.confirm("Are you sure you want to signout?")
     if (confirmed) {
       logout()
-      router.push('/login')
+      router.push("/login")
     }
   }
 
@@ -61,7 +61,7 @@ function Header() {
                   <li className="relative group/submenu">
                     <div className="flex items-center justify-between lg:pr-1 hover:bg-gray-100 hover:rounded">
                       <Link href="" className="block px-4 py-2 lg:text-sm">
-                        Tax
+                        Tax Filing
                       </Link>
                       <IoMdArrowDropright className="text-black text-lg" />
                     </div>
@@ -69,18 +69,18 @@ function Header() {
                       <ul className="flex flex-col text-black">
                         <li>
                           <Link
-                            href="/individualtax"
+                            href="/individual"
                             className="block px-4 py-2 text-sm hover:bg-gray-100 hover:rounded"
                           >
-                            Individual Tax
+                            Individual
                           </Link>
                         </li>
                         <li>
                           <Link
-                            href="/businesstax"
+                            href="/business"
                             className="block px-4 py-2 text-sm hover:bg-gray-100 hover:rounded"
                           >
-                            Business Tax
+                            Business
                           </Link>
                         </li>
                       </ul>
@@ -89,7 +89,7 @@ function Header() {
                   <li className="relative group/submenu">
                     <div className="flex items-center justify-between lg:pr-1 hover:bg-gray-100 hover:rounded">
                       <Link href="" className="block px-4 py-2 lg:text-sm">
-                        Advisory
+                        Expert Tax Advice
                       </Link>
                       <IoMdArrowDropright className="text-black text-lg" />
                     </div>
@@ -116,35 +116,32 @@ function Header() {
                   </li>
                   <li>
                     <Link
-                      href="/standard_guarantee"
+                      href="/our_accuracy_promise"
                       className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
                     >
-                      Standard Guarantee
+                      Our Accuracy Promise
                     </Link>
                   </li>
                   <li>
                     <Link
-                      href="/safeguarding_info"
+                      href="/data_protection_privacy"
                       className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
                     >
-                      Safeguarding your Information
+                      Data Protection & Privacy
                     </Link>
                   </li>
                   <li>
                     <Link
-                      href="/tax_planning"
+                      href="/smart_tax_strategy"
                       className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
                     >
-                      Tax Planning
+                      Smart Tax Strategy
                     </Link>
                   </li>
                   <li className="relative group/submenu">
                     <div className="flex items-center justify-between lg:pr-1 hover:bg-gray-100 hover:rounded">
-                      <Link
-                        href="/services/tax"
-                        className="block px-4 py-2 lg:text-sm"
-                      >
-                        Tax Problem Solving
+                      <Link href="#" className="block px-4 py-2 lg:text-sm">
+                        IRS Issue Resolution
                       </Link>
                       <IoMdArrowDropright className="text-black text-lg" />
                     </div>
@@ -180,42 +177,42 @@ function Header() {
                   </li>
                   <li>
                     <Link
-                      href="/small_business"
+                      href="/business_tax_services"
                       className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
                     >
-                      Small Business
+                      Business Tax Services
                     </Link>
                   </li>
                   <li>
                     <Link
-                      href="/abroad_taxpayers"
+                      href="/expats_overseas_filers"
                       className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
                     >
-                      Tax Payers Living Abroad
+                      Expats & Overseas Filers
                     </Link>
                   </li>
                   <li>
                     <Link
-                      href="/tax_nonresidents"
+                      href="/non_citizen_tax_guidance"
                       className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
                     >
-                      Taxes for NON-Citizens
+                      Non-Citizen Tax Guidance
                     </Link>
                   </li>
                   <li>
                     <Link
-                      href="/itin"
+                      href="/itin_application_help"
                       className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
                     >
-                      ITIN
+                      ITIN Application Help
                     </Link>
                   </li>
                   <li>
                     <Link
-                      href="/financial_accounts"
+                      href="/foreign_account_reporting"
                       className="block px-4 py-2 hover:bg-gray-100 hover:rounded lg:text-sm"
                     >
-                      Financial accounts outside the United States
+                      Foreign Account Reporting (FBAR)
                     </Link>
                   </li>
                 </ul>

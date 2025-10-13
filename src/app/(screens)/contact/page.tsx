@@ -204,7 +204,7 @@ function Page() {
               <div>
                 <h4 className="font-semibold text-[#1D2B48]">Location:</h4>
                 <p className="text-[#1D2B48]">
-                  Begumpet, Hyderabad, Telangana, 500016.
+                  8 The Green Ste RDover, DE 19901, USA
                 </p>
               </div>
             </div>
@@ -213,7 +213,7 @@ function Page() {
               <span className="text-indigo-600 text-xl">✉️</span>
               <div>
                 <h4 className="font-semibold text-[#1D2B48]">Email:</h4>
-                <p className="text-[#1D2B48]">Vertixtaxsolutions@gmail.com</p>
+                <p className="text-[#1D2B48]">Vertixtax@gmail.com</p>
               </div>
             </div>
 
@@ -222,7 +222,7 @@ function Page() {
               <div>
                 <h4 className="font-semibold text-[#1D2B48]">Call:</h4>
                 <p className="text-[#1D2B48]">
-                  +91 9898989898 <br /> +91 7070707070
+                  +1 (302) 244-9149 <br /> +91 8500090206
                 </p>
               </div>
             </div>

@@ -1,11 +1,10 @@
-
 function Page() {
   return (
     <>
       <div className="flex flex-col items-center bg-[#FFFEFE] overflow-y-auto lg:px-4 lg:gap-2 lg:pb-10">
         <div className="lg:h-[20%] lg:w-[45%] flex flex-col items-center lg:mt-10">
-          <h1 className="border border-b-4 border-l-0 border-t-0 border-r-0 text-[#1D2B48] text-xl font-bold lg:w-[58%]">
-            TAX PLANNING SMALL BUSINESS
+          <h1 className="border border-b-4 border-l-0 border-t-0 border-r-0 text-[#1D2B48] text-xl font-bold lg:w-[41%]">
+            Business Tax Services
           </h1>
         </div>
         <div className="bg-yellow-00 lg:w-[90%] lg:mt-10 flex">
