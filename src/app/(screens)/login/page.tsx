@@ -65,17 +65,18 @@ export default function Page() {
         }
       )
 
-      const data = await res.json()
-      // if (!res.ok) {
-      //   if (res.status === 404) {
-      //     setError("New user? Create an account.")
-      //   } else if (res.status === 401) {
-      //     setError("Password is incorrect.")
-      //   } else {
-      //     setError(data.message || "Login failed")
-      //   }
-      //   return
-      // }
+      const data = await res.json();
+
+      if (!res.ok) {
+        if (data.error === "User not found") {
+          toast.error("User not found / Create an account.");
+        } else if (data.error === "Password is incorrect") {
+          toast.error("Password is incorrect.");
+        } else {
+          toast.error(data.message || "Login failed");
+        }
+        return;
+      }
 
       login(data.token)
 

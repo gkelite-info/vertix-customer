@@ -14,7 +14,7 @@ function VertixTaxPage() {
             </h2>
             <div className="w-[100%] h-15 mt-2">
               <table className="w-full border-collapse border border-gray-300 bg-white shadow-md">
-                <thead>
+                <thead className="text-white">
                   <tr className="bg-[#4B5873] text-center">
                     <th className="border border-gray-300 px-4 py-2 text-sm font-semibold">
                       S.No
@@ -56,7 +56,7 @@ function VertixTaxPage() {
             </h2>
             <div className="w-[100%] h-15 mt-2">
               <table className="w-full border-collapse border border-gray-300 bg-white shadow-md">
-                <thead>
+                <thead className="text-white">
                   <tr className="bg-[#4B5873] text-center">
                     <th className="border border-gray-300 px-4 py-2 text-sm font-semibold">
                       S.No

@@ -41,7 +41,7 @@ export default function PaymentTaxSummary() {
           </h2>
 
           <table className="w-full border-collapse border border-gray-300 bg-white shadow-md mt-3">
-            <thead>
+            <thead className="text-white">
               <tr className="bg-[#4B5873] text-center">
                 <th className="border border-gray-300 px-4 py-2 text-sm font-semibold text-start">
                   ADD NEW SERVICE

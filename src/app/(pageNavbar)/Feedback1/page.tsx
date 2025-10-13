@@ -39,10 +39,9 @@ export default function Feedback() {
       <div className="bg-white lg:h-[100vh]">
         <YearSelect />
         <div className="bg-red-00 flex flex-col justify-start items-center lg:h-[80%] lg:pt-5 text-center">
-          <div className="bg-red-00 flex items-center justify-start gap-3 lg:pl-11 h-[10%] w-[44%]">
+          <div className="bg-red-00 flex items-center justify-start gap-4 lg:pl-11 h-[10%] w-[44%]">
             <h5 className="text-[#1D2B48] font-medium">Service :</h5>
-            <select
-              className="border border-gray-300 text-[#616161] font-medium lg:w-[77.5%] px-2 text-sm lg:h-[85%] rounded cursor-pointer shadow-sm"
+            <select className="border border-gray-300 text-[#616161] font-medium lg:w-[78%] px-2 text-sm lg:h-[85%] rounded cursor-pointer shadow-sm"
               value={serviceType}
               onChange={(e) => setServiceType(e.target.value)}
             >
