@@ -28,20 +28,11 @@ function Header() {
     setIsLoggedIn(!!token)
   }, [pathname])
 
-<<<<<<< Updated upstream
-  const handleLogout = () => {
-    const confirmed = window.confirm("Are you sure you want to signout?")
-    if (confirmed) {
-      logout()
-      router.push("/login")
-    }
-=======
   const handleLogout = () => setShowLogoutModal(true)
   const confirmLogout = () => {
     logout()
     setShowLogoutModal(false)
     router.push("/login")
->>>>>>> Stashed changes
   }
   const cancelLogout = () => setShowLogoutModal(false)
 

@@ -26,11 +26,20 @@ export default function YearSelect({ style = "justify-end" }: { style?: string }
   return (
     <>
       <div className="bg-red-00 lg:h-30 lg:w-[100%] flex justify-center items-center lg:px-10 shadow-lg">
-        <div className={`bg-red-00 h-[100%] lg:w-[68%] flex items-center ${style} w-[65%]`}>
-          <YearSelector
+        <div className={`bg-red-00 h-[100%] lg:w-[68%] flex items-center justify-start ${style} w-[65%]`}>
+          <select name="" id="" className="text-black border rounded-sm p-1">
+            <option value="">Select Year</option>
+            <option value="2020">2020</option>
+            <option value="2021">2021</option>
+            <option value="2022">2022</option>
+            <option value="2023">2023</option>
+            <option value="2024">2024</option>
+            <option value="2025">2025</option>
+          </select>
+          {/* <YearSelector
             years={[2020, 2021, 2022, 2023, 2024, 2025]}
             onYearSelect={(year) => setSelectedYear(year)}
-          />
+          /> */}
         </div>
         <div className="bg-indigo-00 h-[100%] w-[27%] flex items-center justify-end">
           <div className="bg-red-00 lg:h-[70%] lg:px-3 lg:gap-2 flex flex-col items-center justify-center rounded-lg shadow-lg">
