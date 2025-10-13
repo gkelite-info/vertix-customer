@@ -5,7 +5,7 @@ import YearSelect from "../../../../utils/yearSelect"
 export default function AuthorizationConsent() {
   return (
     <>
-      <div className="bg-white pb-7">
+      <div className="bg-white pb-7 h-[100%]">
         <YearSelect />
         <div className="bg-red-00 flex flex-col justify-start items-center lg:h-[80%] lg:pt-5 text-center">
           <div className="bg-green-00 flex flex-col w-[90%] text-center">
