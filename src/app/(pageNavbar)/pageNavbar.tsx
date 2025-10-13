@@ -35,8 +35,8 @@ function Page({ activeTab, setActiveTab }: PageNavbarProps) {
   ];
 
   return (
-    <div className="flex flex-col bg-[#1D2B48] lg:p-2 items-center justify-center sticky z-50">
-      <div className="bg-[#FFFEFE] lg:w-[90%] lg:h-[90%] rounded-lg lg:p-3 flex flex-col lg:gap-2 items-start justify-between">
+    <div className="flex flex-col lg:p-0 lg:w-[24%] h-[100vh] items-center justify-start sticky z-50">
+      <div className="bg-blue-400 lg:w-[100%] lg:h-[100%] lg:p-3 flex flex-col lg:gap-2 items-start justify-between">
         {tabs.map(({ id, label, icon: Icon, width }) => {
           const isActive = activeTab === id;
           return (

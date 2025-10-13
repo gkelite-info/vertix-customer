@@ -42,58 +42,120 @@ export default function Page() {
 
   const { login } = useAuth()
 
+  // const handleLogin = async () => {
+  //   try {
+  //     if (!email) {
+  //       //setError("Email required to login")
+  //       toast.error("Email required to login")
+  //       return
+  //     }
+
+  //     if (!password) {
+  //       //setError("Password is required.")
+  //       toast.error("Password is required")
+  //       return
+  //     }
+
+  //     const res = await fetch(
+  //       "http://localhost:5000/api/v1/vertix/customer/login",
+  //       {
+  //         method: "POST",
+  //         headers: { "Content-Type": "application/json" },
+  //         body: JSON.stringify({ email, password }),
+  //       }
+  //     )
+
+  //     const data = await res.json();
+
+  //     if (!res.ok) {
+  //       if (data.error === "User not found") {
+  //         toast.error("User not found / Create an account.");
+  //       } else if (data.error === "Password is incorrect") {
+  //         toast.error("Password is incorrect.");
+  //       } else {
+  //         toast.error(data.message || "Login failed");
+  //       }
+  //       return;
+  //     }
+
+  //     login(data.token)
+
+  //     if (!data.is_consent_filled) {
+  //       router.push("/consent")
+  //     } else {
+  //       router.push("/construction")
+  //       setTimeout(() => {
+  //         toast.success("Login successful");
+  //       }, 1000);
+  //     }
+  //     // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  //   } catch (err) {
+  //     //setError("Invalid credentials or server error")
+  //     toast.error("Invalid credentials or server error")
+  //   }
+  // }
+
   const handleLogin = async () => {
-    try {
-      if (!email) {
-        //setError("Email required to login")
-        toast.error("Email required to login")
-        return
-      }
+  try {
+    let hasError = false;
 
-      if (!password) {
-        //setError("Password is required.")
-        toast.error("Password is required")
-        return
-      }
-
-      const res = await fetch(
-        "http://localhost:5000/api/v1/vertix/customer/login",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password }),
-        }
-      )
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        if (data.error === "User not found") {
-          toast.error("User not found / Create an account.");
-        } else if (data.error === "Password is incorrect") {
-          toast.error("Password is incorrect.");
-        } else {
-          toast.error(data.message || "Login failed");
-        }
-        return;
-      }
-
-      login(data.token)
-
-      if (!data.is_consent_filled) {
-        router.push("/consent")
-      } else {
-        router.push("/construction")
-        setTimeout(() => {
-          toast.success("Login successful");
-        }, 1000);
-      }
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (err) {
-      //setError("Invalid credentials or server error")
-      toast.error("Invalid credentials or server error")
+    // Email validation
+    if (!email) {
+      toast.error("Email is required.");
+      hasError = true;
+    } else if (!/^\S+@\S+\.\S+$/.test(email)) {
+      toast.error("Please enter a valid email address.");
+      hasError = true;
     }
+
+    // Password validation
+    if (!password) {
+      toast.error("Password is required.");
+      hasError = true;
+    } else if (password.length < 6) {
+      toast.error("Password must be at least 6 characters.");
+      hasError = true;
+    }
+
+    if (hasError) return;
+
+    const res = await fetch(
+      "http://localhost:5000/api/v1/vertix/customer/login",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      }
+    );
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      if (data.error === "User not found") {
+        toast.error("User not found / Create an account.");
+      } else if (data.error === "Password is incorrect") {
+        toast.error("Password is incorrect.");
+      } else {
+        toast.error(data.message || "Login failed");
+      }
+      return;
+    }
+
+    login(data.token);
+
+    if (!data.is_consent_filled) {
+      router.push("/consent");
+    } else {
+      router.push("/construction");
+      setTimeout(() => {
+        toast.success("Login successful");
+      }, 1000);
+    }
+  } catch (err) {
+    toast.error("Invalid credentials or server error");
   }
+};
+
 
   const handlesignUp = () => {
     router.push("/signup")
