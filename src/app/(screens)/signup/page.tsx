@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation"
 import { useState } from "react"
+import toast from "react-hot-toast"
 import { Icon } from "@iconify/react"
 
 // const countries = [
@@ -113,32 +114,32 @@ export default function Page() {
 
   const handleSignup = async () => {
     if (!formData.firstname) {
-      alert("First name is required!")
+      toast.error("First name is required!")
       return
     }
     if (!formData.lastname) {
-      alert("Last name is required!")
+      toast.error("Last name is required!")
       return
     }
     if (!formData.email) {
-      alert("Email is required!")
+      toast.error("Email is required!")
       return
     }
     if (!formData.phone) {
-      alert("Phone number is required!")
+      toast.error("Phone number is required!")
       return
     }
     if (!formData.password) {
-      alert("Password is required!")
+      toast.error("Password is required!")
 
       return
     }
     if (!formData.confirmPassword) {
-      alert("Confirm Password is required!")
+      toast.error("Confirm Password is required!")
       return
     }
     if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match!")
+      toast.error("Passwords do not match!")
       setFormData((prev) => ({
         ...prev,
         password: "",
@@ -164,11 +165,11 @@ export default function Page() {
       if (!res.ok) {
         throw new Error(data.message || "Signup failed")
       }
-      alert("Registration successful!")
+      toast.error("Registration successful!")
       router.push("/login")
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
-      alert(err.message)
+      toast.error(err.message)
     } finally {
       setLoading(false)
     }
@@ -272,7 +273,7 @@ export default function Page() {
                     className="lg:h-[100%] lg:w-[100%] text-black font-medium lg:p-2 lg:ml-2 border-none focus:outline-none focus:ring-0"
                     onKeyDown={(e) => {
                       if (e.key === "Enter") {
-                        handleSignup();
+                        handleSignup()
                       }
                     }}
                   />

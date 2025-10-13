@@ -1,10 +1,14 @@
-"use client";
+"use client"
 
-import { useState, useEffect } from "react";
-import { getBankInformation, postBankInformation } from "@/api-requests/customers/bank";
-import { useAuth } from "@/components/AuthContext";
-import YearSelect from "../../../../utils/yearSelect";
-import TableComponent from "../../../../utils/table/page";
+import { useState, useEffect } from "react"
+import {
+  getBankInformation,
+  postBankInformation,
+} from "@/api-requests/customers/bank"
+import { useAuth } from "@/components/AuthContext"
+import YearSelect from "../../../../utils/yearSelect"
+import TableComponent from "../../../../utils/table/page"
+import toast from "react-hot-toast"
 
 export default function BankingInformationPage() {
   const [formValues, setFormValues] = useState({
@@ -14,28 +18,27 @@ export default function BankingInformationPage() {
     accountNumber: "",
     routingNumber: "",
     accountType: "",
-  });
+  })
 
-  const [bankRecords, setBankRecords] = useState<Record<string, any>[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
-  const [fetching, setFetching] = useState(true);
-  const [bankDataExists, setBankDataExists] = useState(false);
+  const [bankRecords, setBankRecords] = useState<Record<string, any>[]>([])
+  const [loading, setLoading] = useState(false)
+  //const [message, setMessage] = useState("")
+  const [fetching, setFetching] = useState(true)
+  const [bankDataExists, setBankDataExists] = useState(false)
 
-  const { user } = useAuth();
+  const { user } = useAuth()
 
   useEffect(() => {
-    if (!user) return;
+    if (!user) return
 
     const fetchBankData = async () => {
       try {
         // const res = await getBankInformation(user?.id || "");
         // Use optional chaining + type assertion to avoid TS error
-        const res = await getBankInformation((user as any)?.id || "");
-
+        const res = await getBankInformation((user as any)?.id || "")
 
         if (res.data && Array.isArray(res.data) && res.data.length > 0) {
-          const firstRecord = res.data[0];
+          const firstRecord = res.data[0]
           setFormValues({
             belongsTo: firstRecord.belongsTo || "",
             holderName: firstRecord.holderName || "",
@@ -43,59 +46,71 @@ export default function BankingInformationPage() {
             accountNumber: firstRecord.accountNumber || "",
             routingNumber: firstRecord.routingNumber || "",
             accountType: firstRecord.accountType || "",
-          });
-          setBankRecords(res.data);
-          setBankDataExists(true);
+          })
+          setBankRecords(res.data)
+          setBankDataExists(true)
         }
       } catch (error) {
-        setBankDataExists(false);
+        setBankDataExists(false)
       } finally {
-        setFetching(false);
+        setFetching(false)
       }
-    };
-
-    fetchBankData();
-  }, [user]);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    if (name === "accountNumber") {
-      const numericValue = value.replace(/\D/g, "");
-      setFormValues((prev) => ({ ...prev, [name]: numericValue }));
-    } else {
-      setFormValues((prev) => ({ ...prev, [name]: value }));
     }
-  };
+
+    fetchBankData()
+  }, [user])
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target
+    if (name === "accountNumber") {
+      const numericValue = value.replace(/\D/g, "")
+      setFormValues((prev) => ({ ...prev, [name]: numericValue }))
+    } else {
+      setFormValues((prev) => ({ ...prev, [name]: value }))
+    }
+  }
 
   const handleSubmit = async () => {
-    setLoading(true);
-    setMessage("");
+    setLoading(true)
+    //setMessage("")
     try {
-      const res = await postBankInformation(formValues);
-      setMessage(
+      const res = await postBankInformation(formValues)
+      // setMessage(
+      //   typeof res.message === "string"
+      //     ? res.message
+      //     : "Bank information updated successfully"
+      // );
+      toast.success(
         typeof res.message === "string"
           ? res.message
           : "Bank information updated successfully"
-      );
-      setBankRecords(res.data ? [res.data] : []);
-      setBankDataExists(true);
+      )
+      setBankRecords(res.data ? [res.data] : [])
+      setBankDataExists(true)
     } catch (error: any) {
-      setMessage(
+      // setMessage(
+      //   error.response?.data?.message
+      //     ? String(error.response.data.message)
+      //     : "Failed to update bank information"
+      // );
+      toast.error(
         error.response?.data?.message
           ? String(error.response.data.message)
           : "Failed to update bank information"
-      );
+      )
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   if (fetching) {
     return (
       <div className="flex justify-center items-center h-[100vh]">
         Loading bank data...
       </div>
-    );
+    )
   }
 
   return (
@@ -200,7 +215,7 @@ export default function BankingInformationPage() {
             </select>
           </div>
 
-          {message && <p className="text-green-600 mt-3">{message}</p>}
+          {/* {message && <p className="text-green-600 mt-3">{message}</p>} */}
 
           {/* Buttons */}
           <div className="mt-4 flex h-[10%] w-[40%] gap-3 rounded-lg">
@@ -235,5 +250,5 @@ export default function BankingInformationPage() {
         />
       )}
     </div>
-  );
+  )
 }
