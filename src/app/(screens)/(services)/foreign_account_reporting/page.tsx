@@ -1,11 +1,10 @@
-
 function Page() {
   return (
     <>
       <div className="flex flex-col items-center bg-[#FFFEFE] overflow-y-auto lg:px-4 lg:gap-2 lg:pb-10">
         <div className="lg:h-[20%] lg:w-[45%] flex flex-col items-center lg:mt-10">
-          <h1 className="border border-b-4 border-l-0 border-t-0 border-r-0 text-[#1D2B48] text-xl font-bold lg:w-[93%]">
-            FINANCIAL ACCOUNTS OUTSIDE THE UNITED STATES
+          <h1 className="border border-b-4 border-l-0 border-t-0 border-r-0 text-[#1D2B48] text-xl font-bold lg:w-[63%]">
+            Foreign Account Reporting (FBAR)
           </h1>
         </div>
         <div className="bg-yellow-00 lg:w-[90%] lg:mt-10 flex">
@@ -37,7 +36,8 @@ function Page() {
             </p>
           </div>
           <div className="lg:w-[40%] bg-red-00 flex justify-center">
-            <img src="/outside_accounts.jpg"
+            <img
+              src="/outside_accounts.jpg"
               alt="outside_accounts.jpg"
               className="lg:h-[100%] lg:w-[74%] lg:rounded-lg"
             />

@@ -7,8 +7,8 @@ function Page() {
     <>
       <div className="flex flex-col items-center bg-[#FFFEFE] overflow-y-auto lg:px-4 lg:gap-2 lg:pb-10">
         <div className="lg:h-[20%] lg:w-[45%] flex flex-col items-center lg:mt-10">
-          <h1 className="border border-b-4 border-l-0 border-t-0 border-r-0 text-[#1D2B48] text-xl font-bold lg:w-[43%]">
-            STANDARD GUARANTEE
+          <h1 className="border border-b-4 border-l-0 border-t-0 border-r-0 text-[#1D2B48] text-xl font-bold lg:w-[42%]">
+            Our Accuracy Promise
           </h1>
         </div>
         <div className="bg-yellow-00 lg:w-[90%] lg:mt-10 flex">
@@ -62,11 +62,11 @@ function Page() {
             </a>
           </div>
           <div className="lg:w-[40%] bg-red-00 flex justify-center">
-            <img src="/guarantee.jpg"
+            <img
+              src="/guarantee.jpg"
               alt="guarantee.jpg"
               className="lg:h-[100%] lg:w-[74%] lg:rounded-lg"
             />
-
           </div>
         </div>
         <div className="bg-green-00 lg:w-[90%]">
