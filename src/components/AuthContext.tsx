@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
+import { origin } from "@/api-requests/config";
 
 interface User {
   customerId: string;
@@ -66,13 +67,36 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  // const logout = async () => {
+  //   localStorage.removeItem("token");
+  //   localStorage.removeItem("customerId");
+
+  //   setIsAuthenticated(false);
+  //   setUser(null);
+  // };
+
   const logout = async () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        await fetch(`${origin}/api/v1/vertix/customer/logout`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+      } catch (err) {
+        console.error("Logout request failed:", err);
+      }
+    }
+
     localStorage.removeItem("token");
     localStorage.removeItem("customerId");
-
     setIsAuthenticated(false);
     setUser(null);
   };
+
 
   return (
     <AuthContext.Provider value={{ isAuthenticated, user, login, logout }}>

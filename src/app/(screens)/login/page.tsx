@@ -83,7 +83,10 @@ export default function Page() {
       if (!data.is_consent_filled) {
         router.push("/consent")
       } else {
-        router.push("/")
+        router.push("/construction")
+        setTimeout(() => {
+          toast.success("Login successful");
+        }, 1000);
       }
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {
