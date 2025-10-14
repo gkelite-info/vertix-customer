@@ -1,326 +1,120 @@
-"use client"
-import { useAuth } from "@/components/AuthContext"
-import { Icon } from "@iconify/react/dist/iconify.js"
-import { useRouter } from "next/navigation"
-import { useState } from "react"
-import toast from "react-hot-toast"
-import { supabase } from "../../../../utils/supabase/client"
+"use client";
+
+import { useAuth } from "@/components/AuthContext";
+import { Icon } from "@iconify/react/dist/iconify.js";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import { supabase } from "../../../../utils/supabase/client";
 
 export default function Page() {
-  const router = useRouter()
+  const router = useRouter();
 
-  const [email, setEmail] = useState("")
-  const [emailError, setEmailError] = useState("")
-  const [showPassword, setShowPassword] = useState(false)
-  const [password, setPassword] = useState("")
-  const [passwordError, setPasswordError] = useState("")
-  const [error, setError] = useState("")
-  const [remember, setRemember] = useState(false)
-  // const [alertMsg, setAlertMsg] = useState<string | null>(null);
+  const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [password, setPassword] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [error, setError] = useState("");
+  const [remember, setRemember] = useState(false);
 
   const handleEmailChange = (e: { target: { value: string } }) => {
-    const value = e.target.value
-    setEmail(value)
+    const value = e.target.value;
+    setEmail(value);
 
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    setEmailError(emailRegex.test(value) ? "" : "Please enter a valid email address");
+  };
 
-    if (!emailRegex.test(value)) {
-      setEmailError("Please enter a valid email address")
-    } else {
-      setEmailError("")
-    }
-  }
   const handlePasswordChange = (e: { target: { value: string } }) => {
-    const value = e.target.value
-    setPassword(value)
+    const value = e.target.value;
+    setPassword(value);
 
-    if (value.length < 6) {
-      setPasswordError("Password must be at least 6 characters long")
-    } else {
-      setPasswordError("")
-    }
-  }
+    setPasswordError(value.length >= 6 ? "" : "Password must be at least 6 characters long");
+  };
 
-  const { login } = useAuth()
-
-<<<<<<< Updated upstream
-  // const handleLogin = async () => {
-  //   try {
-  //     if (!email) {
-  //       //setError("Email required to login")
-  //       toast.error("Email required to login")
-  //       return
-  //     }
-
-  //     if (!password) {
-  //       //setError("Password is required.")
-  //       toast.error("Password is required")
-  //       return
-  //     }
-
-  //     const res = await fetch(
-  //       "http://localhost:5000/api/v1/vertix/customer/login",
-  //       {
-  //         method: "POST",
-  //         headers: { "Content-Type": "application/json" },
-  //         body: JSON.stringify({ email, password }),
-  //       }
-  //     )
-
-  //     const data = await res.json();
-
-  //     if (!res.ok) {
-  //       if (data.error === "User not found") {
-  //         toast.error("User not found / Create an account.");
-  //       } else if (data.error === "Password is incorrect") {
-  //         toast.error("Password is incorrect.");
-  //       } else {
-  //         toast.error(data.message || "Login failed");
-  //       }
-  //       return;
-  //     }
-
-  //     login(data.token)
-
-  //     if (!data.is_consent_filled) {
-  //       router.push("/consent")
-  //     } else {
-  //       router.push("/construction")
-  //       setTimeout(() => {
-  //         toast.success("Login successful");
-  //       }, 1000);
-  //     }
-  //     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  //   } catch (err) {
-  //     //setError("Invalid credentials or server error")
-  //     toast.error("Invalid credentials or server error")
-  //   }
-  // }
-
-  // const handleLogin = async () => {
-  //   try {
-  //     let hasError = false;
-
-  //     // Email validation
-  //     if (!email) {
-  //       toast.error("Email is required.");
-  //       hasError = true;
-  //     } else if (!/^\S+@\S+\.\S+$/.test(email)) {
-  //       toast.error("Please enter a valid email address.");
-  //       hasError = true;
-  //     }
-
-  //     // Password validation
-  //     if (!password) {
-  //       toast.error("Password is required.");
-  //       hasError = true;
-  //     } else if (password.length < 6) {
-  //       toast.error("Password must be at least 6 characters.");
-  //       hasError = true;
-  //     }
-
-  //     if (hasError) return;
-
-  //     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/vertix/customer/login`, {
-  //       method: "POST",
-  //       headers: { "Content-Type": "application/json" },
-  //       body: JSON.stringify({ email, password }),
-  //     });
-
-  //     console.log("Heyy loop", res)
-
-  //     // Parse response safely
-  //     let data;
-  //     try {
-  //       data = await res.json();
-  //     } catch {
-  //       throw new Error("Invalid response format from server");
-  //     }
-
-  //     if (!res.ok) {
-  //       // Handle invalid credentials or other client-side errors (4xx)
-  //       if (res.status === 401 || res.status === 403) {
-  //         toast.error("Invalid email or password.");
-  //       }
-  //       // Handle server-side errors (5xx)
-  //       else if (res.status >= 500) {
-  //         toast.error("Server error — please try again later.");
-  //       }
-  //       // Handle other cases
-  //       else if (data?.error === "User not found") {
-  //         toast.error("User not found / Create an account.");
-  //       } else if (data?.error === "Password is incorrect") {
-  //         toast.error("Password is incorrect.");
-  //       } else {
-  //         toast.error(data?.message || "Login failed. Please try again.");
-  //       }
-  //       return;
-  //     }
-
-  //     // Successful login
-  //     login(data.token);
-
-  //     if (!data.is_consent_filled) {
-  //       router.push("/consent");
-  //     } else {
-  //       router.push("/construction");
-  //       setTimeout(() => {
-  //         toast.success("Login successful");
-  //       }, 1000);
-  //     }
-
-  //   } catch (err: any) {
-  //     console.error("Login error:", err);
-  //     if (err.message.includes("NetworkError") || err.message.includes("fetch")) {
-  //       toast.error("Unable to connect to the server. Please check your connection.");
-  //     } else {
-  //       toast.error("An unexpected error occurred. Please try again.");
-  //     }
-  //   }
-  // };
-
-  // ... inside Page.tsx component
+  const { login } = useAuth();
 
   const handleLogin = async () => {
-=======
-const handleLogin = async () => {
->>>>>>> Stashed changes
     try {
-      let hasError = false
+      let hasError = false;
 
-<<<<<<< Updated upstream
+      // Email validation
       if (!email) {
-        toast.error("Email is required.")
-        hasError = true
+        toast.error("Email is required.");
+        hasError = true;
       } else if (!/^\S+@\S+\.\S+$/.test(email)) {
-        toast.error("Please enter a valid email address.")
-        hasError = true
+        toast.error("Please enter a valid email address.");
+        hasError = true;
       }
+
+      // Password validation
       if (!password) {
-        toast.error("Password is required.")
-        hasError = true
+        toast.error("Password is required.");
+        hasError = true;
       } else if (password.length < 6) {
-        toast.error("Password must be at least 6 characters.")
-        hasError = true
+        toast.error("Password must be at least 6 characters.");
+        hasError = true;
       }
-=======
-        if (!email) {
-            toast.error("Email is required.");
-            hasError = true;
-        } else if (!/^\S+@\S+\.\S+$/.test(email)) {
-            toast.error("Please enter a valid email address.");
-            hasError = true;
-        }
-        if (!password) {
-            toast.error("Password is required.");
-            hasError = true;
-        } else if (password.length < 6) {
-            toast.error("Password must be at least 6 characters.");
-            hasError = true;
-        }
->>>>>>> Stashed changes
 
-      if (hasError) return
+      if (hasError) return;
 
-<<<<<<< Updated upstream
-      const data = await res.json()
+      // Supabase login
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
-      if (!res.ok) {
-        if (data.error === "User not found") {
-          toast.error("User not found / Create an account.")
-        } else if (data.error === "Password is incorrect") {
-          toast.error("Password is incorrect.")
+      if (error) {
+        if (error.status === 400 && error.message.includes("Invalid login credentials")) {
+          toast.error("Invalid email or password.");
         } else {
-          toast.error(data.message || "Login failed")
+          console.error("Supabase Auth Error:", error.message);
+          toast.error(error.message || "Login failed via Supabase.");
         }
-        return
+        return;
       }
 
       if (data.session && data.user) {
-        login(data.session.access_token)
+        // Save JWT in context
+        login(data.session.access_token);
 
+        // Fetch user consent status
         const { data: customerData, error: profileError } = await supabase
           .from("vertixcustomers")
           .select("is_consent_filled")
           .eq("email", email)
-          .single()
+          .single();
 
         if (profileError) {
-          console.error("Profile Fetch Error:", profileError.message)
-          toast.error("Login successful, but profile data failed to load.")
-          router.push("/")
-          return
-=======
-        const { data, error } = await supabase.auth.signInWithPassword({
-            email: email,
-            password: password,
-        });
-
-        if (error) {
-            if (error.status === 400 && error.message.includes('Invalid login credentials')) {
-                 toast.error("Invalid email or password.");
-            } else {
-                console.error("Supabase Auth Error:", error.message);
-                toast.error(error.message || "Login failed via Supabase.");
-            }
-            return;
+          console.error("Profile Fetch Error:", profileError.message);
+          toast.error("Login successful, but profile data failed to load.");
+          router.push("/");
+          return;
         }
 
-        if (data.session && data.user) {
-            
-            login(data.session.access_token);
-            
-            const { data: customerData, error: profileError } = await supabase
-                .from('vertixcustomers')
-                .select('is_consent_filled')
-                .eq('email', email) 
-                .single();
-
-            if (profileError) {
-                console.error("Profile Fetch Error:", profileError.message);
-                toast.error("Login successful, but profile data failed to load.");
-                router.push("/");
-                return;
-            }
-
-            const isConsentFilled = customerData?.is_consent_filled;
-            
-            if (!isConsentFilled) {
-                router.push("/consent");
-            } else {
-                router.push("/construction");
-                setTimeout(() => {
-                    toast.success("Login successful");
-                }, 1000);
-            }
-        } else {
-            toast.error("Login failed. No session or user data.");
->>>>>>> Stashed changes
-        }
-
-        const isConsentFilled = customerData?.is_consent_filled
+        const isConsentFilled = customerData?.is_consent_filled;
 
         if (!isConsentFilled) {
-          router.push("/consent")
+          router.push("/consent");
         } else {
-          router.push("/construction")
-          setTimeout(() => {
-            toast.success("Login successful")
-          }, 1000)
+          router.push("/construction");
+          setTimeout(() => toast.success("Login successful"), 1000);
         }
       } else {
-        toast.error("Login failed. No session or user data.")
+        toast.error("Login failed. No session or user data.");
       }
     } catch (err: any) {
-      console.error("Login error:", err)
-      toast.error("An unexpected error occurred. Please try again.")
+      console.error("Login error:", err);
+      toast.error("An unexpected error occurred. Please try again.");
     }
-  }
+  };
 
   const handlesignUp = () => {
-    router.push("/signup")
-  }
+    router.push("/signup");
+  };
 
+  // --------------------- UI Below Remains Unchanged ---------------------
   return (
     <>
       <div className="bg-white min-h-screen lg:h-[100vh] flex justify-center items-center p-4 sm:p-6 md:p-0 lg:p-0">
@@ -367,7 +161,7 @@ const handleLogin = async () => {
                     className="w-full font-medium p-2 ml-2 border-none focus:outline-none text-black"
                     onKeyDown={(e) => {
                       if (e.key === "Enter") {
-                        handleLogin()
+                        handleLogin();
                       }
                     }}
                   />
@@ -423,13 +217,10 @@ const handleLogin = async () => {
                   </p>
                 </div>
               </div>
-              {/* {error && (
-                <p className="text-red-500 text-center mt-4 text-sm">{error}</p>
-              )} */}
             </div>
           </div>
         </div>
       </div>
     </>
-  )
+  );
 }
