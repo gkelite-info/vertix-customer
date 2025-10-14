@@ -1,7 +1,14 @@
 "use client"
 
+<<<<<<< Updated upstream
 import React, { createContext, useContext, useEffect, useState } from "react"
 import { jwtDecode } from "jwt-decode"
+=======
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { jwtDecode } from "jwt-decode";
+import { supabase } from "../../utils/supabase/client";
+import toast from "react-hot-toast";
+>>>>>>> Stashed changes
 
 interface User {
   customerId: string
@@ -67,6 +74,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }
 
   const logout = async () => {
+<<<<<<< Updated upstream
+=======
+  try {
+    const { error } = await supabase.auth.signOut()
+    if (error) {
+      console.error("Supabase logout error:", error.message)
+      toast.error("Logout failed. Please try again.")
+      return
+    }
+
+>>>>>>> Stashed changes
     localStorage.removeItem("token")
     localStorage.removeItem("customerId")
 

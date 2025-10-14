@@ -43,6 +43,7 @@ export default function Page() {
 
   const { login } = useAuth()
 
+<<<<<<< Updated upstream
   // const handleLogin = async () => {
   //   try {
   //     if (!email) {
@@ -181,9 +182,13 @@ export default function Page() {
   // ... inside Page.tsx component
 
   const handleLogin = async () => {
+=======
+const handleLogin = async () => {
+>>>>>>> Stashed changes
     try {
       let hasError = false
 
+<<<<<<< Updated upstream
       if (!email) {
         toast.error("Email is required.")
         hasError = true
@@ -198,9 +203,26 @@ export default function Page() {
         toast.error("Password must be at least 6 characters.")
         hasError = true
       }
+=======
+        if (!email) {
+            toast.error("Email is required.");
+            hasError = true;
+        } else if (!/^\S+@\S+\.\S+$/.test(email)) {
+            toast.error("Please enter a valid email address.");
+            hasError = true;
+        }
+        if (!password) {
+            toast.error("Password is required.");
+            hasError = true;
+        } else if (password.length < 6) {
+            toast.error("Password must be at least 6 characters.");
+            hasError = true;
+        }
+>>>>>>> Stashed changes
 
       if (hasError) return
 
+<<<<<<< Updated upstream
       const data = await res.json()
 
       if (!res.ok) {
@@ -228,6 +250,52 @@ export default function Page() {
           toast.error("Login successful, but profile data failed to load.")
           router.push("/")
           return
+=======
+        const { data, error } = await supabase.auth.signInWithPassword({
+            email: email,
+            password: password,
+        });
+
+        if (error) {
+            if (error.status === 400 && error.message.includes('Invalid login credentials')) {
+                 toast.error("Invalid email or password.");
+            } else {
+                console.error("Supabase Auth Error:", error.message);
+                toast.error(error.message || "Login failed via Supabase.");
+            }
+            return;
+        }
+
+        if (data.session && data.user) {
+            
+            login(data.session.access_token);
+            
+            const { data: customerData, error: profileError } = await supabase
+                .from('vertixcustomers')
+                .select('is_consent_filled')
+                .eq('email', email) 
+                .single();
+
+            if (profileError) {
+                console.error("Profile Fetch Error:", profileError.message);
+                toast.error("Login successful, but profile data failed to load.");
+                router.push("/");
+                return;
+            }
+
+            const isConsentFilled = customerData?.is_consent_filled;
+            
+            if (!isConsentFilled) {
+                router.push("/consent");
+            } else {
+                router.push("/construction");
+                setTimeout(() => {
+                    toast.success("Login successful");
+                }, 1000);
+            }
+        } else {
+            toast.error("Login failed. No session or user data.");
+>>>>>>> Stashed changes
         }
 
         const isConsentFilled = customerData?.is_consent_filled

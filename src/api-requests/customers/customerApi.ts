@@ -1,6 +1,11 @@
 import axios from "axios";
 import { origin } from "../config";
 
+interface RegisterData {
+    email: string;
+    password: string;
+    name?: string;
+}
 
 export const getCustomer = async () => {
     try {
@@ -21,6 +26,21 @@ export const getCustomer = async () => {
         return res.data.customer;
     } catch (error: any) {
         console.error("Error fetching customer:", error);
+        throw error;
+    }
+};
+
+export const registerCustomer = async (data: RegisterData) => {
+    try {
+        const res = await axios.post(`${origin}/api/v1/vertix/customer/register`, data, {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+
+        return res.data;
+    } catch (error: any) {
+        console.error("Error registering customer:", error.response?.data || error.message);
         throw error;
     }
 };
