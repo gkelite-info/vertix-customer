@@ -102,7 +102,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const logout = async () => {
   try {
-    // --- SUPABASE SIGN OUT ---
     const { error } = await supabase.auth.signOut()
     if (error) {
       console.error("Supabase logout error:", error.message)
@@ -110,7 +109,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       return
     }
 
-    // --- LOCAL CLEANUP ---
     localStorage.removeItem("token")
     localStorage.removeItem("customerId")
 
