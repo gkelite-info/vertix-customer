@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation"
 import { useState } from "react"
 import toast from "react-hot-toast"
 import { Icon } from "@iconify/react"
+import { supabase } from "../../../../utils/supabase/client"
 
 // const countries = [
 //   "United States",
@@ -112,7 +113,9 @@ export default function Page() {
     setFormData((prev) => ({ ...prev, phone: value }))
   }
 
+
   const handleSignup = async () => {
+
     if (!formData.firstname) {
       toast.error("First name is required!")
       return
@@ -148,32 +151,42 @@ export default function Page() {
       return
     }
 
-    setLoading(true)
-
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_SUPABASE_URL}/api/v1/vertix/customer/register`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
-        }
-      )
+      setLoading(true);
 
-      const data = await res.json()
+      const { data, error } = await supabase.auth.signUp({
+        email: formData.email,
+        password: formData.password,
+      });
 
-      if (!res.ok) {
-        throw new Error(data.message || "Signup failed")
+      if (error) throw error;
+
+      const userId = data?.user?.id;
+
+      if (userId) {
+        const { error: insertError } = await supabase.from("vertixcustomers").insert([
+          {
+            auth_id: userId,
+            firstname: formData.firstname,
+            lastname: formData.lastname,
+            phone: formData.phone,
+            email: formData.email,
+          },
+        ]);
+
+        if (insertError) throw insertError;
       }
-      toast.success("Registration successful!")
-      router.push("/login")
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
+      toast.success("Registration successful! Please check your email to confirm.");
+      router.push("/login");
     } catch (err: any) {
-      toast.error(err.message)
+      console.error(err);
+      toast.error(err.message);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
+
 
   return (
     <>
