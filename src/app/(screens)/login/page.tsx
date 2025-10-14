@@ -4,6 +4,8 @@ import { Icon } from "@iconify/react/dist/iconify.js"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import toast from "react-hot-toast"
+import { supabase } from "../../../../utils/supabase/client"
+// import { origin } from "@/api-requests/config"
 
 export default function Page() {
   const router = useRouter()
@@ -95,87 +97,179 @@ export default function Page() {
   //   }
   // }
 
-  const handleLogin = async () => {
+  // const handleLogin = async () => {
+  //   try {
+  //     let hasError = false;
+
+  //     // Email validation
+  //     if (!email) {
+  //       toast.error("Email is required.");
+  //       hasError = true;
+  //     } else if (!/^\S+@\S+\.\S+$/.test(email)) {
+  //       toast.error("Please enter a valid email address.");
+  //       hasError = true;
+  //     }
+
+  //     // Password validation
+  //     if (!password) {
+  //       toast.error("Password is required.");
+  //       hasError = true;
+  //     } else if (password.length < 6) {
+  //       toast.error("Password must be at least 6 characters.");
+  //       hasError = true;
+  //     }
+
+  //     if (hasError) return;
+
+  //     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/vertix/customer/login`, {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({ email, password }),
+  //     });
+
+  //     console.log("Heyy loop", res)
+
+  //     // Parse response safely
+  //     let data;
+  //     try {
+  //       data = await res.json();
+  //     } catch {
+  //       throw new Error("Invalid response format from server");
+  //     }
+
+  //     if (!res.ok) {
+  //       // Handle invalid credentials or other client-side errors (4xx)
+  //       if (res.status === 401 || res.status === 403) {
+  //         toast.error("Invalid email or password.");
+  //       }
+  //       // Handle server-side errors (5xx)
+  //       else if (res.status >= 500) {
+  //         toast.error("Server error — please try again later.");
+  //       }
+  //       // Handle other cases
+  //       else if (data?.error === "User not found") {
+  //         toast.error("User not found / Create an account.");
+  //       } else if (data?.error === "Password is incorrect") {
+  //         toast.error("Password is incorrect.");
+  //       } else {
+  //         toast.error(data?.message || "Login failed. Please try again.");
+  //       }
+  //       return;
+  //     }
+
+  //     // Successful login
+  //     login(data.token);
+
+  //     if (!data.is_consent_filled) {
+  //       router.push("/consent");
+  //     } else {
+  //       router.push("/construction");
+  //       setTimeout(() => {
+  //         toast.success("Login successful");
+  //       }, 1000);
+  //     }
+
+  //   } catch (err: any) {
+  //     console.error("Login error:", err);
+  //     if (err.message.includes("NetworkError") || err.message.includes("fetch")) {
+  //       toast.error("Unable to connect to the server. Please check your connection.");
+  //     } else {
+  //       toast.error("An unexpected error occurred. Please try again.");
+  //     }
+  //   }
+  // }; 
+
+  // ... inside Page.tsx component
+
+const handleLogin = async () => {
     try {
-      let hasError = false;
+        let hasError = false;
 
-      // Email validation
-      if (!email) {
-        toast.error("Email is required.");
-        hasError = true;
-      } else if (!/^\S+@\S+\.\S+$/.test(email)) {
-        toast.error("Please enter a valid email address.");
-        hasError = true;
-      }
-
-      // Password validation
-      if (!password) {
-        toast.error("Password is required.");
-        hasError = true;
-      } else if (password.length < 6) {
-        toast.error("Password must be at least 6 characters.");
-        hasError = true;
-      }
-
-      if (hasError) return;
-
-      const res = await fetch(`${process.env.NEXT_PUBLIC_SUPABASE_URL}/api/v1/vertix/customer/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-
-      console.log("Heyy loop", res.body)
-
-      // Parse response safely
-      let data;
-      try {
-        data = await res.json();
-      } catch {
-        throw new Error("Invalid response format from server");
-      }
-
-      if (!res.ok) {
-        // Handle invalid credentials or other client-side errors (4xx)
-        if (res.status === 401 || res.status === 403) {
-          toast.error("Invalid email or password.");
+        // Perform client-side validation first
+        if (!email) {
+            toast.error("Email is required.");
+            hasError = true;
+        } else if (!/^\S+@\S+\.\S+$/.test(email)) {
+            toast.error("Please enter a valid email address.");
+            hasError = true;
         }
-        // Handle server-side errors (5xx)
-        else if (res.status >= 500) {
-          toast.error("Server error — please try again later.");
+        if (!password) {
+            toast.error("Password is required.");
+            hasError = true;
+        } else if (password.length < 6) {
+            // Note: Supabase default minimum is 6 characters.
+            toast.error("Password must be at least 6 characters.");
+            hasError = true;
         }
-        // Handle other cases
-        else if (data?.error === "User not found") {
-          toast.error("User not found / Create an account.");
-        } else if (data?.error === "Password is incorrect") {
-          toast.error("Password is incorrect.");
+
+        if (hasError) return;
+
+        // --- SUPABASE AUTHENTICATION START ---
+        const { data, error } = await supabase.auth.signInWithPassword({
+            email: email,
+            password: password,
+            // You can add a redirectTo for a specific flow if needed
+        });
+        // --- SUPABASE AUTHENTICATION END ---
+
+        if (error) {
+            // Supabase handles most auth errors like "Invalid login credentials"
+            if (error.status === 400 && error.message.includes('Invalid login credentials')) {
+                 toast.error("Invalid email or password.");
+            } else {
+                console.error("Supabase Auth Error:", error.message);
+                toast.error(error.message || "Login failed via Supabase.");
+            }
+            return;
+        }
+
+        // Check if user and session exist
+        if (data.session && data.user) {
+            // Supabase login is successful.
+            // NOTE: The token is in data.session.access_token
+            // You might not need to call your custom `login` if you're using a
+            // Supabase-aware AuthContext (like one that uses Next.js middleware or auth listener).
+            // For now, let's assume your `login` expects the token.
+            login(data.session.access_token);
+            
+            // --- CUSTOM LOGIC: Check for is_consent_filled ---
+            // You'll need to fetch this custom data from your `vertixcustomers` table now.
+            // Supabase login only handles auth. It doesn't fetch custom profile data automatically.
+            
+            const { data: customerData, error: profileError } = await supabase
+                .from('vertixcustomers')
+                .select('is_consent_filled')
+                .eq('email', email) // Assuming email is unique and indexed
+                .single();
+
+            if (profileError) {
+                console.error("Profile Fetch Error:", profileError.message);
+                toast.error("Login successful, but profile data failed to load.");
+                router.push("/"); // Or a safe fallback
+                return;
+            }
+
+            const isConsentFilled = customerData?.is_consent_filled;
+            
+            if (!isConsentFilled) {
+                router.push("/consent");
+            } else {
+                router.push("/construction");
+                setTimeout(() => {
+                    toast.success("Login successful");
+                }, 1000);
+            }
         } else {
-          toast.error(data?.message || "Login failed. Please try again.");
+             // Should not happen if data and error are both null, but good safeguard
+            toast.error("Login failed. No session or user data.");
         }
-        return;
-      }
-
-      // Successful login
-      login(data.token);
-
-      if (!data.is_consent_filled) {
-        router.push("/consent");
-      } else {
-        router.push("/construction");
-        setTimeout(() => {
-          toast.success("Login successful");
-        }, 1000);
-      }
 
     } catch (err: any) {
-      console.error("Login error:", err);
-      if (err.message.includes("NetworkError") || err.message.includes("fetch")) {
-        toast.error("Unable to connect to the server. Please check your connection.");
-      } else {
+        console.error("Login error:", err);
         toast.error("An unexpected error occurred. Please try again.");
-      }
     }
-  };
+};
+  
 
 
   const handlesignUp = () => {
