@@ -32,7 +32,7 @@ export default function RootLayout({
             toastOptions={{
               className: "",
               style: {
-                fontSize: "13px",
+                fontSize: "18px",
               },
             }}
           />

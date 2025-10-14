@@ -201,6 +201,7 @@ export default function Page() {
 
       if (hasError) return;
 
+<<<<<<< Updated upstream
       const { data, error } = await supabase.auth.signInWithPassword({
         email: email,
         password: password,
@@ -212,8 +213,19 @@ export default function Page() {
         } else {
           console.error("Supabase Auth Error:", error.message);
           toast.error(error.message || "Login failed via Supabase.");
+=======
+      const data = await res.json()
+
+      if (!res.ok) {
+        if (data.error === "User not found") {
+          toast.error("User not found / Create an account.")
+        } else if (data.error === "Password is incorrect") {
+          toast.error("Password is incorrect.")
+        } else {
+          toast.error(data.message || "Login failed")
+>>>>>>> Stashed changes
         }
-        return;
+        return
       }
 
       if (data.session && data.user) {
@@ -335,7 +347,10 @@ export default function Page() {
                     Remember Password
                   </label>
                 </div>
-                <p className="font-medium text-xs sm:text-sm border-b border-[#3A4969] text-[#3A4969] cursor-pointer">
+                <p
+                  className="font-medium text-xs sm:text-sm border-b border-[#3A4969] text-[#3A4969] cursor-pointer"
+                  onClick={() => router.push("/forgot_password")}
+                >
                   Forgot Password ?
                 </p>
               </div>
