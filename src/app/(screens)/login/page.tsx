@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation"
 import { useState } from "react"
 import toast from "react-hot-toast"
 import { supabase } from "../../../../utils/supabase/client"
-// import { origin } from "@/api-requests/config"
 
 export default function Page() {
   const router = useRouter()
@@ -181,95 +180,79 @@ export default function Page() {
 
   // ... inside Page.tsx component
 
-const handleLogin = async () => {
+  const handleLogin = async () => {
     try {
-        let hasError = false;
+      let hasError = false;
 
-        // Perform client-side validation first
-        if (!email) {
-            toast.error("Email is required.");
-            hasError = true;
-        } else if (!/^\S+@\S+\.\S+$/.test(email)) {
-            toast.error("Please enter a valid email address.");
-            hasError = true;
-        }
-        if (!password) {
-            toast.error("Password is required.");
-            hasError = true;
-        } else if (password.length < 6) {
-            // Note: Supabase default minimum is 6 characters.
-            toast.error("Password must be at least 6 characters.");
-            hasError = true;
-        }
+      if (!email) {
+        toast.error("Email is required.");
+        hasError = true;
+      } else if (!/^\S+@\S+\.\S+$/.test(email)) {
+        toast.error("Please enter a valid email address.");
+        hasError = true;
+      }
+      if (!password) {
+        toast.error("Password is required.");
+        hasError = true;
+      } else if (password.length < 6) {
+        toast.error("Password must be at least 6 characters.");
+        hasError = true;
+      }
 
-        if (hasError) return;
+      if (hasError) return;
 
-        // --- SUPABASE AUTHENTICATION START ---
-        const { data, error } = await supabase.auth.signInWithPassword({
-            email: email,
-            password: password,
-            // You can add a redirectTo for a specific flow if needed
-        });
-        // --- SUPABASE AUTHENTICATION END ---
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: email,
+        password: password,
+      });
 
-        if (error) {
-            // Supabase handles most auth errors like "Invalid login credentials"
-            if (error.status === 400 && error.message.includes('Invalid login credentials')) {
-                 toast.error("Invalid email or password.");
-            } else {
-                console.error("Supabase Auth Error:", error.message);
-                toast.error(error.message || "Login failed via Supabase.");
-            }
-            return;
-        }
-
-        // Check if user and session exist
-        if (data.session && data.user) {
-            // Supabase login is successful.
-            // NOTE: The token is in data.session.access_token
-            // You might not need to call your custom `login` if you're using a
-            // Supabase-aware AuthContext (like one that uses Next.js middleware or auth listener).
-            // For now, let's assume your `login` expects the token.
-            login(data.session.access_token);
-            
-            // --- CUSTOM LOGIC: Check for is_consent_filled ---
-            // You'll need to fetch this custom data from your `vertixcustomers` table now.
-            // Supabase login only handles auth. It doesn't fetch custom profile data automatically.
-            
-            const { data: customerData, error: profileError } = await supabase
-                .from('vertixcustomers')
-                .select('is_consent_filled')
-                .eq('email', email) // Assuming email is unique and indexed
-                .single();
-
-            if (profileError) {
-                console.error("Profile Fetch Error:", profileError.message);
-                toast.error("Login successful, but profile data failed to load.");
-                router.push("/"); // Or a safe fallback
-                return;
-            }
-
-            const isConsentFilled = customerData?.is_consent_filled;
-            
-            if (!isConsentFilled) {
-                router.push("/consent");
-            } else {
-                router.push("/construction");
-                setTimeout(() => {
-                    toast.success("Login successful");
-                }, 1000);
-            }
+      if (error) {
+        if (error.status === 400 && error.message.includes('Invalid login credentials')) {
+          toast.error("UnAuthorized.");
         } else {
-             // Should not happen if data and error are both null, but good safeguard
-            toast.error("Login failed. No session or user data.");
+          console.error("Supabase Auth Error:", error.message);
+          toast.error(error.message || "Login failed via Supabase.");
         }
+        return;
+      }
+
+      if (data.session && data.user) {
+       
+        login(data.session.access_token);
+
+        const { data: customerData, error: profileError } = await supabase
+          .from('vertixcustomers')
+          .select('is_consent_filled')
+          .eq('email', email) 
+          .single();
+
+        if (profileError) {
+          console.error("Profile Fetch Error:", profileError.message);
+          toast.error("Login successful, but profile data failed to load.");
+          router.push("/"); 
+          return;
+        }
+
+        const isConsentFilled = customerData?.is_consent_filled;
+
+        if (!isConsentFilled) {
+          router.push("/consent");
+        } else {
+          router.push("/construction");
+          setTimeout(() => {
+            toast.success("Login successful");
+          }, 1000);
+        }
+      } else {
+        toast.error("Login failed. No session or user data.");
+      }
 
     } catch (err: any) {
-        console.error("Login error:", err);
-        toast.error("An unexpected error occurred. Please try again.");
+      console.error("Login error:", err);
+      toast.error("An unexpected error occurred. Please try again.");
     }
-};
-  
+  };
+
 
 
   const handlesignUp = () => {
