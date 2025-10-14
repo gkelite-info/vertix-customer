@@ -7,7 +7,7 @@ import toast from "react-hot-toast"
 export default function VerificationPage() {
   const router = useRouter()
 
-  const [otp, setOtp] = useState(Array(6).fill(""))
+  const [otp, setOtp] = useState(Array(4).fill(""))
   const [otpError, setOtpError] = useState("")
   const [emailAddress, setEmailAddress] = useState<string | null>(null)
 
@@ -36,7 +36,7 @@ export default function VerificationPage() {
     newOtp[index] = value
     setOtp(newOtp)
 
-    if (value && index < 5) {
+    if (value && index < 4) {
       const nextInput = document.getElementById(`otp-${index + 1}`)
       nextInput?.focus()
     }
@@ -55,14 +55,20 @@ export default function VerificationPage() {
   }
 
   const handleResend = () => {
-    console.log("Resend code triggered")
+    try {
+      toast.success("Resend OTP success")
+      console.log("Resend code triggered")
+    } catch (error) {
+      console.log("Resend otp failed:", error)
+      toast.error("Resend OTP failed")
+    }
   }
 
   const handleSend = () => {
     const code = otp.join("")
-    if (code.length < 6) {
-      setOtpError("Please enter all 6 digits")
-      toast.error("Please enter all 6 digits OTP")
+    if (code.length < 4) {
+      setOtpError("Please enter all 4 digits")
+      toast.error("Please enter all 4 digits OTP")
       return
     }
     try {
@@ -108,7 +114,7 @@ export default function VerificationPage() {
                       value={digit}
                       onChange={(e) => handleChange(e, index)}
                       onKeyDown={(e) => handleKeyDown(e, index)}
-                      className="w-12 h-12 sm:w-14 sm:h-14 text-center font-semibold text-lg border-2 border-[#D0D0D0] rounded-md focus:outline-none focus:border-[#1D2B48] text-black"
+                      className="w-12 h-12 sm:w-16 sm:h-16 text-center font-semibold text-lg border-2 border-[#D0D0D0] rounded-md focus:outline-none focus:border-[#1D2B48] text-black"
                     />
                   ))}
                 </div>
@@ -132,10 +138,10 @@ export default function VerificationPage() {
                 </div>
 
                 <button
-                  className="cursor-pointer text-white h-12 w-full text-base sm:text-lg font-medium rounded-full bg-[#1D2B48] hover:bg-opacity-90 transition duration-150 mt-8"
+                  className="cursor-pointer text-white h-12 w-[75%] text-base sm:text-lg font-medium rounded-full bg-[#1D2B48] hover:bg-opacity-90 transition duration-150 mt-8"
                   onClick={handleSend}
                 >
-                  Send
+                  Submit
                 </button>
               </div>
             </div>

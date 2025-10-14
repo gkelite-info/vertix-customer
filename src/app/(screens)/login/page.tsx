@@ -176,44 +176,31 @@ export default function Page() {
   //       toast.error("An unexpected error occurred. Please try again.");
   //     }
   //   }
-  // }; 
+  // };
 
   // ... inside Page.tsx component
 
   const handleLogin = async () => {
     try {
-      let hasError = false;
+      let hasError = false
 
       if (!email) {
-        toast.error("Email is required.");
-        hasError = true;
+        toast.error("Email is required.")
+        hasError = true
       } else if (!/^\S+@\S+\.\S+$/.test(email)) {
-        toast.error("Please enter a valid email address.");
-        hasError = true;
+        toast.error("Please enter a valid email address.")
+        hasError = true
       }
       if (!password) {
-        toast.error("Password is required.");
-        hasError = true;
+        toast.error("Password is required.")
+        hasError = true
       } else if (password.length < 6) {
-        toast.error("Password must be at least 6 characters.");
-        hasError = true;
+        toast.error("Password must be at least 6 characters.")
+        hasError = true
       }
 
-      if (hasError) return;
+      if (hasError) return
 
-<<<<<<< Updated upstream
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: email,
-        password: password,
-      });
-
-      if (error) {
-        if (error.status === 400 && error.message.includes('Invalid login credentials')) {
-          toast.error("UnAuthorized.");
-        } else {
-          console.error("Supabase Auth Error:", error.message);
-          toast.error(error.message || "Login failed via Supabase.");
-=======
       const data = await res.json()
 
       if (!res.ok) {
@@ -223,49 +210,44 @@ export default function Page() {
           toast.error("Password is incorrect.")
         } else {
           toast.error(data.message || "Login failed")
->>>>>>> Stashed changes
         }
         return
       }
 
       if (data.session && data.user) {
-       
-        login(data.session.access_token);
+        login(data.session.access_token)
 
         const { data: customerData, error: profileError } = await supabase
-          .from('vertixcustomers')
-          .select('is_consent_filled')
-          .eq('email', email) 
-          .single();
+          .from("vertixcustomers")
+          .select("is_consent_filled")
+          .eq("email", email)
+          .single()
 
         if (profileError) {
-          console.error("Profile Fetch Error:", profileError.message);
-          toast.error("Login successful, but profile data failed to load.");
-          router.push("/"); 
-          return;
+          console.error("Profile Fetch Error:", profileError.message)
+          toast.error("Login successful, but profile data failed to load.")
+          router.push("/")
+          return
         }
 
-        const isConsentFilled = customerData?.is_consent_filled;
+        const isConsentFilled = customerData?.is_consent_filled
 
         if (!isConsentFilled) {
-          router.push("/consent");
+          router.push("/consent")
         } else {
-          router.push("/construction");
+          router.push("/construction")
           setTimeout(() => {
-            toast.success("Login successful");
-          }, 1000);
+            toast.success("Login successful")
+          }, 1000)
         }
       } else {
-        toast.error("Login failed. No session or user data.");
+        toast.error("Login failed. No session or user data.")
       }
-
     } catch (err: any) {
-      console.error("Login error:", err);
-      toast.error("An unexpected error occurred. Please try again.");
+      console.error("Login error:", err)
+      toast.error("An unexpected error occurred. Please try again.")
     }
-  };
-
-
+  }
 
   const handlesignUp = () => {
     router.push("/signup")
