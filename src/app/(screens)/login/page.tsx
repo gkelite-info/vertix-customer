@@ -125,6 +125,8 @@ export default function Page() {
         body: JSON.stringify({ email, password }),
       });
 
+      console.log("Heyy loop", res.body)
+
       // Parse response safely
       let data;
       try {
