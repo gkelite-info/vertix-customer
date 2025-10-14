@@ -152,7 +152,7 @@ export default function Page() {
 
     try {
       const res = await fetch(
-        "http://localhost:5000/api/v1/vertix/customer/register",
+        `${process.env.NEXT_PUBLIC_SUPABASE_URL}/api/v1/vertix/customer/register`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

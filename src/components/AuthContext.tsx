@@ -3,6 +3,8 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import { origin } from "@/api-requests/config";
+import { supabase } from "../../utils/supabase/client";
+import toast from "react-hot-toast";
 
 interface User {
   customerId: string;
@@ -75,27 +77,51 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   //   setUser(null);
   // };
 
+  // const logout = async () => {
+  //   const token = localStorage.getItem("token");
+  //   if (token) {
+  //     try {
+  //       await fetch(`${process.env.NEXT_PUBLIC_SUPABASE_URL}/api/v1/vertix/customer/logout`, {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       });
+  //     } catch (err) {
+  //       console.error("Logout request failed:", err);
+  //     }
+  //   }
+
+  //   localStorage.removeItem("token");
+  //   localStorage.removeItem("customerId");
+  //   setIsAuthenticated(false);
+  //   setUser(null);
+  // };
+
+
   const logout = async () => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      try {
-        await fetch(`${origin}/api/v1/vertix/customer/logout`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
-      } catch (err) {
-        console.error("Logout request failed:", err);
-      }
+  try {
+    // --- SUPABASE SIGN OUT ---
+    const { error } = await supabase.auth.signOut()
+    if (error) {
+      console.error("Supabase logout error:", error.message)
+      toast.error("Logout failed. Please try again.")
+      return
     }
 
-    localStorage.removeItem("token");
-    localStorage.removeItem("customerId");
-    setIsAuthenticated(false);
-    setUser(null);
-  };
+    // --- LOCAL CLEANUP ---
+    localStorage.removeItem("token")
+    localStorage.removeItem("customerId")
+
+    setIsAuthenticated(false)
+    setUser(null)
+    toast.success("Logged out successfully")
+  } catch (err) {
+    console.error("Unexpected logout error:", err)
+    toast.error("An unexpected error occurred during logout.")
+  }
+}
 
 
   return (
