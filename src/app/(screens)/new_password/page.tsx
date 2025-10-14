@@ -17,10 +17,16 @@ export default function NewPasswordPage() {
 
   useEffect(() => {
     const storedEmail = localStorage.getItem("emailAddress")
+    const verifyotp = localStorage.getItem("verifyotp")
     if (!storedEmail) {
       router.replace("/forgot_password")
       setTimeout(() => {
         toast.error("Unauthorized access! Please enter your email again")
+      }, 500)
+    } else if (storedEmail && verifyotp !== "true") {
+      router.replace("/verification")
+      setTimeout(() => {
+        toast.error("Please verify your otp before proceeding")
       }, 500)
     } else {
       setEmailAddress(storedEmail)
@@ -57,6 +63,7 @@ export default function NewPasswordPage() {
     try {
       console.log("Password updated successfully!")
       localStorage.removeItem("emailAddress")
+      localStorage.removeItem("verifyotp")
       router.push("/login")
       setTimeout(() => {
         toast.success("Password updated successfully!")

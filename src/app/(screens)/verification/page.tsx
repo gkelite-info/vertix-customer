@@ -73,6 +73,7 @@ export default function VerificationPage() {
     }
     try {
       router.push("/new_password")
+      localStorage.setItem("verifyotp", "true")
       setTimeout(() => {
         toast.success("OTP verified successfully")
       }, 1000)
