@@ -158,7 +158,7 @@ export default function Page() {
         email: formData.email,
         password: formData.password,
         options: {
-          emailRedirectTo: 'https://www.vertixtax.com/login',
+          emailRedirectTo: 'https://www.vertixtax.com/verify-email',
         },
       });
 
