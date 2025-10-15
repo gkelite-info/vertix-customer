@@ -19,9 +19,10 @@ export default function VerifyEmailPage() {
         if (data?.session) {
           toast.success("Email verified successfully! Redirecting...");
           // Wait 2 seconds so user can see toast
-          setTimeout(() => {
-            router.push("/dashboard"); // or "/login" if you prefer
-          }, 2000);
+        //   setTimeout(() => {
+        //     router.push("/login"); // or "/login" if you prefer
+        //   }, 2000);
+        window.close();
         } else {
           toast.error("Invalid or expired verification link.");
           router.push("/");
