@@ -103,6 +103,11 @@ function ConsentPage() {
                         <input
                             type="text"
                             className="text-[#1D2B48] w-[19%] text-xs border border-b-1 border-l-0 border-r-0 border-t-0 focus:outline-none ml-2"
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter") {
+                                    handleAccept();
+                                }
+                            }}
                         />
                     </div>
                     <p className="text-start text-xs mt-5 text-[#616161]">

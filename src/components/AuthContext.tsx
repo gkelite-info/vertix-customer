@@ -69,25 +69,26 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const logout = async () => {
-    try {
-      const { error } = await supabase.auth.signOut()
-      if (error) {
-        console.error("Supabase logout error:", error.message)
-        toast.error("Logout failed. Please try again.")
-        return
-      }
-
-      localStorage.removeItem("token")
-      localStorage.removeItem("customerId")
-
-      setIsAuthenticated(false)
-      setUser(null)
-      toast.success("Logged out successfully")
-    } catch (err) {
-      console.error("Unexpected logout error:", err)
-      toast.error("An unexpected error occurred during logout.")
+  try {
+    const { error } = await supabase.auth.signOut()
+    if (error) {
+      console.error("Supabase logout error:", error.message)
+      toast.error("Logout failed. Please try again.")
+      return
     }
+
+    localStorage.removeItem("token")
+    localStorage.removeItem("customerId")
+
+    setIsAuthenticated(false)
+    setUser(null)
+    toast.success("Logged out successfully")
+  } catch (err) {
+    console.error("Unexpected logout error:", err)
+    toast.error("An unexpected error occurred during logout.")
   }
+}
+
 
 
   return (
