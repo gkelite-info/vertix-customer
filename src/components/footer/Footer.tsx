@@ -92,7 +92,7 @@ const Footer = () => {
             <h4 className="text-lg font-semibold mb-3">CHECK YOUR REFUND</h4>
             <ul className="space-y-2 text-gray-300 text-sm">
               <li>
-                <Link href="https://sa.www4.irs.gov/wmr/">Federal Refund</Link>
+                <Link href="https://sa.www4.irs.gov/wmr/" target="_blank">Federal Refund</Link>
                 {/* <Link
                   href="/service-details/ai_services"
                   className="hover:text-white"

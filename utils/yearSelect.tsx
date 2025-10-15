@@ -1,6 +1,6 @@
 "use client"
-import { getCustomer } from "@/api-requests/customers/customerApi";
 import YearSelector from "@/app/(pageNavbar)/YearSelector/YearSelector"
+import { getCustomer } from "@/app/api/Supabasecustomer/customerApi";
 import { useEffect, useState } from "react"
 
 export default function YearSelect({ style = "justify-end" }: { style?: string }) {
@@ -11,11 +11,11 @@ export default function YearSelect({ style = "justify-end" }: { style?: string }
   useEffect(() => {
     const fetchCustomer = async () => {
       try {
-        const res = await getCustomer();
-        setName(res.firstname);
-        setCustomerId(res.customerId);
+        const customer = await getCustomer();
+        setName(customer.firstname);
+        setCustomerId(customer.customerId);
       } catch (error) {
-        console.error("Failed to fetch customer")
+        console.error("Failed to fetch customer");
         throw error
       }
     }

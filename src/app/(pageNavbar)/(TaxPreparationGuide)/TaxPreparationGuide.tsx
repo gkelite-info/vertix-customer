@@ -28,7 +28,7 @@ export default function TaxPreparationGuide() {
                             className="bg-[#1D2B47] text-white text-sm font-medium h-10 lg:mt-7 rounded-lg p-2 cursor-pointer"
                             onClick={handlebutton}
                         >
-                            TAX ORGANIZER FOR 2024 TAX YEAR
+                            TAX Preparation Guide
                         </button>
                     </>
                 ) : (
