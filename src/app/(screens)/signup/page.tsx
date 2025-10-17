@@ -157,6 +157,9 @@ export default function Page() {
       const { data, error } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
+        options: {
+          emailRedirectTo: 'https://www.vertixtax.com/verify-email',
+        },
       });
 
       if (error) throw error;

@@ -1,7 +1,6 @@
 "use client"
 import React, { useState, useEffect } from "react"
 import YearSelect from "../../../../../utils/yearSelect"
-import AboutYou from "./aboutYou"
 import Dependents from "./dependents"
 import ResidencyDetails from "./resendencyDetails"
 import IncomeDetails from "./incomeDetails/page"
@@ -9,6 +8,7 @@ import DeductionDetails from "./deductionDetails/page"
 import FBAR_FATCA from "./fbar_fatca"
 import { ArrowBendUpLeft } from "phosphor-react"
 import { useRouter } from "next/navigation"
+import AboutYou from "./aboutyou"
 
 type Tab =
   | "About You"
