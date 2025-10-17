@@ -7,14 +7,17 @@ import { useAuth } from "../AuthContext"
 import { MdArrowDropDown } from "react-icons/md"
 import { IoMdArrowDropright } from "react-icons/io"
 import LogoutModal from "../logoutModal/page"
+import { getCustomer } from "@/app/api/SupabaseAPI/customer/customerApi"
 
 function Header() {
   const router = useRouter()
 
   const pathname = usePathname()
   const [, setIsLoggedIn] = useState(false)
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, user, logout } = useAuth();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [customer, setCustomer] = useState<any>(null);
+  const allowedEmails = ["saralabose19@gmail.com", "vamshivadla@gkeliteinfo.com"];
 
   const linkClass = (href: string) =>
     `relative text-black font-medium
@@ -22,6 +25,14 @@ function Header() {
          after:h-[2px] after:bg-red-400 
          after:transition-[width] after:duration-200 after:ease-linear
          ${pathname === href ? "after:w-full" : "after:w-0"}`
+
+  useEffect(() => {
+    const fetchCustomer = async () => {
+      const data = await getCustomer();
+      setCustomer(data);
+    };
+    fetchCustomer();
+  }, []);
 
   useEffect(() => {
     const token = localStorage.getItem("token")
@@ -36,7 +47,7 @@ function Header() {
   }
   const cancelLogout = () => setShowLogoutModal(false)
 
-  const handlerefer = () =>{
+  const handlerefer = () => {
     router.push('/mainLayout')
   }
 
@@ -297,12 +308,15 @@ function Header() {
               Contact
             </Link>
           </div>
-          <button
-            className="font-medium lg:px-2 bg-white text-black lg:w-[10%] lg:h-[65%] lg:rounded-full cursor-pointer"
-            onClick={handlerefer}
-          >
-            Documents
-          </button>
+          {customer && allowedEmails.includes(customer.email) && (
+            <button
+              className="font-medium lg:px-2 bg-white text-black lg:w-[10%] lg:h-[65%] lg:rounded-full cursor-pointer"
+              onClick={handlerefer}
+            >
+              Documents
+            </button>
+          )}
+
           <div className="bg-gray-00 lg:h-[100%] flex justify-end items-center lg:w-[10%]">
             {isAuthenticated ? (
               <button

@@ -21,3 +21,5 @@ export const getCustomer = async () => {
     throw error;
   }
 };
+
+
