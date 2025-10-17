@@ -1,10 +1,10 @@
 "use client"
-import YearSelector from "@/app/(pageNavbar)/YearSelector/YearSelector"
+// import YearSelector from "@/app/(pageNavbar)/YearSelector/YearSelector"
 import { getCustomer } from "@/app/api/SupabaseAPI/customerApi";
 import { useEffect, useState } from "react"
 
 export default function YearSelect({ style = "justify-end" }: { style?: string }) {
-  const [selectedYear, setSelectedYear] = useState<number | null>(null);
+  // const [selectedYear, setSelectedYear] = useState<number | null>(null);
   const [name, setName] = useState("");
   const [customerId, setCustomerId] = useState<string | number>("");
 
