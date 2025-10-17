@@ -1,8 +1,13 @@
-
+'use client'
+import { useState } from "react";
 import ToggleSwitch from "../../../../../../utils/toggleSwitch";
 
 
 export default function IncomeDetails() {
+
+    const [taxPayerHasW2, setTaxPayerHasW2] = useState(false);
+    const [spouseHasW2, setSpouseHasW2] = useState(false);
+
     return (
         <>
             <div className="bg-green-00 h-22 mt-2 w-[100%]">
@@ -23,10 +28,10 @@ export default function IncomeDetails() {
                         <p style={{ fontSize: 10, color: "#1D2B48", fontWeight: '500' }}>Note : Please Upload W2 Form(S) in the Portal</p>
                     </div>
                     <div className="bg-indigo-00 w-[33%] flex items-center justify-center">
-                        <ToggleSwitch labelLeft="No" labelRight="Yes" />
+                        <ToggleSwitch labelLeft="No" labelRight="Yes" value={taxPayerHasW2} onToggle={setTaxPayerHasW2} />
                     </div>
                     <div className="bg-indigo-00 w-[33%] flex items-center justify-center">
-                        <ToggleSwitch labelLeft="No" labelRight="Yes" />
+                        <ToggleSwitch labelLeft="No" labelRight="Yes" value={spouseHasW2} onToggle={setSpouseHasW2} />
                     </div>
                 </div>
             </div>

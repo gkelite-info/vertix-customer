@@ -4,6 +4,7 @@ import { Toaster } from "react-hot-toast"
 import "./globals.css"
 import { AuthProvider } from "@/components/AuthContext"
 import ClientLayout from "./ClientLayout"
+import { YearProvider } from "./api/context/yearContext"
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -25,17 +26,19 @@ export default function RootLayout({
     <html lang="en" className={poppins.className}>
       <body>
         <AuthProvider>
-          <ClientLayout>{children}</ClientLayout>
-          <Toaster
-            position="top-right"
-            reverseOrder={false}
-            toastOptions={{
-              className: "",
-              style: {
-                fontSize: "18px",
-              },
-            }}
-          />
+          <YearProvider>
+            <ClientLayout>{children}</ClientLayout>
+            <Toaster
+              position="top-right"
+              reverseOrder={false}
+              toastOptions={{
+                className: "",
+                style: {
+                  fontSize: "18px",
+                },
+              }}
+            />
+          </YearProvider>
         </AuthProvider>
       </body>
     </html>

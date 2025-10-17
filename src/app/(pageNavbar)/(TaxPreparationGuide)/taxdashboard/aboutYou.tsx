@@ -23,7 +23,7 @@ export default function AboutYou(): React.ReactElement {
     const [visaJan, setVisaJan] = useState(VISA_OPTIONS[0]);
     const [visaDec, setVisaDec] = useState(VISA_OPTIONS[0]);
     const [firstEntryDate, setFirstEntryDate] = useState("");
-    const [monthsInUS, setMonthsInUS] = useState("12");
+    const [monthsInUS, setMonthsInUS] = useState("");
     const [citizenshipCountry, setCitizenshipCountry] = useState("");
 
     const [spouseFirstName, setSpouseFirstName] = useState("");
@@ -39,7 +39,7 @@ export default function AboutYou(): React.ReactElement {
     const [spouseVisaJan, setSpouseVisaJan] = useState(VISA_OPTIONS[0]);
     const [spouseVisaDec, setSpouseVisaDec] = useState(VISA_OPTIONS[0]);
     const [spouseFirstEntryDate, setSpouseFirstEntryDate] = useState("");
-    const [spouseMonthsInUS, setSpouseMonthsInUS] = useState("12");
+    const [spouseMonthsInUS, setSpouseMonthsInUS] = useState("");
 
 
 
@@ -196,7 +196,7 @@ export default function AboutYou(): React.ReactElement {
                             value={dob}
                             onChange={(e) => {
                                 const newValue = e.target.value;
-                                const filteredValue = newValue.replace(/[^0-9/]/g, '');
+                                const filteredValue = newValue.replace(/[^0-9/]/g, '').slice(0, 10);
                                 setDob(filteredValue);
                             }}
                             placeholder="DD/MM/YYYY"
@@ -244,7 +244,7 @@ export default function AboutYou(): React.ReactElement {
                         <div className="flex w-[50%] h-[100%] bg-blue-400 rounded-md">
                             <ThreeOptionToggle
                                 options={["SSN", "ITIN", "NEED TO APPLY"]}
-                                initial={yourSSN}
+                                value={yourSSN}
                                 onChange={(value) => setYourSSN(value)}
                                 style="w-[100%]"
                             />
@@ -252,12 +252,20 @@ export default function AboutYou(): React.ReactElement {
                     </div>
                     <div className="flex bg-green-00 w-[90%] mt-5 h-10 items-center justify-between">
                         <h4 className="text-[#1D2B48] font-medium">SSN/ITIN Number <span className="text-red-500">*</span></h4>
-                        <input type="text"
+                        <input
+                            type="text"
                             value={yourSSNValue}
-                            onChange={(e) => setYourSSNValue(e.target.value)}
+                            onChange={(e) => {
+                                const newValue = e.target.value;
+                                let filteredValue = newValue.replace(/[^0-9-]/g, '');
+                                filteredValue = filteredValue.slice(0, 11);
+                                setYourSSNValue(filteredValue);
+                            }}
                             placeholder="XXX-XX-XXXX"
                             className="border bg-red-00 rounded-md text-[#616161] border-[#B5B5B5] w-[50%] h-[100%] px-3 text-sm focus:outline-none"
+                            inputMode="numeric"
                         />
+
                     </div>
                     <div className="flex bg-green-00 w-[90%] mt-5 h-10 items-center justify-between">
                         <h4 className="text-[#1D2B48] font-medium">Visa type as on Jan 1 2024</h4>
@@ -288,22 +296,25 @@ export default function AboutYou(): React.ReactElement {
                         <h4 className="text-[#1D2B48] font-medium">First Date of entry in US</h4>
                         <input type="text"
                             value={firstEntryDate}
-                            onChange={(e) => setFirstEntryDate(e.target.value)}
+                            onChange={(e) => {
+                                const value = e.target.value;
+                                if (/^[0-9/]*$/.test(value) && value.length <= 10) {
+                                    setFirstEntryDate(value);
+                                }
+                            }}
                             placeholder="09/05/2021"
                             className="border bg-red-00 rounded-md text-[#3E3E3E] border-[#B5B5B5] w-[50%] h-[100%] px-3 text-sm focus:outline-none"
                         />
                     </div>
                     <div className="flex bg-green-00 w-[90%] mt-5 h-10 items-center justify-between">
                         <h4 className="text-[#1D2B48] font-medium">No. of months stayed in US in 2024</h4>
-                        <select
+                        <input
+                            type="number"
                             value={monthsInUS}
                             onChange={(e) => setMonthsInUS(e.target.value)}
+                            placeholder="Enter months"
                             className="border bg-red-00 rounded-md text-[#616161] border-[#B5B5B5] w-[50%] h-[100%] px-3 text-sm focus:outline-none"
-                        >
-                            <option value="12">12</option>
-                            <option value="13">13</option>
-                            <option value="14">14</option>
-                        </select>
+                        />
                     </div>
                     <div className="flex bg-green-00 w-[90%] mt-5 h-10 items-center justify-between">
                         <h4 className="text-[#1D2B48] font-medium">Country of Citizenship</h4>
@@ -419,7 +430,7 @@ export default function AboutYou(): React.ReactElement {
                             <div className="flex w-[50%] h-[100%] bg-blue-400 rounded-md">
                                 <ThreeOptionToggle
                                     options={["SSN", "ITIN", "NEED TO APPLY"]}
-                                    initial={spouseSSN}
+                                    value={spouseSSN}
                                     onChange={(value) => setSpouseSSN(value)}
                                     style="w-[100%]"
                                 />
@@ -427,13 +438,21 @@ export default function AboutYou(): React.ReactElement {
                         </div>
 
                         <div className="flex bg-green-00 w-[100%] mt-5 h-10 items-center justify-between">
-                            <h4 className="text-[#1D2B48] font-medium">SSN/ ITIN Number <span className="text-red-500">*</span></h4>
-                            <input type="text"
+                            <h4 className="text-[#1D2B48] font-medium">SSN/ITIN Number <span className="text-red-500">*</span></h4>
+                            <input
+                                type="text"
                                 value={spouseSSNValue}
-                                onChange={(e) => setSpouseSSNValue(e.target.value)}
+                                onChange={(e) => {
+                                    const newValue = e.target.value;
+                                    let filteredValue = newValue.replace(/[^0-9-]/g, '');
+                                    filteredValue = filteredValue.slice(0, 11);
+                                    setSpouseSSNValue(filteredValue);
+                                }}
                                 placeholder="XXX-XX-XXXX"
                                 className="border bg-red-00 rounded-md text-[#616161] border-[#B5B5B5] w-[50%] h-[100%] px-3 text-sm focus:outline-none"
+                                inputMode="numeric"
                             />
+
                         </div>
                         <div className="flex bg-green-00 w-[100%] mt-5 h-10 items-center justify-between">
                             <h4 className="text-[#1D2B48] font-medium">Visa type as on Jan 1 2024</h4>
@@ -470,15 +489,13 @@ export default function AboutYou(): React.ReactElement {
                         </div>
                         <div className="flex bg-green-00 w-[100%] mt-5 h-10 items-center justify-between">
                             <h4 className="text-[#1D2B48] font-medium">No. of months stayed in US in 2024</h4>
-                            <select
+                            <input
+                                type="number"
                                 value={spouseMonthsInUS}
                                 onChange={(e) => setSpouseMonthsInUS(e.target.value)}
+                                placeholder="Enter months"
                                 className="border bg-red-00 rounded-md text-[#616161] border-[#B5B5B5] w-[50%] h-[100%] px-3 text-sm focus:outline-none"
-                            >
-                                <option value="12">12</option>
-                                <option value="13">13</option>
-                                <option value="14">14</option>
-                            </select>
+                            />
                         </div>
                     </div>
                     <div className="bg-red-00 mt-10 flex flex-col gap-2 text-start">
