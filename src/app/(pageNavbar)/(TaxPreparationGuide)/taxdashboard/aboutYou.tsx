@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import ThreeOptionToggle from "../../../../../utils/threeOptionToggle";
 import { supabase } from "../../../../../utils/supabase/client";
-import { getCustomer } from "@/app/api/SupabaseAPI/customerApi";
+import { getCustomer } from "@/app/api/SupabaseAPI/customer/customerApi";
 import toast from "react-hot-toast";
 
 const VISA_OPTIONS = ["L1", "L2", "L3"];

@@ -1,14 +1,11 @@
 "use client"
-
 import { useState, useEffect } from "react"
-import {
-  getBankInformation,
-  postBankInformation,
-} from "@/api-requests/customers/bank"
+
 import { useAuth } from "@/components/AuthContext"
 import YearSelect from "../../../../utils/yearSelect"
 import TableComponent from "../../../../utils/table/page"
 import toast from "react-hot-toast"
+import { getBankInformation, postBankInformation } from "@/app/api/SupabaseAPI/customer/bank"
 
 export default function BankingInformationPage() {
   const [formValues, setFormValues] = useState({
@@ -22,7 +19,6 @@ export default function BankingInformationPage() {
 
   const [bankRecords, setBankRecords] = useState<Record<string, any>[]>([])
   const [loading, setLoading] = useState(false)
-  //const [message, setMessage] = useState("")
   const [fetching, setFetching] = useState(true)
   const [bankDataExists, setBankDataExists] = useState(false)
 
@@ -33,29 +29,27 @@ export default function BankingInformationPage() {
 
     const fetchBankData = async () => {
       try {
-        // const res = await getBankInformation(user?.id || "");
-        // Use optional chaining + type assertion to avoid TS error
-        const res = await getBankInformation((user as any)?.id || "")
+        const res = await getBankInformation();
 
-        if (res.data && Array.isArray(res.data) && res.data.length > 0) {
-          const firstRecord = res.data[0]
+        if (res) {
           setFormValues({
-            belongsTo: firstRecord.belongsTo || "",
-            holderName: firstRecord.holderName || "",
-            bankName: firstRecord.bankName || "",
-            accountNumber: firstRecord.accountNumber || "",
-            routingNumber: firstRecord.routingNumber || "",
-            accountType: firstRecord.accountType || "",
-          })
-          setBankRecords(res.data)
-          setBankDataExists(true)
+            belongsTo: res.belongsTo || "",
+            holderName: res.holderName || "",
+            bankName: res.bankName || "",
+            accountNumber: res.accountNumber || "",
+            routingNumber: res.routingNumber || "",
+            accountType: res.accountType || "",
+          });
+          setBankRecords([res]);
+          setBankDataExists(true);
         }
       } catch (error) {
-        setBankDataExists(false)
+        setBankDataExists(false);
       } finally {
-        setFetching(false)
+        setFetching(false);
       }
-    }
+    };
+
 
     fetchBankData()
   }, [user])
@@ -74,32 +68,23 @@ export default function BankingInformationPage() {
 
   const handleSubmit = async () => {
     setLoading(true)
-    //setMessage("")
     try {
       const res = await postBankInformation(formValues)
-      // setMessage(
-      //   typeof res.message === "string"
-      //     ? res.message
-      //     : "Bank information updated successfully"
-      // );
       toast.success(
         typeof res.message === "string"
           ? res.message
           : "Bank information updated successfully"
       )
-      setBankRecords(res.data ? [res.data] : [])
+      setBankRecords(res ? [res] : []);
       setBankDataExists(true)
+
     } catch (error: any) {
-      // setMessage(
-      //   error.response?.data?.message
-      //     ? String(error.response.data.message)
-      //     : "Failed to update bank information"
-      // );
       toast.error(
         error.response?.data?.message
           ? String(error.response.data.message)
           : "Failed to update bank information"
       )
+
     } finally {
       setLoading(false)
     }
@@ -107,7 +92,7 @@ export default function BankingInformationPage() {
 
   if (fetching) {
     return (
-      <div className="flex justify-center items-center h-[100vh]">
+      <div className="flex justify-center items-center text-[#1D2B48] h-[100vh]">
         Loading bank data...
       </div>
     )
@@ -124,9 +109,8 @@ export default function BankingInformationPage() {
               : "Enter Your Bank Details"}
           </h2>
 
-          {/* Belongs To */}
-          <div className="bg-red-00 flex items-center justify-between gap-3 h-[10%] w-[35%] mt-5">
-            <div className="w-[35%]">
+          <div className="bg-red-00 flex items-center justify-between gap-3 h-[10%] w-[44%] mt-5">
+            <div className="w-[39%]">
               <h5 className="text-[#1D2B48] font-medium text-end pr-1.5">
                 Belongs To :
               </h5>
@@ -142,9 +126,8 @@ export default function BankingInformationPage() {
             </select>
           </div>
 
-          {/* Holder Name */}
-          <div className="bg-red-00 flex items-center justify-between gap-3 h-[10%] w-[35%] mt-2">
-            <div className="w-[35%]">
+          <div className="bg-red-00 flex items-center justify-between gap-3 h-[10%] w-[44%] mt-2">
+            <div className="w-[39%]">
               <h5 className="text-[#1D2B48] font-medium text-end pr-1.5">
                 Holder Name :
               </h5>
@@ -159,9 +142,8 @@ export default function BankingInformationPage() {
             />
           </div>
 
-          {/* Bank Name */}
-          <div className="bg-red-00 flex items-center justify-between gap-3 h-[10%] w-[35%] mt-2">
-            <div className="w-[35%]">
+          <div className="bg-red-00 flex items-center justify-between gap-3 h-[10%] w-[44%] mt-2">
+            <div className="w-[39%]">
               <h5 className="text-[#1D2B48] font-medium text-end pr-1.5">
                 Bank Name :
               </h5>
@@ -176,9 +158,8 @@ export default function BankingInformationPage() {
             />
           </div>
 
-          {/* Account Number */}
-          <div className="bg-red-00 flex items-center justify-between gap-2 h-[10%] w-[35%] mt-2">
-            <div className="w-[35%] bg-red-00">
+          <div className="bg-red-00 flex items-center justify-between gap-2 h-[10%] w-[44%] mt-2">
+            <div className="w-[39%] bg-red-00">
               <h5 className="text-[#1D2B48] font-medium text-end pr-1.5">
                 Account Number :
               </h5>
@@ -195,9 +176,8 @@ export default function BankingInformationPage() {
             />
           </div>
 
-          {/* Account Type */}
-          <div className="bg-red-00 flex items-center justify-between gap-3 h-[10%] w-[35%] mt-2">
-            <div className="w-[35%]">
+          <div className="bg-red-00 flex items-center justify-between gap-3 h-[10%] w-[44%] mt-2">
+            <div className="w-[39%]">
               <h5 className="text-[#1D2B48] font-medium text-end pr-1.5">
                 Type of Account :
               </h5>
@@ -215,10 +195,7 @@ export default function BankingInformationPage() {
             </select>
           </div>
 
-          {/* {message && <p className="text-green-600 mt-3">{message}</p>} */}
-
-          {/* Buttons */}
-          <div className="mt-4 flex h-[10%] w-[40%] gap-3 rounded-lg">
+          <div className="mt-4 flex h-[10%] w-[45%] gap-3 rounded-lg">
             <button
               onClick={handleSubmit}
               disabled={loading}
