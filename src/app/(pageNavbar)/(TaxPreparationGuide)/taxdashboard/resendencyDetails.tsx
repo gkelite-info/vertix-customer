@@ -15,7 +15,7 @@ export default function ResidencyDetails() {
                     <h4 className="text-[#1D2B48] font-semibold">Tax Payers Residency</h4>
                     <div className="bg-green-00 w-[90%] p-2 h-30 mt-4 rounded-lg border-1 border-[#B5B5B5] flex flex-col justify-between">
                         <div className="h-[20%] bg-indigo-00 p-1 text-start">
-                            <h3 className="text-[#1D2B48] font-semibold text-sm">2025</h3>
+                            <h3 className="text-[#1D2B48] font-semibold text-sm">Year Dynamic</h3>
                         </div>
                         <div className="h-[80%] bg-yellow-00 gap-3 flex items-end rounded-b-lg text-start">
                             <div className="flex flex-col justify-between bg-pink-00 w-[20%] h-[75%] rounded-md p-1">
