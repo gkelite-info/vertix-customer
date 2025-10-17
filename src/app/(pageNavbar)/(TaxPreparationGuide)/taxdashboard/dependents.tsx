@@ -1,18 +1,13 @@
 "use client"
 
-import { useState } from "react"
 import ThreeOptionToggle from "../../../../../utils/threeOptionToggle"
 import ToggleSwitch from "../../../../../utils/toggleSwitch"
 
 export default function Dependents() {
-  const [isCitizen, setIsCitizen] = useState(false)
-  const [childcare, setChildcare] = useState(false)
-  //const [dependentType, setDependentType] = useState("SSN")
-
   return (
-    <div className="bg-white shadow-lg rounded-xl p-6 sm:p-8 w-[85%] max-w-3xl mx-auto border border-gray-200">
+    <div className="bg-white p-6 sm:p-8 w-[100%] max-w-3xl mx-auto">
       {/* Header */}
-      <h2 className="text-xl font-bold text-[#1D2B48] mb-2">DEPENDENTS</h2>
+      <h2 className="text-xl font-semibold text-[#1D2B48] mb-2">DEPENDENTS</h2>
       <p className="text-sm text-[#3E3E3E] mb-6">
         Provide the details of dependents to claim benefits on your tax return.
         Along with all the other Dependents tests, it is mandatory that he/she
@@ -31,7 +26,7 @@ export default function Dependents() {
           <input
             type="text"
             placeholder="Enter First Name"
-            className="w-1/2 mt-1 border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-[#1D2B48] focus:outline-none"
+            className="w-1/2 mt-1 border text-[#616161] border-gray-300 rounded-md px-3 py-2 text-sm outline-0"
           />
         </div>
         <div className="flex justify-center items-center">
@@ -41,7 +36,7 @@ export default function Dependents() {
           <input
             type="text"
             placeholder="Enter Middle Name"
-            className="w-1/2 mt-1 border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-[#1D2B48] focus:outline-none"
+            className="w-1/2 mt-1 border text-[#616161] border-gray-300 rounded-md px-3 py-2 text-sm outline-0"
           />
         </div>
         <div className="flex justify-center items-center">
@@ -51,7 +46,7 @@ export default function Dependents() {
           <input
             type="text"
             placeholder="Enter Last Name"
-            className="w-1/2 mt-1 border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-[#1D2B48] focus:outline-none"
+            className="w-1/2 mt-1 border text-[#616161] border-gray-300 rounded-md px-3 py-2 text-sm outline-0"
           />
         </div>
         <div className="flex justify-center items-center">
@@ -61,7 +56,7 @@ export default function Dependents() {
           <input
             type="text"
             placeholder="DD/MM/YYYY"
-            className="w-1/2 mt-1 border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-[#1D2B48] focus:outline-none"
+            className="w-1/2 mt-1 border text-[#616161] border-gray-300 rounded-md px-3 py-2 text-sm outline-0"
           />
         </div>
         <div className="flex justify-center items-center">
@@ -75,15 +70,15 @@ export default function Dependents() {
             <option>Less than 6 Months</option>
           </select> */}
           <input
-            placeholder="12 Months"
-            className="w-1/2 mt-1 border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-[#1D2B48] focus:outline-none"
+            placeholder="11 Months"
+            className="w-1/2 mt-1 border text-[#616161] border-gray-300 rounded-md px-3 py-2 text-sm outline-0"
           />
         </div>
         <div className="flex justify-center items-center">
           <label className="text-sm text-[#1D2B48] font-medium w-1/2">
             Relationship to Taxpayer
           </label>
-          <select className="w-1/2 mt-1 border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-[#1D2B48] focus:outline-none">
+          <select className="w-1/2 mt-1 border text-[#616161] border-gray-300 rounded-md px-3 py-2 text-sm outline-0">
             <option>Son</option>
             <option>Daughter</option>
             <option>Spouse</option>
@@ -153,7 +148,7 @@ export default function Dependents() {
           <input
             type="text"
             placeholder="XXX-XXX-XXXX"
-            className="w-1/2 mt-1 border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-[#1D2B48] focus:outline-none"
+            className="w-1/2 mt-1 border text-[#616161] border-gray-300 rounded-md px-3 py-2 text-sm outline-0"
           />
         </div>
 
@@ -187,12 +182,12 @@ export default function Dependents() {
           <input
             type="text"
             placeholder="DD/MM/YYYY"
-            className="w-1/2 mt-1 border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-[#1D2B48] focus:outline-none"
+            className="w-1/2 mt-1 border text-[#616161] border-gray-300 rounded-md px-3 py-2 text-sm outline-0"
           />
         </div>
 
         {/* Add Dependent Button */}
-        <button className="bg-[#2F3F5F] w-[30%] text-white px-5 py-2 rounded-md text-sm font-medium mt-4 hover:bg-opacity-90">
+        <button className="bg-[#2F3F5F] cursor-pointer w-[30%] text-white px-5 py-2 rounded-md text-sm font-medium mt-4 hover:bg-opacity-90">
           Add Dependent
         </button>
 
@@ -201,20 +196,20 @@ export default function Dependents() {
           <label className="text-sm text-[#1D2B48] font-medium">Notes</label>
           <textarea
             rows={4}
-            className="w-full mt-1 border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-[#1D2B48] focus:outline-none"
+            className="w-full text-[#616161] mt-1 border border-gray-300 rounded-md px-3 py-2 text-sm outline-0"
           />
         </div>
       </div>
 
       {/* Bottom Buttons */}
       <div className="flex justify-center gap-3 mt-6">
-        <button className="px-4 py-2 bg-[#2F3F5F] text-white rounded-md text-sm font-medium hover:bg-opacity-90">
+        <button className="px-4 py-2 cursor-pointer bg-[#2F3F5F] text-white rounded-md text-sm font-medium hover:bg-opacity-90">
           Previous
         </button>
-        <button className="px-4 py-2 bg-[#2F3F5F] text-white rounded-md text-sm font-medium hover:bg-opacity-90">
+        <button className="px-4 py-2 cursor-pointer bg-[#2F3F5F] text-white rounded-md text-sm font-medium hover:bg-opacity-90">
           Save
         </button>
-        <button className="px-4 py-2 bg-[#2F3F5F] text-white rounded-md text-sm font-medium hover:bg-opacity-90">
+        <button className="px-4 py-2 cursor-pointer bg-[#2F3F5F] text-white rounded-md text-sm font-medium hover:bg-opacity-90">
           Next
         </button>
       </div>
