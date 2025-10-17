@@ -22,7 +22,7 @@ export default function DeductionAndRent() {
                         <p className="text-[#3E3E3E] font-medium text-sm">Do you and your family(if any) have health coverage for the entire year 2024</p>
                         <ThreeOptionToggle
                             options={["YES", "NO", "P/Y"]}
-                            initial={healthCoverage}
+                            value={healthCoverage}
                             onChange={(value) => setHealthCoverage(value)}
                         />
                     </div>
