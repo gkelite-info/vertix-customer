@@ -17,6 +17,7 @@ function Header() {
   const { isAuthenticated, user, logout } = useAuth();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [customer, setCustomer] = useState<any>(null);
+  const allowedEmails = ["saralabose19@gmail.com", "vamshivadla@gkeliteinfo.com"];
 
   const linkClass = (href: string) =>
     `relative text-black font-medium
@@ -307,7 +308,7 @@ function Header() {
               Contact
             </Link>
           </div>
-          {customer?.email === "saralabose19@gmail.com" && (
+          {customer && allowedEmails.includes(customer.email) && (
             <button
               className="font-medium lg:px-2 bg-white text-black lg:w-[10%] lg:h-[65%] lg:rounded-full cursor-pointer"
               onClick={handlerefer}
