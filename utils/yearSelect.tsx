@@ -1,6 +1,6 @@
 "use client"
 // import YearSelector from "@/app/(pageNavbar)/YearSelector/YearSelector"
-import { getCustomer } from "@/app/api/SupabaseAPI/customerApi";
+import { getCustomer } from "@/app/api/SupabaseAPI/customer/customerApi";
 import { useEffect, useState } from "react"
 
 export default function YearSelect({ style = "justify-end" }: { style?: string }) {

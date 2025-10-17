@@ -27,7 +27,7 @@ export default function MainLayoutContent() {
     }
 
     return (
-        <div className="flex justify-between bg-red-400">
+        <div className="flex justify-between bg-white">
             <PageNavbar activeTab={activeTab} setActiveTab={setActiveTab} />
             <div className="w-[76%]">
                 {activeTab === "service" && <ManageFilingYear />}
