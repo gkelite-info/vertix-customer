@@ -14,7 +14,7 @@ function Header() {
 
   const pathname = usePathname()
   const [, setIsLoggedIn] = useState(false)
-  const { isAuthenticated, user, logout } = useAuth();
+  const { isAuthenticated, logout } = useAuth();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [customer, setCustomer] = useState<any>(null);
   const allowedEmails = ["saralabose19@gmail.com", "vamshivadla@gkeliteinfo.com"];

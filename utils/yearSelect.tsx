@@ -1,12 +1,18 @@
 "use client"
+import { useYear } from "@/app/api/context/yearContext";
 // import YearSelector from "@/app/(pageNavbar)/YearSelector/YearSelector"
 import { getCustomer } from "@/app/api/SupabaseAPI/customer/customerApi";
 import { useEffect, useState } from "react"
 
-export default function YearSelect({ style = "justify-end" }: { style?: string }) {
+interface YearSelectProps {
+  style?: string
+}
+
+export default function YearSelect({ style = "" }: YearSelectProps) {
   // const [selectedYear, setSelectedYear] = useState<number | null>(null);
   const [name, setName] = useState("");
   const [customerId, setCustomerId] = useState<string | number>("");
+  const { selectedYear, setSelectedYear } = useYear()
 
   useEffect(() => {
     const fetchCustomer = async () => {
@@ -27,7 +33,10 @@ export default function YearSelect({ style = "justify-end" }: { style?: string }
     <>
       <div className="bg-red-00 lg:h-30 lg:w-[100%] flex justify-center items-center lg:px-10 shadow-lg">
         <div className={`bg-red-00 h-[100%] lg:w-[68%] flex items-center justify-start ${style} w-[65%]`}>
-          <select name="" id="" className="text-black border rounded-sm p-1">
+          <select
+            value={selectedYear}
+            onChange={(e) => setSelectedYear(e.target.value)}
+            className="text-black border rounded-sm p-1">
             <option value="">Select Year</option>
             <option value="2020">2020</option>
             <option value="2021">2021</option>
