@@ -8,7 +8,7 @@ import DeductionDetails from "./deductionDetails/page"
 import FBAR_FATCA from "./fbar_fatca"
 import { ArrowBendUpLeft } from "phosphor-react"
 import { useRouter } from "next/navigation"
-import AboutYou from "./aboutyou"
+import AboutYou from "./aboutYou"
 
 type Tab =
   | "About You"

@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 const VISA_OPTIONS = ["L1", "L2", "L3"];
 
 export default function AboutYou(): React.ReactElement {
-    // Personal info
+
     const [firstName, setFirstName] = useState("");
     const [middleName, setMiddleName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -18,7 +18,6 @@ export default function AboutYou(): React.ReactElement {
     const [citizen, setCitizen] = useState(false);
     const [isMarried, setIsMarried] = useState(false);
 
-    // SSN / Visa
     const [yourSSN, setYourSSN] = useState("");
     const [yourSSNValue, setYourSSNValue] = useState("");
     const [visaJan, setVisaJan] = useState(VISA_OPTIONS[0]);
@@ -27,7 +26,6 @@ export default function AboutYou(): React.ReactElement {
     const [monthsInUS, setMonthsInUS] = useState("12");
     const [citizenshipCountry, setCitizenshipCountry] = useState("");
 
-    // Spouse info
     const [spouseFirstName, setSpouseFirstName] = useState("");
     const [spouseMiddleName, setSpouseMiddleName] = useState("");
     const [spouseLastName, setSpouseLastName] = useState("");
@@ -38,12 +36,10 @@ export default function AboutYou(): React.ReactElement {
     const [spouseSSN, setSpouseSSN] = useState("");
     const [spouseSSNValue, setSpouseSSNValue] = useState("");
 
-    // Spouse additional info
     const [spouseVisaJan, setSpouseVisaJan] = useState(VISA_OPTIONS[0]);
     const [spouseVisaDec, setSpouseVisaDec] = useState(VISA_OPTIONS[0]);
     const [spouseFirstEntryDate, setSpouseFirstEntryDate] = useState("");
     const [spouseMonthsInUS, setSpouseMonthsInUS] = useState("12");
-    const [spouseCitizenshipCountry, setSpouseCitizenshipCountry] = useState("");
 
 
 
@@ -65,86 +61,20 @@ export default function AboutYou(): React.ReactElement {
     }, []);
 
 
-    // const handleSave = async () => {
-    //     try {
-    //         const customer = await getCustomer();
-    //         if (!customer) throw new Error("Customer not found or not authenticated");
-
-    //         const customerId = customer.customerId;
-
-    //         const { data: spouseData, error: spouseError } = await supabase
-    //             .from("spouses")
-    //             .insert([
-    //                 {
-    //                     customerId,
-    //                     firstname: spouseFirstName,
-    //                     middlename: spouseMiddleName || null,
-    //                     lastname: spouseLastName,
-    //                     dob: spouseDOB ? new Date(spouseDOB).toISOString() : null,
-    //                     occupation: spouseOccupation || null,
-    //                     us_status: spouseUsStatus || "none",
-    //                     createdAt: new Date().toISOString(),
-    //                     updatedAt: new Date().toISOString(),
-    //                 },
-    //             ])
-    //             .select("spouseId")
-    //             .single();
-
-    //         if (spouseError) throw spouseError;
-    //         const spouseId = spouseData.spouseId;
-
-    //         const { data: aboutData, error: aboutError } = await supabase
-    //             .from("aboutyou")
-    //             .upsert(
-    //                 [
-    //                     {
-    //                         customerId,
-    //                         spouseId,
-    //                         isMarried: isMarried,
-    //                         yourSSNType: yourSSN,
-    //                         yourSSNValue,
-    //                         visaTypeJan: visaJan,
-    //                         visaTypeDec: visaDec,
-    //                         firstEntryDate: firstEntryDate ? new Date(firstEntryDate).toISOString() : null,
-    //                         monthsInUS: Number(monthsInUS),
-    //                         citizenshipCountry,
-    //                         createdAt: new Date().toISOString(),
-    //                         updatedAt: new Date().toISOString(),
-    //                     }
-    //                 ],
-    //                 { onConflict: "customerId" }
-    //             );
-
-    //         if (aboutError) console.error("Upsert error:", aboutError);
-
-
-
-
-    //         toast.success("Details saved successfully!");
-    //     } catch (error) {
-    //         console.error("Error saving data:", error);
-    //         toast.error("Failed to save details.");
-    //     }
-    // };
-
     const validateBeforeSubmit = () => {
-        // Personal info
+
         if (!firstName || !lastName) return "First and Last Name are required";
         if (!dob) return "Date of Birth is required";
         if (!occupation) return "Occupation is required";
 
-        // SSN / ITIN
         if (!yourSSN) return "SSN / ITIN type is required";
         if (!yourSSNValue) return "SSN / ITIN value is required";
 
-        // Visa dates
         if (!visaJan || !visaDec) return "Visa type selections are required";
 
-        // AboutYou
         if (!firstEntryDate) return "First entry date is required";
         if (!monthsInUS || isNaN(Number(monthsInUS))) return "Months in US must be a number";
 
-        // Spouse info if married
         if (isMarried) {
             if (!spouseFirstName || !spouseLastName) return "Spouse First and Last Name are required";
             if (!spouseDOB) return "Spouse Date of Birth is required";
@@ -153,7 +83,7 @@ export default function AboutYou(): React.ReactElement {
             if (!spouseSSNValue) return "Spouse SSN / ITIN value is required";
         }
 
-        return null; // no errors
+        return null;
     };
 
     const handleSave = async () => {
@@ -171,7 +101,6 @@ export default function AboutYou(): React.ReactElement {
 
             console.log("customer is", customer)
 
-            // Insert spouse first
             let spouseId: number | null = null;
             if (isMarried) {
                 const { data: spouseData, error: spouseError } = await supabase
@@ -197,12 +126,11 @@ export default function AboutYou(): React.ReactElement {
             }
 
 
-            // Upsert AboutYou
             const payload = {
                 customerId,
                 spouseId: isMarried ? spouseId : null,
                 isMarried,
-                yourSSNType: yourSSN || null,      // Enum safe
+                yourSSNType: yourSSN || null,
                 yourSSNValue: yourSSNValue || null,
                 visaTypeJan: visaJan || null,
                 visaTypeDec: visaDec || null,
