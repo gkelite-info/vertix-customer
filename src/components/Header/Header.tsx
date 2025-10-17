@@ -36,24 +36,30 @@ function Header() {
   }
   const cancelLogout = () => setShowLogoutModal(false)
 
+  const handlerefer = () =>{
+    router.push('/mainLayout')
+  }
 
   return (
     <>
       <div className="flex justify-center items-center bg-white sticky z-100 top-0 lg:h-25">
-        <header className="bg-[#1D2B48] sticky top-0 z-50 shadow-lg lg:mt-0 lg:h-15 lg:w-[95%] rounded-full flex justify-between items-center px-3 lg:gap-5">
-          <div className="bg-red-00 lg:h-[100%] lg:w-[80%] flex justify-center items-center lg:gap-10">
-            <Link href="/" className={`${linkClass("/")} text-white`}>
+        <header className="bg-[#1D2B48] sticky top-0 z-50 shadow-lg lg:mt-0 lg:h-15 lg:w-[95%] rounded-full flex justify-between items-center px-7 lg:gap-5">
+          <div className="bg-yellow-00 h-[100%] flex items-center justify-center">
+            <img src="/logo.jpeg" alt="" className="h-10 w-30" />
+          </div>
+          <div className="bg-red-00 lg:h-[100%] lg:w-[60%] flex justify-center items-center lg:gap-8">
+            <Link href="/" className={`${linkClass("/")} text-white p-2 hover:bg-white hover:text-[#1D2B48] transition-colors duration-200 rounded-full`}>
               Home
             </Link>
-            <Link href="/about" className={`${linkClass("/about")} text-white`}>
+            <Link href="/about" className={`${linkClass("/about")} text-white hover:bg-white hover:text-[#1D2B48] p-2 transition-colors duration-200 rounded-full`}>
               About us
             </Link>
             <div className="relative lg:h-[100%] group flex items-center cursor-pointer">
               <div className="flex items-center">
-                <Link href="" className={`${linkClass("")} text-white`}>
+                <Link href="" className={`${linkClass("")} text-white hover:bg-white hover:text-[#1D2B48] p-2 transition-colors duration-200 rounded-full`}>
                   Services
                 </Link>
-                <MdArrowDropDown className="text-white text-xl ml-1" />
+                <MdArrowDropDown className="text-white text-xl" />
               </div>
               <div className="absolute top-full left-0 hidden group-hover:block bg-white shadow-md rounded w-65 z-50">
                 <ul className="flex flex-col text-black">
@@ -222,7 +228,7 @@ function Header() {
               <div className="flex items-center">
                 <Link
                   href="/research"
-                  className={`${linkClass("/research")} text-white`}
+                  className={`${linkClass("/research")} text-white hover:bg-white hover:text-[#1D2B48] p-2 transition-colors duration-200 rounded-full`}
                 >
                   Research
                 </Link>
@@ -285,19 +291,19 @@ function Header() {
             </div>
 
             <Link
-              href="/contact"
-              className={`${linkClass("/contact")} text-white`}
+              href="/`contact`"
+              className={`${linkClass("/contact")} text-white hover:bg-white hover:text-[#1D2B48] p-2 transition-colors duration-200 rounded-full`}
             >
               Contact
             </Link>
           </div>
-          {/* <button
+          <button
             className="font-medium lg:px-2 bg-white text-black lg:w-[13%] lg:h-[65%] lg:rounded-full cursor-pointer"
             onClick={handlerefer}
           >
-            Refer a Friend
-          </button> */}
-          <div className="bg-gray-00 lg:h-[100%] flex justify-center items-center lg:w-[10%]">
+            Documents
+          </button>
+          <div className="bg-gray-00 lg:h-[100%] flex justify-end items-center lg:w-[10%]">
             {isAuthenticated ? (
               <button
                 onClick={handleLogout}

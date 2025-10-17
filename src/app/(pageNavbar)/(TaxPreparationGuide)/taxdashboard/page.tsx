@@ -1,8 +1,6 @@
 "use client"
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import YearSelect from "../../../../../utils/yearSelect"
-import GettingToKnow from "./gettingtoknow"
-import AboutYou from "./aboutYou"
 import Dependents from "./dependents"
 import ResidencyDetails from "./resendencyDetails"
 import IncomeDetails from "./incomeDetails/page"
@@ -10,9 +8,9 @@ import DeductionDetails from "./deductionDetails/page"
 import FBAR_FATCA from "./fbar_fatca"
 import { ArrowBendUpLeft } from "phosphor-react"
 import { useRouter } from "next/navigation"
+import AboutYou from "./aboutYou"
 
 type Tab =
-  | "Getting to know you"
   | "About You"
   | "Dependents"
   | "Residency Details"
@@ -23,10 +21,8 @@ type Tab =
 export default function TaxDashboard() {
   const router = useRouter();
 
-  const [activeTab, setActiveTab] = useState<Tab>("Getting to know you")
-
+  const [activeTab, setActiveTab] = useState<Tab | null>(null)
   const tabs: Tab[] = [
-    "Getting to know you",
     "About You",
     "Dependents",
     "Residency Details",
@@ -35,9 +31,18 @@ export default function TaxDashboard() {
     "FBAR/FATCA",
   ]
 
-  const handleBack = () => {
-    router.back()
-  }
+  useEffect(() => {
+    const savedTab = localStorage.getItem("activeTab") as Tab
+    setActiveTab(savedTab || "About You")
+  }, [])
+
+  useEffect(() => {
+    if (activeTab) localStorage.setItem("activeTab", activeTab)
+  }, [activeTab])
+
+  const handleBack = () => router.back()
+
+  if (!activeTab) return null
 
   return (
     <div className="bg-white mt-0 pb-7 w-[100%]">
@@ -65,7 +70,6 @@ export default function TaxDashboard() {
         </div>
 
         <div className="bg-indigo-00 shadow-md w-[60%] rounded-lg p-4 overflow-y-auto scrollbar-hide">
-          {activeTab === "Getting to know you" && <GettingToKnow />}
           {activeTab === "About You" && <AboutYou />}
           {activeTab === "Dependents" && <Dependents />}
           {activeTab === "Residency Details" && <ResidencyDetails />}
