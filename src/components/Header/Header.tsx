@@ -227,7 +227,7 @@ function Header() {
             <div className="relative group lg:h-[100%] flex items-center cursor-pointer">
               <div className="flex items-center">
                 <Link
-                  href="/research"
+                  href=""
                   className={`${linkClass("/research")} text-white hover:bg-white hover:text-[#1D2B48] p-2 transition-colors duration-200 rounded-full`}
                 >
                   Research
