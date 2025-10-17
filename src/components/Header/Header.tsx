@@ -45,7 +45,7 @@ function Header() {
       <div className="flex justify-center items-center bg-white sticky z-100 top-0 lg:h-25">
         <header className="bg-[#1D2B48] sticky top-0 z-50 shadow-lg lg:mt-0 lg:h-15 lg:w-[95%] rounded-full flex justify-between items-center px-7 lg:gap-5">
           <div className="bg-yellow-00 h-[100%] flex items-center justify-center">
-            <img src="/logo.jpeg" alt="" className="h-10 w-30" />
+            <img src="/logo.png" alt="logo.png" className="h-10 w-30" />
           </div>
           <div className="bg-red-00 lg:h-[100%] lg:w-[60%] flex justify-center items-center lg:gap-8">
             <Link href="/" className={`${linkClass("/")} text-white p-2 hover:bg-white hover:text-[#1D2B48] transition-colors duration-200 rounded-full`}>
@@ -291,14 +291,14 @@ function Header() {
             </div>
 
             <Link
-              href="/`contact`"
+              href="/contact"
               className={`${linkClass("/contact")} text-white hover:bg-white hover:text-[#1D2B48] p-2 transition-colors duration-200 rounded-full`}
             >
               Contact
             </Link>
           </div>
           <button
-            className="font-medium lg:px-2 bg-white text-black lg:w-[13%] lg:h-[65%] lg:rounded-full cursor-pointer"
+            className="font-medium lg:px-2 bg-white text-black lg:w-[10%] lg:h-[65%] lg:rounded-full cursor-pointer"
             onClick={handlerefer}
           >
             Documents

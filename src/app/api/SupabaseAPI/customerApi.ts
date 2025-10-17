@@ -1,7 +1,6 @@
 import { supabase } from "../../../../utils/supabase/client"
 
 
-
 export const getCustomer = async () => {
   try {
     const {
