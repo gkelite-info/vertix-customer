@@ -297,12 +297,12 @@ function Header() {
               Contact
             </Link>
           </div>
-          <button
+          {/* <button
             className="font-medium lg:px-2 bg-white text-black lg:w-[10%] lg:h-[65%] lg:rounded-full cursor-pointer"
             onClick={handlerefer}
           >
             Documents
-          </button>
+          </button> */}
           <div className="bg-gray-00 lg:h-[100%] flex justify-end items-center lg:w-[10%]">
             {isAuthenticated ? (
               <button
