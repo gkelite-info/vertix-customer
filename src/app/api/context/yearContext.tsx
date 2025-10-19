@@ -9,7 +9,7 @@ interface YearContextType {
 
 const YearContext = createContext<YearContextType | undefined>(undefined)
 
-export const YearProvider = ({ children }: { children: ReactNode }) => {
+export const YearProvider = ({ children }: { children: React.ReactNode }) => {
   const [selectedYear, setSelectedYear] = useState<string>("")
 
   useEffect(() => {

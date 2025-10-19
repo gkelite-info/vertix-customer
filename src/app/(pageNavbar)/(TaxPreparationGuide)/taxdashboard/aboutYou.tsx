@@ -8,7 +8,13 @@ import toast from "react-hot-toast";
 
 const VISA_OPTIONS = ["L1", "L2", "L3"];
 
-export default function AboutYou(): React.ReactElement {
+type Tab = | "Dependents"
+
+type AboutYouProps = {
+    setActiveTab: (tab: Tab) => void
+}
+
+export default function AboutYou({ setActiveTab }: AboutYouProps): React.ReactElement {
 
     const [firstName, setFirstName] = useState("");
     const [middleName, setMiddleName] = useState("");
@@ -40,9 +46,6 @@ export default function AboutYou(): React.ReactElement {
     const [spouseVisaDec, setSpouseVisaDec] = useState(VISA_OPTIONS[0]);
     const [spouseFirstEntryDate, setSpouseFirstEntryDate] = useState("");
     const [spouseMonthsInUS, setSpouseMonthsInUS] = useState("");
-
-
-
 
     useEffect(() => {
         const fetchCustomer = async () => {
@@ -502,9 +505,17 @@ export default function AboutYou(): React.ReactElement {
                         <h3 className="text-[#1D2B48] font-semibold ">Address Details</h3>
                         <p className="text-xs text-[#1D2B48] font-medium">Please input address to be reported on tax returns. This is used for communication purpose, so request you to input your current address.</p>
                     </div>
-                    <button onClick={handleSave} className="mt-5 bg-blue-500 text-white px-4 py-2 rounded">
-                        Save
-                    </button>
+                    <div className="bg-pink-00 flex items-end justify-center gap-5">
+                        <button onClick={handleSave} className="mt-5 w-[15%] bg-[#1D2A46] text-white font-medium text-sm cursor-pointer py-2 rounded">
+                            Save
+                        </button>
+
+                        <button
+                            onClick={() => setActiveTab("Dependents")}
+                            className="mt-5 w-[15%] bg-[#1D2A46] text-white py-2 text-sm font-medium cursor-pointer rounded">
+                            Next
+                        </button>
+                    </div>
                 </div>
             </div>
         </>
