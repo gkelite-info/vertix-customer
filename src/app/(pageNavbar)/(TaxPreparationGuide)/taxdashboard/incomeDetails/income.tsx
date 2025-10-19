@@ -3,8 +3,13 @@ import { useState } from "react";
 import ToggleSwitch from "../../../../../../utils/toggleSwitch";
 
 
-export default function IncomeDetails() {
+export default function IncomeDetails({ incomeDetails, setIncomeDetails, handleToggleChange, }: {
+    incomeDetails: any[];
+    setIncomeDetails: (data: any[]) => void;
+    handleToggleChange: (index: number, field: string, value: boolean) => void;
+}) {
 
+    const index = 0;
     const [taxPayerHasW2, setTaxPayerHasW2] = useState(false);
     const [spouseHasW2, setSpouseHasW2] = useState(false);
 
@@ -28,10 +33,16 @@ export default function IncomeDetails() {
                         <p style={{ fontSize: 10, color: "#1D2B48", fontWeight: '500' }}>Note : Please Upload W2 Form(S) in the Portal</p>
                     </div>
                     <div className="bg-indigo-00 w-[33%] flex items-center justify-center">
-                        <ToggleSwitch labelLeft="No" labelRight="Yes" value={taxPayerHasW2} onToggle={setTaxPayerHasW2} />
+                        <ToggleSwitch labelLeft="No" labelRight="Yes"
+                            value={incomeDetails[index]?.hasWagesSalaryTipsTaxpayer || false}
+                            onToggle={(val) => handleToggleChange(index, "hasWagesSalaryTipsTaxpayer", val)}
+                        />
                     </div>
                     <div className="bg-indigo-00 w-[33%] flex items-center justify-center">
-                        <ToggleSwitch labelLeft="No" labelRight="Yes" value={spouseHasW2} onToggle={setSpouseHasW2} />
+                        <ToggleSwitch labelLeft="No" labelRight="Yes"
+                            value={incomeDetails[index]?.hasWagesSalaryTipsSpouse || false}
+                            onToggle={(val) => handleToggleChange(index, "hasWagesSalaryTipsSpouse", val)}
+                        />
                     </div>
                 </div>
             </div>
