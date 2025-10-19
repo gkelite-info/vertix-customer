@@ -6,6 +6,15 @@ import ToggleSwitch from "../../../../../utils/toggleSwitch";
 import { upsertDependents } from "@/app/api/SupabaseAPI/customer/dependents";
 import toast from "react-hot-toast";
 
+type Tab =
+  | "About You"
+  | "Dependents"
+  | "Residency Details"
+
+type DependentsProps = {
+  setActiveTab: (tab: Tab) => void;
+};
+
 interface Dependent {
   firstName: string;
   middleName: string;
@@ -19,7 +28,7 @@ interface Dependent {
   hasChildcare: boolean;
 }
 
-export default function Dependents() {
+export default function Dependents({ setActiveTab }: DependentsProps) {
   const [dependents, setDependents] = useState<Dependent[]>([
     {
       firstName: "",
@@ -260,7 +269,7 @@ export default function Dependents() {
       ))}
       <button
         onClick={addDependent}
-        className="bg-[#2F3F5F] cursor-pointer w-[30%] text-white px-5 py-2 rounded-md text-sm font-medium mt-4 hover:bg-opacity-90"
+        className="bg-[#1D2A46] cursor-pointer w-[30%] text-white px-5 py-2 rounded-md text-sm font-medium mt-4 hover:bg-opacity-90"
       >
         Add Dependent
       </button>
@@ -272,15 +281,19 @@ export default function Dependents() {
         />
       </div>
       <div className="flex justify-center gap-3 mt-6">
-        <button className="px-4 py-2 cursor-pointer bg-[#2F3F5F] text-white rounded-md text-sm font-medium hover:bg-opacity-90">
+        <button
+          onClick={() => setActiveTab("About You")}
+          className="py-2 w-[13%] cursor-pointer bg-[#1D2A46] text-white rounded-md text-sm font-medium hover:bg-opacity-90">
           Previous
         </button>
         <button
           onClick={handleSave}
-          className="px-4 py-2 cursor-pointer bg-[#2F3F5F] text-white rounded-md text-sm font-medium hover:bg-opacity-90">
+          className="py-2 w-[13%] cursor-pointer bg-[#1D2A46] text-white rounded-md text-sm font-medium hover:bg-opacity-90">
           Save
         </button>
-        <button className="px-4 py-2 cursor-pointer bg-[#2F3F5F] text-white rounded-md text-sm font-medium hover:bg-opacity-90">
+        <button
+          onClick={() => setActiveTab("Residency Details")}
+          className="py-2 w-[13%] cursor-pointer bg-[#1D2A46] text-white rounded-md text-sm font-medium hover:bg-opacity-90">
           Next
         </button>
       </div>

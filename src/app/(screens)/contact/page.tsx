@@ -95,7 +95,7 @@ export default function Page() {
               <div className="text-center">
                 <button
                   type="submit"
-                  className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-3 rounded-md shadow-md transition"
+                  className="bg-[#1D2A46] cursor-pointer hover:bg-indigo-700 text-white font-semibold px-6 py-3 rounded-md shadow-md transition"
                 >
                   Send Message
                 </button>
