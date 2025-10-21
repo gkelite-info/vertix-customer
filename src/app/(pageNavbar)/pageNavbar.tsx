@@ -22,12 +22,12 @@ type PageNavbarProps = {
 function Page({ activeTab, setActiveTab }: PageNavbarProps) {
   const tabs = [
     { id: "service", label: "Manage Filing Year", icon: CalendarDots, width: "lg:w-[100%]" },
-    { id: "file-status", label: "Filing Progress Tracker", icon: Files, width: "lg:w-[100%]" },
     { id: "organizer", label: "Tax Preparation Guide", icon: Folder, width: "lg:w-[100%]" },
-    { id: "uploaded-by-vertix", label: "Document Uploaded by Vertix", icon: Upload, width: "lg:w-[100%]" },
-    { id: "summary", label: "Payment & Tax Summary", icon: FileArrowUp, width: "lg:w-[100%]" },
-    { id: "bank-info", label: "Banking Details", icon: ClipboardText, width: "lg:w-[100%]" },
     { id: "uploaded", label: "My Documents", icon: Cloud, width: "lg:w-[100%]" },
+    { id: "bank-info", label: "Banking Details", icon: ClipboardText, width: "lg:w-[100%]" },
+    { id: "summary", label: "Payment & Tax Summary", icon: FileArrowUp, width: "lg:w-[100%]" },
+    { id: "uploaded-by-vertix", label: "Document Uploaded by Vertix", icon: Upload, width: "lg:w-[100%]" },
+    { id: "file-status", label: "Filing Progress Tracker", icon: Files, width: "lg:w-[100%]" },
     { id: "refer", label: "Refer a Friend", icon: UserPlus, width: "lg:w-[100%]" },
     { id: "messages", label: "Chats or Secure Messaging", icon: ChatCenteredText, width: "lg:w-[100%]" },
     { id: "feedback", label: "Feedback", icon: ChatCircleText, width: "lg:w-[100%]" },

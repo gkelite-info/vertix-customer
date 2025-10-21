@@ -24,7 +24,7 @@ function ReferAFriend() {
                 }
               `}
             >
-              REFER
+              Refer
             </button>
             <button
               onClick={() => setActiveSection("registeredReferrals")}
@@ -35,7 +35,7 @@ function ReferAFriend() {
                 }
               `}
             >
-              REGISTERED REFERRALS
+              Registered Referrals
             </button>
           </div>
 
