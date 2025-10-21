@@ -1,5 +1,5 @@
 
-import ThreeOptionToggle from "../../../../../../utils/threeOptionToggle";
+import { useYear } from "@/app/api/context/yearContext";
 import ToggleSwitch from "../../../../../../utils/toggleSwitch";
 
 type DeductionAndRentProps = {
@@ -25,6 +25,8 @@ export default function DeductionAndRent({
     setRentAmount,
 }: DeductionAndRentProps) {
 
+    const { selectedYear } = useYear();
+
     const handleStateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const val = e.target.value
         if (/^[a-zA-Z\s]*$/.test(val)) {
@@ -44,12 +46,12 @@ export default function DeductionAndRent({
             <div className="bg-yellow-00 w-[100%] flex flex-col">
                 <div className="bg-red-00 flex items-center gap-3">
                     <h3 className="text-[#1D2B48] font-semibold">Deduction Details :</h3>
-                    <p className="text-[#3E3E3E] font-medium text-sm">Select the below listed deductions which will applicable for you in 2024</p>
+                    <p className="text-[#3E3E3E] font-medium text-sm">Select the below listed deductions which will applicable for you in {selectedYear}</p>
                 </div>
                 <div className="bg-red-00 flex items-start gap-3 mt-5">
                     <h3 className="text-[#1D2B48] font-semibold">Deduction Details :</h3>
                     <div className="flex flex-col bg-green-00 gap-3">
-                        <p className="text-[#3E3E3E] font-medium text-sm">Do you and your family(if any) have health coverage for the entire year 2024</p>
+                        <p className="text-[#3E3E3E] font-medium text-sm">Do you and your family(if any) have health coverage for the entire year {selectedYear}</p>
                         <ToggleSwitch
                             value={hasHealthCoverage}
                             onToggle={setHasHealthCoverage}

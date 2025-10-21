@@ -5,6 +5,7 @@ import ThreeOptionToggle from "../../../../../utils/threeOptionToggle";
 import { supabase } from "../../../../../utils/supabase/client";
 import { getCustomer } from "@/app/api/SupabaseAPI/customer/customerApi";
 import toast from "react-hot-toast";
+import { useYear } from "@/app/api/context/yearContext";
 
 const VISA_OPTIONS = ["L1", "L2", "L3"];
 
@@ -15,6 +16,8 @@ type AboutYouProps = {
 }
 
 export default function AboutYou({ setActiveTab }: AboutYouProps): React.ReactElement {
+    const { selectedYear } = useYear();
+    const [loading, setLoading] = useState(false);
 
     const [firstName, setFirstName] = useState("");
     const [middleName, setMiddleName] = useState("");
@@ -271,7 +274,7 @@ export default function AboutYou({ setActiveTab }: AboutYouProps): React.ReactEl
 
                     </div>
                     <div className="flex bg-green-00 w-[90%] mt-5 h-10 items-center justify-between">
-                        <h4 className="text-[#1D2B48] font-medium">Visa type as on Jan 1 2024</h4>
+                        <h4 className="text-[#1D2B48] font-medium">Visa type as on Jan 1 {selectedYear}</h4>
                         <select
                             value={visaJan}
                             onChange={(e) => setVisaJan(e.target.value)}
@@ -283,7 +286,7 @@ export default function AboutYou({ setActiveTab }: AboutYouProps): React.ReactEl
                         </select>
                     </div>
                     <div className="flex bg-green-00 w-[90%] mt-5 h-10 items-center justify-between">
-                        <h4 className="text-[#1D2B48] font-medium">Visa type as on Dec 31 2024</h4>
+                        <h4 className="text-[#1D2B48] font-medium">Visa type as on Dec 31 {selectedYear}</h4>
                         <select
                             value={visaDec}
                             onChange={(e) => setVisaDec(e.target.value)}
@@ -305,12 +308,12 @@ export default function AboutYou({ setActiveTab }: AboutYouProps): React.ReactEl
                                     setFirstEntryDate(value);
                                 }
                             }}
-                            placeholder="09/05/2021"
+                            placeholder="DD/MM/YYYY"
                             className="border bg-red-00 rounded-md text-[#3E3E3E] border-[#B5B5B5] w-[50%] h-[100%] px-3 text-sm focus:outline-none"
                         />
                     </div>
                     <div className="flex bg-green-00 w-[90%] mt-5 h-10 items-center justify-between">
-                        <h4 className="text-[#1D2B48] font-medium">No. of months stayed in US in 2024</h4>
+                        <h4 className="text-[#1D2B48] font-medium">No. of months stayed in US in {selectedYear}</h4>
                         <input
                             type="number"
                             value={monthsInUS}
@@ -458,7 +461,7 @@ export default function AboutYou({ setActiveTab }: AboutYouProps): React.ReactEl
 
                         </div>
                         <div className="flex bg-green-00 w-[100%] mt-5 h-10 items-center justify-between">
-                            <h4 className="text-[#1D2B48] font-medium">Visa type as on Jan 1 2024</h4>
+                            <h4 className="text-[#1D2B48] font-medium">Visa type as on Jan 1 {selectedYear}</h4>
                             <select
                                 value={spouseVisaJan}
                                 onChange={(e) => setSpouseVisaJan(e.target.value)}
@@ -470,7 +473,7 @@ export default function AboutYou({ setActiveTab }: AboutYouProps): React.ReactEl
                             </select>
                         </div>
                         <div className="flex bg-green-00 w-[100%] mt-5 h-10 items-center justify-between">
-                            <h4 className="text-[#1D2B48] font-medium">Visa type as on Dec 31 2024</h4>
+                            <h4 className="text-[#1D2B48] font-medium">Visa type as on Dec 31 {selectedYear}</h4>
                             <select
                                 value={spouseVisaDec}
                                 onChange={(e) => setSpouseVisaDec(e.target.value)}
@@ -486,12 +489,12 @@ export default function AboutYou({ setActiveTab }: AboutYouProps): React.ReactEl
                             <input type="text"
                                 value={spouseFirstEntryDate}
                                 onChange={(e) => setSpouseFirstEntryDate(e.target.value)}
-                                placeholder="09/05/2021"
+                                placeholder="DD/MM/YYYY"
                                 className="border bg-red-00 rounded-md text-[#3E3E3E] border-[#B5B5B5] w-[50%] h-[100%] px-3 text-sm focus:outline-none"
                             />
                         </div>
                         <div className="flex bg-green-00 w-[100%] mt-5 h-10 items-center justify-between">
-                            <h4 className="text-[#1D2B48] font-medium">No. of months stayed in US in 2024</h4>
+                            <h4 className="text-[#1D2B48] font-medium">No. of months stayed in US in {selectedYear}</h4>
                             <input
                                 type="number"
                                 value={spouseMonthsInUS}
@@ -506,8 +509,10 @@ export default function AboutYou({ setActiveTab }: AboutYouProps): React.ReactEl
                         <p className="text-xs text-[#1D2B48] font-medium">Please input address to be reported on tax returns. This is used for communication purpose, so request you to input your current address.</p>
                     </div>
                     <div className="bg-pink-00 flex items-end justify-center gap-5">
-                        <button onClick={handleSave} className="mt-5 w-[15%] bg-[#1D2A46] text-white font-medium text-sm cursor-pointer py-2 rounded">
-                            Save
+                        <button onClick={handleSave}
+                            disabled={loading}
+                            className="mt-5 w-[15%] bg-[#1D2A46] text-white font-medium text-sm cursor-pointer py-2 rounded">
+                            {loading ? "Saving" : "Save"}
                         </button>
 
                         <button
