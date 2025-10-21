@@ -145,9 +145,8 @@ export default function DeductionDetails({ setActiveTab }: DeductionProps) {
                 <button
                     onClick={() => setActiveTab("Income Details")}
                     className="py-2 w-[13%] cursor-pointer bg-[#1D2A46] text-white rounded-md text-sm font-medium hover:bg-opacity-90"
-                    disabled={loading}
                 >
-                    Previous
+                    Pervious
                 </button>
                 <button
                     onClick={handleSave}
@@ -159,7 +158,6 @@ export default function DeductionDetails({ setActiveTab }: DeductionProps) {
                 <button
                     onClick={() => setActiveTab("FBAR/FATCA")}
                     className="py-2 w-[13%] cursor-pointer bg-[#1D2A46] text-white rounded-md text-sm font-medium hover:bg-opacity-90"
-                    disabled={loading}
                 >
                     Next
                 </button>

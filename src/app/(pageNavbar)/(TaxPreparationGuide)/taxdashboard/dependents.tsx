@@ -5,6 +5,7 @@ import ThreeOptionToggle from "../../../../../utils/threeOptionToggle";
 import ToggleSwitch from "../../../../../utils/toggleSwitch";
 import { upsertDependents } from "@/app/api/SupabaseAPI/customer/dependents";
 import toast from "react-hot-toast";
+import { useYear } from "@/app/api/context/yearContext";
 
 type Tab =
   | "About You"
@@ -43,6 +44,8 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
       hasChildcare: false,
     },
   ]);
+
+  const { selectedYear } = useYear();
 
   const handleNameChange = (value: string, index: number, field: keyof Dependent) => {
     const filteredValue = value.replace(/[^a-zA-Z\s]/g, "");
@@ -130,7 +133,7 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
       <p className="text-sm text-[#3E3E3E] mb-6">
         Provide the details of dependents to claim benefits on your tax return.
         Along with all the other Dependents tests, it is mandatory that he/she
-        stays in US for at least 183 days in 2024
+        stays in US for at least 183 days in {selectedYear}
       </p>
 
       {dependents.map((dep, index) => (
@@ -199,7 +202,7 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
               />
             </div>
             <div className="flex justify-center items-center">
-              <label className="text-sm text-[#1D2B48] font-medium w-1/2">Months Stayed in US in 2024 <span className="text-red-500">*</span></label>
+              <label className="text-sm text-[#1D2B48] font-medium w-1/2">Months Stayed in US in {selectedYear} <span className="text-red-500">*</span></label>
               <input
                 type="text"
                 placeholder="Enter months"

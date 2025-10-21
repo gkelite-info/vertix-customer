@@ -1,4 +1,5 @@
 
+import { useYear } from "@/app/api/context/yearContext";
 import ToggleSwitch from "../../../../../../utils/toggleSwitch";
 
 type ContributionsProps = {
@@ -39,24 +40,25 @@ export default function Contributions({
     setAdditionalExpenses,
 }: ContributionsProps) {
 
+    const { selectedYear } = useYear();
 
     return (
         <>
             <div className="bg-red-00 w-[100%] mt-4 gap-2 flex flex-col">
                 <div className="flex items-center justify-between py-1">
-                    <h5 className="text-[#616161] font-medium text-sm">Did you pay cash charitable contributions in 2024?</h5>
+                    <h5 className="text-[#616161] font-medium text-sm">Did you pay cash charitable contributions in {selectedYear}?</h5>
                     <ToggleSwitch labelLeft="No" labelRight="Yes"
                         value={cashCharity} onToggle={setCashCharity}
                     />
                 </div>
                 <div className="flex items-center justify-between py-1">
-                    <h5 className="text-[#616161] font-medium text-sm">Did you pay Non-cash charitable contributions in 2024?</h5>
+                    <h5 className="text-[#616161] font-medium text-sm">Did you pay Non-cash charitable contributions in {selectedYear}?</h5>
                     <ToggleSwitch labelLeft="No" labelRight="Yes"
                         value={nonCashCharity} onToggle={setNonCashCharity}
                     />
                 </div>
                 <div className="flex items-center justify-between py-1 bg-green-00">
-                    <h5 className="text-[#616161] font-medium text-sm">Did you contribute to IRA for the year 2024?</h5>
+                    <h5 className="text-[#616161] font-medium text-sm">Did you contribute to IRA for the year {selectedYear}?</h5>
                     <ToggleSwitch labelLeft="No" labelRight="Yes"
                         value={contributedIRA} onToggle={setContributedIRA}
                     />
@@ -68,13 +70,13 @@ export default function Contributions({
                     />
                 </div>
                 <div className="flex items-center justify-between py-1">
-                    <h5 className="text-[#616161] font-medium text-sm">Did you pay Tution Fee to College in US in 2024?</h5>
+                    <h5 className="text-[#616161] font-medium text-sm">Did you pay Tution Fee to College in US in {selectedYear}?</h5>
                     <ToggleSwitch labelLeft="No" labelRight="Yes"
                         value={paidTuition} onToggle={setPaidTuition}
                     />
                 </div>
                 <div className="flex items-center justify-between py-1">
-                    <h5 className="text-[#616161] font-medium text-sm">Did you pay  state taxes due for prior years in current year 2024?</h5>
+                    <h5 className="text-[#616161] font-medium text-sm">Did you pay  state taxes due for prior years in current year {selectedYear}?</h5>
                     <ToggleSwitch labelLeft="No" labelRight="Yes"
                         value={paidPriorStateTaxes} onToggle={setPaidPriorStateTaxes}
                     />

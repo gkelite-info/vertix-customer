@@ -1,4 +1,5 @@
 
+import { useYear } from "@/app/api/context/yearContext";
 import ToggleSwitch from "../../../../../../utils/toggleSwitch";
 
 type MedicalExpensesProps = {
@@ -33,10 +34,12 @@ export default function MedicalExpenses({
     setPropertyTaxAmount,
 }: MedicalExpensesProps) {
 
+    const { selectedYear } = useYear();
+
     return (
         <>
             <div className="bg-pink-00 w-[100%] mt-5">
-                <h3 className="text-[#3E3E3E] font-medium text-sm text-start">Did you incur medical expenses for the 2024?</h3>
+                <h3 className="text-[#3E3E3E] font-medium text-sm text-start">Did you incur medical expenses for the {selectedYear}?</h3>
                 <div className="flex items-center justify-between py-1 mt-2">
                     <h5 className="text-[#616161] font-medium text-sm">Did you own  a home in USA which is used as personal residence</h5>
                     <ToggleSwitch labelLeft="No" labelRight="Yes"
@@ -50,7 +53,7 @@ export default function MedicalExpenses({
                     />
                 </div>
                 <div className="flex items-center justify-between py-1 mt-2">
-                    <h5 className="text-[#616161] font-medium text-sm">Personal property tax (EX: car annual resignation fee in 2024?</h5>
+                    <h5 className="text-[#616161] font-medium text-sm">Personal property tax (EX: car annual resignation fee in {selectedYear}?</h5>
                     <ToggleSwitch labelLeft="No" labelRight="Yes"
                         value={paidPropertyTax} onToggle={setPaidPropertyTax}
                     />

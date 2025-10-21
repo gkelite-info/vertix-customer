@@ -111,7 +111,7 @@ export default function MyDocuments() {
                 className="mt-4 font-medium w-[75%] text-sm bg-[#1D2B48] text-white px-5 py-2 rounded-lg flex gap-2 hover:bg-[#2c3e65] justify-center items-center cursor-pointer"
                 onClick={handleUpload}
               >
-                SUBMIT FEEDBACK
+                Upload
               </button>
             </div>
           </div>

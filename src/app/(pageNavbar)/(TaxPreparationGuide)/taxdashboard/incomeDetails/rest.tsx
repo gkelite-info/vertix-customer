@@ -1,6 +1,6 @@
-'use client'
-import { useState } from "react";
+
 import ToggleSwitch from "../../../../../../utils/toggleSwitch";
+import { useYear } from "@/app/api/context/yearContext";
 
 type RestProps = {
     incomeDetails: any[];
@@ -9,13 +9,7 @@ type RestProps = {
 
 export default function Rest({ incomeDetails, handleToggleChange }: RestProps) {
     const index = 0;
-
-    const [llcIncome, setLlcIncome] = useState(false)
-    const [selfEmployment, setSelfEmployment] = useState(false)
-    const [rentalIncome, setRentalIncome] = useState(false)
-    const [hsaDistribution, setHsaDistribution] = useState(false)
-    const [dividendIncome, setDividendIncome] = useState(false)
-    const [taxRefund, setTaxRefund] = useState(false)
+    const { selectedYear } = useYear();
 
     return (
         <>
@@ -42,14 +36,14 @@ export default function Rest({ incomeDetails, handleToggleChange }: RestProps) {
                     />
                 </div>
                 <div className="flex items-center justify-between py-1">
-                    <h5 className="text-[#616161] font-medium text-sm">Distributed any amount from HSA/MSA account in 2024?</h5>
+                    <h5 className="text-[#616161] font-medium text-sm">Distributed any amount from HSA/MSA account in {selectedYear}?</h5>
                     <ToggleSwitch labelLeft="No" labelRight="Yes"
                         value={incomeDetails[index]?.hasHsaDistribution || false}
                         onToggle={(val) => handleToggleChange(index, "hasHsaDistribution", val)}
                     />
                 </div>
                 <div className="flex items-center justify-between py-1">
-                    <h5 className="text-[#616161] font-medium text-sm">Did you receive Dividend Income in 2024?</h5>
+                    <h5 className="text-[#616161] font-medium text-sm">Did you receive Dividend Income in {selectedYear}?</h5>
                     <ToggleSwitch labelLeft="No" labelRight="Yes"
                         value={incomeDetails[index]?.hasDividendIncome || false}
                         onToggle={(val) => handleToggleChange(index, "hasDividendIncome", val)}
