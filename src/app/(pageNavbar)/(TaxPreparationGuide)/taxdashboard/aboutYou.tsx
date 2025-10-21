@@ -367,7 +367,7 @@ export default function AboutYou({ setActiveTab }: AboutYouProps): React.ReactEl
                             <input type="text"
                                 value={spouseFirstName}
                                 onChange={(e) => setSpouseFirstName(e.target.value)}
-                                placeholder="Dynamic user"
+                                placeholder="Enter First Name"
                                 className="border bg-red-00 rounded-md text-[#616161] border-[#B5B5B5] w-[50%] h-[100%] px-3 text-sm focus:outline-none"
                             />
                         </div>
@@ -376,7 +376,7 @@ export default function AboutYou({ setActiveTab }: AboutYouProps): React.ReactEl
                             <input type="text"
                                 value={spouseMiddleName}
                                 onChange={(e) => setSpouseMiddleName(e.target.value)}
-                                placeholder="Dynamic user"
+                                placeholder="Enter Middle Name"
                                 className="border bg-red-00 rounded-md text-[#616161] border-[#B5B5B5] w-[50%] h-[100%] px-3 text-sm focus:outline-none"
                             />
                         </div>
@@ -385,7 +385,7 @@ export default function AboutYou({ setActiveTab }: AboutYouProps): React.ReactEl
                             <input type="text"
                                 value={spouseLastName}
                                 onChange={(e) => setSpouseLastName(e.target.value)}
-                                placeholder="Dynamic user"
+                                placeholder="Enter Last Name"
                                 className="border bg-red-00 rounded-md text-[#616161] border-[#B5B5B5] w-[50%] h-[100%] px-3 text-sm focus:outline-none"
                             />
                         </div>
@@ -403,7 +403,7 @@ export default function AboutYou({ setActiveTab }: AboutYouProps): React.ReactEl
                             <input type="text"
                                 value={spouseOccupation}
                                 onChange={(e) => setSpouseOccupation(e.target.value)}
-                                placeholder="Sofware Engineer"
+                                placeholder="Software Engineer"
                                 className="border bg-red-00 rounded-md text-[#616161] border-[#B5B5B5] w-[50%] h-[100%] px-3 text-sm focus:outline-none"
                             />
                         </div>
