@@ -3,6 +3,8 @@
 import { useState } from "react"
 import YearSelect from "../../../../utils/yearSelect"
 import toast from "react-hot-toast"
+import { supabase } from "../../../../utils/supabase/client"
+import { getCustomer } from "@/app/api/SupabaseAPI/customer/customerApi"
 
 export default function MyDocuments() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
@@ -18,33 +20,69 @@ export default function MyDocuments() {
     setSelectedDocType(e.target.value)
   }
 
+  // const handleUpload = async () => {
+  //   if (!selectedFile || !selectedDocType) {
+  //     toast.error("Please select a file and document type")
+  //     return
+  //   }
+
+  //   const userId = localStorage.getItem("userId")
+  //   if (!userId) {
+  //     toast.error("User not logged in")
+  //     return
+  //   }
+
+  //   const formData = new FormData()
+  //   formData.append("file", selectedFile)
+  //   formData.append("docType", selectedDocType)
+  //   formData.append("userId", userId)
+
+  //   try {
+  //     const res = await fetch("/uploads/upload", {
+  //       method: "POST",
+  //       body: formData,
+  //     })
+  //     const data = await res.json()
+  //     toast.success("File uploaded successfully: " + data.photoURL)
+  //   } catch (err) {
+  //     console.error(err)
+  //     toast.error("Upload failed")
+  //   }
+  // }
+
   const handleUpload = async () => {
     if (!selectedFile || !selectedDocType) {
       toast.error("Please select a file and document type")
       return
     }
 
-    const userId = localStorage.getItem("userId")
-    if (!userId) {
-      toast.error("User not logged in")
-      return
-    }
-
-    const formData = new FormData()
-    formData.append("file", selectedFile)
-    formData.append("docType", selectedDocType)
-    formData.append("userId", userId)
-
     try {
-      const res = await fetch("/uploads/upload", {
-        method: "POST",
-        body: formData,
-      })
-      const data = await res.json()
-      toast.success("File uploaded successfully: " + data.photoURL)
-    } catch (err) {
-      console.error(err)
-      toast.error("Upload failed")
+      const customer = await getCustomer()
+      const userId = customer?.auth_id || customer?.id
+
+      if (!userId) {
+        toast.error("User data not found")
+        return
+      }
+
+      const filePath = `${userId}/${selectedDocType}/${selectedFile.name}`
+
+      const { data, error } = await supabase.storage
+        .from('user-uploads')
+        .upload(filePath, selectedFile, { upsert: true })
+
+      if (error) {
+        toast.error("Upload failed: " + error.message)
+        console.error(error)
+      } else {
+        const { data: publicData } = supabase.storage
+          .from('user-uploads')
+          .getPublicUrl(filePath)
+        toast.success("File uploaded successfully: " + publicData.publicUrl)
+      }
+    } catch (error: any) {
+      toast.error("Failed to get user information: " + error.message)
+      console.error(error)
     }
   }
 
@@ -73,9 +111,7 @@ export default function MyDocuments() {
               <option value="1099-misc">1099-MISC</option>
               <option value="mortgageInterest">Mortgage Interest</option>
               <option value="1098-t">1098-T</option>
-              <option value="foreignTaxCertificates">
-                Foreign Tax Certificate
-              </option>
+              <option value="foreignTaxCertificates">Foreign Tax Certificate</option>
               <option value="indianDocument">Indian Document</option>
               <option value="priorYearTaxReturn">Prior Year Tax Return</option>
               <option value="id">ID</option>
