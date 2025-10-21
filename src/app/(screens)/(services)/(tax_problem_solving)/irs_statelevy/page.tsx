@@ -1,6 +1,3 @@
-"use client"
-
-import Image from "next/image"
 
 function Page() {
   return (
@@ -19,16 +16,9 @@ function Page() {
             </p>
           </div>
           <div className="lg:w-[40%] bg-red-00 flex justify-center">
-            {/* <img
-              src="/aboutpage.png"
-              alt="aboutpage.png"
-              className="lg:h-[100%] lg:w-[74%] lg:rounded-lg"
-            /> */}
-            <Image
-              src="/aboutpage.png"
-              width={1200}
-              height={800}
-              alt="aboutpage.png"
+            <img
+              src="/irs.jpg"
+              alt="irs.jpg"
               className="lg:h-[100%] lg:w-[74%] lg:rounded-lg"
             />
           </div>

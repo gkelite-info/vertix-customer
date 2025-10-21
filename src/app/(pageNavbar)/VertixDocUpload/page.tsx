@@ -8,13 +8,13 @@ function VertixTaxPage() {
       <div className="bg-white lg:h-[100vh]">
         <YearSelect />
         <div className="bg-red-00 flex flex-col justify-start items-center lg:h-[80%] lg:pt-5 text-center">
-          <div className="bg-green-00 w-[60%] flex flex-col items-start">
+          <div className="bg-green-00 w-[90%] flex flex-col items-start">
             <h2 className="text-[#1D2B48] font-semibold">
               Files for review documents
             </h2>
             <div className="w-[100%] h-15 mt-2">
               <table className="w-full border-collapse border border-gray-300 bg-white shadow-md">
-                <thead>
+                <thead className="text-white">
                   <tr className="bg-[#4B5873] text-center">
                     <th className="border border-gray-300 px-4 py-2 text-sm font-semibold">
                       S.No
@@ -50,13 +50,13 @@ function VertixTaxPage() {
               </table>
             </div>
           </div>
-          <div className="bg-green-00 w-[60%] flex flex-col items-start mt-15">
+          <div className="bg-green-00 w-[90%] flex flex-col items-start mt-15">
             <h2 className="text-[#1D2B48] font-semibold">
               Files for documents for your records
             </h2>
             <div className="w-[100%] h-15 mt-2">
               <table className="w-full border-collapse border border-gray-300 bg-white shadow-md">
-                <thead>
+                <thead className="text-white">
                   <tr className="bg-[#4B5873] text-center">
                     <th className="border border-gray-300 px-4 py-2 text-sm font-semibold">
                       S.No

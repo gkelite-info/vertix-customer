@@ -1,6 +1,3 @@
-"use client"
-
-import Image from "next/image"
 
 function Page() {
   return (
@@ -14,7 +11,7 @@ function Page() {
         <div className="bg-yellow-00 lg:w-[90%] lg:mt-10 flex">
           <div className="lg:w-[60%] lg:pt-5 lg:pr-7">
             <p className="text-[#1C2A46] lg:text-sm lg:mt-2">
-              Shoonya Tax offers company incorporation services for foreigners
+              Vertix Tax offers company incorporation services for foreigners
               and US nationals at a competitive price in numerous states,
               including Delaware, New York, California, DC, etc.
             </p>
@@ -30,16 +27,9 @@ function Page() {
             </p>
           </div>
           <div className="lg:w-[40%] bg-red-00 flex justify-center">
-            {/* <img
-              src="/aboutpage.png"
-              alt="aboutpage.png"
-              className="lg:h-[100%] lg:w-[74%] lg:rounded-lg"
-            /> */}
-            <Image
-              src="/aboutpage.png"
-              width={1200}
-              height={800}
-              alt="aboutpage.png"
+            <img
+              src="/business_formation.jpg"
+              alt="business_formation.jpg"
               className="lg:h-[100%] lg:w-[74%] lg:rounded-lg"
             />
           </div>

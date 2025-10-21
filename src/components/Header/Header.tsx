@@ -6,13 +6,18 @@ import { useEffect, useState } from "react"
 import { useAuth } from "../AuthContext"
 import { MdArrowDropDown } from "react-icons/md"
 import { IoMdArrowDropright } from "react-icons/io"
+import LogoutModal from "../logoutModal/page"
+import { getCustomer } from "@/app/api/SupabaseAPI/customer/customerApi"
 
 function Header() {
   const router = useRouter()
 
   const pathname = usePathname()
   const [, setIsLoggedIn] = useState(false)
-  const { isAuthenticated, logout } = useAuth()
+  const { isAuthenticated, logout } = useAuth();
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [customer, setCustomer] = useState<any>(null);
+  const allowedEmails = ["saralabose19@gmail.com", "vamshivadla@gkeliteinfo.com"];
 
   const linkClass = (href: string) =>
     `relative text-black font-medium
@@ -22,46 +27,57 @@ function Header() {
          ${pathname === href ? "after:w-full" : "after:w-0"}`
 
   useEffect(() => {
+    const fetchCustomer = async () => {
+      const data = await getCustomer();
+      setCustomer(data);
+    };
+    fetchCustomer();
+  }, []);
+
+  useEffect(() => {
     const token = localStorage.getItem("token")
     setIsLoggedIn(!!token)
   }, [pathname])
 
-  const handleLogout = () => {
-    const confirmed = window.confirm("Are you sure you want to signout?")
-    if (confirmed) {
-      logout()
-      router.push('/login')
-    }
+  const handleLogout = () => setShowLogoutModal(true)
+  const confirmLogout = () => {
+    logout()
+    setShowLogoutModal(false)
+    router.push("/login")
   }
+  const cancelLogout = () => setShowLogoutModal(false)
 
   const handlerefer = () => {
-    router.push("/mainLayout")
+    router.push('/mainLayout')
   }
 
   return (
     <>
       <div className="flex justify-center items-center bg-white sticky z-100 top-0 lg:h-25">
-        <header className="bg-[#1D2B48] sticky top-0 z-50 shadow-lg lg:mt-0 lg:h-15 lg:w-[95%] rounded-full flex items-center px-3 lg:gap-5">
-          <div className="bg-red-00 lg:h-[100%] lg:w-[80%] flex justify-center items-center lg:gap-10">
-            <Link href="/" className={`${linkClass("/")} text-white`}>
+        <header className="bg-[#1D2B48] sticky top-0 z-50 shadow-lg lg:mt-0 lg:h-15 lg:w-[95%] rounded-full flex justify-between items-center px-7 lg:gap-5">
+          <div className="bg-yellow-00 h-[100%] flex items-center justify-center">
+            <img src="/logo.png" alt="logo.png" className="h-10 w-30" />
+          </div>
+          <div className="bg-red-00 lg:h-[100%] lg:w-[60%] flex justify-center items-center lg:gap-8">
+            <Link href="/" className={`${linkClass("/")} text-white p-2 hover:bg-white hover:text-[#1D2B48] transition-colors duration-200 rounded-full`}>
               Home
             </Link>
-            <Link href="/about" className={`${linkClass("/about")} text-white`}>
+            <Link href="/about" className={`${linkClass("/about")} text-white hover:bg-white hover:text-[#1D2B48] p-2 transition-colors duration-200 rounded-full`}>
               About us
             </Link>
             <div className="relative lg:h-[100%] group flex items-center cursor-pointer">
               <div className="flex items-center">
-                <Link href="" className={`${linkClass("")} text-white`}>
+                <Link href="" className={`${linkClass("")} text-white hover:bg-white hover:text-[#1D2B48] p-2 transition-colors duration-200 rounded-full`}>
                   Services
                 </Link>
-                <MdArrowDropDown className="text-white text-xl ml-1" />
+                <MdArrowDropDown className="text-white text-xl" />
               </div>
               <div className="absolute top-full left-0 hidden group-hover:block bg-white shadow-md rounded w-65 z-50">
                 <ul className="flex flex-col text-black">
                   <li className="relative group/submenu">
                     <div className="flex items-center justify-between lg:pr-1 hover:bg-gray-100 hover:rounded">
                       <Link href="" className="block px-4 py-2 lg:text-sm">
-                        Tax
+                        Tax Filing
                       </Link>
                       <IoMdArrowDropright className="text-black text-lg" />
                     </div>
@@ -69,18 +85,18 @@ function Header() {
                       <ul className="flex flex-col text-black">
                         <li>
                           <Link
-                            href="/individualtax"
+                            href="/individual"
                             className="block px-4 py-2 text-sm hover:bg-gray-100 hover:rounded"
                           >
-                            Individual Tax
+                            Individual
                           </Link>
                         </li>
                         <li>
                           <Link
-                            href="/businesstax"
+                            href="/business"
                             className="block px-4 py-2 text-sm hover:bg-gray-100 hover:rounded"
                           >
-                            Business Tax
+                            Business
                           </Link>
                         </li>
                       </ul>
@@ -89,7 +105,7 @@ function Header() {
                   <li className="relative group/submenu">
                     <div className="flex items-center justify-between lg:pr-1 hover:bg-gray-100 hover:rounded">
                       <Link href="" className="block px-4 py-2 lg:text-sm">
-                        Advisory
+                        Expert Tax Advice
                       </Link>
                       <IoMdArrowDropright className="text-black text-lg" />
                     </div>
@@ -116,35 +132,32 @@ function Header() {
                   </li>
                   <li>
                     <Link
-                      href="/standard_guarantee"
+                      href="/our_accuracy_promise"
                       className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
                     >
-                      Standard Guarantee
+                      Our Accuracy Promise
                     </Link>
                   </li>
                   <li>
                     <Link
-                      href="/safeguarding_info"
+                      href="/data_protection_privacy"
                       className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
                     >
-                      Safeguarding your Information
+                      Data Protection & Privacy
                     </Link>
                   </li>
                   <li>
                     <Link
-                      href="/tax_planning"
+                      href="/smart_tax_strategy"
                       className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
                     >
-                      Tax Planning
+                      Smart Tax Strategy
                     </Link>
                   </li>
                   <li className="relative group/submenu">
                     <div className="flex items-center justify-between lg:pr-1 hover:bg-gray-100 hover:rounded">
-                      <Link
-                        href="/services/tax"
-                        className="block px-4 py-2 lg:text-sm"
-                      >
-                        Tax Problem Solving
+                      <Link href="#" className="block px-4 py-2 lg:text-sm">
+                        IRS Issue Resolution
                       </Link>
                       <IoMdArrowDropright className="text-black text-lg" />
                     </div>
@@ -180,42 +193,42 @@ function Header() {
                   </li>
                   <li>
                     <Link
-                      href="/small_business"
+                      href="/business_tax_services"
                       className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
                     >
-                      Small Business
+                      Business Tax Services
                     </Link>
                   </li>
                   <li>
                     <Link
-                      href="/abroad_taxpayers"
+                      href="/expats_overseas_filers"
                       className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
                     >
-                      Tax Payers Living Abroad
+                      Expats & Overseas Filers
                     </Link>
                   </li>
                   <li>
                     <Link
-                      href="/tax_nonresidents"
+                      href="/non_citizen_tax_guidance"
                       className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
                     >
-                      Taxes for NON-Citizens
+                      Non-Citizen Tax Guidance
                     </Link>
                   </li>
                   <li>
                     <Link
-                      href="/itin"
+                      href="/itin_application_help"
                       className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
                     >
-                      Itin
+                      ITIN Application Help
                     </Link>
                   </li>
                   <li>
                     <Link
-                      href="/financial_accounts"
+                      href="/foreign_account_reporting"
                       className="block px-4 py-2 hover:bg-gray-100 hover:rounded lg:text-sm"
                     >
-                      Financial accounts outside the United States
+                      Foreign Account Reporting (FBAR)
                     </Link>
                   </li>
                 </ul>
@@ -225,8 +238,8 @@ function Header() {
             <div className="relative group lg:h-[100%] flex items-center cursor-pointer">
               <div className="flex items-center">
                 <Link
-                  href="/research"
-                  className={`${linkClass("/research")} text-white`}
+                  href=""
+                  className={`${linkClass("/research")} text-white hover:bg-white hover:text-[#1D2B48] p-2 transition-colors duration-200 rounded-full`}
                 >
                   Research
                 </Link>
@@ -234,6 +247,22 @@ function Header() {
               </div>
               <div className="absolute top-full left-0 hidden group-hover:block bg-white shadow-md rounded mt-0 w-55 z-50">
                 <ul className="flex flex-col text-black">
+                  <li>
+                    <Link
+                      href="/tax_treaties"
+                      className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
+                    >
+                      Tax Treaties
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/elections"
+                      className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
+                    >
+                      Elections
+                    </Link>
+                  </li>
                   <li>
                     <div className="flex items-center justify-between lg:pr-1 hover:bg-gray-100 hover:rounded">
                       <Link
@@ -257,23 +286,7 @@ function Header() {
                       href="/reit"
                       className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
                     >
-                      Reti
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="/tax_treaties"
-                      className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
-                    >
-                      Tax Treaties
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="/elections"
-                      className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
-                    >
-                      Elections
+                      REIT
                     </Link>
                   </li>
                   <li>
@@ -290,18 +303,21 @@ function Header() {
 
             <Link
               href="/contact"
-              className={`${linkClass("/contact")} text-white`}
+              className={`${linkClass("/contact")} text-white hover:bg-white hover:text-[#1D2B48] p-2 transition-colors duration-200 rounded-full`}
             >
               Contact
             </Link>
           </div>
-          <button
-            className="font-medium lg:px-2 bg-white text-black lg:w-[13%] lg:h-[65%] lg:rounded-full cursor-pointer"
-            onClick={handlerefer}
-          >
-            Refer a Friend
-          </button>
-          <div className="bg-gray-00 lg:h-[100%] flex justify-center items-center lg:w-[10%]">
+          {customer && allowedEmails.includes(customer.email) && (
+            <button
+              className="font-medium lg:px-2 bg-white text-black lg:w-[10%] lg:h-[65%] lg:rounded-full cursor-pointer"
+              onClick={handlerefer}
+            >
+              Documents
+            </button>
+          )}
+
+          <div className="bg-gray-00 lg:h-[100%] flex justify-end items-center lg:w-[10%]">
             {isAuthenticated ? (
               <button
                 onClick={handleLogout}
@@ -320,6 +336,11 @@ function Header() {
           </div>
         </header>
       </div>
+      <LogoutModal
+        isOpen={showLogoutModal}
+        onConfirm={confirmLogout}
+        onCancel={cancelLogout}
+      />
     </>
   )
 }

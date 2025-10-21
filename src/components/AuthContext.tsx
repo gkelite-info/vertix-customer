@@ -2,6 +2,8 @@
 
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
+import { supabase } from "../../utils/supabase/client";
+import toast from "react-hot-toast";
 
 interface User {
   customerId: string;
@@ -67,12 +69,27 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const logout = async () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("customerId");
+  try {
+    const { error } = await supabase.auth.signOut()
+    if (error) {
+      console.error("Supabase logout error:", error.message)
+      toast.error("Logout failed. Please try again.")
+      return
+    }
 
-    setIsAuthenticated(false);
-    setUser(null);
-  };
+    localStorage.removeItem("token")
+    localStorage.removeItem("customerId")
+
+    setIsAuthenticated(false)
+    setUser(null)
+    toast.success("Logged out successfully")
+  } catch (err) {
+    console.error("Unexpected logout error:", err)
+    toast.error("An unexpected error occurred during logout.")
+  }
+}
+
+
 
   return (
     <AuthContext.Provider value={{ isAuthenticated, user, login, logout }}>

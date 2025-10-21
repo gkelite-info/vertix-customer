@@ -2,7 +2,11 @@
 
 import { useRouter } from "next/navigation"
 import { useState } from "react"
+import toast from "react-hot-toast"
 import { Icon } from "@iconify/react"
+import { supabase } from "../../../../utils/supabase/client"
+import { insertCustomer } from "@/app/api/SupabaseAPI/customer/customerApi"
+import TimezoneSelect from "../../../../utils/timezone"
 
 // const countries = [
 //   "United States",
@@ -58,6 +62,7 @@ import { Icon } from "@iconify/react"
 
 export default function Page() {
   const router = useRouter()
+  const [timezone, setTimezone] = useState("");
 
   const [formData, setFormData] = useState({
     firstname: "",
@@ -66,16 +71,24 @@ export default function Page() {
     phone: "",
     password: "",
     confirmPassword: "",
+    timezone: "",
   })
-  // const [error, setError] = useState("");
   const [, setLoading] = useState(false)
-  const [, setPhone] = useState("")
   const [, setEmail] = useState("")
   const [, setEmailError] = useState("")
-  // const [phoneError, setPhoneError] = useState('');
   const [remember, setRemember] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [phoneCode, setPhoneCode] = useState("");
+  const [phone, setPhone] = useState("");
+
+  const handlePhoneCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    if (/^[+0-9]*$/.test(val)) {
+      setPhoneCode(val);
+      setFormData((prev) => ({ ...prev, phone: val + phone }));
+    }
+  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -104,8 +117,8 @@ export default function Page() {
 
   const handlePhoneChange = (e: { target: { value: string } }) => {
     let value = e.target.value.replace(/[^0-9-()+ ]/g, "")
-    if (value.length > 13 || value.length < 13) {
-      value = value.substring(0, 13)
+    if (value.length > 10 || value.length < 10) {
+      value = value.substring(0, 10)
     }
     setPhone(value)
     setFormData((prev) => ({ ...prev, phone: value }))
@@ -113,66 +126,75 @@ export default function Page() {
 
   const handleSignup = async () => {
     if (!formData.firstname) {
-      alert("First name is required!")
-      return
+      toast.error("First name is required!");
+      return;
     }
     if (!formData.lastname) {
-      alert("Last name is required!")
-      return
+      toast.error("Last name is required!");
+      return;
     }
     if (!formData.email) {
-      alert("Email is required!")
-      return
+      toast.error("Email is required!");
+      return;
     }
     if (!formData.phone) {
-      alert("Phone number is required!")
-      return
+      toast.error("Phone number is required!");
+      return;
     }
     if (!formData.password) {
-      alert("Password is required!")
-
-      return
+      toast.error("Password is required!");
+      return;
     }
     if (!formData.confirmPassword) {
-      alert("Confirm Password is required!")
-      return
+      toast.error("Confirm Password is required!");
+      return;
     }
     if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match!")
+      toast.error("Passwords do not match!");
       setFormData((prev) => ({
         ...prev,
         password: "",
         confirmPassword: "",
-      }))
-      return
+      }));
+      return;
     }
-
-    setLoading(true)
 
     try {
-      const res = await fetch(
-        "http://localhost:5000/api/v1/vertix/customer/register",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
-        }
-      )
+      setLoading(true);
 
-      const data = await res.json()
+      const { data, error } = await supabase.auth.signUp({
+        email: formData.email,
+        password: formData.password,
+        options: {
+          emailRedirectTo: "https://www.vertixtax.com/verify-email",
+        },
+      });
 
-      if (!res.ok) {
-        throw new Error(data.message || "Signup failed")
+      if (error) throw error;
+
+      const userId = data?.user?.id;
+
+      if (userId) {
+        await insertCustomer({
+          auth_id: userId,
+          firstname: formData.firstname,
+          lastname: formData.lastname,
+          phone: phoneCode + formData.phone,
+          email: formData.email,
+          timezone: formData.timezone,
+        });
       }
-      alert("Registration successful!")
-      router.push("/login")
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
+      toast.success("Registration successful! Please check your email to confirm.");
+      router.push("/login");
     } catch (err: any) {
-      alert(err.message)
+      console.error(err);
+      toast.error(err.message);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
+
 
   return (
     <>
@@ -205,7 +227,7 @@ export default function Page() {
                     className="text-black font-medium border border-b-2 border-t-0 border-r-0 border-l-0 border-[#D0D0D0] focus:outline-none focus:ring-0"
                   />
                 </div>
-                <div className="lg:w-[100%] lg:h-[10%] flex items-center border border-b-2 border-l-0 border-t-0 border-r-0 border-[#D0D0D0] lg:gap-2">
+                <div className="lg:w-[100%] bg-green-00 lg:h-[10%] flex items-center border border-b-2 border-l-0 border-t-0 border-r-0 border-[#D0D0D0] lg:gap-2">
                   <Icon
                     icon="line-md:email-filled"
                     className="text-[#979797] w-6 h-6"
@@ -218,27 +240,33 @@ export default function Page() {
                     className="lg:h-[100%] text-black lg:w-[100%] font-medium lg:p-2 lg:ml-2 border-none focus:outline-none focus:ring-0"
                   />
                 </div>
-                <div className="lg:w-[100%] lg:h-[10%] flex items-center border border-b-2 border-l-0 border-t-0 border-r-0 border-[#D0D0D0] lg:gap-2">
-                  {/* <Icon icon="line-md:phone-filled" className="text-[#979797] w-6 h-6" /> */}
-                  <select
-                    name="countrycode"
-                    id="countrycode"
-                    className="text-[#1D2B48] text-black h-5 w-15 flex items-center focus:outline-none"
-                  >
-                    <option value="+">+</option>
-                    <option value="+91">+91</option>
-                    <option value="+1">+1</option>
-                    <option value="+44">+44</option>
-                    <option value="+61">+61</option>
-                  </select>
+                <div className="lg:w-[100%] lg:h-[10%] flex items-center border border-b-2 border-l-0 border-t-0 border-r-0 border-[#D0D0D0] lg:gap-3.5">
+                  {/* <Icon icon="line-md:phone" className="text-[#979797] w-6 h-6" /> */}
                   <input
-                    id="phone"
+                    type="text"
+                    placeholder="+1"
+                    value={phoneCode}
+                    onChange={handlePhoneCodeChange}
+                    className="border border-gray-300 rounded text-[#1D2B48] px-2 py-2 mt-1 focus:outline-none w-[15%]"
+                    maxLength={4}
+                    required
+                  />
+                  <input
+                    type="number"
+                    placeholder="Enter your Phone"
                     value={formData.phone}
                     onChange={handlePhoneChange}
-                    placeholder="Enter your Mobile number"
-                    className="lg:h-[100%] lg:w-[100%] text-black font-medium lg:p-2 border-none focus:outline-none focus:ring-0"
+                    className="w-[65%] rounded text-black px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
+                    required
                   />
                 </div>
+                <TimezoneSelect
+                  width="w-[100%]"
+                  value={formData.timezone}
+                  onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                    setFormData((prev) => ({ ...prev, timezone: e.target.value }))
+                  }
+                />
                 <div className="lg:w-[100%] lg:h-[10%] flex items-center border border-b-2 border-l-0 border-t-0 border-r-0 border-[#D0D0D0] lg:pr-2 lg:gap-2">
                   <Icon
                     icon="weui:lock-filled"
@@ -272,7 +300,7 @@ export default function Page() {
                     className="lg:h-[100%] lg:w-[100%] text-black font-medium lg:p-2 lg:ml-2 border-none focus:outline-none focus:ring-0"
                     onKeyDown={(e) => {
                       if (e.key === "Enter") {
-                        handleSignup();
+                        handleSignup()
                       }
                     }}
                   />
@@ -299,7 +327,7 @@ export default function Page() {
                 <div className="bg-green-00 lg:h-[20%] flex flex-col lg:gap-2 lg:mt-2 items-center">
                   <button
                     type="button"
-                    className="text-white lg:h-[65%] lg:w-[100%] text-lg font-medium lg:rounded-full bg-[#1D2B48] cursor-pointer"
+                    className="text-white lg:h-[50%] lg:w-[100%] text-lg font-medium lg:rounded-full bg-[#1D2B48] cursor-pointer"
                     onClick={handleSignup}
                   >
                     Create Account !

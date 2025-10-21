@@ -3,6 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { RxCross2 } from "react-icons/rx";
+import { supabase } from "../../../../utils/supabase/client";
+import toast from "react-hot-toast";
 
 
 function ConsentPage() {
@@ -12,16 +14,30 @@ function ConsentPage() {
     const handleAccept = async () => {
         setLoading(true);
 
-        const token = localStorage.getItem("token");
-        await fetch("http://localhost:5000/api/v1/vertix/customer/consent", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`,
-            }
-        });
-        setLoading(false);
-        router.push('/');
+        const user = supabase.auth.getUser();
+
+        const { data: currentUser, error: userError } = await user;
+        if (userError || !currentUser?.user) {
+            setLoading(false);
+            alert("User not found or not logged in.");
+            return;
+        }
+
+        try {
+            const { data, error } = await supabase
+                .from("vertixcustomers")
+                .update({ is_consent_filled: true })
+                .eq("auth_id", currentUser.user.id);
+
+            if (error) throw error;
+
+            toast.success("Consent accepted successfully!");
+            router.push("/construction");
+        } catch (err: any) {
+            toast.error(err.message || "Failed to update consent.");
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -87,6 +103,11 @@ function ConsentPage() {
                         <input
                             type="text"
                             className="text-[#1D2B48] w-[19%] text-xs border border-b-1 border-l-0 border-r-0 border-t-0 focus:outline-none ml-2"
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter") {
+                                    handleAccept();
+                                }
+                            }}
                         />
                     </div>
                     <p className="text-start text-xs mt-5 text-[#616161]">

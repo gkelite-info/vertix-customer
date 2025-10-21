@@ -1,97 +1,120 @@
-"use client"
-import { useAuth } from "@/components/AuthContext"
-import { Icon } from "@iconify/react/dist/iconify.js"
-import { useRouter } from "next/navigation"
-import { useState } from "react"
+"use client";
+
+import { useAuth } from "@/components/AuthContext";
+import { Icon } from "@iconify/react/dist/iconify.js";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import { supabase } from "../../../../utils/supabase/client";
 
 export default function Page() {
-  const router = useRouter()
+  const router = useRouter();
 
-  const [email, setEmail] = useState("")
-  const [emailError, setEmailError] = useState("")
-  const [showPassword, setShowPassword] = useState(false)
-  const [password, setPassword] = useState("")
-  const [passwordError, setPasswordError] = useState("")
-  const [error, setError] = useState("")
-  const [remember, setRemember] = useState(false)
-  // const [alertMsg, setAlertMsg] = useState<string | null>(null);
+  const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [password, setPassword] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [error, setError] = useState("");
+  const [remember, setRemember] = useState(false);
 
   const handleEmailChange = (e: { target: { value: string } }) => {
-    const value = e.target.value
-    setEmail(value)
+    const value = e.target.value;
+    setEmail(value);
 
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    setEmailError(emailRegex.test(value) ? "" : "Please enter a valid email address");
+  };
 
-    if (!emailRegex.test(value)) {
-      setEmailError("Please enter a valid email address")
-    } else {
-      setEmailError("")
-    }
-  }
   const handlePasswordChange = (e: { target: { value: string } }) => {
-    const value = e.target.value
-    setPassword(value)
+    const value = e.target.value;
+    setPassword(value);
 
-    if (value.length < 6) {
-      setPasswordError("Password must be at least 6 characters long")
-    } else {
-      setPasswordError("")
-    }
-  }
+    setPasswordError(value.length >= 6 ? "" : "Password must be at least 6 characters long");
+  };
 
-  const { login } = useAuth()
+  const { login } = useAuth();
 
   const handleLogin = async () => {
     try {
+      let hasError = false;
+
+      // Email validation
       if (!email) {
-        setError("Email required to login")
-        return
+        toast.error("Email is required.");
+        hasError = true;
+      } else if (!/^\S+@\S+\.\S+$/.test(email)) {
+        toast.error("Please enter a valid email address.");
+        hasError = true;
       }
 
+      // Password validation
       if (!password) {
-        setError("Password is required.")
-        return
+        toast.error("Password is required.");
+        hasError = true;
+      } else if (password.length < 6) {
+        toast.error("Password must be at least 6 characters.");
+        hasError = true;
       }
 
-      const res = await fetch(
-        "http://localhost:5000/api/v1/vertix/customer/login",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password }),
-        }
-      )
+      if (hasError) return;
 
+      // Supabase login
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
-      const data = await res.json()
-      if (!res.ok) {
-        if (res.status === 404) {
-          setError("New user? Create an account.")
-        } else if (res.status === 401) {
-          setError("Password is incorrect.")
+      if (error) {
+        if (error.status === 400 && error.message.includes("Invalid login credentials")) {
+          toast.error("Invalid email or password.");
         } else {
-          setError(data.message || "Login failed")
+          console.error("Supabase Auth Error:", error.message);
+          toast.error(error.message || "Login failed via Supabase.");
         }
-        return
+        return;
       }
 
-      login(data.token)
+      if (data.session && data.user) {
+        // Save JWT in context
+        login(data.session.access_token);
 
-      if (!data.is_consent_filled) {
-        router.push("/consent")
+        // Fetch user consent status
+        const { data: customerData, error: profileError } = await supabase
+          .from("vertixcustomers")
+          .select("is_consent_filled")
+          .eq("email", email)
+          .single();
+
+        if (profileError) {
+          console.error("Profile Fetch Error:", profileError.message);
+          toast.error("Login successful, but profile data failed to load.");
+          router.push("/");
+          return;
+        }
+
+        const isConsentFilled = customerData?.is_consent_filled;
+
+        if (!isConsentFilled) {
+          router.push("/consent");
+        } else {
+          router.push("/construction");
+          setTimeout(() => toast.success("Login successful"), 1000);
+        }
       } else {
-        router.push("/")
+        toast.error("Login failed. No session or user data.");
       }
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (err) {
-      setError("Invalid credentials or server error")
+    } catch (err: any) {
+      console.error("Login error:", err);
+      toast.error("An unexpected error occurred. Please try again.");
     }
-  }
+  };
 
   const handlesignUp = () => {
-    router.push("/signup")
-  }
+    router.push("/signup");
+  };
 
+  // --------------------- UI Below Remains Unchanged ---------------------
   return (
     <>
       <div className="bg-white min-h-screen lg:h-[100vh] flex justify-center items-center p-4 sm:p-6 md:p-0 lg:p-0">
@@ -149,9 +172,7 @@ export default function Page() {
                   />
                 </div>
                 {passwordError && (
-                  <p className="text-red-500 text-xs mt-1">
-                    {passwordError}
-                  </p>
+                  <p className="text-red-500 text-xs mt-1">{passwordError}</p>
                 )}
               </div>
               <div className="flex justify-between items-center mt-6 mb-8">
@@ -170,7 +191,10 @@ export default function Page() {
                     Remember Password
                   </label>
                 </div>
-                <p className="font-medium text-xs sm:text-sm border-b border-[#3A4969] text-[#3A4969] cursor-pointer">
+                <p
+                  className="font-medium text-xs sm:text-sm border-b border-[#3A4969] text-[#3A4969] cursor-pointer"
+                  onClick={() => router.push("/forgot_password")}
+                >
                   Forgot Password ?
                 </p>
               </div>
@@ -193,15 +217,10 @@ export default function Page() {
                   </p>
                 </div>
               </div>
-              {error && (
-                <p className="text-red-500 text-center mt-4 text-sm">
-                  {error}
-                </p>
-              )}
             </div>
           </div>
         </div>
       </div>
     </>
-  )
+  );
 }
