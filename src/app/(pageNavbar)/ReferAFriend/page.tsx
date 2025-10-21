@@ -2,12 +2,78 @@
 
 import { useState } from "react"
 import YearSelect from "../../../../utils/yearSelect"
+import TimezoneSelect from "../../../../utils/timezone"
+import { upsertReferral } from "@/app/api/SupabaseAPI/customer/referAPI";
+import toast from "react-hot-toast";
 
-function ReferAFriend() {
+export default function ReferAFriend() {
 
-  const [activeSection, setActiveSection] = useState<
-    "registeredReferrals" | "refer"
-  >("refer")
+  const [activeSection, setActiveSection] = useState<"registeredReferrals" | "refer">("refer");
+
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phoneCode, setPhoneCode] = useState("+");
+  const [phone, setPhone] = useState("");
+  const [alternateCode, setAlternateCode] = useState("+");
+  const [alternatePhone, setAlternatePhone] = useState("");
+  const [timezone, setTimezone] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handlePhoneCodeChange = (e: { target: { value: any; }; }) => {
+    const val = e.target.value;
+    if (/^[+0-9]*$/.test(val)) {
+      setPhoneCode(val);
+    }
+  };
+
+  const handleAlternateCodeChange = (e: { target: { value: any; }; }) => {
+    const val = e.target.value;
+    if (/^[+0-9]*$/.test(val)) {
+      setAlternateCode(val);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!firstName || !lastName || !email || !phone) {
+      toast.error("Please fill in all required fields");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const referralData = {
+        firstName,
+        lastName,
+        email,
+        phone: phoneCode + phone,
+        alternatePhone: alternatePhone ? alternateCode + alternatePhone : null,
+        timezone,
+      };
+
+      const result = await upsertReferral(referralData);
+      toast.success("Referral submitted successfully!");
+
+      setFirstName("");
+      setLastName("");
+      setEmail("");
+      setPhoneCode("+");
+      setPhone("");
+      setAlternateCode("+");
+      setAlternatePhone("");
+      setTimezone("");
+
+      setActiveSection("registeredReferrals");
+    } catch (error) {
+      toast.error("Failed to submit referral");
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
 
   return (
     <>
@@ -44,8 +110,10 @@ function ReferAFriend() {
               <h2 className="text-[#1D2B48] font-semibold text-xl">
                 Refer a Friend
               </h2>
-              <form className="w-full max-w-lg mt-3 bg-white shadow-md rounded-lg p-5">
-                <div className="mb-4 flex items-center gap-3">
+              <form
+                onSubmit={handleSubmit}
+                className="w-full max-w-lg mt-3 bg-blue-00 shadow-md flex flex-col items-center rounded-lg p-5">
+                <div className="mb-4 flex items-center gap-3 w-[90%]">
                   <label className="block text-sm font-medium text-[#1D2B48] w-[40%] text-end">
                     FIRSTNAME :
                   </label>
@@ -53,9 +121,12 @@ function ReferAFriend() {
                     type="text"
                     className="w-full border border-gray-300 rounded text-[#1D2B48] px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
                     placeholder="Enter firstname"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    required
                   />
                 </div>
-                <div className="mb-4 flex items-center gap-3">
+                <div className="mb-4 flex items-center gap-3 w-[90%]">
                   <label className="block text-sm font-medium text-[#1D2B48] w-[40%] text-end">
                     LASTNAME :
                   </label>
@@ -63,9 +134,12 @@ function ReferAFriend() {
                     type="text"
                     className="w-full border border-gray-300 rounded text-[#1D2B48] px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
                     placeholder="Enter lastname"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                    required
                   />
                 </div>
-                <div className="mb-4 flex items-center gap-3">
+                <div className="mb-4 flex items-center gap-3 w-[90%]">
                   <label className="block text-sm font-medium text-[#1D2B48] w-[40%] text-end">
                     EMAIL :
                   </label>
@@ -73,53 +147,65 @@ function ReferAFriend() {
                     type="email"
                     className="w-full border border-gray-300 rounded text-[#1D2B48] px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
                     placeholder="Enter email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
                   />
                 </div>
-                <div className="mb-4 flex items-center gap-3">
+                <div className="mb-4 flex items-center gap-3 w-[90%]">
                   <label className="block text-sm font-medium text-[#1D2B48] w-[40%] text-end">
                     PHONE :
                   </label>
-                  <select
-                    className="border border-gray-300 rounded text-[#1D2B48] px-2 py-2 mt-1 focus:outline-none focus:border-blue-500 w-[20%]"
-                    defaultValue="+1"
-                  >
-                    <option value="+1">+1</option>
-                    <option value="+44">+44</option>
-                    <option value="+91">+91</option>
-                    <option value="+61">+61</option>
-                    <option value="+81">+81</option>
-                  </select>
                   <input
                     type="text"
+                    placeholder="+1"
+                    value={phoneCode}
+                    onChange={handlePhoneCodeChange}
+                    className="border border-gray-300 rounded text-[#1D2B48] px-2 py-2 mt-1 focus:outline-none focus:border-blue-500 w-[20%]"
+                    maxLength={4}
+                    required
+                  />
+
+                  <input
+                    type="number"
                     className="w-[74.5%] border border-gray-300 rounded text-[#1D2B48] px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
                     placeholder="Enter phone"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    required
                   />
                 </div>
-                <div className="mb-4 flex items-center gap-3">
+                <div className="mb-4 flex items-center gap-3 w-[90%]">
                   <label className="block text-sm font-medium text-[#1D2B48] w-[40%] text-end">
                     ALTERNATE NUMBER :
                   </label>
-                  <select
-                    className="border border-gray-300 rounded text-[#1D2B48] px-2 py-2 mt-1 focus:outline-none focus:border-blue-500 w-[20%]"
-                    defaultValue="+1"
-                  >
-                    <option value="+1">+1</option>
-                    <option value="+44">+44</option>
-                    <option value="+91">+91</option>
-                    <option value="+61">+61</option>
-                    <option value="+81">+81</option>
-                  </select>
                   <input
                     type="text"
+                    placeholder="+1"
+                    value={alternateCode}
+                    onChange={handleAlternateCodeChange}
+                    className="border border-gray-300 rounded text-[#1D2B48] px-2 py-2 mt-1 focus:outline-none focus:border-blue-500 w-[20%]"
+                    maxLength={4}
+                  />
+                  <input
+                    type="number"
                     className="w-[74.5%] border border-gray-300 rounded text-[#1D2B48] px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
                     placeholder="Alternate number"
+                    value={alternatePhone}
+                    onChange={(e) => setAlternatePhone(e.target.value)}
                   />
                 </div>
+                <TimezoneSelect
+                  width="w-[90%] mb-5"
+                  value={timezone}
+                  onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setTimezone(e.target.value)}
+                />
                 <button
                   type="submit"
-                  className="bg-[#1D2B48] text-white font-semibold px-4 py-2 rounded-lg hover:bg-[#2c3e65] cursor-pointer"
+                  disabled={loading}
+                  className="bg-[#1D2B48] text-white font-medium px-4 py-2 rounded-lg cursor-pointer"
                 >
-                  Submit Referral
+                  {loading ? "Submitting..." : "Submit Referral"}
                 </button>
               </form>
             </div>
@@ -212,5 +298,3 @@ function ReferAFriend() {
     </>
   )
 }
-
-export default ReferAFriend
