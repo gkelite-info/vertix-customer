@@ -67,9 +67,7 @@ export default function AboutYou({ setActiveTab }: AboutYouProps): React.ReactEl
         if (isMarried) {
             if (!spouseFirstName || !spouseLastName) return "Spouse First and Last Name are required";
             if (!spouseDOB) return "Spouse Date of Birth is required";
-            if (!spouseUsStatus) return "Spouse US status is required";
             if (!spouseSSN) return "Spouse SSN / ITIN type is required";
-            if (!spouseSSNValue) return "Spouse SSN / ITIN value is required";
         }
         return null;
     };
