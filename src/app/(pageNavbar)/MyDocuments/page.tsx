@@ -3,10 +3,7 @@
 import { useEffect, useState } from "react"
 import YearSelect from "../../../../utils/yearSelect"
 import toast from "react-hot-toast"
-<<<<<<< Updated upstream
-=======
 import { getUserDocuments, uploadUserDocument } from "@/app/api/SupabaseAPI/customer/documentUploadAPI"
->>>>>>> Stashed changes
 
 export default function MyDocuments() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
@@ -24,8 +21,6 @@ export default function MyDocuments() {
     setSelectedDocType(e.target.value)
   }
 
-<<<<<<< Updated upstream
-=======
   useEffect(() => {
     const fetchDocuments = async () => {
       try {
@@ -39,7 +34,6 @@ export default function MyDocuments() {
     fetchDocuments()
   }, [])
 
->>>>>>> Stashed changes
   const handleUpload = async () => {
     if (!selectedFile || !selectedDocType) {
       toast.error("Please select a file and document type");
@@ -63,17 +57,6 @@ export default function MyDocuments() {
     formData.append("userId", userId)
 
     try {
-<<<<<<< Updated upstream
-      const res = await fetch("/uploads/upload", {
-        method: "POST",
-        body: formData,
-      })
-      const data = await res.json()
-      toast.success("File uploaded successfully: " + data.photoURL)
-    } catch (err) {
-      console.error(err)
-      toast.error("Upload failed")
-=======
       const uploadedDoc = await uploadUserDocument(
         selectedFile,
         selectedDocType,
@@ -89,7 +72,6 @@ export default function MyDocuments() {
     } catch (error: any) {
       toast.error("Upload failed: " + error.message);
       console.error(error);
->>>>>>> Stashed changes
     }
   };
 
@@ -115,34 +97,12 @@ export default function MyDocuments() {
               value={selectedDocType}
               onChange={handleDocTypeChange}
             >
-<<<<<<< Updated upstream
-              <option value="">SELECT ONE</option>
-              <option value="fbar">FBAR Organizer</option>
-              <option value="tacOrganizer">Tax Organizer Document</option>
-              <option value="w2">W-2</option>
-              <option value="interestIncome">Interest Income</option>
-              <option value="dividendIncome">Dividend Income</option>
-              <option value="1099-g">1099-G</option>
-              <option value="1099-b">1099-B</option>
-              <option value="1099-misc">1099-MISC</option>
-              <option value="mortgageInterest">Mortgage Interest</option>
-              <option value="1098-t">1098-T</option>
-              <option value="foreignTaxCertificates">
-                Foreign Tax Certificate
-              </option>
-              <option value="indianDocument">Indian Document</option>
-              <option value="priorYearTaxReturn">Prior Year Tax Return</option>
-              <option value="id">ID</option>
-              <option value="notice">Notice/Letter</option>
-              <option value="others">Others</option>
-=======
               <option value="">Select one</option>
               {availableOptions.map((opt) => (
                 <option key={opt} value={opt}>
                   {opt}
                 </option>
               ))}
->>>>>>> Stashed changes
             </select>
           </div>
 
