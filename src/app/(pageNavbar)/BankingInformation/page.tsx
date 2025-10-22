@@ -98,6 +98,15 @@ export default function BankingInformationPage() {
     )
   }
 
+  const columns = [
+    "Belongs To",
+    "Holder Name",
+    "Bank Name",
+    "Account Number",
+    "Routing Number",
+    "Account Type",
+  ]
+
   return (
     <div className="bg-white h-[100vh]">
       <YearSelect />
@@ -223,6 +232,7 @@ export default function BankingInformationPage() {
       ) : (
         <TableComponent
           data={bankRecords}
+          columns={columns}
           onUpdateClick={() => setBankDataExists(false)}
         />
       )}
