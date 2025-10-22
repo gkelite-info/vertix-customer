@@ -50,23 +50,6 @@ export default function AboutYou({ setActiveTab }: AboutYouProps): React.ReactEl
     const [spouseFirstEntryDate, setSpouseFirstEntryDate] = useState("");
     const [spouseMonthsInUS, setSpouseMonthsInUS] = useState("");
 
-    useEffect(() => {
-        const fetchCustomer = async () => {
-            try {
-                const customer = await getCustomer();
-                if (customer) {
-                    setFirstName(customer.firstname);
-                    setLastName(customer.lastname);
-                }
-            } catch (error) {
-                console.error("Failed to load customer data", error);
-            }
-        };
-
-        fetchCustomer();
-    }, []);
-
-
     const validateBeforeSubmit = () => {
 
         if (!firstName || !lastName) return "First and Last Name are required";
@@ -92,6 +75,12 @@ export default function AboutYou({ setActiveTab }: AboutYouProps): React.ReactEl
         return null;
     };
 
+    const safeToISOString = (dateStr?: string | null) => {
+        if (!dateStr) return null;
+        const d = new Date(dateStr);
+        return isNaN(d.getTime()) ? null : d.toISOString();
+    };
+
     const handleSave = async () => {
         const validationError = validateBeforeSubmit();
         if (validationError) {
@@ -105,8 +94,6 @@ export default function AboutYou({ setActiveTab }: AboutYouProps): React.ReactEl
 
             const customerId = customer.customerId;
 
-            console.log("customer is", customer)
-
             let spouseId: number | null = null;
             if (isMarried) {
                 const { data: spouseData, error: spouseError } = await supabase
@@ -116,7 +103,7 @@ export default function AboutYou({ setActiveTab }: AboutYouProps): React.ReactEl
                         firstname: spouseFirstName,
                         middlename: spouseMiddleName || null,
                         lastname: spouseLastName,
-                        dob: spouseDOB ? new Date(spouseDOB).toISOString() : null,
+                        dob: safeToISOString(spouseDOB),
                         occupation: spouseOccupation || null,
                         us_status: spouseUsStatus || "none",
                         createdAt: new Date().toISOString(),
@@ -136,16 +123,20 @@ export default function AboutYou({ setActiveTab }: AboutYouProps): React.ReactEl
                 customerId,
                 spouseId: isMarried ? spouseId : null,
                 isMarried,
+                firstName: firstName?.trim() || (() => { throw new Error("firstName is required"); })(),
+                middleName: middleName?.trim() || null,
+                lastName: lastName?.trim() || (() => { throw new Error("lastName is required"); })(),
                 yourSSNType: yourSSN || null,
                 yourSSNValue: yourSSNValue || null,
                 visaTypeJan: visaJan || null,
                 visaTypeDec: visaDec || null,
-                firstEntryDate: firstEntryDate ? new Date(firstEntryDate).toISOString() : null,
+                firstEntryDate: safeToISOString(firstEntryDate),
                 monthsInUS: monthsInUS ? Number(monthsInUS) : null,
                 citizenshipCountry: citizenshipCountry || null,
                 createdAt: new Date().toISOString(),
                 updatedAt: new Date().toISOString(),
             };
+
             console.log("AboutYou payload:", payload);
 
             const { data: aboutData, error: aboutError } = await supabase
@@ -169,11 +160,14 @@ export default function AboutYou({ setActiveTab }: AboutYouProps): React.ReactEl
                 <div className="flex flex-col bg-white w-[100%] items-center">
                     <div className="flex bg-green-00 w-[90%] mt-5 h-10 items-center justify-between">
                         <h4 className="text-[#1D2B48] font-medium">First Name</h4>
-                        <div
-                            className="border bg-red-00 rounded-md text-[#616161] border-[#B5B5B5] w-[50%] h-[100%] px-3 text-sm flex items-center"
-                        >
-                            {firstName}
-                        </div>
+                        <input
+                            type="text"
+                            value={firstName}
+                            onChange={(e) => setFirstName(e.target.value)}
+                            placeholder="Enter First Name"
+                            className="border bg-red-00 rounded-md text-[#616161] border-[#B5B5B5] w-[50%] h-[100%] px-3 text-sm flex items-center focus:outline-none"
+                        />
+
                     </div>
                     <div className="flex bg-green-00 w-[90%] mt-5 h-10 items-center justify-between">
                         <h4 className="text-[#1D2B48] font-medium">Middle Name</h4>
@@ -190,11 +184,14 @@ export default function AboutYou({ setActiveTab }: AboutYouProps): React.ReactEl
                     </div>
                     <div className="flex bg-green-00 w-[90%] mt-5 h-10 items-center justify-between">
                         <h4 className="text-[#1D2B48] font-medium">Last Name</h4>
-                        <div
-                            className="border bg-red-00 rounded-md text-[#616161] border-[#B5B5B5] w-[50%] h-[100%] px-3 text-sm flex items-center"
-                        >
-                            {lastName}
-                        </div>
+                        <input
+                            type="text"
+                            value={lastName}
+                            onChange={(e) => setLastName(e.target.value)}
+                            placeholder="Enter Last Name"
+                            className="border bg-red-00 rounded-md text-[#616161] border-[#B5B5B5] w-[50%] h-[100%] px-3 text-sm flex items-center focus:outline-none"
+                        />
+
                     </div>
                     <div className="flex bg-green-00 w-[90%] mt-5 h-10 items-center justify-between">
                         <h4 className="text-[#1D2B48] font-medium">Date of Birth <span className="text-red-500">*</span></h4>
@@ -486,12 +483,19 @@ export default function AboutYou({ setActiveTab }: AboutYouProps): React.ReactEl
                         </div>
                         <div className="flex bg-green-00 w-[100%] mt-5 h-10 items-center justify-between">
                             <h4 className="text-[#1D2B48] font-medium">First Date of entry in US</h4>
-                            <input type="text"
+                            <input
+                                type="text"
                                 value={spouseFirstEntryDate}
-                                onChange={(e) => setSpouseFirstEntryDate(e.target.value)}
-                                placeholder="DD/MM/YYYY"
+                                onChange={(e) => {
+                                    const value = e.target.value.replace(/[^0-9-]/g, '');
+                                    if (value.length <= 11) {
+                                        setSpouseFirstEntryDate(value);
+                                    }
+                                }}
+                                placeholder="XXX-XX-XXXX"
                                 className="border bg-red-00 rounded-md text-[#3E3E3E] border-[#B5B5B5] w-[50%] h-[100%] px-3 text-sm focus:outline-none"
                             />
+
                         </div>
                         <div className="flex bg-green-00 w-[100%] mt-5 h-10 items-center justify-between">
                             <h4 className="text-[#1D2B48] font-medium">No. of months stayed in US in {selectedYear}</h4>
