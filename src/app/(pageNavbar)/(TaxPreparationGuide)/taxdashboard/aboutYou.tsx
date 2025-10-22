@@ -71,14 +71,22 @@ export default function AboutYou({ setActiveTab }: AboutYouProps): React.ReactEl
             if (!spouseSSN) return "Spouse SSN / ITIN type is required";
             if (!spouseSSNValue) return "Spouse SSN / ITIN value is required";
         }
-
         return null;
     };
 
+    function parseDateToISOString(dateStr: string): string | null {
+        if (!dateStr) return null;
+        const parts = dateStr.split("/");
+        if (parts.length !== 3) return null;
+        const [day, month, year] = parts.map(Number);
+        if (!year || !month || !day || year < 1000 || month < 1 || month > 12 || day < 1 || day > 31) return null;
+        const date = new Date(Date.UTC(year, month - 1, day));
+        return isNaN(date.getTime()) ? null : date.toISOString();
+    }
+
     const safeToISOString = (dateStr?: string | null) => {
         if (!dateStr) return null;
-        const d = new Date(dateStr);
-        return isNaN(d.getTime()) ? null : d.toISOString();
+        return parseDateToISOString(dateStr);
     };
 
     const handleSave = async () => {
@@ -105,7 +113,13 @@ export default function AboutYou({ setActiveTab }: AboutYouProps): React.ReactEl
                         lastname: spouseLastName,
                         dob: safeToISOString(spouseDOB),
                         occupation: spouseOccupation || null,
-                        us_status: spouseUsStatus || "none",
+                        yourSSNType: spouseSSN || null,
+                        yourSSNValue: spouseSSNValue || null,
+                        visaTypeJan: spouseVisaJan || null,
+                        visaTypeDec: spouseVisaDec || null,
+                        firstEntryDate: safeToISOString(spouseFirstEntryDate),
+                        monthsInUS: spouseMonthsInUS ? Number(spouseMonthsInUS) : null,
+
                         createdAt: new Date().toISOString(),
                         updatedAt: new Date().toISOString()
                     }])
@@ -117,7 +131,6 @@ export default function AboutYou({ setActiveTab }: AboutYouProps): React.ReactEl
                 spouseId = spouseData?.spouseId || null;
                 console.log("Inserted SpouseId:", spouseId);
             }
-
 
             const payload = {
                 customerId,
@@ -133,11 +146,10 @@ export default function AboutYou({ setActiveTab }: AboutYouProps): React.ReactEl
                 firstEntryDate: safeToISOString(firstEntryDate),
                 monthsInUS: monthsInUS ? Number(monthsInUS) : null,
                 citizenshipCountry: citizenshipCountry || null,
+
                 createdAt: new Date().toISOString(),
                 updatedAt: new Date().toISOString(),
             };
-
-            console.log("AboutYou payload:", payload);
 
             const { data: aboutData, error: aboutError } = await supabase
                 .from("aboutyou")
@@ -159,7 +171,7 @@ export default function AboutYou({ setActiveTab }: AboutYouProps): React.ReactEl
                 <h2 className="text-[#1D2B48] font-semibold text-xl">About You</h2>
                 <div className="flex flex-col bg-white w-[100%] items-center">
                     <div className="flex bg-green-00 w-[90%] mt-5 h-10 items-center justify-between">
-                        <h4 className="text-[#1D2B48] font-medium">First Name</h4>
+                        <h4 className="text-[#1D2B48] font-medium">First Name <span className="text-red-500">*</span></h4>
                         <input
                             type="text"
                             value={firstName}
@@ -183,7 +195,7 @@ export default function AboutYou({ setActiveTab }: AboutYouProps): React.ReactEl
                         />
                     </div>
                     <div className="flex bg-green-00 w-[90%] mt-5 h-10 items-center justify-between">
-                        <h4 className="text-[#1D2B48] font-medium">Last Name</h4>
+                        <h4 className="text-[#1D2B48] font-medium">Last Name <span className="text-red-500">*</span></h4>
                         <input
                             type="text"
                             value={lastName}
@@ -487,12 +499,14 @@ export default function AboutYou({ setActiveTab }: AboutYouProps): React.ReactEl
                                 type="text"
                                 value={spouseFirstEntryDate}
                                 onChange={(e) => {
-                                    const value = e.target.value.replace(/[^0-9-]/g, '');
-                                    if (value.length <= 11) {
-                                        setSpouseFirstEntryDate(value);
+                                    const value = e.target.value;
+                                    if (/^[0-9/]*$/.test(value)) {
+                                        if (value.length <= 10) {
+                                            setSpouseFirstEntryDate(value);
+                                        }
                                     }
                                 }}
-                                placeholder="XXX-XX-XXXX"
+                                placeholder="DD/MM/YYYY"
                                 className="border bg-red-00 rounded-md text-[#3E3E3E] border-[#B5B5B5] w-[50%] h-[100%] px-3 text-sm focus:outline-none"
                             />
 
