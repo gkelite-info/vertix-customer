@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import YearSelect from "../../../../utils/yearSelect"
 import toast from "react-hot-toast"
 import { getUserDocuments, uploadUserDocument } from "@/app/api/SupabaseAPI/customer/documentUploadAPI"
@@ -9,7 +9,8 @@ export default function MyDocuments() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [selectedDocType, setSelectedDocType] = useState<string>("");
   const [description, setDescription] = useState<string>("");
-  const [uploadedDocTypes, setUploadedDocTypes] = useState<string[]>([])
+  const [uploadedDocTypes, setUploadedDocTypes] = useState<string[]>([]);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -45,17 +46,6 @@ export default function MyDocuments() {
       return;
     }
 
-    const userId = localStorage.getItem("userId")
-    if (!userId) {
-      toast.error("User not logged in")
-      return
-    }
-
-    const formData = new FormData()
-    formData.append("file", selectedFile)
-    formData.append("docType", selectedDocType)
-    formData.append("userId", userId)
-
     try {
       const uploadedDoc = await uploadUserDocument(
         selectedFile,
@@ -65,9 +55,17 @@ export default function MyDocuments() {
 
       if (uploadedDoc) {
         toast.success("File uploaded and saved successfully");
+        const docs = await getUserDocuments();
+        setUploadedDocTypes(docs.map(doc => doc.doc_type));
+
         setSelectedFile(null);
         setSelectedDocType("");
         setDescription("");
+
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
+        }
+
       }
     } catch (error: any) {
       toast.error("Upload failed: " + error.message);
@@ -113,6 +111,7 @@ export default function MyDocuments() {
               </h5>
             </div>
             <input
+              ref={fileInputRef}
               type="file"
               accept=".pdf"
               onChange={handleFileChange}
