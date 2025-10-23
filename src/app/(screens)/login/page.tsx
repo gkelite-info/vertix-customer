@@ -15,7 +15,6 @@ export default function Page() {
   const [showPassword, setShowPassword] = useState(false);
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
-  const [error, setError] = useState("");
   const [remember, setRemember] = useState(false);
 
   const handleEmailChange = (e: { target: { value: string } }) => {
@@ -39,7 +38,6 @@ export default function Page() {
     try {
       let hasError = false;
 
-      // Email validation
       if (!email) {
         toast.error("Email is required.");
         hasError = true;
@@ -48,7 +46,6 @@ export default function Page() {
         hasError = true;
       }
 
-      // Password validation
       if (!password) {
         toast.error("Password is required.");
         hasError = true;
@@ -59,7 +56,6 @@ export default function Page() {
 
       if (hasError) return;
 
-      // Supabase login
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
@@ -76,10 +72,8 @@ export default function Page() {
       }
 
       if (data.session && data.user) {
-        // Save JWT in context
         login(data.session.access_token);
 
-        // Fetch user consent status
         const { data: customerData, error: profileError } = await supabase
           .from("vertixcustomers")
           .select("is_consent_filled")
@@ -114,7 +108,6 @@ export default function Page() {
     router.push("/signup");
   };
 
-  // --------------------- UI Below Remains Unchanged ---------------------
   return (
     <>
       <div className="bg-white min-h-screen lg:h-[100vh] flex justify-center items-center p-4 sm:p-6 md:p-0 lg:p-0">
