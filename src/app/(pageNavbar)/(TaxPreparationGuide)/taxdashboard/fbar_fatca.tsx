@@ -2,7 +2,7 @@
 import { useYear } from "@/app/api/context/yearContext";
 import ToggleSwitch from "../../../../../utils/toggleSwitch";
 import { useState } from "react";
-import { upsertFbarFatcaDetails } from "@/app/api/SupabaseAPI/customer/fbarAPI";
+import { upsertFbarFatcaAndFilingYear } from "@/app/api/SupabaseAPI/customer/fbarAPI";
 import toast from "react-hot-toast";
 import { useRouter, useSearchParams } from "next/navigation";
 
@@ -34,12 +34,11 @@ export default function FBAR_FATCA({ setActiveTab }: FbarProps) {
                 throw new Error("Invalid year selected");
             }
 
-            const result = await upsertFbarFatcaDetails(yearNumber, hasForeignAccount);
+            await upsertFbarFatcaAndFilingYear(yearNumber, hasForeignAccount);
 
             toast.success("FBAR/FATCA details successfully saved");
-
-        } catch (error) {
-            toast.error("Failed to save FBAR/FATCA details");
+        } catch (error: any) {
+            toast.error(error?.message || "Failed to save FBAR/FATCA details");
         } finally {
             setIsSubmitting(false);
         }
@@ -61,7 +60,7 @@ export default function FBAR_FATCA({ setActiveTab }: FbarProps) {
                 <div className="flex justify-center w-[100%] gap-3 mt-6">
                     <button
                         onClick={() => setActiveTab("Deduction Details")}
-                        className="p-2 lg:w-[13%] bg-[#1D2B48] rounded-md text-white text-sm cursor-pointer cursor-pointer font-medium">Pervious</button>
+                        className="p-2 lg:w-[13%] bg-[#1D2B48] rounded-md text-white text-sm cursor-pointer cursor-pointer font-medium">Previous</button>
                     <button
                         onClick={handleSubmit}
                         disabled={isSubmitting}

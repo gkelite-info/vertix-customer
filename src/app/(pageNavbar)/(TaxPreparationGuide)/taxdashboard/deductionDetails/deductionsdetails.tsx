@@ -146,7 +146,7 @@ export default function DeductionDetails({ setActiveTab }: DeductionProps) {
                     onClick={() => setActiveTab("Income Details")}
                     className="py-2 w-[13%] cursor-pointer bg-[#1D2A46] text-white rounded-md text-sm font-medium hover:bg-opacity-90"
                 >
-                    Pervious
+                    Previous
                 </button>
                 <button
                     onClick={handleSave}

@@ -10,10 +10,25 @@ export interface FbarFatcaData {
     deletedAt?: string | null;
 }
 
-export const upsertFbarFatcaDetails = async (
+export interface FilingYearData {
+    filingYearId?: number;
+    customerId: number;
+    AboutId?: number;
+    dependentId?: number;
+    residencyId?: number;
+    incomeDetailsId?: number;
+    deductionDetailsId?: number;
+    fbarFatcaId: number;
+    status?: string;
+    createdAt?: string;
+    updatedAt?: string;
+    deletedAt?: string | null;
+}
+
+export const upsertFbarFatcaAndFilingYear = async (
     year: number,
     hasForeignAccount: boolean
-): Promise<FbarFatcaData> => {
+): Promise<FilingYearData> => {
     try {
         const {
             data: { user },
@@ -29,30 +44,88 @@ export const upsertFbarFatcaDetails = async (
             .single();
 
         if (customerError || !customer) throw new Error("Customer not found");
+
         const customerId = customer.customerId;
         const now = new Date().toISOString();
 
-        const fbarFatcaRecord = {
-            customerId: customerId,
-            year,
-            hasForeignAccount,
+        const { data: fbarData, error: fbarError } = await supabase
+            .from("fbar_fatca")
+            .upsert([
+                {
+                    customerId,
+                    year,
+                    hasForeignAccount,
+                    updatedAt: now,
+                    createdAt: now,
+                }
+            ], { onConflict: "customerId, year" })
+            .select()
+            .single();
+
+        if (fbarError || !fbarData)
+            throw new Error(fbarError?.message || "Failed to upsert FBAR/FATCA");
+
+        const [
+            { data: aboutData },
+            { data: dependentsData },
+            { data: residencyData },
+            { data: incomeData },
+            { data: deductionData },
+        ] = await Promise.all([
+            supabase
+                .from("aboutyou")
+                .select('"AboutId"')
+                .eq("customerId", customerId)
+                .single(),
+            supabase
+                .from("dependents")
+                .select("dependentId")
+                .eq("customerId", customerId)
+                .single(),
+            supabase
+                .from("residencydetails")
+                .select("residencyId")
+                .eq("customerId", customerId)
+                .single(),
+            supabase
+                .from("incomedetails")
+                .select("incomeDetailsId")
+                .eq("customerId", customerId)
+                .single(),
+            supabase
+                .from("deductiondetails")
+                .select("deductionDetailsId")
+                .eq("customerId", customerId)
+                .single(),
+        ]);
+
+        const filingYearRecord = {
+            customerId,
+            AboutId: aboutData?.AboutId ?? null,
+            dependentId: dependentsData?.dependentId ?? null,
+            residencyId: residencyData?.residencyId ?? null,
+            incomeDetailsId: incomeData?.incomeDetailsId ?? null,
+            deductionDetailsId: deductionData?.deductionDetailsId ?? null,
+            fbarFatcaId: fbarData.fbarFatcaId,
+            status: "registered",
             createdAt: now,
             updatedAt: now,
         };
 
-        const { data: upsertedData, error: upsertError } = await supabase
-            .from("fbar_fatca")
-            .upsert(fbarFatcaRecord, {
-                onConflict: "customerId, year",
+        const { data: filingData, error: filingError } = await supabase
+            .from("filing_year")
+            .upsert([filingYearRecord], {
+                onConflict: "filingYearId",
             })
             .select()
             .single();
 
-        if (upsertError) throw upsertError;
+        if (filingError || !filingData)
+            throw new Error(filingError?.message || "Failed to upsert filing_year");
 
-        return upsertedData;
+        return filingData;
     } catch (error: any) {
-        console.error("Error upserting FBAR/FATCA details:", error.message);
+        console.error("Error upserting FBAR/FATCA and filing year details:", error.message);
         throw error;
     }
 };
