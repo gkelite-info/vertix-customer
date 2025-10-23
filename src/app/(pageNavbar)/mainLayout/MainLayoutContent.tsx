@@ -30,15 +30,15 @@ export default function MainLayoutContent() {
         <div className="flex justify-between bg-white">
             <PageNavbar activeTab={activeTab} setActiveTab={setActiveTab} />
             <div className="w-[76%]">
-                {activeTab === "service" && <ManageFilingYear />}
+                {activeTab === "filingyear" && <ManageFilingYear />}
                 {activeTab === "file-status" && <FileProgressTracker />}
-                {activeTab === "organizer" && <TaxPreparationGuide />}
+                {activeTab === "preparationguide" && <TaxPreparationGuide />}
                 {activeTab === "uploaded-by-vertix" && <VertixTaxPage />}
                 {activeTab === "bank-info" && <BankingInformationPage />}
                 {activeTab === "summary" && <PaymentTaxSummary />}
-                {activeTab === "uploaded" && <MyDocuments />}
+                {activeTab === "documentupload" && <MyDocuments />}
                 {activeTab === "refer" && <ReferAFriend />}
-                {activeTab === "messages" && <Chats />}
+                {activeTab === "messaging" && <Chats />}
                 {activeTab === "feedback" && <Feedback />}
                 {activeTab === "consent" && <AuthorizationConsent />}
             </div>
