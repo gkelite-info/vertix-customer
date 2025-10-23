@@ -18,7 +18,7 @@ export default function MainLayoutContent() {
     const router = useRouter()
     const searchParams = useSearchParams()
 
-    const activeTab: string = searchParams.get("tab") || "service"
+    const activeTab: string = searchParams.get("tab") || "filingyear"
 
     const setActiveTab = (tab: string) => {
         const params = new URLSearchParams(searchParams.toString())
@@ -29,7 +29,7 @@ export default function MainLayoutContent() {
     return (
         <div className="flex justify-between bg-white">
             <PageNavbar activeTab={activeTab} setActiveTab={setActiveTab} />
-            <div className="w-[76%]">
+            <div className="lg:w-[76%]">
                 {activeTab === "filingyear" && <ManageFilingYear />}
                 {activeTab === "file-status" && <FileProgressTracker />}
                 {activeTab === "preparationguide" && <TaxPreparationGuide />}
