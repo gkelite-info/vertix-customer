@@ -2,9 +2,9 @@
 import { useYear } from "@/app/api/context/yearContext";
 import ToggleSwitch from "../../../../../utils/toggleSwitch";
 import { useState } from "react";
-import { upsertFbarFatcaAndFilingYear } from "@/app/api/SupabaseAPI/customer/fbarAPI";
 import toast from "react-hot-toast";
 import { useRouter, useSearchParams } from "next/navigation";
+import { updateFilingYearWithDetails } from "@/app/api/SupabaseAPI/customer/fbarAPI";
 
 type Tab =
     | "Deduction Details";
@@ -34,7 +34,7 @@ export default function FBAR_FATCA({ setActiveTab }: FbarProps) {
                 throw new Error("Invalid year selected");
             }
 
-            await upsertFbarFatcaAndFilingYear(yearNumber, hasForeignAccount);
+            await updateFilingYearWithDetails(yearNumber, hasForeignAccount);
 
             toast.success("FBAR/FATCA details successfully saved");
         } catch (error: any) {

@@ -2,15 +2,36 @@
 import { useState } from "react"
 import { useYear } from "@/app/api/context/yearContext"
 import YearSelect from "../../../../utils/yearSelect"
+import toast from "react-hot-toast"
+import { createFilingYearRecord } from "@/app/api/SupabaseAPI/customer/filingYearAPI"
 
 export default function ManageFilingYear() {
   const { selectedYear, setSelectedYear } = useYear()
   const [tempYear, setTempYear] = useState(selectedYear || "")
+  const [isLoading, setIsLoading] = useState(false)
 
-  const handleAddService = () => {
-    if (tempYear) {
+  const handleAddService = async () => {
+    if (!tempYear) {
+      toast.error("Please select a year")
+      return
+    }
+
+    setIsLoading(true)
+
+    try {
+      const result = await createFilingYearRecord(parseInt(tempYear))
+
+      console.log("Filing year record created:", result)
+
       setSelectedYear(tempYear)
-      console.log("Updated year:", tempYear)
+
+      toast.success(`Service year ${tempYear} added successfully!`)
+
+    } catch (error: any) {
+      console.error("Error adding service year:", error)
+      toast.error(error.message || "Failed to add service year")
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -45,9 +66,9 @@ export default function ManageFilingYear() {
 
           <button
             onClick={handleAddService}
-            className="bg-[#1D2B48] text-white font-medium lg:w-[40%] lg:h-[25%] cursor-pointer hover:bg-[#2c3e65] rounded-lg text-sm"
+            className="bg-[#1D2B48] text-white font-medium lg:w-[40%] lg:h-[25%] cursor-pointer rounded-lg text-sm"
           >
-            ADD NEW SERVICE
+            {isLoading ? "ADDING..." : "ADD NEW SERVICE"}
           </button>
         </div>
       </div>
