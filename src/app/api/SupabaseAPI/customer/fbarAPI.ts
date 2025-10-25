@@ -20,12 +20,11 @@ export interface FilingYearData {
     deductionDetailsId?: number;
     fbarFatcaId: number;
     status?: string;
-    createdAt?: string;
+    year: number;
     updatedAt?: string;
-    deletedAt?: string | null;
 }
 
-export const upsertFbarFatcaAndFilingYear = async (
+export const updateFilingYearWithDetails = async (
     year: number,
     hasForeignAccount: boolean
 ): Promise<FilingYearData> => {
@@ -99,33 +98,29 @@ export const upsertFbarFatcaAndFilingYear = async (
                 .single(),
         ]);
 
-        const filingYearRecord = {
-            customerId,
-            AboutId: aboutData?.AboutId ?? null,
-            dependentId: dependentsData?.dependentId ?? null,
-            residencyId: residencyData?.residencyId ?? null,
-            incomeDetailsId: incomeData?.incomeDetailsId ?? null,
-            deductionDetailsId: deductionData?.deductionDetailsId ?? null,
-            fbarFatcaId: fbarData.fbarFatcaId,
-            status: "registered",
-            createdAt: now,
-            updatedAt: now,
-        };
-
         const { data: filingData, error: filingError } = await supabase
             .from("filing_year")
-            .upsert([filingYearRecord], {
-                onConflict: "filingYearId",
+            .update({
+                AboutId: aboutData?.AboutId ?? null,
+                dependentId: dependentsData?.dependentId ?? null,
+                residencyId: residencyData?.residencyId ?? null,
+                incomeDetailsId: incomeData?.incomeDetailsId ?? null,
+                deductionDetailsId: deductionData?.deductionDetailsId ?? null,
+                fbarFatcaId: fbarData.fbarFatcaId,
+                status: "Documents pending",
+                updatedAt: now,
             })
+            .eq("customerId", customerId)
+            .eq("year", year)
             .select()
             .single();
 
         if (filingError || !filingData)
-            throw new Error(filingError?.message || "Failed to upsert filing_year");
+            throw new Error(filingError?.message || "Failed to update filing_year");
 
         return filingData;
     } catch (error: any) {
-        console.error("Error upserting FBAR/FATCA and filing year details:", error.message);
+        console.error("Error updating filing year details:", error.message);
         throw error;
     }
 };
