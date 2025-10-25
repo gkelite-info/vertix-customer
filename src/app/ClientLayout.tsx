@@ -25,7 +25,7 @@ export default function ClientLayout({
   return (
     <>
       {!shouldHideLayout && <Header />}
-      <main>{children}</main>
+      <main className="scrollbar-hide">{children}</main>
       {!shouldHideLayout && <Footer />}
     </>
   )
