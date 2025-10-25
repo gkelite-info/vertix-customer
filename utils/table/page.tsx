@@ -3,26 +3,30 @@
 import TableHead from "./tableHead";
 import TableBody from "./tableBody";
 
-type BankDetailsTableProps = {
+type TableProps = {
   data: Record<string, any>[];
   columns: string[];
+  columnKeys: string[];
+  showActions?: boolean;
+  onDelete?: (filePath: string) => void;
   onUpdateClick: () => void;
 };
 
-export default function TableComponent({ data, columns, onUpdateClick }: BankDetailsTableProps) {
+export default function TableComponent({ data, columns, columnKeys, onUpdateClick, showActions = false, onDelete }: TableProps) {
   return (
-    <div className="bg-red-00 flex flex-col items-center justify-start lg:h-[80%] pt-5 w-full mt-5">
-      <h2 className="font-semibold text-[#1D2B48] text-xl mb-4">Your Bank Details</h2>
+    <div className="bg-red-00 flex flex-col items-center justify-start lg:h-[80%] pt-3 w-full">
       <table className="border-collapse border border-gray-300 w-[90%] text-left">
-        <TableHead columns={columns} />
-        <TableBody data={data} />
+        <TableHead
+          columns={columns}
+          showActions={showActions}
+        />
+        <TableBody
+          data={data}
+          columnKeys={columnKeys}
+          showActions={showActions}
+          onDelete={onDelete}
+        />
       </table>
-      {/* <button
-        onClick={onUpdateClick}
-        className="mt-5 font-medium text-sm bg-[#1D2B48] text-white px-5 py-2 hover:bg-[#2c3e65] rounded-lg"
-      >
-        Update Bank Details
-      </button> */}
     </div>
   );
 }
