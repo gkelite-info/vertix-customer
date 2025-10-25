@@ -107,6 +107,15 @@ export default function BankingInformationPage() {
     "Account Type",
   ]
 
+  const columnKeys = [
+    "belongsTo",
+    "holderName",
+    "bankName",
+    "accountNumber",
+    "routingNumber",
+    "accountType"
+  ];
+
   return (
     <div className="bg-white h-[100vh]">
       <YearSelect />
@@ -117,7 +126,6 @@ export default function BankingInformationPage() {
               ? "Update Your Bank Details"
               : "Enter Your Bank Details"}
           </h2>
-
           <div className="bg-red-00 flex items-center justify-between gap-3 h-[10%] w-[44%] mt-5">
             <div className="w-[39%]">
               <h5 className="text-[#1D2B48] font-medium text-end pr-1.5">
@@ -134,7 +142,6 @@ export default function BankingInformationPage() {
               <option value="taxPayer">Tax Payer</option>
             </select>
           </div>
-
           <div className="bg-red-00 flex items-center justify-between gap-3 h-[10%] w-[44%] mt-2">
             <div className="w-[39%]">
               <h5 className="text-[#1D2B48] font-medium text-end pr-1.5">
@@ -150,7 +157,6 @@ export default function BankingInformationPage() {
               className="border border-gray-300 text-[#616161] font-medium lg:w-[65%] px-2 text-sm lg:h-[85%] focus:outline-none focus:border-blue-500 rounded cursor-text shadow-sm"
             />
           </div>
-
           <div className="bg-red-00 flex items-center justify-between gap-3 h-[10%] w-[44%] mt-2">
             <div className="w-[39%]">
               <h5 className="text-[#1D2B48] font-medium text-end pr-1.5">
@@ -230,11 +236,17 @@ export default function BankingInformationPage() {
           </div>
         </div>
       ) : (
-        <TableComponent
-          data={bankRecords}
-          columns={columns}
-          onUpdateClick={() => setBankDataExists(false)}
-        />
+        <>
+          <div className="bg-red-00 flex flex-col items-center">
+            <h2 className="font-semibold text-[#1D2B48] text-xl mt-5">Your Bank Details</h2>
+            <TableComponent
+              data={bankRecords}
+              columns={columns}
+              columnKeys={columnKeys}
+              onUpdateClick={() => setBankDataExists(false)}
+            />
+          </div>
+        </>
       )}
     </div>
   )

@@ -109,3 +109,40 @@ export const uploadUserDocument = async (
     throw error;
   }
 };
+
+export const getDocumentDownloadUrl = async (filePath: string, expiresIn = 60) => {
+  try {
+    const { data, error } = await supabase.storage
+      .from("user-uploads")
+      .createSignedUrl(filePath, expiresIn);
+
+    if (error || !data?.signedUrl) throw new Error(error?.message || "Failed to create signed URL");
+
+    return data.signedUrl;
+  } catch (err: any) {
+    console.error("Error generating signed URL:", err.message);
+    throw err;
+  }
+};
+
+export const deleteUserDocument = async (file_path: string): Promise<boolean> => {
+  try {
+    const { error: storageError } = await supabase.storage
+      .from("user-uploads")
+      .remove([file_path]);
+
+    if (storageError) throw new Error(storageError.message);
+
+    const { error: dbError } = await supabase
+      .from("userdocuments")
+      .delete()
+      .eq("file_path", file_path);
+
+    if (dbError) throw new Error(dbError.message);
+
+    return true;
+  } catch (error: any) {
+    console.error("Delete failed:", error.message);
+    throw error;
+  }
+};
