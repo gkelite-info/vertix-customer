@@ -14,7 +14,7 @@ import Feedback from '../Feedback1/page'
 import AuthorizationConsent from '../AuthorizationConsent/page'
 import BankingInformationPage from '../BankingInformation/page'
 
-export default function MainLayoutContent() {
+export default function TaxfilingContent() {
     const router = useRouter()
     const searchParams = useSearchParams()
 

@@ -1,12 +1,12 @@
 import { Suspense } from 'react'
-import MainLayoutContent from './MainLayoutContent'
+import TaxfilingContent from './filingyearContent'
 
 export const dynamic = "force-dynamic"
 
-export default function MainLayoutPage() {
+export default function TaxFiling() {
   return (
     <Suspense fallback={<div>Loading layout...</div>}>
-      <MainLayoutContent />
+      <TaxfilingContent />
     </Suspense>
   )
 }
