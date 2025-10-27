@@ -17,7 +17,7 @@ function Header() {
   const { isAuthenticated, logout } = useAuth();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [customer, setCustomer] = useState<any>(null);
-  const allowedEmails = ["saralabose19@gmail.com", "vamshivadla@gkeliteinfo.com"];
+  const allowedEmails = ["saralabose19@gmail.com", "vamshivadla@gkeliteinfo.com", "vamshichary117@gmail.com", "gkeliteinfo@gmail.com", "g.ramu6300@gmail.com", "narrashiva195@gmail.com"];
 
   const linkClass = (href: string) =>
     `relative text-black font-medium
