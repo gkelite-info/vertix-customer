@@ -1,8 +1,15 @@
 "use client"
 import React from "react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 
 const Footer = () => {
+  const router = useRouter();
+
+  const handleStateRefund = () => {
+    router.push('/state_refund')
+  }
+
   return (
     <footer className="bg-[#1D2B48] text-white py-2">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -100,12 +107,10 @@ const Footer = () => {
                   Federal Refund
                 </Link> */}
               </li>
-              <li>
-                State Refunds
+              <li onClick={handleStateRefund} className="cursor-pointer text-white">
                 {/* <Link
-                  href="/service-details/dynamic_Digital_marketing_solutions"
-                  className="hover:text-white"
-                >
+                  href={handleStateRefund}
+                  className="cursor-pointer text-white">
                   State Refunds
                 </Link> */}
               </li>
@@ -180,7 +185,7 @@ const Footer = () => {
           </p>
         </div>
       </div>
-    </footer>
+    </footer >
   )
 }
 
