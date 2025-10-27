@@ -15,7 +15,8 @@ export default function MyDocuments() {
   const [uploadedDocTypes, setUploadedDocTypes] = useState<string[]>([])
   const fileInputRef = useRef<HTMLInputElement | null>(null)
   const [documents, setDocuments] = useState<Record<string, any>[]>([])
-  const [fetchingDocs, setFetchingDocs] = useState(true)
+  const [fetchingDocs, setFetchingDocs] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [fileToDelete, setFileToDelete] = useState<string | null>(null)
@@ -74,6 +75,8 @@ export default function MyDocuments() {
     }
 
     try {
+      
+      setIsLoading(true);
       const uploadedDoc = await uploadUserDocument(selectedFile, selectedDocType, description)
       if (uploadedDoc) {
         toast.success("File uploaded and saved successfully")
@@ -87,6 +90,9 @@ export default function MyDocuments() {
     } catch (error: any) {
       toast.error("Upload failed: " + error.message)
       console.error(error)
+    }
+    finally {
+      setIsLoading(false);
     }
   }
 
@@ -171,10 +177,11 @@ export default function MyDocuments() {
               rows={4}
             />
             <button
-              className="mt-4 font-medium w-[75%] text-sm bg-[#1D2B48] text-white px-5 py-2 rounded-lg flex gap-2 hover:bg-[#2c3e65] justify-center items-center cursor-pointer"
+              className="mt-4 font-medium w-[75%] text-sm bg-[#1D2B48] text-white px-5 py-2 rounded-lg flex gap-2 justify-center items-center cursor-pointer"
               onClick={handleUpload}
+              disabled={isLoading}
             >
-              Upload
+              {isLoading ? "Uploading..." : "Upload"}
             </button>
           </div>
         </div>

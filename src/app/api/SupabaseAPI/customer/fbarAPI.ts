@@ -107,7 +107,7 @@ export const updateFilingYearWithDetails = async (
                 incomeDetailsId: incomeData?.incomeDetailsId ?? null,
                 deductionDetailsId: deductionData?.deductionDetailsId ?? null,
                 fbarFatcaId: fbarData.fbarFatcaId,
-                status: "Documents pending",
+                status: "Documents Pending",
                 updatedAt: now,
             })
             .eq("customerId", customerId)
