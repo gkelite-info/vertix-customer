@@ -23,17 +23,17 @@ const Footer = () => {
               Vertix Tax
             </Link>
             <div className="mt-4 space-y-2 text-gray-300 text-sm">
-              <p>8 The Green Ste RDover, DE 19901, USA</p>
+              <p className="text-[#D1D5DC]">8 The Green Ste RDover, DE 19901, USA</p>
               <div className="flex">
                 <strong className="text-white">Phone :</strong>
                 <div className="pl-2">
-                  <p>+1 (302) 244-9149</p>
-                  <p>+91 8500090206</p>
+                  <p className="text-[#D1D5DC]">+1 (302) 244-9149</p>
+                  <p className="text-[#D1D5DC]">+91 8500090206</p>
                 </div>
               </div>
               <div className="flex">
                 <strong className="text-white">Email :</strong>{" "}
-                <p className="pl-3">Vertixtax@gmail.com</p>
+                <p className="pl-3 text-[#D1D5DC]">Vertixtax@gmail.com</p>
               </div>
             </div>
             <div className="flex gap-4 mt-4">
@@ -69,37 +69,35 @@ const Footer = () => {
           </div>
 
           <div>
-            <h4 className="text-lg font-semibold mb-3">USEFUL LINKS</h4>
+            <h4 className="text-lg font-semibold mb-3 text-white">USEFUL LINKS</h4>
             <ul className="space-y-2 text-gray-300 text-sm">
               <li>
-                <Link href="/" className="hover:text-white">
+                <Link href="/" className="hover:text-white text-[#D1D5DC]">
                   Home
                 </Link>
               </li>
               <li>
-                <Link href="/about" className="hover:text-white">
+                <Link href="/about" className="hover:text-white text-[#D1D5DC]">
                   About us
                 </Link>
               </li>
               <li>
-                <Link href="/individualtax" className="hover:text-white">
+                <Link href="/individualtax" className="hover:text-white text-[#D1D5DC]">
                   Services
                 </Link>
               </li>
-              <li>
-                {/* <Link href="/terms-of-services" className="hover:text-white">
-                  Terms of service
-                </Link> */}
+              <li className="hover:text-white text-[#D1D5DC] cursor-pointer">
                 Terms of service
               </li>
+              {/* Terms of service */}
             </ul>
           </div>
 
           <div>
-            <h4 className="text-lg font-semibold mb-3">CHECK YOUR REFUND</h4>
+            <h4 className="text-lg font-semibold mb-3 text-white">CHECK YOUR REFUND</h4>
             <ul className="space-y-2 text-gray-300 text-sm">
               <li>
-                <Link href="https://sa.www4.irs.gov/wmr/" target="_blank">Federal Refund</Link>
+                <Link href="https://sa.www4.irs.gov/wmr/" target="_blank" className="text-[#D1D5DC] hover:text-white">Federal Refund</Link>
                 {/* <Link
                   href="/service-details/ai_services"
                   className="hover:text-white"
@@ -107,7 +105,8 @@ const Footer = () => {
                   Federal Refund
                 </Link> */}
               </li>
-              <li onClick={handleStateRefund} className="cursor-pointer text-white">
+              <li className="cursor-pointer text-[#D1D5DC] hover:text-white">
+                State Refund
                 {/* <Link
                   href={handleStateRefund}
                   className="cursor-pointer text-white">
