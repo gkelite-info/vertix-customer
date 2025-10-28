@@ -25,7 +25,6 @@ export default function TaxfilingContent() {
 
   useEffect(() => {
     if (!isSessionReady || !session) return
-
     const fetchCustomer = async () => {
       try {
         const { data } = await getCustomer()
@@ -34,9 +33,40 @@ export default function TaxfilingContent() {
         console.error("❌ Failed to fetch customer:", err)
       }
     }
-
     fetchCustomer()
   }, [isSessionReady, session])
+
+  // 🔹 1-hour temporary access handling
+  useEffect(() => {
+    if (!isSessionReady || !session) return
+
+    const temporary = searchParams.get("temporary_access") === "true"
+    const storedExpiry = localStorage.getItem("temporary_access_expiry")
+
+    if (temporary && !storedExpiry) {
+      const expiry = Date.now() + 60 * 60 * 1000 // 1 hour
+      localStorage.setItem("temporary_access_expiry", expiry.toString())
+      localStorage.setItem("temporary_access_flag", "true")
+      console.log("⏰ Temporary 1-hour access started")
+    }
+
+    const checkExpiry = async () => {
+      const isTemp = localStorage.getItem("temporary_access_flag") === "true"
+      const expiryTime = localStorage.getItem("temporary_access_expiry")
+      if (isTemp && expiryTime && Date.now() > Number(expiryTime)) {
+        console.log("🔒 Temporary access expired — logging out...")
+        await supabase.auth.signOut()
+        localStorage.removeItem("temporary_access_flag")
+        localStorage.removeItem("temporary_access_expiry")
+        router.replace("/login")
+      }
+    }
+
+    // Run immediately and every minute
+    checkExpiry()
+    const interval = setInterval(checkExpiry, 60000)
+    return () => clearInterval(interval)
+  }, [isSessionReady, session, router, searchParams])
 
   const activeTab: string = searchParams.get("tab") || "filingyear"
 
