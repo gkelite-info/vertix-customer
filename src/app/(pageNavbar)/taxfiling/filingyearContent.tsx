@@ -16,28 +16,45 @@ import BankingInformationPage from "../BankingInformation/page"
 import { useHandleMagicLinkAuth } from "../../../../utils/useHandleMagicLinkAuth"
 import { useEffect } from "react"
 import { getCustomer } from "@/app/api/SupabaseAPI/customer/customerApi"
+import { supabase } from "../../../../utils/supabase/client"
 
 export default function TaxfilingContent() {
-  const isSessionReady = useHandleMagicLinkAuth()
+  const { isSessionReady, session } = useHandleMagicLinkAuth()
   const router = useRouter()
   const searchParams = useSearchParams()
 
   useEffect(() => {
-    if (!isSessionReady) return
+    if (!isSessionReady || !session) return
 
     const fetchCustomer = async () => {
       try {
         const { data } = await getCustomer()
-        if (!data) {
-          console.warn("⚠️ No customer data, retrying in 500 ms...")
-          setTimeout(fetchCustomer, 500) // 🧩 retry once after delay
-        }
+        if (!data) console.warn("⚠️ No customer data found.")
       } catch (err) {
         console.error("❌ Failed to fetch customer:", err)
       }
     }
 
     fetchCustomer()
+  }, [isSessionReady, session])
+
+  useEffect(() => {
+    if (!isSessionReady) return
+
+    const expiry = Date.now() + 60 * 60 * 1000 // 1 hour
+    localStorage.setItem("session_expiry", expiry.toString())
+
+    const checkExpiry = setInterval(async () => {
+      const stored = localStorage.getItem("session_expiry")
+      if (stored && Date.now() > Number(stored)) {
+        console.log("⏰ Session expired — logging out...")
+        await supabase.auth.signOut()
+        localStorage.removeItem("session_expiry")
+        window.location.href = "/session-expired"
+      }
+    }, 60000) // check every minute
+
+    return () => clearInterval(checkExpiry)
   }, [isSessionReady])
 
   const activeTab: string = searchParams.get("tab") || "filingyear"
