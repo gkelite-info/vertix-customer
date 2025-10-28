@@ -10,6 +10,44 @@ export interface FilingYearData {
     deletedAt?: string | null;
 }
 
+export const getLatestFilingYearRecord = async (): Promise<FilingYearData | null> => {
+  try {
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser();
+
+    if (authError || !user) throw new Error("Not authenticated");
+
+    const { data: customer, error: customerError } = await supabase
+      .from("vertixcustomers")
+      .select("customerId")
+      .eq("auth_id", user.id)
+      .single();
+
+    if (customerError || !customer) throw new Error("Customer not found");
+
+    const customerId = customer.customerId;
+
+    const { data: filingYear, error: filingError } = await supabase
+      .from("filing_year")
+      .select("*")
+      .eq("customerId", customerId)
+      .order("filingYearId", { ascending: false })
+      .limit(1)
+      .single();
+
+    if (filingError) throw new Error(filingError.message);
+
+    return filingYear || null;
+
+  } catch (error: any) {
+    console.error("Error fetching latest filing year record:", error.message);
+    throw error;
+  }
+};
+
+
 export const createFilingYearRecord = async (
     year: number
 ): Promise<FilingYearData> => {

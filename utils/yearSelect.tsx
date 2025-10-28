@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useYear } from "@/app/api/context/yearContext";
 import { getCustomer } from "@/app/api/SupabaseAPI/customer/customerApi";
+import { getLatestFilingYearRecord } from "@/app/api/SupabaseAPI/customer/filingYearAPI";
 
 interface YearSelectProps {
   style?: string;
@@ -32,6 +33,23 @@ export default function YearSelect({ style = "" }: YearSelectProps) {
     };
     fetchCustomer();
   }, []);
+
+  useEffect(() => {
+    if (!customerId) return;
+    if (selectedYear) return;
+
+    const fetchLatestYear = async () => {
+      try {
+        const latestRecord = await getLatestFilingYearRecord();
+        if (latestRecord?.year) {
+          setSelectedYear(latestRecord.year.toString());
+        }
+      } catch (error) {
+        console.error("Error fetching latest filing year:", error);
+      }
+    };
+    fetchLatestYear();
+  }, [customerId, selectedYear, setSelectedYear]);
 
   return (
     <div className="bg-red-00 lg:h-30 lg:w-[100%] flex justify-center items-center lg:px-10 shadow-lg">
