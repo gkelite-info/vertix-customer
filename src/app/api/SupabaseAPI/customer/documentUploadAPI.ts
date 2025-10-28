@@ -3,6 +3,7 @@ import { supabase } from "../../../../../utils/supabase/client";
 export interface UserDocument {
   documentId?: number;
   customerId: number;
+  filingYearId: number;
   doc_type: string;
   file_path: string;
   public_url: string;
@@ -11,8 +12,8 @@ export interface UserDocument {
   updatedAt?: string;
 }
 
-
-export const getUserDocuments = async (): Promise<UserDocument[]> => {
+// ✅ Get all documents for the logged-in user and selected filing year
+export const getUserDocuments = async (filingYearId: number): Promise<UserDocument[]> => {
   try {
     const {
       data: { user },
@@ -28,12 +29,12 @@ export const getUserDocuments = async (): Promise<UserDocument[]> => {
       .single();
 
     if (customerError || !customer) throw new Error("Customer not found");
-    const customerId = customer.customerId;
 
     const { data, error } = await supabase
       .from("userdocuments")
       .select("*")
-      .eq("customerId", customerId)
+      .eq("customerId", customer.customerId)
+      .eq("filingYearId", filingYearId)
       .order("createdAt", { ascending: false });
 
     if (error) throw error;
@@ -45,10 +46,11 @@ export const getUserDocuments = async (): Promise<UserDocument[]> => {
   }
 };
 
-
+// ✅ Upload a new user document
 export const uploadUserDocument = async (
   file: File,
   doc_type: string,
+  filingYearId: number,
   description: string | null = null
 ): Promise<UserDocument | null> => {
   try {
@@ -69,7 +71,7 @@ export const uploadUserDocument = async (
     const customerId = customer.customerId;
 
     const sanitizedFileName = file.name.replace(/\s+/g, "_");
-    const filePath = `${customerId}/${doc_type}/${sanitizedFileName}`;
+    const filePath = `${customerId}/${filingYearId}/${doc_type}/${sanitizedFileName}`;
 
     const { error: uploadError } = await supabase.storage
       .from("user-uploads")
@@ -82,7 +84,6 @@ export const uploadUserDocument = async (
       .getPublicUrl(filePath);
 
     const publicUrl = publicData.publicUrl;
-
     const now = new Date().toISOString();
 
     const { data: documentData, error: insertError } = await supabase
@@ -90,6 +91,7 @@ export const uploadUserDocument = async (
       .insert([
         {
           customerId,
+          filingYearId,
           doc_type,
           file_path: filePath,
           public_url: publicUrl,
@@ -110,21 +112,7 @@ export const uploadUserDocument = async (
   }
 };
 
-export const getDocumentDownloadUrl = async (filePath: string, expiresIn = 60) => {
-  try {
-    const { data, error } = await supabase.storage
-      .from("user-uploads")
-      .createSignedUrl(filePath, expiresIn);
-
-    if (error || !data?.signedUrl) throw new Error(error?.message || "Failed to create signed URL");
-
-    return data.signedUrl;
-  } catch (err: any) {
-    console.error("Error generating signed URL:", err.message);
-    throw err;
-  }
-};
-
+// ✅ Delete user document
 export const deleteUserDocument = async (file_path: string): Promise<boolean> => {
   try {
     const { error: storageError } = await supabase.storage
