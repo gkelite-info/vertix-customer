@@ -6,7 +6,7 @@ import { useEffect, useState } from "react"
 import { useAuth } from "../AuthContext"
 import { MdArrowDropDown } from "react-icons/md"
 import { IoMdArrowDropright } from "react-icons/io"
-import LogoutModal from "../modals/logoutModal/page"
+import LogoutModal from "../modals/logoutModel"
 import { getCustomer } from "@/app/api/SupabaseAPI/customer/customerApi"
 
 function Header() {

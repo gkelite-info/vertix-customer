@@ -59,7 +59,7 @@ export default function ManageFilingYear() {
               onChange={(e) => setTempYear(e.target.value)}
               className="border w-40 text-[#2F3F5F] font-medium lg:w-[60%] lg:h-[85%] rounded cursor-pointer"
             >
-              <option value="">SELECT YEAR</option>
+              <option value="">Select Year</option>
               {years.map((year) => (
                 <option key={year} value={year}>
                   {year}
