@@ -10,6 +10,13 @@ export default function ManageFilingYear() {
   const [tempYear, setTempYear] = useState(selectedYear || "")
   const [isLoading, setIsLoading] = useState(false)
 
+  const currentYear = new Date().getFullYear();
+  const startYear = 2020;
+  const years = Array.from(
+    { length: currentYear - startYear + 1 },
+    (_, i) => currentYear - i
+  );
+
   const handleAddService = async () => {
     if (!tempYear) {
       toast.error("Please select a year")
@@ -24,9 +31,7 @@ export default function ManageFilingYear() {
       console.log("Filing year record created:", result)
 
       setSelectedYear(tempYear)
-
       toast.success(`Service year ${tempYear} added successfully!`)
-
     } catch (error: any) {
       console.error("Error adding service year:", error)
       toast.error(error.message || "Failed to add service year")
@@ -54,13 +59,12 @@ export default function ManageFilingYear() {
               onChange={(e) => setTempYear(e.target.value)}
               className="border w-40 text-[#2F3F5F] font-medium lg:w-[60%] lg:h-[85%] rounded cursor-pointer"
             >
-              <option value="">SELECT ONE</option>
-              <option value="2020">2020</option>
-              <option value="2021">2021</option>
-              <option value="2022">2022</option>
-              <option value="2023">2023</option>
-              <option value="2024">2024</option>
-              <option value="2025">2025</option>
+              <option value="">SELECT YEAR</option>
+              {years.map((year) => (
+                <option key={year} value={year}>
+                  {year}
+                </option>
+              ))}
             </select>
           </div>
 

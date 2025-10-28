@@ -18,40 +18,38 @@ export default function MyDocuments() {
   const [fetchingDocs, setFetchingDocs] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
-  const [fileToDelete, setFileToDelete] = useState<string | null>(null)
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [fileToDelete, setFileToDelete] = useState<string | null>(null);
+  const [selectedFilingYearId, setSelectedFilingYearId] = useState<number | null>(null);
 
   const { user } = useAuth()
 
+
   useEffect(() => {
-    if (!user) return;
+    if (!user || !selectedFilingYearId) {
+      setDocuments([]);
+      setUploadedDocTypes([]);
+      setFetchingDocs(false);
+      return;
+    }
 
     const fetchDocs = async () => {
+      setFetchingDocs(true);
       try {
-        const res = await getUserDocuments()
-        setDocuments(res || [])
+        const res = await getUserDocuments(selectedFilingYearId);
+        setDocuments(res || []);
+        const uploadedTypes = (res || []).map(doc => doc.doc_type);
+        setUploadedDocTypes(uploadedTypes);
       } catch (error) {
-        setDocuments([])
+        setDocuments([]);
+        setUploadedDocTypes([]);
       } finally {
-        setFetchingDocs(false)
+        setFetchingDocs(false);
       }
-    }
+    };
 
-    fetchDocs()
-  }, [user])
-
-  useEffect(() => {
-    const fetchDocuments = async () => {
-      try {
-        const docs = await getUserDocuments()
-        const uploadedTypes = docs.map(doc => doc.doc_type)
-        setUploadedDocTypes(uploadedTypes)
-      } catch (err) {
-        console.error("Error fetching documents:", err)
-      }
-    }
-    fetchDocuments()
-  }, [])
+    fetchDocs();
+  }, [user, selectedFilingYearId]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -69,15 +67,20 @@ export default function MyDocuments() {
       return
     }
 
+    if (!selectedFilingYearId) {
+      toast.error("Please select a filing year");
+      return;
+    }
+
     if (uploadedDocTypes.includes(selectedDocType)) {
       toast.error("This document type is already uploaded")
       return
     }
 
     try {
-      
+
       setIsLoading(true);
-      const uploadedDoc = await uploadUserDocument(selectedFile, selectedDocType, description)
+      const uploadedDoc = await uploadUserDocument(selectedFile, selectedDocType, selectedFilingYearId, description)
       if (uploadedDoc) {
         toast.success("File uploaded and saved successfully")
         setDocuments(prev => [uploadedDoc, ...prev])
@@ -173,11 +176,11 @@ export default function MyDocuments() {
               placeholder="Comment about document"
               value={description}
               onChange={e => setDescription(e.target.value)}
-              className="w-[100%] text-sm p-3 text-[#616161] border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-[100%] text-sm p-2 text-[#616161] border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
               rows={4}
             />
             <button
-              className="mt-4 font-medium w-[75%] text-sm bg-[#1D2B48] text-white px-5 py-2 rounded-lg flex gap-2 justify-center items-center cursor-pointer"
+              className="mt-4 font-medium w-[70%] text-sm bg-[#1D2B48] text-white px-5 py-2 rounded flex gap-2 justify-center items-center cursor-pointer"
               onClick={handleUpload}
               disabled={isLoading}
             >
