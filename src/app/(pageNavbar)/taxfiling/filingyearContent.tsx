@@ -17,9 +17,11 @@ import { useHandleMagicLinkAuth } from "../../../../utils/useHandleMagicLinkAuth
 import { useEffect } from "react"
 import { getCustomer } from "@/app/api/SupabaseAPI/customer/customerApi"
 import { supabase } from "../../../../utils/supabase/client"
+import { useAuth } from "@/components/AuthContext"
 
 export default function TaxfilingContent() {
   const { isSessionReady, session } = useHandleMagicLinkAuth()
+  const { logout, setIsAuthenticated } = useAuth()
   const router = useRouter()
   const searchParams = useSearchParams()
 
@@ -35,6 +37,17 @@ export default function TaxfilingContent() {
     }
     fetchCustomer()
   }, [isSessionReady, session])
+
+  useEffect(() => {
+    if (!isSessionReady) return
+
+    if (session) {
+      setIsAuthenticated(true)
+    } else {
+      setIsAuthenticated(false)
+      logout()
+    }
+  }, [isSessionReady, session, setIsAuthenticated, logout])
 
   // Handle temporary (1-hour) vs normal login sessions
   useEffect(() => {
@@ -57,16 +70,19 @@ export default function TaxfilingContent() {
       router.replace(`?${params.toString()}`)
     }
 
-    // Case 2: Check expiry immediately and every minute (based on persisted flag)
     const checkExpiry = async () => {
       const isTemp = localStorage.getItem("temporary_access_flag") === "true"
       const expiryTime = localStorage.getItem("temporary_access_expiry")
       if (isTemp && expiryTime && Date.now() > Number(expiryTime)) {
         console.log("🔒 Temporary access expired — logging out...")
-        await supabase.auth.signOut()
-        localStorage.removeItem("temporary_access_flag")
-        localStorage.removeItem("temporary_access_expiry")
-        router.replace("/login")
+        try {
+          setIsAuthenticated(false)
+          logout()
+        } catch (err) {
+          console.error("Error during logout on expiry:", err)
+        } finally {
+          router.replace("/login")
+        }
       }
     }
 
@@ -75,7 +91,14 @@ export default function TaxfilingContent() {
     // then run every minute
     const interval = setInterval(checkExpiry, 60000)
     return () => clearInterval(interval)
-  }, [isSessionReady, session, router, searchParams])
+  }, [
+    isSessionReady,
+    session,
+    router,
+    searchParams,
+    logout,
+    setIsAuthenticated,
+  ])
 
   const activeTab: string = searchParams.get("tab") || "filingyear"
 
