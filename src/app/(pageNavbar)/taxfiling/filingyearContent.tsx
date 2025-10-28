@@ -41,7 +41,7 @@ export default function TaxfilingContent() {
   useEffect(() => {
     if (!isSessionReady) return
 
-    const expiry = Date.now() + 60 * 60 * 1000 // 1 hour
+    const expiry = Date.now() + 60 * 60
     localStorage.setItem("session_expiry", expiry.toString())
 
     const checkExpiry = setInterval(async () => {
@@ -50,12 +50,12 @@ export default function TaxfilingContent() {
         console.log("⏰ Session expired — logging out...")
         await supabase.auth.signOut()
         localStorage.removeItem("session_expiry")
-        window.location.href = "/session-expired"
+        router.replace("/login")
       }
     }, 60000) // check every minute
 
     return () => clearInterval(checkExpiry)
-  }, [isSessionReady])
+  }, [isSessionReady, router])
 
   const activeTab: string = searchParams.get("tab") || "filingyear"
 
