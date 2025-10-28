@@ -12,7 +12,6 @@ export interface UserDocument {
   updatedAt?: string;
 }
 
-// ✅ Get all documents for the logged-in user and selected filing year
 export const getUserDocuments = async (filingYearId: number): Promise<UserDocument[]> => {
   try {
     const {
@@ -46,7 +45,6 @@ export const getUserDocuments = async (filingYearId: number): Promise<UserDocume
   }
 };
 
-// ✅ Upload a new user document
 export const uploadUserDocument = async (
   file: File,
   doc_type: string,
@@ -112,7 +110,21 @@ export const uploadUserDocument = async (
   }
 };
 
-// ✅ Delete user document
+export const getDocumentDownloadUrl = async (filePath: string, expiresIn = 60) => {
+  try {
+    const { data, error } = await supabase.storage
+      .from("user-uploads")
+      .createSignedUrl(filePath, expiresIn);
+
+    if (error || !data?.signedUrl) throw new Error(error?.message || "Failed to create signed URL");
+
+    return data.signedUrl;
+  } catch (err: any) {
+    console.error("Error generating signed URL:", err.message);
+    throw err;
+  }
+};
+
 export const deleteUserDocument = async (file_path: string): Promise<boolean> => {
   try {
     const { error: storageError } = await supabase.storage
