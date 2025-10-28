@@ -25,7 +25,6 @@ export default function TaxfilingContent() {
 
   useEffect(() => {
     if (!isSessionReady || !session) return
-
     const fetchCustomer = async () => {
       try {
         const { data } = await getCustomer()
@@ -34,39 +33,48 @@ export default function TaxfilingContent() {
         console.error("❌ Failed to fetch customer:", err)
       }
     }
-
     fetchCustomer()
   }, [isSessionReady, session])
 
-  // ✅ Handle Temporary (1-hour) Access Logic
+  // Handle temporary (1-hour) vs normal login sessions
   useEffect(() => {
     if (!isSessionReady || !session) return
 
-    const temporary = searchParams.get("temporary_access") === "true"
+    const urlHasTempAccess = searchParams.get("temporary_access") === "true"
+    const storedTempFlag = localStorage.getItem("temporary_access_flag")
 
-    if (temporary) {
-      // Only store timer once
-      const existingExpiry = localStorage.getItem("temporary_access_expiry")
-      if (!existingExpiry) {
-        const expiry = Date.now() + 1 * 60 * 1000 // 1 hour
-        localStorage.setItem("temporary_access_expiry", expiry.toString())
-        console.log("⏰ Temporary 1-hour access started")
-      }
+    // Case 1: First time temporary login (set expiry + flag)
+    if (urlHasTempAccess && !storedTempFlag) {
+      const expiry = Date.now() + 1 * 60 * 1000 // 1 hour
+      localStorage.setItem("temporary_access_flag", "true")
+      localStorage.setItem("temporary_access_expiry", expiry.toString())
+      console.log("⏰ Temporary 1-hour access started")
 
-      const checkExpiry = async () => {
-        const expiry = localStorage.getItem("temporary_access_expiry")
-        if (expiry && Date.now() > Number(expiry)) {
-          console.log("🔒 Temporary access expired — logging out...")
-          await supabase.auth.signOut()
-          localStorage.removeItem("temporary_access_expiry")
-          router.replace("/login")
-        }
-      }
-
-      checkExpiry() // run once immediately
-      const interval = setInterval(checkExpiry, 60000)
-      return () => clearInterval(interval)
+      // Remove the temporary_access param from the URL for cleanliness
+      const params = new URLSearchParams(searchParams.toString())
+      params.delete("temporary_access")
+      // preserve other params (like tab) if present
+      router.replace(`?${params.toString()}`)
     }
+
+    // Case 2: Check expiry immediately and every minute (based on persisted flag)
+    const checkExpiry = async () => {
+      const isTemp = localStorage.getItem("temporary_access_flag") === "true"
+      const expiryTime = localStorage.getItem("temporary_access_expiry")
+      if (isTemp && expiryTime && Date.now() > Number(expiryTime)) {
+        console.log("🔒 Temporary access expired — logging out...")
+        await supabase.auth.signOut()
+        localStorage.removeItem("temporary_access_flag")
+        localStorage.removeItem("temporary_access_expiry")
+        router.replace("/login")
+      }
+    }
+
+    // run immediately
+    checkExpiry()
+    // then run every minute
+    const interval = setInterval(checkExpiry, 60000)
+    return () => clearInterval(interval)
   }, [isSessionReady, session, router, searchParams])
 
   const activeTab: string = searchParams.get("tab") || "filingyear"
