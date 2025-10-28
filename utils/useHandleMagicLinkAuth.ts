@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 
 import { useEffect, useState } from "react"
@@ -5,43 +6,49 @@ import { supabase } from "./supabase/client"
 
 export const useHandleMagicLinkAuth = () => {
   const [isSessionReady, setIsSessionReady] = useState(false)
+  const [session, setSession] = useState<any>(null)
 
   useEffect(() => {
+    let isMounted = true
+
     const restoreSession = async () => {
-      const hash = window.location.hash
-      if (!hash) {
-        const { data } = await supabase.auth.getSession()
-        setIsSessionReady(!!data.session)
-        return
-      }
+      try {
+        const hash = window.location.hash
 
-      const params = new URLSearchParams(hash.substring(1))
-      const access_token = params.get("access_token")
-      const refresh_token = params.get("refresh_token")
+        if (hash) {
+          const params = new URLSearchParams(hash.substring(1))
+          const access_token = params.get("access_token")
+          const refresh_token = params.get("refresh_token")
 
-      if (access_token && refresh_token) {
-        console.log("🔄 Restoring Supabase session from magic link...")
-        const { error } = await supabase.auth.setSession({
-          access_token,
-          refresh_token,
-        })
-
-        if (error) {
-          console.error("❌ Error setting Supabase session:", error)
+          if (access_token && refresh_token) {
+            console.log("🔄 Restoring Supabase session from magic link...")
+            const { data, error } = await supabase.auth.setSession({
+              access_token,
+              refresh_token,
+            })
+            if (error)
+              console.error("❌ Error setting Supabase session:", error)
+            window.history.replaceState(null, "", window.location.pathname)
+            if (isMounted) setSession(data?.session ?? null)
+          }
         } else {
-          console.log("✅ Supabase session restored successfully")
-          // 🧩 FIX: cleanup URL and refresh the client session state
-          window.history.replaceState(null, "", window.location.pathname)
-          await supabase.auth.getSession() // force reload session state
+          const { data } = await supabase.auth.getSession()
+          if (isMounted) setSession(data?.session ?? null)
         }
-      }
 
-      // 🧩 FIX: small delay ensures Supabase internal state settles
-      setTimeout(() => setIsSessionReady(true), 300)
+        if (isMounted) setIsSessionReady(true)
+      } catch (err) {
+        console.error("❌ Session restore failed:", err)
+        if (isMounted) setIsSessionReady(true)
+      }
     }
 
     restoreSession()
+
+    return () => {
+      isMounted = false
+    }
   }, [])
 
-  return isSessionReady
+  return { isSessionReady, session }
 }
