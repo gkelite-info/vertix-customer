@@ -1,9 +1,14 @@
-'use client'
+/* eslint-disable @typescript-eslint/no-explicit-any */
+"use client"
 
 import { useEffect, useRef, useState } from "react"
 import YearSelect from "../../../../utils/yearSelect"
 import toast from "react-hot-toast"
-import { deleteUserDocument, getUserDocuments, uploadUserDocument } from "@/app/api/SupabaseAPI/customer/documentUploadAPI"
+import {
+  deleteUserDocument,
+  getUserDocuments,
+  uploadUserDocument,
+} from "@/app/api/SupabaseAPI/customer/documentUploadAPI"
 import { useAuth } from "@/components/AuthContext"
 import TableComponent from "../../../../utils/table/page"
 import DeleteModal from "@/components/modals/deleteModal"
@@ -15,41 +20,42 @@ export default function MyDocuments() {
   const [uploadedDocTypes, setUploadedDocTypes] = useState<string[]>([])
   const fileInputRef = useRef<HTMLInputElement | null>(null)
   const [documents, setDocuments] = useState<Record<string, any>[]>([])
-  const [fetchingDocs, setFetchingDocs] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
+  const [fetchingDocs, setFetchingDocs] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
 
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [fileToDelete, setFileToDelete] = useState<string | null>(null);
-  const [selectedFilingYearId, setSelectedFilingYearId] = useState<number | null>(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const [fileToDelete, setFileToDelete] = useState<string | null>(null)
+  const [selectedFilingYearId, setSelectedFilingYearId] = useState<
+    number | null
+  >(null)
 
   const { user } = useAuth()
 
-
   useEffect(() => {
     if (!user || !selectedFilingYearId) {
-      setDocuments([]);
-      setUploadedDocTypes([]);
-      setFetchingDocs(false);
-      return;
+      setDocuments([])
+      setUploadedDocTypes([])
+      setFetchingDocs(false)
+      return
     }
 
     const fetchDocs = async () => {
-      setFetchingDocs(true);
+      setFetchingDocs(true)
       try {
-        const res = await getUserDocuments(selectedFilingYearId);
-        setDocuments(res || []);
-        const uploadedTypes = (res || []).map(doc => doc.doc_type);
-        setUploadedDocTypes(uploadedTypes);
+        const res = await getUserDocuments(selectedFilingYearId)
+        setDocuments(res || [])
+        const uploadedTypes = (res || []).map((doc) => doc.doc_type)
+        setUploadedDocTypes(uploadedTypes)
       } catch (error) {
-        setDocuments([]);
-        setUploadedDocTypes([]);
+        setDocuments([])
+        setUploadedDocTypes([])
       } finally {
-        setFetchingDocs(false);
+        setFetchingDocs(false)
       }
-    };
+    }
 
-    fetchDocs();
-  }, [user, selectedFilingYearId]);
+    fetchDocs()
+  }, [user, selectedFilingYearId])
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -68,8 +74,8 @@ export default function MyDocuments() {
     }
 
     if (!selectedFilingYearId) {
-      toast.error("Please select a filing year");
-      return;
+      toast.error("Please select a filing year")
+      return
     }
 
     if (uploadedDocTypes.includes(selectedDocType)) {
@@ -78,13 +84,17 @@ export default function MyDocuments() {
     }
 
     try {
-
-      setIsLoading(true);
-      const uploadedDoc = await uploadUserDocument(selectedFile, selectedDocType, selectedFilingYearId, description)
+      setIsLoading(true)
+      const uploadedDoc = await uploadUserDocument(
+        selectedFile,
+        selectedDocType,
+        selectedFilingYearId,
+        description
+      )
       if (uploadedDoc) {
         toast.success("File uploaded and saved successfully")
-        setDocuments(prev => [uploadedDoc, ...prev])
-        setUploadedDocTypes(prev => [...prev, uploadedDoc.doc_type])
+        setDocuments((prev) => [uploadedDoc, ...prev])
+        setUploadedDocTypes((prev) => [...prev, uploadedDoc.doc_type])
         setSelectedFile(null)
         setSelectedDocType("")
         setDescription("")
@@ -93,9 +103,8 @@ export default function MyDocuments() {
     } catch (error: any) {
       toast.error("Upload failed: " + error.message)
       console.error(error)
-    }
-    finally {
-      setIsLoading(false);
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -109,9 +118,15 @@ export default function MyDocuments() {
     try {
       await deleteUserDocument(fileToDelete)
       toast.success("Document deleted successfully")
-      setDocuments(prev => prev.filter(doc => doc.file_path !== fileToDelete))
-      setUploadedDocTypes(prev =>
-        prev.filter(type => type !== documents.find(doc => doc.file_path === fileToDelete)?.doc_type)
+      setDocuments((prev) =>
+        prev.filter((doc) => doc.file_path !== fileToDelete)
+      )
+      setUploadedDocTypes((prev) =>
+        prev.filter(
+          (type) =>
+            type !==
+            documents.find((doc) => doc.file_path === fileToDelete)?.doc_type
+        )
       )
     } catch (err: any) {
       toast.error("Failed to delete: " + err.message)
@@ -127,11 +142,26 @@ export default function MyDocuments() {
   }
 
   const docTypeOptions = [
-    "FBAR Organizer", "Tax Organizer Document", "W-2", "Interest Income", "Dividend Income", "1099-G",
-    "1099-B", "1099-MISC", "Mortgage Interest", "1098-T", "Foreign Tax Certificates",
-    "Indian Document", "Prior Year Tax Return", "ID", "Notice", "Others",
+    "FBAR Organizer",
+    "Tax Organizer Document",
+    "W-2",
+    "Interest Income",
+    "Dividend Income",
+    "1099-G",
+    "1099-B",
+    "1099-MISC",
+    "Mortgage Interest",
+    "1098-T",
+    "Foreign Tax Certificates",
+    "Indian Document",
+    "Prior Year Tax Return",
+    "ID",
+    "Notice",
+    "Others",
   ]
-  const availableOptions = docTypeOptions.filter(type => !uploadedDocTypes.includes(type))
+  const availableOptions = docTypeOptions.filter(
+    (type) => !uploadedDocTypes.includes(type)
+  )
 
   const columns = ["Document Type", "File", "Description"]
   const columnKeys = ["doc_type", "public_url", "description"]
@@ -150,14 +180,18 @@ export default function MyDocuments() {
             onChange={handleDocTypeChange}
           >
             <option value="">Select one</option>
-            {availableOptions.map(opt => (
-              <option key={opt} value={opt}>{opt}</option>
+            {availableOptions.map((opt) => (
+              <option key={opt} value={opt}>
+                {opt}
+              </option>
             ))}
           </select>
         </div>
         <div className="bg-red-00 flex items-center justify-between gap-3 h-12 w-[44%] mt-3">
           <div className="w-[45%]">
-            <h5 className="text-[#1D2B48] font-medium text-end pr-1.5">DOCUMENT :</h5>
+            <h5 className="text-[#1D2B48] font-medium text-end pr-1.5">
+              DOCUMENT :
+            </h5>
           </div>
           <input
             ref={fileInputRef}
@@ -175,7 +209,7 @@ export default function MyDocuments() {
             <textarea
               placeholder="Comment about document"
               value={description}
-              onChange={e => setDescription(e.target.value)}
+              onChange={(e) => setDescription(e.target.value)}
               className="w-[100%] text-sm p-2 text-[#616161] border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
               rows={4}
             />
