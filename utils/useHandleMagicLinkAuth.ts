@@ -7,38 +7,40 @@ export const useHandleMagicLinkAuth = () => {
   const [isSessionReady, setIsSessionReady] = useState(false)
 
   useEffect(() => {
-    const hash = window.location.hash
-    if (!hash) {
-      // If no hash, just check if already logged in
-      supabase.auth.getSession().then(({ data }) => {
+    const restoreSession = async () => {
+      const hash = window.location.hash
+      if (!hash) {
+        const { data } = await supabase.auth.getSession()
         setIsSessionReady(!!data.session)
-      })
-      return
-    }
+        return
+      }
 
-    const params = new URLSearchParams(hash.substring(1))
-    const access_token = params.get("access_token")
-    const refresh_token = params.get("refresh_token")
+      const params = new URLSearchParams(hash.substring(1))
+      const access_token = params.get("access_token")
+      const refresh_token = params.get("refresh_token")
 
-    if (access_token && refresh_token) {
-      supabase.auth
-        .setSession({
+      if (access_token && refresh_token) {
+        console.log("🔄 Restoring Supabase session from magic link...")
+        const { error } = await supabase.auth.setSession({
           access_token,
           refresh_token,
         })
-        .then(({ error }) => {
-          if (error) {
-            console.error("Error setting Supabase session:", error)
-          } else {
-            console.log("✅ Supabase session restored successfully")
-            // Clean up URL hash
-            window.history.replaceState(null, "", window.location.pathname)
-          }
-          setIsSessionReady(true)
-        })
-    } else {
-      setIsSessionReady(true)
+
+        if (error) {
+          console.error("❌ Error setting Supabase session:", error)
+        } else {
+          console.log("✅ Supabase session restored successfully")
+          // 🧩 FIX: cleanup URL and refresh the client session state
+          window.history.replaceState(null, "", window.location.pathname)
+          await supabase.auth.getSession() // force reload session state
+        }
+      }
+
+      // 🧩 FIX: small delay ensures Supabase internal state settles
+      setTimeout(() => setIsSessionReady(true), 300)
     }
+
+    restoreSession()
   }, [])
 
   return isSessionReady

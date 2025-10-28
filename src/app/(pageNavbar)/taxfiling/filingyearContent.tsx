@@ -27,7 +27,11 @@ export default function TaxfilingContent() {
 
     const fetchCustomer = async () => {
       try {
-        await getCustomer()
+        const { data } = await getCustomer()
+        if (!data) {
+          console.warn("⚠️ No customer data, retrying in 500 ms...")
+          setTimeout(fetchCustomer, 500) // 🧩 retry once after delay
+        }
       } catch (err) {
         console.error("❌ Failed to fetch customer:", err)
       }
