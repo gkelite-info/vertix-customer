@@ -16,7 +16,6 @@ import BankingInformationPage from "../BankingInformation/page"
 import { useHandleMagicLinkAuth } from "../../../../utils/useHandleMagicLinkAuth"
 import { useEffect } from "react"
 import { getCustomer } from "@/app/api/SupabaseAPI/customer/customerApi"
-import { supabase } from "../../../../utils/supabase/client"
 import { useAuth } from "@/components/AuthContext"
 
 export default function TaxfilingContent() {
@@ -29,13 +28,14 @@ export default function TaxfilingContent() {
     if (!isSessionReady || !session) return
     const fetchCustomer = async () => {
       try {
-        const { data } = await getCustomer()
-        if (!data) console.warn("⚠️ No customer data found.")
+        const data = await getCustomer()
+        if (!data) console.warn("No customer data found.")
       } catch (err) {
-        console.error("❌ Failed to fetch customer:", err)
+        console.error("Failed to fetch customer:", err)
       }
     }
     fetchCustomer()
+    
   }, [isSessionReady, session])
 
   useEffect(() => {
@@ -49,24 +49,20 @@ export default function TaxfilingContent() {
     }
   }, [isSessionReady, session, setIsAuthenticated, logout])
 
-  // Handle temporary (1-hour) vs normal login sessions
   useEffect(() => {
     if (!isSessionReady || !session) return
 
     const urlHasTempAccess = searchParams.get("temporary_access") === "true"
     const storedTempFlag = localStorage.getItem("temporary_access_flag")
 
-    // Case 1: First time temporary login (set expiry + flag)
     if (urlHasTempAccess && !storedTempFlag) {
-      const expiry = Date.now() + 1 * 60 * 1000 // 1 hour
+      const expiry = Date.now() + 1 * 60 * 1000
       localStorage.setItem("temporary_access_flag", "true")
       localStorage.setItem("temporary_access_expiry", expiry.toString())
-      console.log("⏰ Temporary 1-hour access started")
+      console.log("Temporary 1-hour access started")
 
-      // Remove the temporary_access param from the URL for cleanliness
       const params = new URLSearchParams(searchParams.toString())
       params.delete("temporary_access")
-      // preserve other params (like tab) if present
       router.replace(`?${params.toString()}`)
     }
 
@@ -74,7 +70,7 @@ export default function TaxfilingContent() {
       const isTemp = localStorage.getItem("temporary_access_flag") === "true"
       const expiryTime = localStorage.getItem("temporary_access_expiry")
       if (isTemp && expiryTime && Date.now() > Number(expiryTime)) {
-        console.log("🔒 Temporary access expired — logging out...")
+        console.log("Temporary access expired — logging out...")
         try {
           setIsAuthenticated(false)
           logout()
@@ -86,9 +82,7 @@ export default function TaxfilingContent() {
       }
     }
 
-    // run immediately
     checkExpiry()
-    // then run every minute
     const interval = setInterval(checkExpiry, 60000)
     return () => clearInterval(interval)
   }, [
