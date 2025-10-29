@@ -42,7 +42,10 @@ export default function YearSelect({ style = "" }: YearSelectProps) {
       try {
         const latestRecord = await getLatestFilingYearRecord();
         if (latestRecord?.year) {
-          setSelectedYear(latestRecord.year.toString());
+          const yearString = latestRecord.year.toString();
+          setSelectedYear(yearString);
+          localStorage.setItem("selectedYear", yearString);
+          console.log("Auto-selected latest year:", yearString);
         }
       } catch (error) {
         console.error("Error fetching latest filing year:", error);
@@ -51,6 +54,13 @@ export default function YearSelect({ style = "" }: YearSelectProps) {
     fetchLatestYear();
   }, [customerId, selectedYear, setSelectedYear]);
 
+  const handleYearChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const year = e.target.value;
+    setSelectedYear(year);
+    localStorage.setItem("selectedYear", year);
+    console.log("Year manually selected:", year);
+  };
+
   return (
     <div className="bg-red-00 lg:h-30 lg:w-[100%] flex justify-center items-center lg:px-10 shadow-lg">
       <div
@@ -58,7 +68,7 @@ export default function YearSelect({ style = "" }: YearSelectProps) {
       >
         <select
           value={selectedYear}
-          onChange={(e) => setSelectedYear(e.target.value)}
+          onChange={handleYearChange}
           className="text-black border rounded-sm p-1"
         >
           <option value="">Select Year</option>

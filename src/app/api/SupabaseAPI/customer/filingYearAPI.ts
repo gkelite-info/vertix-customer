@@ -1,13 +1,13 @@
 import { supabase } from "../../../../../utils/supabase/client";
 
 export interface FilingYearData {
-    filingYearId?: number;
-    customerId: number;
-    year: number;
-    status?: string;
-    createdAt?: string;
-    updatedAt?: string;
-    deletedAt?: string | null;
+  filingYearId: number;
+  customerId: number;
+  year: number;
+  status?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  deletedAt?: string | null;
 }
 
 export const getLatestFilingYearRecord = async (): Promise<FilingYearData | null> => {
@@ -40,55 +40,77 @@ export const getLatestFilingYearRecord = async (): Promise<FilingYearData | null
     if (filingError) throw new Error(filingError.message);
 
     return filingYear || null;
-
   } catch (error: any) {
     console.error("Error fetching latest filing year record:", error.message);
     throw error;
   }
 };
 
-
 export const createFilingYearRecord = async (
-    year: number
+  year: number
 ): Promise<FilingYearData> => {
-    try {
-        const {
-            data: { user },
-            error: authError,
-        } = await supabase.auth.getUser();
+  try {
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser();
 
-        if (authError || !user) throw new Error("Not authenticated");
+    if (authError || !user) throw new Error("Not authenticated");
 
-        const { data: customer, error: customerError } = await supabase
-            .from("vertixcustomers")
-            .select("customerId")
-            .eq("auth_id", user.id)
-            .single();
+    const { data: customer, error: customerError } = await supabase
+      .from("vertixcustomers")
+      .select("customerId")
+      .eq("auth_id", user.id)
+      .single();
 
-        if (customerError || !customer) throw new Error("Customer not found");
+    if (customerError || !customer) throw new Error("Customer not found");
 
-        const customerId = customer.customerId;
-        const now = new Date().toISOString();
+    const customerId = customer.customerId;
+    const now = new Date().toISOString();
 
-        const { data: filingData, error: filingError } = await supabase
-            .from("filing_year")
-            .insert([
-                {
-                    customerId,
-                    year,
-                    createdAt: now,
-                    updatedAt: now,
-                }
-            ])
-            .select()
-            .single();
+    const { data: filingData, error: filingError } = await supabase
+      .from("filing_year")
+      .insert([
+        {
+          customerId,
+          year,
+          createdAt: now,
+          updatedAt: now,
+        },
+      ])
+      .select()
+      .single();
 
-        if (filingError || !filingData)
-            throw new Error(filingError?.message || "Failed to create filing year record");
+    if (filingError || !filingData)
+      throw new Error(filingError?.message || "Failed to create filing year record");
 
-        return filingData;
-    } catch (error: any) {
-        console.error("Error creating filing year record:", error.message);
-        throw error;
+    return filingData;
+  } catch (error: any) {
+    console.error("Error creating filing year record:", error.message);
+    throw error;
+  }
+};
+
+export const getFilingYearIdForCustomerAndYear = async (
+  customerId: string,
+  year: number
+): Promise<number | null> => {
+  try {
+    const { data, error } = await supabase
+      .from("filing_year")
+      .select("filingYearId")
+      .eq("customerId", customerId)
+      .eq("year", year)
+      .single();
+
+    if (error || !data) {
+      console.warn(`No filing year for customerId=${customerId} year=${year}`);
+      return null;
     }
+
+    return data.filingYearId;
+  } catch (error) {
+    console.error("Error in getFilingYearIdForCustomerAndYear:", error);
+    return null;
+  }
 };

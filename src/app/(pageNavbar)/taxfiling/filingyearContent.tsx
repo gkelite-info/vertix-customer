@@ -16,8 +16,11 @@ import BankingInformationPage from "../BankingInformation/page"
 import { useHandleMagicLinkAuth } from "../../../../utils/useHandleMagicLinkAuth"
 import { useEffect } from "react"
 import { getCustomer } from "@/app/api/SupabaseAPI/customer/customerApi"
+<<<<<<< Updated upstream
 import { supabase } from "../../../../utils/supabase/client"
 import { useAuth } from "@/components/AuthContext"
+=======
+>>>>>>> Stashed changes
 
 export default function TaxfilingContent() {
   const { isSessionReady, session } = useHandleMagicLinkAuth()
@@ -29,13 +32,14 @@ export default function TaxfilingContent() {
     if (!isSessionReady || !session) return
     const fetchCustomer = async () => {
       try {
-        const { data } = await getCustomer()
-        if (!data) console.warn("⚠️ No customer data found.")
+        const data = await getCustomer()
+        if (!data) console.warn("No customer data found.")
       } catch (err) {
-        console.error("❌ Failed to fetch customer:", err)
+        console.error("Failed to fetch customer:", err)
       }
     }
     fetchCustomer()
+    
   }, [isSessionReady, session])
 
   useEffect(() => {
