@@ -22,7 +22,19 @@ import toast from "react-hot-toast"
 
 const supabaseTemp = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+  {
+    auth: {
+      storage: {
+        getItem: () => null,
+        setItem: () => {},
+        removeItem: () => {},
+      },
+      autoRefreshToken: false,
+      persistSession: false,
+      detectSessionInUrl: false,
+    },
+  }
 )
 
 export default function TaxfilingContent() {
@@ -32,18 +44,18 @@ export default function TaxfilingContent() {
   const searchParams = useSearchParams()
   const isLoggingOut = useRef(false)
 
-  useEffect(() => {
-    if (!isSessionReady || !session) return
-    const fetchCustomer = async () => {
-      try {
-        const data = await getCustomer()
-        if (!data) console.warn("No customer data found.")
-      } catch (err) {
-        console.error("Failed to fetch customer:", err)
-      }
-    }
-    fetchCustomer()
-  }, [isSessionReady, session])
+  // useEffect(() => {
+  //   if (!isSessionReady || !session) return
+  //   const fetchCustomer = async () => {
+  //     try {
+  //       const data = await getCustomer()
+  //       if (!data) console.warn("No customer data found.")
+  //     } catch (err) {
+  //       console.error("Failed to fetch customer:", err)
+  //     }
+  //   }
+  //   fetchCustomer()
+  // }, [isSessionReady, session])
 
   useEffect(() => {
     if (!isSessionReady) return
