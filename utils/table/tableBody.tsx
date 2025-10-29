@@ -11,7 +11,12 @@ type TableBodyProps = {
     onDelete?: (filePath: string) => void;
 };
 
-export default function TableBody({ data, columnKeys, showActions = false, onDelete }: TableBodyProps) {
+export default function TableBody({
+    data,
+    columnKeys,
+    showActions = false,
+    onDelete,
+}: TableBodyProps) {
     const [loadingDownload, setLoadingDownload] = useState<number | null>(null);
 
     const handleDownload = async (filePath: string, index: number) => {
@@ -30,26 +35,38 @@ export default function TableBody({ data, columnKeys, showActions = false, onDel
     return (
         <tbody>
             {data.map((row, index) => (
-                <tr key={row.bankId || index} className="text-[#1D2B48] bg-[#C7C7C7] text-center">
-                    {columnKeys.map((key) => (
-                        <td
-                            key={key}
-                            style={{
-                                borderWidth: "1px",
-                                borderStyle: "solid",
-                                borderColor: "#D1D5DB",
-                                fontSize: "0.75rem",
-                                paddingLeft: "1rem",
-                                paddingRight: "1rem",
-                                paddingTop: "0.5rem",
-                                paddingBottom: "0.5rem",
-                            }}
-                        >
-                            {row[key] !== null && row[key] !== undefined && row[key] !== ""
-                                ? String(row[key])
-                                : "-"}
-                        </td>
-                    ))}
+                <tr
+                    key={row.bankId || index}
+                    className="text-[#1D2B48] bg-[#C7C7C7] text-center"
+                >
+                    {columnKeys.map((key) => {
+                        const value =
+                            key === "public_url" && typeof row[key] === "string"
+                                ? decodeURIComponent(row[key].split("/").pop() || "")
+                                : row[key];
+
+                        return (
+                            <td
+                                key={key}
+                                style={{
+                                    borderWidth: "1px",
+                                    borderStyle: "solid",
+                                    borderColor: "#D1D5DB",
+                                    fontSize: "0.75rem",
+                                    paddingLeft: "1rem",
+                                    paddingRight: "1rem",
+                                    paddingTop: "0.5rem",
+                                    paddingBottom: "0.5rem",
+                                }}
+                                title={String(value)}
+                            >
+                                {value !== null && value !== undefined && value !== ""
+                                    ? String(value)
+                                    : "-"}
+                            </td>
+                        );
+                    })}
+
                     {showActions && (
                         <td
                             style={{
@@ -60,7 +77,6 @@ export default function TableBody({ data, columnKeys, showActions = false, onDel
                             }}
                         >
                             <div className="flex items-center justify-center gap-3">
-
                                 {row.file_path ? (
                                     <button
                                         onClick={() => handleDownload(row.file_path, index)}
