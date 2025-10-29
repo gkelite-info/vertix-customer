@@ -40,11 +40,6 @@ export const YearProvider = ({ children }: { children: React.ReactNode }) => {
           Number(selectedYear)
         );
 
-        if (!filingId) {
-          const newFiling = await createFilingYearRecord(Number(selectedYear));
-          filingId = newFiling.filingYearId;
-        }
-
         setFilingYearId(filingId);
       } catch (error) {
         console.error("Error fetching filing year:", error);
