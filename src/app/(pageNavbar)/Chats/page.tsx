@@ -24,13 +24,11 @@ export default function Chats() {
     try {
       const res = await postMessages(message)
       console.log("Message sent", res)
-      // setFeedback("Message was sent successfully!");
       toast.success("Message was sent successfully!")
       setMessage({ content: "", year: message.year })
       setTimeout(() => setFeedback(""), 3000)
     } catch (error) {
       console.error("Failed to send message")
-      // setFeedback("Failed to send message");
       toast.error("Failed to send message")
       throw error
     }
@@ -41,6 +39,7 @@ export default function Chats() {
       <div className="bg-white lg:h-[100vh] flex flex-col items-center">
         <YearSelect />
         <div className="bg-red-00 flex flex-col justify-start items-center lg:h-[80%] lg:w-[50%] lg:pt-5 text-center">
+          <h2 className="font-semibold text-[#1D2B48] text-xl mt-3 mb-5">Message</h2>
           <textarea
             placeholder="Hello! Please Leave Your Message"
             className="w-[80%] h-32 p-3 text-[#616161] text-sm border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
@@ -56,9 +55,6 @@ export default function Chats() {
             <PaperPlaneTilt size={17} weight="fill" className="text-white" />
             Send
           </button>
-          {/* {feedback && (
-            <p className="mt-2 text-green-600 font-medium">{feedback}</p>
-          )} */}
         </div>
       </div>
     </>

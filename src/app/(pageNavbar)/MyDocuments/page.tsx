@@ -210,7 +210,7 @@ export default function MyDocuments() {
             <button
               onClick={handleUpload}
               disabled={isLoading || filingYearId === null}
-              className="mt-4 font-medium w-[70%] text-sm bg-[#1D2B48] text-white px-5 py-2 rounded flex gap-2 justify-center items-center cursor-pointer"
+              className="mt-4 font-medium w-[70%] text-sm bg-[#1D2B48] text-white py-2 rounded flex gap-2 justify-center items-center cursor-pointer"
             >
               {isLoading ? "Uploading..." : "Upload"}
             </button>
