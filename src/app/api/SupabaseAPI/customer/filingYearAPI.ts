@@ -1,6 +1,7 @@
 import { supabase } from "../../../../../utils/supabase/client";
 
 export interface FilingYearData {
+  existing: boolean;
   filingYearId: number;
   customerId: number;
   year: number;
@@ -46,15 +47,12 @@ export const getLatestFilingYearRecord = async (): Promise<FilingYearData | null
   }
 };
 
-export const createFilingYearRecord = async (
-  year: number
-): Promise<FilingYearData> => {
+export const createFilingYearRecord = async (year: number): Promise<FilingYearData> => {
   try {
     const {
       data: { user },
       error: authError,
     } = await supabase.auth.getUser();
-
     if (authError || !user) throw new Error("Not authenticated");
 
     const { data: customer, error: customerError } = await supabase
@@ -62,22 +60,27 @@ export const createFilingYearRecord = async (
       .select("customerId")
       .eq("auth_id", user.id)
       .single();
-
     if (customerError || !customer) throw new Error("Customer not found");
 
     const customerId = customer.customerId;
-    const now = new Date().toISOString();
 
+    const { data: existing, error: checkError } = await supabase
+      .from("filing_year")
+      .select("*")
+      .eq("customerId", customerId)
+      .eq("year", year)
+      .maybeSingle();
+
+    if (checkError) throw new Error(checkError.message);
+
+    if (existing) {
+      throw new Error("Year already exists");
+    }
+
+    const now = new Date().toISOString();
     const { data: filingData, error: filingError } = await supabase
       .from("filing_year")
-      .insert([
-        {
-          customerId,
-          year,
-          createdAt: now,
-          updatedAt: now,
-        },
-      ])
+      .insert([{ customerId, year, createdAt: now, updatedAt: now }])
       .select()
       .single();
 
