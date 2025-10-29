@@ -63,9 +63,7 @@ export default function YearSelect({ style = "" }: YearSelectProps) {
 
   return (
     <div className="bg-red-00 lg:h-30 lg:w-[100%] flex justify-center items-center lg:px-10 shadow-lg">
-      <div
-        className={`bg-red-00 h-[100%] lg:w-[68%] flex items-center justify-start ${style} w-[65%]`}
-      >
+      <div className={`bg-red-00 h-[100%] lg:w-[68%] flex items-center justify-start ${style} w-[65%]`}>
         <select
           value={selectedYear}
           onChange={handleYearChange}
