@@ -18,27 +18,43 @@ export default function ManageFilingYear() {
   );
 
   const handleAddService = async () => {
-    if (!tempYear) {
-      toast.error("Please select a year")
-      return
-    }
-
-    setIsLoading(true)
-
-    try {
-      const result = await createFilingYearRecord(parseInt(tempYear))
-
-      console.log("Filing year record created:", result)
-
-      setSelectedYear(tempYear)
-      toast.success(`Service year ${tempYear} added successfully!`)
-    } catch (error: any) {
-      console.error("Error adding service year:", error)
-      toast.error(error.message || "Failed to add service year")
-    } finally {
-      setIsLoading(false)
-    }
+  if (!tempYear) {
+    toast.error("Please select a year");
+    return;
   }
+
+  setIsLoading(true);
+
+  try {
+    const result = await createFilingYearRecord(parseInt(tempYear));
+    console.log("Filing year record created:", result);
+
+    // 🔹 Check if year already exists (your helper returns existing record)
+    if (result?.existing === true) {
+      toast.error(`Service year ${tempYear} already exists!`);
+      return; // ⛔ Stop here — don’t show success toast
+    }
+
+    // ✅ If not existing, continue normally
+    setSelectedYear(tempYear);
+    toast.success(`Service year ${tempYear} added successfully!`);
+  } catch (error: any) {
+    console.error("Error adding service year:", error);
+
+    if (
+      error.message?.includes("duplicate key") ||
+      error.message?.includes("already exists")
+    ) {
+      toast.error(`Service year ${tempYear} already exists!`);
+    } else {
+      toast.error(error.message || "Failed to add service year");
+    }
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+
 
   return (
     <div className="bg-white lg:h-[100vh] flex flex-col items-center">

@@ -28,7 +28,7 @@ export default function TableHead({ columns, showActions = false }: TableHeadPro
                         {col}
                     </th>
                 ))}
-                {showActions && <th className="border px-4 py-2 text-xs bg-[#4B5873] text-[#FFFEFE]">Actions</th>}
+                {showActions && <th className="border px-4 py-2 text-xs bg-[#4B5873] text-[#FFFEFE] text-center">Actions</th>}
             </tr>
         </thead>
     );
