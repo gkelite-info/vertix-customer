@@ -59,8 +59,6 @@ export default function MyDocuments() {
   }
 
   const handleUpload = async () => {
-    console.log("Upload button clicked");
-
     if (!selectedFile || !selectedDocType) {
       toast.error("Please select a file and document type");
       return;

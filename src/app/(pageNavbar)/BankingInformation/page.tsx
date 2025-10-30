@@ -57,14 +57,25 @@ export default function BankingInformationPage() {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
-    const { name, value } = e.target
+    const { name, value, tagName } = e.target
+
     if (name === "accountNumber") {
       const numericValue = value.replace(/\D/g, "")
       setFormValues((prev) => ({ ...prev, [name]: numericValue }))
+    } else if (tagName === "INPUT") {
+      const formattedValue = value.replace(
+        /\b\w/g,
+        (char) => char.toUpperCase()
+      )
+
+      setFormValues((prev) => ({ ...prev, [name]: formattedValue }))
     } else {
       setFormValues((prev) => ({ ...prev, [name]: value }))
     }
   }
+
+
+
 
   const handleSubmit = async () => {
     setLoading(true)
@@ -214,7 +225,7 @@ export default function BankingInformationPage() {
             <button
               onClick={handleSubmit}
               disabled={loading}
-              className="font-medium w-[60%] h-[100%] text-sm bg-[#1D2B48] text-white px-5 py-2 hover:bg-[#2c3e65] rounded-lg flex gap-2 justify-center items-center cursor-pointer"
+              className="font-medium w-[60%] h-[100%] text-sm bg-[#1D2B48] text-white px-5 py-2 rounded-lg flex gap-2 justify-center items-center cursor-pointer"
             >
               {loading ? "Updating..." : "UPDATE BANK DETAILS"}
             </button>

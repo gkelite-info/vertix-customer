@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 import { getCustomer } from "../SupabaseAPI/customer/customerApi";
-import { createFilingYearRecord, getFilingYearIdForCustomerAndYear } from "../SupabaseAPI/customer/filingYearAPI";
+import { getFilingYearIdForCustomerAndYear } from "../SupabaseAPI/customer/filingYearAPI";
 
 interface YearContextType {
   selectedYear: string;
@@ -34,6 +34,8 @@ export const YearProvider = ({ children }: { children: React.ReactNode }) => {
       try {
         const customer = await getCustomer();
         if (!customer?.customerId) throw new Error("Customer not found");
+        console.log("Here", customer);
+        
 
         let filingId = await getFilingYearIdForCustomerAndYear(
           customer.customerId,
