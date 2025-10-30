@@ -1,13 +1,16 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import YearSelect from "../../../../utils/yearSelect"
+import { useEffect, useState } from "react";
+import YearSelect from "../../../../utils/yearSelect";
 import toast from "react-hot-toast";
 import { getPaymentTaxSummary, upsertPaymentTaxSummary } from "@/app/api/SupabaseAPI/customer/paymentTaxSummaryAPI";
 import TableComponent from "../../../../utils/table/page";
+import { useYear } from "@/app/api/context/yearContext";
+import { useAuth } from "@/components/AuthContext";
 
 export default function PaymentTaxSummary() {
-
+  const { selectedYear, filingYearId } = useYear();
+  const { user } = useAuth();
   const [taxType, setTaxType] = useState("");
   const [state, setState] = useState("");
   const [beforePlanning, setBeforePlanning] = useState("");
@@ -23,31 +26,34 @@ export default function PaymentTaxSummary() {
     e: React.ChangeEvent<HTMLInputElement>,
     setter: (val: string) => void
   ) => {
-    let value = e.target.value
-
+    let value = e.target.value;
     if (/^[A-Za-z\s]*$/.test(value)) {
-      value = value.replace(/\b\w/g, (char) => char.toUpperCase())
-
-      setter(value)
+      value = value.replace(/\b\w/g, (char) => char.toUpperCase());
+      setter(value);
     }
-  }
+  };
 
   const handleNumericInput = (
     e: React.ChangeEvent<HTMLInputElement>,
     setter: (val: string) => void
   ) => {
-    const value = e.target.value
-
-    if (/^\d*$/.test(value)) {
-      setter(value)
+    const value = e.target.value;
+    if (/^\d*\.?\d*$/.test(value) || value === ".") {
+      setter(value);
     }
-  }
+  };
 
   useEffect(() => {
+    if (!user || !filingYearId) {
+      setSummaries([]);
+      setFetchingData(false);
+      return;
+    }
+
     const fetchData = async () => {
       setFetchingData(true);
       try {
-        const data = await getPaymentTaxSummary();
+        const data = await getPaymentTaxSummary(filingYearId);
         setSummaries(data || []);
       } catch (err) {
         console.error("Error fetching payment summary:", err);
@@ -58,41 +64,24 @@ export default function PaymentTaxSummary() {
     };
 
     fetchData();
-  }, []);
+  }, [user, filingYearId]);
 
   const handleSubmit = async () => {
-    if (!taxType) {
-      toast.error("Please enter the TAX Type!");
+    if (
+      !taxType ||
+      !state ||
+      !beforePlanning ||
+      !afterPlanning ||
+      !typeOfFiling ||
+      !originalUpdated ||
+      !belongsTo
+    ) {
+      toast.error("Please fill all required fields!");
       return;
     }
 
-    if (!state) {
-      toast.error("Please enter the State!");
-      return;
-    }
-
-    if (!beforePlanning) {
-      toast.error("Please enter Before Planning amount!");
-      return;
-    }
-
-    if (!afterPlanning) {
-      toast.error("Please enter After Planning amount!");
-      return;
-    }
-
-    if (!typeOfFiling) {
-      toast.error("Please select Type of Filing!");
-      return;
-    }
-
-    if (!originalUpdated) {
-      toast.error("Please select Original or Updated!");
-      return;
-    }
-
-    if (!belongsTo) {
-      toast.error("Please select Belongs To!");
+    if (!filingYearId) {
+      toast.error("Filing year not loaded yet!");
       return;
     }
 
@@ -101,6 +90,7 @@ export default function PaymentTaxSummary() {
 
     try {
       const payload = {
+        filingYearId,
         taxType,
         state,
         beforePlanning: Number(beforePlanning),
@@ -116,8 +106,10 @@ export default function PaymentTaxSummary() {
         payment_status: null,
       };
 
-      await upsertPaymentTaxSummary(payload);
+      const newSummary = await upsertPaymentTaxSummary(payload);
       toast.success("Payment tax summary saved successfully!", { id: "submit" });
+
+      setSummaries((prev) => [newSummary, ...prev]);
 
       setTaxType("");
       setState("");
@@ -156,6 +148,7 @@ export default function PaymentTaxSummary() {
   ];
 
   return (
+
     <div className="bg-white lg:h-[100vh] overflow-y-auto">
       <YearSelect />
       <div className="flex flex-col items-center lg:pt-5 pb-7 bg-pink-00 overflow-y-auto">
