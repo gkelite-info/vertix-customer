@@ -54,48 +54,41 @@
 //   return { isSessionReady, session }
 // }
 
-// utils/useHandleMagicLinkAuth.ts
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 
 import { useEffect, useState } from "react"
-import { supabase } from "./supabase/client" // main persistent client (unchanged)
-import { supabaseTemp } from "./supabase/tempClient" // NEW temp client
+import { supabase } from "./supabase/client"
+import { supabaseTemp } from "./supabase/tempClient"
 
 export function useHandleMagicLinkAuth() {
   const [isSessionReady, setIsSessionReady] = useState(false)
   const [session, setSession] = useState<any>(null)
-  const [isTemporary, setIsTemporary] = useState(false) // CHANGED: indicates if this is a temporary session
+  const [isTemporary, setIsTemporary] = useState(false)
 
   useEffect(() => {
     const restoreSession = async () => {
-      // 1) Handle magic link hash, set session on supabaseTemp => isolated session
       const hash = window.location.hash
+
+      // 1️⃣ Handle redirected magic link
       if (hash.includes("access_token")) {
         const params = new URLSearchParams(hash.substring(1))
         const access_token = params.get("access_token")
         const refresh_token = params.get("refresh_token")
 
         if (access_token && refresh_token) {
-          console.log("🔑 Setting TEMP Supabase session from magic link...")
           const { data, error } = await supabaseTemp.auth.setSession({
             access_token,
             refresh_token,
           })
-          if (error) {
-            console.error("❌ Error restoring TEMP session:", error)
-          } else {
-            console.log("✅ TEMP session restored successfully")
+          if (!error) {
             setSession(data.session)
             setIsTemporary(true)
-
-            // persist a simple flag + expiry to coordinate UI/expiry across tabs
-            const expiry = Date.now() + 1 * 60 * 1000 // 1 hour
+            const expiry = Date.now() + 60 * 1000 // 1 min for test
             localStorage.setItem("temporary_access_flag", "true")
             localStorage.setItem("temporary_access_expiry", expiry.toString())
           }
 
-          // Clean URL hash (remove tokens)
           window.history.replaceState(
             {},
             "",
@@ -106,8 +99,9 @@ export function useHandleMagicLinkAuth() {
         }
       }
 
-      // 2) If no magic link hash, try restore any TEMP session first (sessionStorage)
-      try {
+      // 2️⃣ Try restore temporary session first
+      const tempFlag = localStorage.getItem("temporary_access_flag") === "true"
+      if (tempFlag) {
         const { data: tempData } = await supabaseTemp.auth.getSession()
         if (tempData?.session) {
           setSession(tempData.session)
@@ -115,26 +109,15 @@ export function useHandleMagicLinkAuth() {
           setIsSessionReady(true)
           return
         }
-      } catch (err) {
-        console.warn("No temporary session found in temp client:", err)
       }
 
-      // 3) Finally, restore the main persistent session (normal customer)
-      try {
-        const { data } = await supabase.auth.getSession()
-        if (data?.session) {
-          setSession(data.session)
-          setIsTemporary(false)
-        } else {
-          setSession(null)
-          setIsTemporary(false)
-        }
-      } catch (err) {
-        console.error("Error getting main session:", err)
-        setSession(null)
-      } finally {
-        setIsSessionReady(true)
+      // 3️⃣ Normal customer session restore only if not temp
+      const { data } = await supabase.auth.getSession()
+      if (data.session) {
+        setSession(data.session)
+        setIsTemporary(false)
       }
+      setIsSessionReady(true)
     }
 
     restoreSession()

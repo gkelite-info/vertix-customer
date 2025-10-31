@@ -18,6 +18,7 @@ import { useEffect, useRef } from "react"
 //import { getCustomer } from "@/app/api/SupabaseAPI/customer/customerApi"
 import { useAuth } from "@/components/AuthContext"
 import toast from "react-hot-toast"
+import { supabase } from "../../../../utils/supabase/client"
 
 export default function TaxfilingContent() {
   const { isSessionReady, session, isTemporary, supabaseTemp } =
@@ -84,6 +85,12 @@ export default function TaxfilingContent() {
           localStorage.removeItem("temporary_access_flag")
           localStorage.removeItem("temporary_access_expiry")
           setIsAuthenticated(false)
+          const { data } = await supabase.auth.getSession()
+          if (data?.session) {
+            console.log("Normal customer still logged in, no redirect.")
+            toast.success("Temporary access expired.")
+            return
+          }
           toast.success("Temporary access expired. You have been logged out.")
         } catch (err) {
           console.error("Error during logout on expiry:", err)
