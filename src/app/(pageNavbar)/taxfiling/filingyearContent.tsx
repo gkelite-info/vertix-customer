@@ -63,6 +63,10 @@ export default function TaxfilingContent() {
     const storedTempFlag = localStorage.getItem("temporary_access_flag")
     const now = Date.now()
 
+    if (storedTempFlag === "true" && !isTemporary) {
+      setIsAuthenticated(true)
+    }
+
     if (urlHasTempAccess && !storedTempFlag) {
       const expiry = now + 1 * 60 * 1000
       localStorage.setItem("temporary_access_flag", "true")
@@ -73,6 +77,13 @@ export default function TaxfilingContent() {
       const params = new URLSearchParams(searchParams.toString())
       params.delete("temporary_access")
       router.replace(`?${params.toString()}`)
+
+      if (!sessionStorage.getItem("tempHardRefreshed")) {
+        sessionStorage.setItem("tempHardRefreshed", "true")
+        setTimeout(() => {
+          window.location.reload()
+        }, 300)
+      }
     }
 
     const checkExpiry = async () => {
