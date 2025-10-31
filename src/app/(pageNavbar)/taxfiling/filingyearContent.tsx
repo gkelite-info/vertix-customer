@@ -33,11 +33,10 @@ export default function TaxfilingContent() {
 
     const urlHasTempAccess = searchParams.get("temporary_access") === "true"
     const storedTempFlag = localStorage.getItem("temporary_access_flag")
-    const now = Date.now()
 
     // ✅ Mark temp access if present
     if (urlHasTempAccess && !storedTempFlag) {
-      const expiry = now + 1 * 60 * 1000 // 1 min for test
+      const expiry = Date.now() + 1 * 60 * 1000 // 1 min for test
       localStorage.setItem("temporary_access_flag", "true")
       localStorage.setItem("temporary_access_expiry", expiry.toString())
       console.log("Temporary access initialized")
@@ -59,7 +58,7 @@ export default function TaxfilingContent() {
     const checkExpiry = async () => {
       const isTemp = localStorage.getItem("temporary_access_flag") === "true"
       const expiryTime = localStorage.getItem("temporary_access_expiry")
-      if (isTemp && expiryTime && now > Number(expiryTime)) {
+      if (isTemp && expiryTime && Date.now() > Number(expiryTime)) {
         if (isLoggingOut.current) return
         isLoggingOut.current = true
         console.log("Temporary access expired — logging out...")
