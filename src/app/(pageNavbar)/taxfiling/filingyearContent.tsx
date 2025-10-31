@@ -24,7 +24,7 @@ export default function TaxfilingContent() {
   const { isSessionReady, session, isTemporary, supabaseTemp } =
     useHandleMagicLinkAuth()
   console.log("checking is temparary", isTemporary)
-  const { logout, setIsAuthenticated } = useAuth()
+  const { setIsAuthenticated } = useAuth()
   const router = useRouter()
   const searchParams = useSearchParams()
   const isLoggingOut = useRef(false)
@@ -111,7 +111,6 @@ export default function TaxfilingContent() {
     session,
     router,
     searchParams,
-    logout,
     setIsAuthenticated,
     supabaseTemp,
   ])

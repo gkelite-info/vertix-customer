@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createBrowserClient } from "@supabase/ssr"
 
-// Unique prefix so storage keys never clash with main client
 const PREFIX = "sb-temp-"
 
-const isolatedStorage = {
+// Custom storage that uses sessionStorage
+const tempStorage = {
   getItem: (key: string) => {
+    if (typeof window === "undefined") return null
     try {
       return sessionStorage.getItem(PREFIX + key)
     } catch {
@@ -13,14 +14,20 @@ const isolatedStorage = {
     }
   },
   setItem: (key: string, value: string) => {
+    if (typeof window === "undefined") return
     try {
       sessionStorage.setItem(PREFIX + key, value)
-    } catch {}
+    } catch (e) {
+      console.error("tempStorage.setItem error:", e)
+    }
   },
   removeItem: (key: string) => {
+    if (typeof window === "undefined") return
     try {
       sessionStorage.removeItem(PREFIX + key)
-    } catch {}
+    } catch (e) {
+      console.error("tempStorage.removeItem error:", e)
+    }
   },
 }
 
@@ -29,46 +36,40 @@ export const supabaseTemp = createBrowserClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
   {
     auth: {
-      storage: isolatedStorage as any,
+      storage: tempStorage as any,
       persistSession: true,
-      autoRefreshToken: false,
+      autoRefreshToken: false, // ✅ No refresh for temp users
       detectSessionInUrl: false,
+      storageKey: "sb-temp-auth", // ✅ Different storage key
     },
   }
 )
-
-// 🚨 FIX: Completely isolate broadcast channel and storage (run after init)
 ;(async () => {
-  const auth: any = supabaseTemp.auth
-
-  // Wait until auth internals exist
-  await new Promise((resolve) => setTimeout(resolve, 100))
-
-  // 1️⃣ Replace the default broadcast channel with a unique name
   try {
-    if (auth._bc) {
-      auth._bc.close()
-    }
-    // Use a unique name to stop cross-tab/global sync
-    auth._bc = new BroadcastChannel("supabase.temp.auth")
-    console.log("🧱 Isolated broadcast channel created for temp client.")
-  } catch (e) {
-    console.warn("Failed to patch broadcast channel:", e)
-  }
+    const auth: any = (supabaseTemp as any).auth
+    await new Promise((r) => setTimeout(r, 100))
+    if (auth._bc) auth._bc.close()
 
-  // 2️⃣ Override signOut to prevent triggering normal broadcast
-  const originalSignOut = auth.signOut.bind(auth)
-  auth.signOut = async (...args: any[]) => {
-    console.log("🧱 Isolated signOut called for temp session.")
-    try {
-      // Temporarily mute broadcast events
-      const oldPostMessage = auth._bc.postMessage
-      auth._bc.postMessage = () => {}
-      const result = await originalSignOut(...args)
-      auth._bc.postMessage = oldPostMessage
-      return result
-    } catch (err) {
-      console.error("Temp signOut failed:", err)
+    // Use a unique channel name so signOut/signIn events don't leak
+    auth._bc = new BroadcastChannel("supabase-temp-auth")
+
+    // Patch signOut to temporarily mute broadcast events
+    const originalSignOut = auth.signOut.bind(auth)
+    auth.signOut = async (...args: any[]) => {
+      console.log("🧱 Isolated signOut for temp session")
+      try {
+        const oldPostMessage = auth._bc.postMessage
+        auth._bc.postMessage = () => {} // mute
+        const result = await originalSignOut(...args)
+        auth._bc.postMessage = oldPostMessage
+        return result
+      } catch (err) {
+        console.error("Temp signOut failed:", err)
+      }
     }
+
+    console.log("✅ Supabase temp client fully isolated")
+  } catch (e) {
+    console.warn("Broadcast isolation skipped:", e)
   }
 })()
