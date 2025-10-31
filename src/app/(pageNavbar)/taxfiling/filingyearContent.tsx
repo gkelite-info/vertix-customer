@@ -56,6 +56,80 @@ export default function TaxfilingContent() {
   //   }
   // }, [isSessionReady, session, isTemporary, setIsAuthenticated, logout])
 
+  // useEffect(() => {
+  //   if (!isSessionReady) return
+
+  //   const urlHasTempAccess = searchParams.get("temporary_access") === "true"
+  //   const storedTempFlag = localStorage.getItem("temporary_access_flag")
+  //   const now = Date.now()
+
+  //   if (storedTempFlag === "true" && !isTemporary) {
+  //     setIsAuthenticated(true)
+  //   }
+
+  //   if (urlHasTempAccess && !storedTempFlag) {
+  //     const expiry = now + 1 * 60 * 1000
+  //     localStorage.setItem("temporary_access_flag", "true")
+  //     localStorage.setItem("temporary_access_expiry", expiry.toString())
+  //     setIsAuthenticated(true)
+  //     console.log("Temporary 1-hour access started")
+
+  //     const params = new URLSearchParams(searchParams.toString())
+  //     params.delete("temporary_access")
+  //     //router.replace(`?${params.toString()}`)
+  //     const handleTempReload = async () => {
+  //       router.replace(`?${params.toString()}`)
+  //       await new Promise((resolve) => setTimeout(resolve, 300)) // small delay
+  //       if (!sessionStorage.getItem("tempHardRefreshed")) {
+  //         sessionStorage.setItem("tempHardRefreshed", "true")
+  //         window.location.reload()
+  //       }
+  //     }
+
+  //     handleTempReload()
+  //   }
+
+  //   const checkExpiry = async () => {
+  //     const isTemp = localStorage.getItem("temporary_access_flag") === "true"
+  //     const expiryTime = localStorage.getItem("temporary_access_expiry")
+  //     if (isTemp && expiryTime && now > Number(expiryTime)) {
+  //       if (isLoggingOut.current) return
+  //       isLoggingOut.current = true
+  //       console.log("Temporary access expired — logging out...")
+  //       try {
+  //         await supabaseTemp.auth.signOut().catch(() => {})
+  //         localStorage.removeItem("temporary_access_flag")
+  //         localStorage.removeItem("temporary_access_expiry")
+  //         localStorage.removeItem("selectedYear")
+  //         const { data } = await supabase.auth.getSession()
+  //         if (data?.session) {
+  //           console.log("Normal customer still logged in, no redirect.")
+  //           toast.success("Temporary access expired.")
+  //           return
+  //         }
+  //         setIsAuthenticated(false)
+  //         toast.success("Temporary access expired. You have been logged out.")
+  //       } catch (err) {
+  //         console.error("Error during logout on expiry:", err)
+  //       } finally {
+  //         router.replace("/login")
+  //       }
+  //     }
+  //   }
+
+  //   checkExpiry()
+  //   const interval = setInterval(checkExpiry, 60000)
+  //   return () => clearInterval(interval)
+  // }, [
+  //   isSessionReady,
+  //   session,
+  //   router,
+  //   searchParams,
+  //   setIsAuthenticated,
+  //   supabaseTemp,
+  //   isTemporary,
+  // ])
+
   useEffect(() => {
     if (!isSessionReady) return
 
@@ -63,32 +137,28 @@ export default function TaxfilingContent() {
     const storedTempFlag = localStorage.getItem("temporary_access_flag")
     const now = Date.now()
 
-    if (storedTempFlag === "true" && !isTemporary) {
-      setIsAuthenticated(true)
-    }
-
+    // ✅ Mark temp access if present
     if (urlHasTempAccess && !storedTempFlag) {
-      const expiry = now + 1 * 60 * 1000
+      const expiry = now + 1 * 60 * 1000 // 1 min for test
       localStorage.setItem("temporary_access_flag", "true")
       localStorage.setItem("temporary_access_expiry", expiry.toString())
       setIsAuthenticated(true)
-      console.log("Temporary 1-hour access started")
-
-      const params = new URLSearchParams(searchParams.toString())
-      params.delete("temporary_access")
-      //router.replace(`?${params.toString()}`)
-      const handleTempReload = async () => {
-        router.replace(`?${params.toString()}`)
-        await new Promise((resolve) => setTimeout(resolve, 300)) // small delay
-        if (!sessionStorage.getItem("tempHardRefreshed")) {
-          sessionStorage.setItem("tempHardRefreshed", "true")
-          window.location.reload()
-        }
-      }
-
-      handleTempReload()
+      console.log("Temporary access initialized")
     }
 
+    // ✅ If we’re in temp mode and haven’t refreshed once, do a hard reload
+    const shouldReload =
+      localStorage.getItem("temporary_access_flag") === "true" &&
+      !sessionStorage.getItem("tempHardRefreshed")
+
+    if (shouldReload) {
+      console.log("🔄 Performing hard refresh for temp access")
+      sessionStorage.setItem("tempHardRefreshed", "true")
+      // Small delay to ensure the session is stored before reload
+      setTimeout(() => window.location.reload(), 300)
+    }
+
+    // ✅ Expiry check (unchanged)
     const checkExpiry = async () => {
       const isTemp = localStorage.getItem("temporary_access_flag") === "true"
       const expiryTime = localStorage.getItem("temporary_access_expiry")
@@ -127,6 +197,7 @@ export default function TaxfilingContent() {
     searchParams,
     setIsAuthenticated,
     supabaseTemp,
+    isTemporary,
   ])
 
   const activeTab: string = searchParams.get("tab") || "filingyear"
