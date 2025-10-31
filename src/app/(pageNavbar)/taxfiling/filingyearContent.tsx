@@ -23,6 +23,7 @@ import { supabase } from "../../../../utils/supabase/client"
 export default function TaxfilingContent() {
   const { isSessionReady, session, isTemporary, supabaseTemp } =
     useHandleMagicLinkAuth()
+  console.log("checking is temparary", isTemporary)
   const { logout, setIsAuthenticated } = useAuth()
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -41,19 +42,19 @@ export default function TaxfilingContent() {
   //   fetchCustomer()
   // }, [isSessionReady, session])
 
-  useEffect(() => {
-    if (!isSessionReady) return
-    // const isTempUser = localStorage.getItem("temporary_access_flag") === "true"
-    if (session && !isTemporary) {
-      setIsAuthenticated(true)
-      return
-    }
-    if (!session && !isTemporary && !isLoggingOut.current) {
-      isLoggingOut.current = true
-      setIsAuthenticated(false)
-      logout()
-    }
-  }, [isSessionReady, session, isTemporary, setIsAuthenticated, logout])
+  // useEffect(() => {
+  //   if (!isSessionReady) return
+  //   // const isTempUser = localStorage.getItem("temporary_access_flag") === "true"
+  //   if (session && !isTemporary) {
+  //     setIsAuthenticated(true)
+  //     return
+  //   }
+  //   if (!session && !isTemporary && !isLoggingOut.current) {
+  //     isLoggingOut.current = true
+  //     setIsAuthenticated(false)
+  //     logout()
+  //   }
+  // }, [isSessionReady, session, isTemporary, setIsAuthenticated, logout])
 
   useEffect(() => {
     if (!isSessionReady) return
@@ -66,6 +67,7 @@ export default function TaxfilingContent() {
       const expiry = now + 1 * 60 * 1000
       localStorage.setItem("temporary_access_flag", "true")
       localStorage.setItem("temporary_access_expiry", expiry.toString())
+      setIsAuthenticated(true)
       console.log("Temporary 1-hour access started")
 
       const params = new URLSearchParams(searchParams.toString())
@@ -84,13 +86,14 @@ export default function TaxfilingContent() {
           await supabaseTemp.auth.signOut()
           localStorage.removeItem("temporary_access_flag")
           localStorage.removeItem("temporary_access_expiry")
-          setIsAuthenticated(false)
+          localStorage.removeItem("selectedYear")
           const { data } = await supabase.auth.getSession()
           if (data?.session) {
             console.log("Normal customer still logged in, no redirect.")
             toast.success("Temporary access expired.")
             return
           }
+          setIsAuthenticated(false)
           toast.success("Temporary access expired. You have been logged out.")
         } catch (err) {
           console.error("Error during logout on expiry:", err)
