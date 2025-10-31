@@ -76,14 +76,17 @@ export default function TaxfilingContent() {
 
       const params = new URLSearchParams(searchParams.toString())
       params.delete("temporary_access")
-      router.replace(`?${params.toString()}`)
-
-      if (!sessionStorage.getItem("tempHardRefreshed")) {
-        sessionStorage.setItem("tempHardRefreshed", "true")
-        setTimeout(() => {
+      //router.replace(`?${params.toString()}`)
+      const handleTempReload = async () => {
+        router.replace(`?${params.toString()}`)
+        await new Promise((resolve) => setTimeout(resolve, 300)) // small delay
+        if (!sessionStorage.getItem("tempHardRefreshed")) {
+          sessionStorage.setItem("tempHardRefreshed", "true")
           window.location.reload()
-        }, 300)
+        }
       }
+
+      handleTempReload()
     }
 
     const checkExpiry = async () => {
