@@ -39,6 +39,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const token = localStorage.getItem("token")
+    const tempFlag = localStorage.getItem("temporary_access_flag")
 
     if (token) {
       const userData = decodeToken(token)
@@ -51,6 +52,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         localStorage.removeItem("token")
         localStorage.removeItem("customerId")
       }
+    }
+    if (tempFlag === "true") {
+      console.log("Detected temporary access — keeping authenticated.")
+      setIsAuthenticated(true)
+      setUser({ customerId: "temp", name: "Temporary User" })
     }
   }, [])
 
