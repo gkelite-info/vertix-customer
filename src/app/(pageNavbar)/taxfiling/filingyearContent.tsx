@@ -83,7 +83,7 @@ export default function TaxfilingContent() {
         isLoggingOut.current = true
         console.log("Temporary access expired — logging out...")
         try {
-          await supabaseTemp.auth.signOut()
+          await supabaseTemp.auth.signOut().catch(() => {})
           localStorage.removeItem("temporary_access_flag")
           localStorage.removeItem("temporary_access_expiry")
           localStorage.removeItem("selectedYear")
