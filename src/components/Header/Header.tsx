@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 
 import Link from "next/link"
@@ -14,10 +15,17 @@ function Header() {
 
   const pathname = usePathname()
   const [, setIsLoggedIn] = useState(false)
-  const { isAuthenticated, logout } = useAuth();
-  const [showLogoutModal, setShowLogoutModal] = useState(false);
-  const [customer, setCustomer] = useState<any>(null);
-  const allowedEmails = ["saralabose19@gmail.com", "vamshivadla@gkeliteinfo.com", "vamshichary117@gmail.com", "gkeliteinfo@gmail.com", "g.ramu6300@gmail.com", "narrashiva195@gmail.com"];
+  const { isAuthenticated, logout } = useAuth()
+  const [showLogoutModal, setShowLogoutModal] = useState(false)
+  const [customer, setCustomer] = useState<any>(null)
+  const allowedEmails = [
+    "saralabose19@gmail.com",
+    "vamshivadla@gkeliteinfo.com",
+    "vamshichary117@gmail.com",
+    "gkeliteinfo@gmail.com",
+    "g.ramu6300@gmail.com",
+    "narrashiva195@gmail.com",
+  ]
 
   const linkClass = (href: string) =>
     `relative text-black font-medium
@@ -28,11 +36,21 @@ function Header() {
 
   useEffect(() => {
     const fetchCustomer = async () => {
-      const data = await getCustomer();
-      setCustomer(data);
-    };
-    fetchCustomer();
-  }, []);
+      // const data = await getCustomer();
+      // setCustomer(data);
+      try {
+        const data = await getCustomer()
+        setCustomer(data)
+      } catch (error: any) {
+        console.error("Error fetching customer:", error)
+        if (error?.message?.includes("Not authenticated")) {
+          localStorage.removeItem("selectedYear")
+          router.push("/login")
+        }
+      }
+    }
+    fetchCustomer()
+  }, [router])
 
   useEffect(() => {
     const token = localStorage.getItem("token")
@@ -48,7 +66,7 @@ function Header() {
   const cancelLogout = () => setShowLogoutModal(false)
 
   const handlerefer = () => {
-    router.push('/taxfiling')
+    router.push("/taxfiling")
   }
 
   return (
@@ -59,15 +77,30 @@ function Header() {
             <img src="/logo.png" alt="logo.png" className="h-10 w-30" />
           </div>
           <div className="bg-red-00 lg:h-[100%] lg:w-[60%] flex justify-center items-center lg:gap-8">
-            <Link href="/" className={`${linkClass("/")} text-white p-2 hover:bg-white hover:text-[#1D2B48] transition-colors duration-200 rounded-full`}>
+            <Link
+              href="/"
+              className={`${linkClass(
+                "/"
+              )} text-white p-2 hover:bg-white hover:text-[#1D2B48] transition-colors duration-200 rounded-full`}
+            >
               Home
             </Link>
-            <Link href="/about" className={`${linkClass("/about")} text-white hover:bg-white hover:text-[#1D2B48] p-2 transition-colors duration-200 rounded-full`}>
+            <Link
+              href="/about"
+              className={`${linkClass(
+                "/about"
+              )} text-white hover:bg-white hover:text-[#1D2B48] p-2 transition-colors duration-200 rounded-full`}
+            >
               About us
             </Link>
             <div className="relative lg:h-[100%] group flex items-center cursor-pointer">
               <div className="flex items-center">
-                <Link href="" className={`${linkClass("")} text-white hover:bg-white hover:text-[#1D2B48] p-2 transition-colors duration-200 rounded-full`}>
+                <Link
+                  href=""
+                  className={`${linkClass(
+                    ""
+                  )} text-white hover:bg-white hover:text-[#1D2B48] p-2 transition-colors duration-200 rounded-full`}
+                >
                   Services
                 </Link>
                 <MdArrowDropDown className="text-white text-xl" />
@@ -239,7 +272,9 @@ function Header() {
               <div className="flex items-center">
                 <Link
                   href=""
-                  className={`${linkClass("/research")} text-white hover:bg-white hover:text-[#1D2B48] p-2 transition-colors duration-200 rounded-full`}
+                  className={`${linkClass(
+                    "/research"
+                  )} text-white hover:bg-white hover:text-[#1D2B48] p-2 transition-colors duration-200 rounded-full`}
                 >
                   Research
                 </Link>
@@ -303,7 +338,9 @@ function Header() {
 
             <Link
               href="/contact"
-              className={`${linkClass("/contact")} text-white hover:bg-white hover:text-[#1D2B48] p-2 transition-colors duration-200 rounded-full`}
+              className={`${linkClass(
+                "/contact"
+              )} text-white hover:bg-white hover:text-[#1D2B48] p-2 transition-colors duration-200 rounded-full`}
             >
               Contact
             </Link>
