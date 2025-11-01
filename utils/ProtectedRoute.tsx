@@ -22,7 +22,7 @@ export default function ProtectedRoute({ children, isSessionReady }: ProtectedRo
     }
 
     setLoading(false)
-  }, [router])
+  }, [router, isSessionReady])
 
   if (loading || !isSessionReady) {
     return <div>Loading...</div>
