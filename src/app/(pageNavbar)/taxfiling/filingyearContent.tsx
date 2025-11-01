@@ -18,6 +18,7 @@ import { useEffect, useRef } from "react"
 import { useAuth } from "@/components/AuthContext"
 import toast from "react-hot-toast"
 import { supabase } from "../../../../utils/supabase/client"
+import ProtectedRoute from "../../../../utils/ProtectedRoute"
 
 export default function TaxfilingContent() {
   const { isSessionReady, session, isTemporary, supabaseTemp } =
@@ -59,7 +60,6 @@ export default function TaxfilingContent() {
         isLoggingOut.current = true
         console.log("Temporary access expired — logging out...")
         try {
-          await supabaseTemp.auth.signOut().catch(() => {})
           localStorage.removeItem("temporary_access_flag")
           localStorage.removeItem("temporary_access_expiry")
           localStorage.removeItem("selectedYear")
@@ -70,6 +70,7 @@ export default function TaxfilingContent() {
             return
           }
           setIsAuthenticated(false)
+          localStorage.removeItem("token")
           toast.success("Temporary access expired. You have been logged out.")
         } catch (err) {
           console.error("Error during logout on expiry:", err)
@@ -101,21 +102,23 @@ export default function TaxfilingContent() {
   }
 
   return (
-    <div className="flex justify-between bg-white">
-      <PageNavbar activeTab={activeTab} setActiveTab={setActiveTab} />
-      <div className="lg:w-[76%]">
-        {activeTab === "filingyear" && <ManageFilingYear />}
-        {activeTab === "file-status" && <FileProgressTracker />}
-        {activeTab === "preparationguide" && <TaxPreparationGuide />}
-        {activeTab === "uploaded-by-vertix" && <VertixTaxPage />}
-        {activeTab === "bank-info" && <BankingInformationPage />}
-        {activeTab === "summary" && <PaymentTaxSummary />}
-        {activeTab === "documentupload" && <MyDocuments />}
-        {activeTab === "refer" && <ReferAFriend />}
-        {activeTab === "messaging" && <Chats />}
-        {activeTab === "feedback" && <Feedback />}
-        {activeTab === "consent" && <AuthorizationConsent />}
+    <ProtectedRoute>
+      <div className="flex justify-between bg-white">
+        <PageNavbar activeTab={activeTab} setActiveTab={setActiveTab} />
+        <div className="lg:w-[76%]">
+          {activeTab === "filingyear" && <ManageFilingYear />}
+          {activeTab === "file-status" && <FileProgressTracker />}
+          {activeTab === "preparationguide" && <TaxPreparationGuide />}
+          {activeTab === "uploaded-by-vertix" && <VertixTaxPage />}
+          {activeTab === "bank-info" && <BankingInformationPage />}
+          {activeTab === "summary" && <PaymentTaxSummary />}
+          {activeTab === "documentupload" && <MyDocuments />}
+          {activeTab === "refer" && <ReferAFriend />}
+          {activeTab === "messaging" && <Chats />}
+          {activeTab === "feedback" && <Feedback />}
+          {activeTab === "consent" && <AuthorizationConsent />}
+        </div>
       </div>
-    </div>
+    </ProtectedRoute>
   )
 }

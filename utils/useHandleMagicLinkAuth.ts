@@ -31,6 +31,7 @@ export function useHandleMagicLinkAuth() {
             const expiry = Date.now() + 60 * 1000 // 1 min for test
             localStorage.setItem("temporary_access_flag", "true")
             localStorage.setItem("temporary_access_expiry", expiry.toString())
+            localStorage.setItem("token", access_token)
           }
 
           window.history.replaceState(
