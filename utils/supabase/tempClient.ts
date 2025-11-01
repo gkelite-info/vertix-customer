@@ -47,29 +47,34 @@ export const supabaseTemp = createBrowserClient(
 ;(async () => {
   try {
     const auth: any = (supabaseTemp as any).auth
+
+    // Give Supabase time to initialize
     await new Promise((r) => setTimeout(r, 100))
+
+    // 1️⃣ Close Supabase's built-in broadcast channel
     if (auth._bc) auth._bc.close()
 
-    // Use a unique channel name so signOut/signIn events don't leak
-    auth._bc = new BroadcastChannel("supabase-temp-auth")
+    // 2️⃣ Replace with isolated dummy channel
+    auth._bc = {
+      postMessage: () => {}, // disable broadcasting
+      addEventListener: () => {},
+      removeEventListener: () => {},
+      close: () => {},
+    }
 
-    // Patch signOut to temporarily mute broadcast events
+    // 3️⃣ Override signOut to ensure no event leaks
     const originalSignOut = auth.signOut.bind(auth)
     auth.signOut = async (...args: any[]) => {
-      console.log("🧱 Isolated signOut for temp session")
+      console.log("🧱 Isolated signOut for TEMP session")
       try {
-        const oldPostMessage = auth._bc.postMessage
-        auth._bc.postMessage = () => {} // mute
-        const result = await originalSignOut(...args)
-        auth._bc.postMessage = oldPostMessage
-        return result
-      } catch (err) {
-        console.error("Temp signOut failed:", err)
+        return await originalSignOut(...args)
+      } catch (e) {
+        console.error("Temp signOut failed:", e)
       }
     }
 
-    console.log("✅ Supabase temp client fully isolated")
-  } catch (e) {
-    console.warn("Broadcast isolation skipped:", e)
+    console.log("✅ Temporary Supabase client FULLY isolated from main session")
+  } catch (err) {
+    console.warn("Temp client isolation skipped:", err)
   }
 })()
