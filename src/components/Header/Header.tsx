@@ -36,21 +36,11 @@ function Header() {
 
   useEffect(() => {
     const fetchCustomer = async () => {
-      // const data = await getCustomer();
-      // setCustomer(data);
-      try {
-        const data = await getCustomer()
-        setCustomer(data)
-      } catch (error: any) {
-        console.error("Error fetching customer:", error)
-        if (error?.message?.includes("Not authenticated")) {
-          localStorage.removeItem("selectedYear")
-          router.push("/login")
-        }
-      }
+      const data = await getCustomer();
+      setCustomer(data);
     }
     fetchCustomer()
-  }, [router])
+  }, [])
 
   useEffect(() => {
     const token = localStorage.getItem("token")
