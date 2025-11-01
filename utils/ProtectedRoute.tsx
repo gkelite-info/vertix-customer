@@ -25,7 +25,7 @@ export default function ProtectedRoute({ children, isSessionReady }: ProtectedRo
   }, [router, isSessionReady])
 
   if (loading || !isSessionReady) {
-    return <div>Loading...</div>
+    return <div className="flex justify-center items-center h-screen w-screen">Loading...</div>
   }
 
   return <>{children}</>
