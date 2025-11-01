@@ -81,6 +81,7 @@ export function useHandleMagicLinkAuth() {
             access_token,
             refresh_token,
           })
+          ;(supabaseTemp as any).auth._notifyAllSubscribers = () => {}
           if (!error) {
             setSession(data.session)
             setIsTemporary(true)
