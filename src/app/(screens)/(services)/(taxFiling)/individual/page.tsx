@@ -9,7 +9,7 @@ import {
   WarningCircle,
 } from "phosphor-react"
 
-function Page() {
+export default function Page() {
   return (
     <>
       <div className="flex flex-col items-center bg-[#FFFEFE] overflow-y-auto lg:px-4 lg:gap-2 lg:pb-10">
@@ -299,4 +299,3 @@ function Page() {
     </>
   )
 }
-export default Page

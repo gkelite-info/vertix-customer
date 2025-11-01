@@ -87,6 +87,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       localStorage.removeItem("temporary_access_flag")
       localStorage.removeItem("temporary_access_expiry")
       localStorage.removeItem("session_expiry")
+      localStorage.removeItem("selectedYear")
+
 
       setIsAuthenticated(false)
       setUser(null)

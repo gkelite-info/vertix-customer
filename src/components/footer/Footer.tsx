@@ -82,7 +82,7 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/individualtax" className="hover:text-white text-[#D1D5DC]">
+                <Link href="/individual" className="hover:text-white text-[#D1D5DC]">
                   Services
                 </Link>
               </li>

@@ -34,8 +34,6 @@ export const YearProvider = ({ children }: { children: React.ReactNode }) => {
       try {
         const customer = await getCustomer();
         if (!customer?.customerId) throw new Error("Customer not found");
-        console.log("Here", customer);
-        
 
         let filingId = await getFilingYearIdForCustomerAndYear(
           customer.customerId,
