@@ -1,15 +1,20 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import YearSelect from "../../../../utils/yearSelect";
 import TaxReturnRefund from "./taxRefund";
 import FeeSummary from "./feeSummary";
 
 export default function PaymentTaxSummary() {
   const [summaries, setSummaries] = useState<Record<string, any>[]>([]);
-  const [fetchingData, setFetchingData] = useState(true);
   const [activeTab, setActiveTab] = useState<"tax" | "fee">("tax");
   const [isMounted, setIsMounted] = useState(false);
+
+  const handleTotalsChange = useCallback((values: any) => {
+    console.log("Received totals:", values);
+    // You can store these totals if needed:
+    // setSummaries(values)
+  }, []);
 
   useEffect(() => {
     const savedTab = localStorage.getItem("activePaymentTab") as "tax" | "fee" | null;
@@ -49,7 +54,11 @@ export default function PaymentTaxSummary() {
       </div>
 
       <div className="mt-6">
-        {activeTab === "tax" ? <TaxReturnRefund /> : <FeeSummary />}
+        {activeTab === "tax" ? (
+          <TaxReturnRefund />
+        ) : (
+          <FeeSummary onTotalsChange={handleTotalsChange} />
+        )}
       </div>
     </div>
   );

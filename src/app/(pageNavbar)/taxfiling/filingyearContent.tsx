@@ -34,15 +34,13 @@ export default function TaxfilingContent() {
     const urlHasTempAccess = searchParams.get("temporary_access") === "true"
     const storedTempFlag = localStorage.getItem("temporary_access_flag")
 
-    // ✅ Mark temp access if present
     if (urlHasTempAccess && !storedTempFlag) {
-      const expiry = Date.now() + 1 * 60 * 1000 // 1 min for test
+      const expiry = Date.now() + 1 * 60 * 1000
       localStorage.setItem("temporary_access_flag", "true")
       localStorage.setItem("temporary_access_expiry", expiry.toString())
       console.log("Temporary access initialized")
     }
 
-    // ✅ If we’re in temp mode and haven’t refreshed once, do a hard reload
     const shouldReload =
       localStorage.getItem("temporary_access_flag") === "true" &&
       !sessionStorage.getItem("tempHardRefreshed")
@@ -50,11 +48,9 @@ export default function TaxfilingContent() {
     if (shouldReload) {
       console.log("🔄 Performing hard refresh for temp access")
       sessionStorage.setItem("tempHardRefreshed", "true")
-      // Small delay to ensure the session is stored before reload
       setTimeout(() => window.location.reload(), 300)
     }
 
-    // ✅ Expiry check (unchanged)
     const checkExpiry = async () => {
       const isTemp = localStorage.getItem("temporary_access_flag") === "true"
       const expiryTime = localStorage.getItem("temporary_access_expiry")
