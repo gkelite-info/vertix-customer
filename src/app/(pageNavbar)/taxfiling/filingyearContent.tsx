@@ -19,6 +19,10 @@ import { useAuth } from "@/components/AuthContext"
 import toast from "react-hot-toast"
 import { supabase } from "../../../../utils/supabase/client"
 
+// CHANGE: Sync with useHandleMagicLinkAuth unique temp keys
+const TEMP_FLAG_KEY = "vt_temp_access_flag"
+const TEMP_EXPIRY_KEY = "vt_temp_access_expiry"
+
 export default function TaxfilingContent() {
   const { isSessionReady, session, isTemporary, supabaseTemp } =
     useHandleMagicLinkAuth()
@@ -32,17 +36,17 @@ export default function TaxfilingContent() {
     if (!isSessionReady) return
 
     const urlHasTempAccess = searchParams.get("temporary_access") === "true"
-    const storedTempFlag = localStorage.getItem("temporary_access_flag")
+    const storedTempFlag = localStorage.getItem(TEMP_FLAG_KEY)
 
     if (urlHasTempAccess && !storedTempFlag) {
       const expiry = Date.now() + 1 * 60 * 1000
-      localStorage.setItem("temporary_access_flag", "true")
-      localStorage.setItem("temporary_access_expiry", expiry.toString())
+      localStorage.setItem(TEMP_FLAG_KEY, "true")
+      localStorage.setItem(TEMP_EXPIRY_KEY, expiry.toString())
       console.log("Temporary access initialized")
     }
 
     const shouldReload =
-      localStorage.getItem("temporary_access_flag") === "true" &&
+      localStorage.getItem(TEMP_FLAG_KEY) === "true" &&
       !sessionStorage.getItem("tempHardRefreshed")
 
     if (shouldReload) {
@@ -52,16 +56,16 @@ export default function TaxfilingContent() {
     }
 
     const checkExpiry = async () => {
-      const isTemp = localStorage.getItem("temporary_access_flag") === "true"
-      const expiryTime = localStorage.getItem("temporary_access_expiry")
+      const isTemp = localStorage.getItem(TEMP_FLAG_KEY) === "true"
+      const expiryTime = localStorage.getItem(TEMP_EXPIRY_KEY)
       if (isTemp && expiryTime && Date.now() > Number(expiryTime)) {
         if (isLoggingOut.current) return
         isLoggingOut.current = true
         console.log("Temporary access expired — logging out...")
         try {
           await supabaseTemp.auth.signOut().catch(() => {})
-          localStorage.removeItem("temporary_access_flag")
-          localStorage.removeItem("temporary_access_expiry")
+          localStorage.removeItem(TEMP_FLAG_KEY)
+          localStorage.removeItem(TEMP_EXPIRY_KEY)
           localStorage.removeItem("selectedYear")
           const { data } = await supabase.auth.getSession()
           if (data?.session) {

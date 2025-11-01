@@ -1,65 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// "use client"
-
-// import { useEffect, useState } from "react"
-// import { supabase } from "./supabase/client"
-
-// export function useHandleMagicLinkAuth() {
-//   const [isSessionReady, setIsSessionReady] = useState(false)
-//   const [session, setSession] = useState<any>(null)
-
-//   useEffect(() => {
-//     const restoreSession = async () => {
-//       // Check if redirected with magic link hash
-//       const hash = window.location.hash
-//       if (hash.includes("access_token")) {
-//         const params = new URLSearchParams(hash.substring(1))
-//         const access_token = params.get("access_token")
-//         const refresh_token = params.get("refresh_token")
-
-//         if (access_token && refresh_token) {
-//           console.log("🔑 Setting Supabase session from magic link...")
-//           const { data, error } = await supabase.auth.setSession({
-//             access_token,
-//             refresh_token,
-//           })
-//           if (error) console.error("❌ Error restoring session:", error)
-//           else {
-//             console.log("✅ Session restored successfully")
-//             setSession(data.session)
-//             setIsSessionReady(true)
-//           }
-
-//           // Clean URL (remove hash)
-//           window.history.replaceState(
-//             {},
-//             "",
-//             window.location.pathname + window.location.search
-//           )
-//           return
-//         }
-//       }
-
-//       // If no hash, check normal session
-//       const { data } = await supabase.auth.getSession()
-//       if (data.session) {
-//         setSession(data.session)
-//       }
-//       setIsSessionReady(true)
-//     }
-
-//     restoreSession()
-//   }, [])
-
-//   return { isSessionReady, session }
-// }
-
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 
 import { useEffect, useState } from "react"
 import { supabase } from "./supabase/client"
 import { supabaseTemp } from "./supabase/tempClient"
+
+// CHANGE: Use unique temp flag/expiry keys
+const TEMP_FLAG_KEY = "vt_temp_access_flag" 
+const TEMP_EXPIRY_KEY = "vt_temp_access_expiry" 
+
 
 export function useHandleMagicLinkAuth() {
   const [isSessionReady, setIsSessionReady] = useState(false)
@@ -86,8 +35,8 @@ export function useHandleMagicLinkAuth() {
             setSession(data.session)
             setIsTemporary(true)
             const expiry = Date.now() + 60 * 1000 // 1 min for test
-            localStorage.setItem("temporary_access_flag", "true")
-            localStorage.setItem("temporary_access_expiry", expiry.toString())
+            localStorage.setItem(TEMP_FLAG_KEY, "true")
+            localStorage.setItem(TEMP_EXPIRY_KEY, expiry.toString())
           }
 
           window.history.replaceState(
@@ -101,7 +50,7 @@ export function useHandleMagicLinkAuth() {
       }
 
       // 2️⃣ Try restore temporary session first
-      const tempFlag = localStorage.getItem("temporary_access_flag") === "true"
+      const tempFlag = localStorage.getItem(TEMP_EXPIRY_KEY) === "true"
       if (tempFlag) {
         const { data: tempData } = await supabaseTemp.auth.getSession()
         if (tempData?.session) {
