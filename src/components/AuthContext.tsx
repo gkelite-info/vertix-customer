@@ -18,10 +18,6 @@ interface AuthContextType {
   logout: () => void
 }
 
-// CHANGE: Sync with useHandleMagicLinkAuth unique temp keys
-const TEMP_FLAG_KEY = "vt_temp_access_flag"
-const TEMP_EXPIRY_KEY = "vt_temp_access_expiry"
-
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 const decodeToken = (token: string): User | null => {
@@ -43,7 +39,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const token = localStorage.getItem("token")
-    const tempFlag = localStorage.getItem(TEMP_FLAG_KEY)
+    const tempFlag = localStorage.getItem("temporary_access_flag")
 
     if (token) {
       const userData = decodeToken(token)
@@ -88,8 +84,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
       localStorage.removeItem("token")
       localStorage.removeItem("customerId")
-      localStorage.removeItem(TEMP_FLAG_KEY)
-      localStorage.removeItem(TEMP_EXPIRY_KEY)
+      localStorage.removeItem("temporary_access_flag")
+      localStorage.removeItem("temporary_access_expiry")
       localStorage.removeItem("session_expiry")
       localStorage.removeItem("selectedYear")
 

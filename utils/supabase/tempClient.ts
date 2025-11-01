@@ -51,18 +51,16 @@ export const supabaseTemp = createBrowserClient(
     // Give Supabase time to initialize
     await new Promise((r) => setTimeout(r, 100))
 
-    // CHANGE: Forcefully and repeatedly override _bc to block all leaks
-    const patchBroadcastChannel = () => {
-      if (auth._bc) auth._bc.close?.()
-      auth._bc = {
-        postMessage: () => {},
-        addEventListener: () => {},
-        removeEventListener: () => {},
-        close: () => {},
-      }
+    // 1️⃣ Close Supabase's built-in broadcast channel
+    if (auth._bc) auth._bc.close()
+
+    // 2️⃣ Replace with isolated dummy channel
+    auth._bc = {
+      postMessage: () => {}, // disable broadcasting
+      addEventListener: () => {},
+      removeEventListener: () => {},
+      close: () => {},
     }
-    patchBroadcastChannel()
-    auth.onAuthStateChange(() => patchBroadcastChannel()) // CHANGE
 
     // 3️⃣ Override signOut to ensure no event leaks
     const originalSignOut = auth.signOut.bind(auth)
@@ -80,4 +78,3 @@ export const supabaseTemp = createBrowserClient(
     console.warn("Temp client isolation skipped:", err)
   }
 })()
-
