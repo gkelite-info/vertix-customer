@@ -3,11 +3,17 @@
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 
-export default function ProtectedRoute({ children }: { children: React.ReactNode }) {
+interface ProtectedRouteProps {
+  children: React.ReactNode
+  isSessionReady: boolean
+}
+
+export default function ProtectedRoute({ children, isSessionReady }: ProtectedRouteProps) {
   const router = useRouter()
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    if (!isSessionReady) return 
     const token = localStorage.getItem("token")
 
     if (!token) {
@@ -18,7 +24,7 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
     setLoading(false)
   }, [router])
 
-  if (loading) {
+  if (loading || !isSessionReady) {
     return <div>Loading...</div>
   }
 

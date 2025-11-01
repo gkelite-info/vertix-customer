@@ -10,6 +10,7 @@ import { IoMdArrowDropright } from "react-icons/io"
 import LogoutModal from "../modals/logoutModel"
 import { getCustomer } from "@/app/api/SupabaseAPI/customer/customerApi"
 import { useHandleMagicLinkAuth } from "../../../utils/useHandleMagicLinkAuth"
+import toast from "react-hot-toast"
 
 function Header() {
   const router = useRouter()
@@ -56,6 +57,7 @@ function Header() {
       localStorage.removeItem("temporary_access_expiry")
       localStorage.removeItem("selectedYear")
       localStorage.removeItem("token")
+      toast.success("Logged out successfully")
     } else {
       logout()
     }
