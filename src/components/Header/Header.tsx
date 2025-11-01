@@ -9,9 +9,11 @@ import { MdArrowDropDown } from "react-icons/md"
 import { IoMdArrowDropright } from "react-icons/io"
 import LogoutModal from "../modals/logoutModel"
 import { getCustomer } from "@/app/api/SupabaseAPI/customer/customerApi"
+import { useHandleMagicLinkAuth } from "../../../utils/useHandleMagicLinkAuth"
 
 function Header() {
   const router = useRouter()
+  const { isTemporary } = useHandleMagicLinkAuth()
 
   const pathname = usePathname()
   const [, setIsLoggedIn] = useState(false)
@@ -49,7 +51,14 @@ function Header() {
 
   const handleLogout = () => setShowLogoutModal(true)
   const confirmLogout = () => {
-    logout()
+    if (isTemporary) {
+      localStorage.removeItem("temporary_access_flag")
+      localStorage.removeItem("temporary_access_expiry")
+      localStorage.removeItem("selectedYear")
+      localStorage.removeItem("token")
+    } else {
+      logout()
+    }
     setShowLogoutModal(false)
     router.push("/login")
   }
