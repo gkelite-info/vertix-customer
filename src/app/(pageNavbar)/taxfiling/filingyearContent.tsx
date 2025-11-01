@@ -63,6 +63,7 @@ export default function TaxfilingContent() {
           localStorage.removeItem("temporary_access_flag")
           localStorage.removeItem("temporary_access_expiry")
           localStorage.removeItem("selectedYear")
+          localStorage.removeItem("token")
           const { data } = await supabase.auth.getSession()
           if (data?.session) {
             console.log("Normal customer still logged in, no redirect.")
@@ -70,7 +71,6 @@ export default function TaxfilingContent() {
             return
           }
           setIsAuthenticated(false)
-          localStorage.removeItem("token")
           toast.success("Temporary access expired. You have been logged out.")
         } catch (err) {
           console.error("Error during logout on expiry:", err)
