@@ -245,12 +245,6 @@ export default function MyDocuments() {
                 >
                   <DownloadSimple size={20} />
                 </button>
-                <button
-                  onClick={() => handleDeleteClick(row.file_path)}
-                  className="text-red-600 hover:text-red-800 cursor-pointer"
-                >
-                  <Trash size={20} />
-                </button>
               </>
             )}
             onUpdateClick={() => console.log("Not used here")}
