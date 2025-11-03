@@ -67,3 +67,30 @@ export const postBankInformation = async (bankData: {
     throw error;
   }
 };
+
+export const deleteBankInformation = async () => {
+  try {
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    if (authError || !user) throw new Error("Not authenticated");
+
+    const { data: customer, error: customerError } = await supabase
+      .from("vertixcustomers")
+      .select("customerId")
+      .eq("auth_id", user.id)
+      .single();
+
+    if (customerError || !customer) throw new Error("Customer not found");
+    const customerId = customer.customerId;
+
+    const { error } = await supabase
+      .from("bank_information")
+      .delete()
+      .eq("customerId", customerId);
+
+    if (error) throw error;
+    return { message: "Bank information deleted successfully" };
+  } catch (error: any) {
+    console.error("Error deleting bank information:", error.message);
+    throw error;
+  }
+};
