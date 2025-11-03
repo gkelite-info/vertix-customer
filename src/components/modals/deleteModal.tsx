@@ -26,7 +26,7 @@ export default function DeleteModal({ isOpen, onConfirm, onCancel }: DeleteModal
             transition={{ duration: 0.25 }}
           >
             <h2 className="font-semibold text-lg text-gray-800 mb-4">
-              Are you sure you want to delete this document?
+              Are you sure you want to delete?
             </h2>
             <div className="flex justify-center gap-4 mt-6">
               <button

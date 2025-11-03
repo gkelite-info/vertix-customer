@@ -3,11 +3,12 @@
 import { useEffect, useRef, useState } from "react";
 import YearSelect from "../../../../utils/yearSelect";
 import toast from "react-hot-toast";
-import { deleteUserDocument, getUserDocuments, uploadUserDocument } from "@/app/api/SupabaseAPI/customer/documentUploadAPI";
+import { deleteUserDocument, getDocumentDownloadUrl, getUserDocuments, uploadUserDocument } from "@/app/api/SupabaseAPI/customer/documentUploadAPI";
 import { useAuth } from "@/components/AuthContext";
 import TableComponent from "../../../../utils/table/page";
 import DeleteModal from "@/components/modals/deleteModal";
 import { useYear } from "@/app/api/context/yearContext";
+import { DownloadSimple, Trash } from "phosphor-react";
 
 export default function VertixTaxPage() {
   const { selectedYear, filingYearId } = useYear();
@@ -22,6 +23,20 @@ export default function VertixTaxPage() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [fileToDelete, setFileToDelete] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [loadingDownload, setLoadingDownload] = useState<number | null>(null);
+
+  const handleDownload = async (filePath: string, index: number) => {
+    try {
+      setLoadingDownload(index);
+      const url = await getDocumentDownloadUrl(filePath);
+      window.open(url, "_blank");
+    } catch (err) {
+      console.error("Download failed:", err);
+      alert("Failed to download file");
+    } finally {
+      setLoadingDownload(null);
+    }
+  };
 
   useEffect(() => {
     if (!user || !filingYearId) {
@@ -222,11 +237,26 @@ export default function VertixTaxPage() {
         <div className="mt-5 bg-green-00 overflow-x-auto w-full pb-3">
           <TableComponent
             data={documents}
-            columns={columns}
-            columnKeys={columnKeys}
-            showActions={true}
+            columns={["Document Type", "File", "Description"]}
+            columnKeys={["doc_type", "public_url", "description"]}
+            actions={(row, index) => (
+              <>
+                <button
+                  onClick={() => handleDownload(row.file_path, index)}
+                  className="text-blue-600 hover:text-blue-800 cursor-pointer"
+                >
+                  <DownloadSimple size={20} />
+                </button>
+                <button
+                  onClick={() => handleDeleteClick(row.file_path)}
+                  className="text-red-600 hover:text-red-800 cursor-pointer"
+                >
+                  <Trash size={20} />
+                </button>
+              </>
+            )}
+            onUpdateClick={() => console.log("Not used here")}
             onDelete={handleDeleteClick}
-            onUpdateClick={() => console.log("Feature not required here")}
           />
         </div>
       )}
