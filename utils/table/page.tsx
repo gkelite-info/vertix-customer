@@ -7,6 +7,7 @@ type TableProps = {
   data: Record<string, any>[];
   columns: string[];
   columnKeys: string[];
+  style?: string;
   actions?: (row: Record<string, any>, index: number) => React.ReactNode;
   onDelete?: (filePath: string) => void;
   onUpdateClick: () => void;
@@ -18,13 +19,14 @@ export default function TableComponent({
   columnKeys,
   actions,
   onDelete,
+  style = "w-[100%]",
   onUpdateClick,
 }: TableProps) {
   const showActions = !!actions;
 
   return (
     <div className="bg-red-00 flex flex-col items-center justify-start lg:h-[80%] pt-3 w-full">
-      <table className="border-collapse border border-gray-300 w-[90%] text-left">
+      <table className={`border-collapse border border-gray-300 ${style} text-left`}>
         <TableHead columns={columns} showActions={showActions} />
 
         <TableBody

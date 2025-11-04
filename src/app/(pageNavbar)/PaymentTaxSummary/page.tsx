@@ -2,13 +2,15 @@
 
 import { useEffect, useState, useCallback } from "react";
 import YearSelect from "../../../../utils/yearSelect";
-import TaxReturnRefund from "./taxRefund";
 import FeeSummary from "./feeSummary";
+import { useHandleMagicLinkAuth } from "../../../../utils/useHandleMagicLinkAuth";
+import TaxRefund from "./taxRefund";
+import TaxReturnRefund from "./taxReturnRefund";
 
 export default function PaymentTaxSummary() {
-  const [summaries, setSummaries] = useState<Record<string, any>[]>([]);
   const [activeTab, setActiveTab] = useState<"tax" | "fee">("tax");
   const [isMounted, setIsMounted] = useState(false);
+  const { isTemporary } = useHandleMagicLinkAuth();
 
   const handleTotalsChange = useCallback((values: any) => {
     console.log("Received totals:", values);
@@ -31,34 +33,44 @@ export default function PaymentTaxSummary() {
   return (
     <div className="bg-white lg:h-[100vh] overflow-y-auto">
       <YearSelect />
-
-      <div className="flex justify-center items-center gap-4 mt-5">
-        <button
-          onClick={() => setActiveTab("tax")}
-          className={`px-5 py-2 rounded-md cursor-pointer font-medium text-sm transition-all duration-200 ${activeTab === "tax"
-            ? "bg-[#1D2B48] text-white"
-            : "bg-gray-200 text-[#1D2B48] hover:bg-gray-300"
-            }`}
-        >
-          TAX Return Refund / Due Summary
-        </button>
-        <button
-          onClick={() => setActiveTab("fee")}
-          className={`px-5 py-2 rounded-md cursor-pointer font-medium text-sm transition-all duration-200 ${activeTab === "fee"
-            ? "bg-[#1D2B48] text-white"
-            : "bg-gray-200 text-[#1D2B48] hover:bg-gray-300"
-            }`}
-        >
-          Fee Summary
-        </button>
-      </div>
+      {isTemporary &&
+        <>
+          <div className="flex justify-center items-center gap-4 mt-5">
+            <button
+              onClick={() => setActiveTab("tax")}
+              className={`px-5 py-2 rounded-md cursor-pointer font-medium text-sm transition-all duration-200 ${activeTab === "tax"
+                ? "bg-[#1D2B48] text-white"
+                : "bg-gray-200 text-[#1D2B48] hover:bg-gray-300"
+                }`}
+            >
+              TAX Return Refund / Due Summary
+            </button>
+            <button
+              onClick={() => setActiveTab("fee")}
+              className={`px-5 py-2 rounded-md cursor-pointer font-medium text-sm transition-all duration-200 ${activeTab === "fee"
+                ? "bg-[#1D2B48] text-white"
+                : "bg-gray-200 text-[#1D2B48] hover:bg-gray-300"
+                }`}
+            >
+              Fee Summary
+            </button>
+          </div>
+        </>
+      }
 
       <div className="mt-6">
-        {activeTab === "tax" ? (
-          <TaxReturnRefund />
-        ) : (
-          <FeeSummary onTotalsChange={handleTotalsChange} />
-        )}
+        {isTemporary ?
+          <>
+            {activeTab === "tax" ? (
+              <TaxRefund />
+            ) : (
+              <FeeSummary onTotalsChange={handleTotalsChange} />
+            )}
+          </> :
+          <>
+            <TaxReturnRefund />
+          </>
+        }
       </div>
     </div>
   );

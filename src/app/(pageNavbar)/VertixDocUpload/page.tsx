@@ -237,6 +237,7 @@ export default function VertixTaxPage() {
         <div className="mt-5 bg-green-00 overflow-x-auto w-full pb-3">
           <TableComponent
             data={documents}
+            style="w-[90%]"
             columns={["Document Type", "File", "Description"]}
             columnKeys={["doc_type", "public_url", "description"]}
             actions={(row, index) => (
