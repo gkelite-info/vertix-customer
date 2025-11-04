@@ -1,15 +1,15 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 
-import { useEffect, useState } from "react"
-import { useYear } from "@/app/api/context/yearContext"
-import { useAuth } from "@/components/AuthContext"
-import { getPaymentTaxSummary } from "@/app/api/SupabaseAPI/customer/paymentTaxSummaryAPI"
-import { updatePaymentStatus } from "@/app/api/SupabaseAPI/customer/documentUploadAPI"
-import TableComponent from "../../../../utils/table/page"
-import toast from "react-hot-toast"
-import CommentModal from "@/components/modals/commentModal"
-import { useHandleMagicLinkAuth } from "../../../../utils/useHandleMagicLinkAuth"
+import { useEffect, useState } from "react";
+import { useYear } from "@/app/api/context/yearContext";
+import { useAuth } from "@/components/AuthContext";
+import { getPaymentTaxSummary } from "@/app/api/SupabaseAPI/customer/paymentTaxSummaryAPI";
+import { updatePaymentStatus } from "@/app/api/SupabaseAPI/customer/documentUploadAPI";
+import TableComponent from "../../../../utils/table/page";
+import toast from "react-hot-toast";
+import CommentModal from "@/components/modals/commentModal";
+import { useHandleMagicLinkAuth } from "../../../../utils/useHandleMagicLinkAuth";
+import DateForDue from "../BankingInformation/dateForDue";
 
 export default function TaxReturnRefund() {
   const { filingYearId } = useYear()
@@ -129,7 +129,9 @@ export default function TaxReturnRefund() {
 
   if (!isSessionReady) {
     return (
-      <div className="flex items-center justify-center">Loading session..</div>
+      <div className="flex items-center justify-center">
+        <p className="text-[#1D2B48]">Loading session..</p>
+      </div>
     )
   }
 
@@ -171,6 +173,9 @@ export default function TaxReturnRefund() {
                 </div>
               )}
             </div>
+            {!isTemporary && (
+              <DateForDue />
+            )}
           </>
         ) : (
           !fetchingData && (
