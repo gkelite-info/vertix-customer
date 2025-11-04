@@ -1,93 +1,101 @@
-"use client";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+"use client"
 
-import { useEffect, useState } from "react";
-import { useYear } from "@/app/api/context/yearContext";
-import { useAuth } from "@/components/AuthContext";
-import { getPaymentTaxSummary } from "@/app/api/SupabaseAPI/customer/paymentTaxSummaryAPI";
-import { updatePaymentStatus } from "@/app/api/SupabaseAPI/customer/documentUploadAPI";
-import TableComponent from "../../../../utils/table/page";
-import toast from "react-hot-toast";
-import CommentModal from "@/components/modals/commentModal";
-import { useHandleMagicLinkAuth } from "../../../../utils/useHandleMagicLinkAuth";
+import { useEffect, useState } from "react"
+import { useYear } from "@/app/api/context/yearContext"
+import { useAuth } from "@/components/AuthContext"
+import { getPaymentTaxSummary } from "@/app/api/SupabaseAPI/customer/paymentTaxSummaryAPI"
+import { updatePaymentStatus } from "@/app/api/SupabaseAPI/customer/documentUploadAPI"
+import TableComponent from "../../../../utils/table/page"
+import toast from "react-hot-toast"
+import CommentModal from "@/components/modals/commentModal"
+import { useHandleMagicLinkAuth } from "../../../../utils/useHandleMagicLinkAuth"
 
 export default function TaxReturnRefund() {
-  const { filingYearId } = useYear();
-  const { user } = useAuth();
+  const { filingYearId } = useYear()
+  const { user } = useAuth()
 
-  const [summaries, setSummaries] = useState<Record<string, any>[]>([]);
-  const [fetchingData, setFetchingData] = useState(true);
+  const [summaries, setSummaries] = useState<Record<string, any>[]>([])
+  const [fetchingData, setFetchingData] = useState(true)
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedRecord, setSelectedRecord] = useState<Record<string, any> | null>(null);
-  const { isTemporary, isSessionReady } = useHandleMagicLinkAuth();
-  console.log("isTemporary value:", isTemporary);
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [selectedRecord, setSelectedRecord] = useState<Record<
+    string,
+    any
+  > | null>(null)
+  const { isTemporary, isSessionReady } = useHandleMagicLinkAuth()
+  console.log("isTemporary value:", isTemporary)
 
   useEffect(() => {
-    if (!isSessionReady)
-      return
-    fetchData();
-  }, [user, filingYearId, isSessionReady]);
+    console.log("📊 TaxReturnRefund - isTemporary value:", isTemporary)
+    console.log("📊 TaxReturnRefund - isSessionReady value:", isSessionReady)
+  }, [isTemporary, isSessionReady])
+
+  useEffect(() => {
+    if (!isSessionReady) return
+    fetchData()
+  }, [user, filingYearId, isSessionReady])
 
   const fetchData = async () => {
     if (!user || !filingYearId) {
-      setSummaries([]);
-      setFetchingData(false);
-      return;
+      setSummaries([])
+      setFetchingData(false)
+      return
     }
-    setFetchingData(true);
+    setFetchingData(true)
     try {
-      const data = await getPaymentTaxSummary(filingYearId);
-      setSummaries(data || []);
+      const data = await getPaymentTaxSummary(filingYearId)
+      setSummaries(data || [])
     } catch (err) {
-      console.error("Error fetching tax return refund data:", err);
-      setSummaries([]);
+      console.error("Error fetching tax return refund data:", err)
+      setSummaries([])
     } finally {
-      setFetchingData(false);
+      setFetchingData(false)
     }
-  };
+  }
 
   const handleRejectClick = (record: Record<string, any>) => {
-    setSelectedRecord(record);
-    setIsModalOpen(true);
-  };
+    setSelectedRecord(record)
+    setIsModalOpen(true)
+  }
 
   const handleSaveComment = async (comment: string) => {
     try {
-      if (!selectedRecord) return;
+      if (!selectedRecord) return
 
-      const summaryId = selectedRecord.summaryId;
+      const summaryId = selectedRecord.summaryId
       if (!summaryId) {
-        toast.error("Missing summaryId for record");
-        return;
+        toast.error("Missing summaryId for record")
+        return
       }
 
-      await updatePaymentStatus(summaryId, "Rejected", comment);
-      toast.success("Comment saved and status set to Rejected!");
+      await updatePaymentStatus(summaryId, "Rejected", comment)
+      toast.success("Comment saved and status set to Rejected!")
 
-      setIsModalOpen(false);
-      await fetchData();
+      setIsModalOpen(false)
+      await fetchData()
     } catch (err) {
-      console.error("Error saving comment:", err);
-      toast.error("Failed to save comment");
+      console.error("Error saving comment:", err)
+      toast.error("Failed to save comment")
     }
-  };
+  }
 
   const handleAcceptClick = async (record: Record<string, any>) => {
     try {
       if (!record.summaryId) {
-        toast.error("Missing summaryId for record");
-        return;
+        toast.error("Missing summaryId for record")
+        return
       }
 
-      await updatePaymentStatus(record.summaryId, "Accepted");
-      toast.success("Payment status updated to Accepted!");
+      await updatePaymentStatus(record.summaryId, "Accepted")
+      toast.success("Payment status updated to Accepted!")
 
-      await fetchData();
+      await fetchData()
     } catch (err) {
-      console.error("Error updating to Accepted:", err);
-      toast.error("Failed to update status");
+      console.error("Error updating to Accepted:", err)
+      toast.error("Failed to update status")
     }
-  };
+  }
 
   const baseColumns = [
     "TAX Type",
@@ -98,7 +106,7 @@ export default function TaxReturnRefund() {
     "Original/Updated",
     "Belongs To",
     "Payment Status",
-  ];
+  ]
 
   const baseColumnKeys = [
     "taxType",
@@ -109,16 +117,19 @@ export default function TaxReturnRefund() {
     "originalUpdated",
     "belongsTo",
     "payment_status",
-  ];
+  ]
 
-  const columns = isTemporary ? [...baseColumns, "Comment"] : baseColumns;
-  const columnKeys = isTemporary ? [...baseColumnKeys, "comment"] : baseColumnKeys;
+  const columns = isTemporary ? [...baseColumns, "Comment"] : baseColumns
+  const columnKeys = isTemporary
+    ? [...baseColumnKeys, "comment"]
+    : baseColumnKeys
+
+  console.log("📋 Rendering with columns:", columns)
+  console.log("📋 Column keys:", columnKeys)
 
   if (!isSessionReady) {
     return (
-      <div className="flex items-center justify-center">
-        Loading session..
-      </div>
+      <div className="flex items-center justify-center">Loading session..</div>
     )
   }
 
@@ -175,5 +186,5 @@ export default function TaxReturnRefund() {
         onSave={handleSaveComment}
       />
     </>
-  );
+  )
 }
