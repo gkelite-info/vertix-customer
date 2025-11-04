@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import TableComponent from "../../../../utils/table/page";
 
-export default function TaxReturnRefund() {
+export default function TaxRefund() {
 
     const { selectedYear, filingYearId } = useYear();
     const { user } = useAuth();

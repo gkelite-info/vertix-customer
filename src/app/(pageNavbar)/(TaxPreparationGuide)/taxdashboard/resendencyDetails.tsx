@@ -3,6 +3,7 @@
 import { useYear } from "@/app/api/context/yearContext";
 import { upsertResidencyDetails } from "@/app/api/SupabaseAPI/customer/residency";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 type Tab =
     | "Dependents"
@@ -42,10 +43,10 @@ export default function ResidencyDetails({ setActiveTab }: ResidencyDetailsProps
                 residencyType: "home",
                 spouseSameResidency: citizen,
             });
-            alert("Successfully saved Residency Details");
+            toast.success("Successfully saved Residency Details");
         } catch (error) {
             console.error(error);
-            alert("Failed to save Residency Details");
+            toast.error("Failed to save Residency Details");
         }
     };
 

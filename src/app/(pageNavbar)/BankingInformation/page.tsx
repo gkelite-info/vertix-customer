@@ -2,19 +2,22 @@
 
 import { useState, useEffect } from "react";
 import { useAuth } from "@/components/AuthContext";
-import YearSelect from "../../../../utils/yearSelect";
+import { useYear } from "@/app/api/context/yearContext";
 import TableComponent from "../../../../utils/table/page";
 import toast from "react-hot-toast";
 import {
-  deleteBankInformation,
   getBankInformation,
-  postBankInformation,
+  upsertBankInformation,
+  deleteBankInformation,
 } from "@/app/api/SupabaseAPI/customer/bank";
 import { Trash } from "phosphor-react";
 import { MdEdit } from "react-icons/md";
 import DeleteModal from "@/components/modals/deleteModal";
 
 export default function BankingInformationPage() {
+  const { user } = useAuth();
+  const { filingYearId } = useYear();
+
   const [formValues, setFormValues] = useState({
     belongsTo: "",
     holderName: "",
@@ -30,26 +33,28 @@ export default function BankingInformationPage() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
-  const { user } = useAuth();
-
   useEffect(() => {
-    if (!user) return;
+    if (!user || !filingYearId) return;
 
     const fetchBankData = async () => {
+      setFetching(true);
       try {
-        const res = await getBankInformation();
+        const res = await getBankInformation(filingYearId);
         if (res) {
           setBankRecords([res]);
+        } else {
+          setBankRecords([]);
         }
       } catch (error) {
         console.error(error);
+        toast.error("Failed to fetch bank information");
       } finally {
         setFetching(false);
       }
     };
 
     fetchBankData();
-  }, [user]);
+  }, [user, filingYearId]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -70,22 +75,27 @@ export default function BankingInformationPage() {
   };
 
   const handleSubmit = async () => {
+    if (!filingYearId) {
+      toast.error("Please select a filing year first");
+      return;
+    }
+
     setLoading(true);
     try {
-      const res = await postBankInformation(formValues);
-      toast.success(
-        typeof res.message === "string"
-          ? res.message
-          : "Bank information updated successfully"
-      );
-      setBankRecords(res ? [res] : []);
-      setIsEditing(false);
+      const payload = {
+        ...formValues,
+        filingYearId,
+        accountType: formValues.accountType as "checking" | "savings" | "others",
+      };
+      const res = await upsertBankInformation(payload);
+      if (res) {
+        toast.success("Bank information saved successfully");
+        setBankRecords([res]);
+        setIsEditing(false);
+      }
     } catch (error: any) {
-      toast.error(
-        error.response?.data?.message
-          ? String(error.response.data.message)
-          : "Failed to update bank information"
-      );
+      toast.error("Failed to save bank information");
+      console.error(error);
     } finally {
       setLoading(false);
     }
@@ -108,8 +118,13 @@ export default function BankingInformationPage() {
   };
 
   const confirmDelete = async () => {
+    if (!filingYearId) {
+      toast.error("Please select a filing year first");
+      return;
+    }
+
     try {
-      await deleteBankInformation();
+      await deleteBankInformation(filingYearId);
       toast.success("Bank information deleted successfully");
 
       setBankRecords([]);
@@ -157,11 +172,11 @@ export default function BankingInformationPage() {
 
   return (
     <div className="bg-white min-h-[100vh] overflow-y-auto mb-7">
-      <YearSelect />
-      <div className="flex flex-col justify-start items-center bg-green-00 lg:pt-3 gap-2 text-center">
+      <div className="flex flex-col justify-start items-center lg:pt-3 gap-2 text-center">
         <h2 className="font-semibold text-[#1D2B48] text-xl mb-3">
           Your Bank Details
         </h2>
+
         {[
           {
             label: "Belongs To",
@@ -188,6 +203,12 @@ export default function BankingInformationPage() {
             placeholder: "Enter Account Number",
           },
           {
+            label: "Routing Number",
+            name: "routingNumber",
+            type: "text",
+            placeholder: "Enter Routing Number (optional)",
+          },
+          {
             label: "Type of Account",
             name: "accountType",
             type: "select",
@@ -200,7 +221,7 @@ export default function BankingInformationPage() {
         ].map((input, i) => (
           <div
             key={i}
-            className="flex items-center justify-between bg-pink-00 gap-3 h-9 w-[44%] mt-2"
+            className="flex items-center justify-between gap-3 h-9 w-[44%] mt-2"
           >
             <div className="w-[39%]">
               <h5 className="text-[#1D2B48] font-medium text-end pr-1.5">
@@ -234,16 +255,21 @@ export default function BankingInformationPage() {
           </div>
         ))}
 
-        <div className="mt-4 flex h-[10%] w-[45%] gap-3 bg-red-00 rounded-lg">
+        <div className="mt-4 flex h-[10%] w-[45%] gap-3 rounded-lg">
           <button
             onClick={handleSubmit}
             disabled={loading || (bankRecords.length > 0 && !isEditing)}
-            className={`font-medium w-[60%] h-[100%] text-sm px-5 py-2 rounded-lg flex gap-2 justify-center items-center ${loading || (bankRecords.length > 0 && !isEditing)
+            className={`font-medium w-[60%] text-sm px-5 py-2 rounded-lg flex gap-2 justify-center items-center ${
+              loading || (bankRecords.length > 0 && !isEditing)
                 ? "bg-gray-400 text-white cursor-not-allowed"
                 : "bg-[#1D2B48] text-white cursor-pointer"
-              }`}
+            }`}
           >
-            {isEditing ? "UPDATE DETAILS" : loading ? "Saving..." : "ADD BANK DETAILS"}
+            {isEditing
+              ? "UPDATE DETAILS"
+              : loading
+              ? "Saving..."
+              : "ADD BANK DETAILS"}
           </button>
 
           <button
@@ -259,10 +285,11 @@ export default function BankingInformationPage() {
               setIsEditing(false);
             }}
             disabled={bankRecords.length > 0 && !isEditing}
-            className={`font-medium w-[60%] h-[100%] text-sm px-5 py-2 rounded-lg flex gap-2 justify-center items-center ${bankRecords.length > 0 && !isEditing
+            className={`font-medium w-[60%] text-sm px-5 py-2 rounded-lg flex gap-2 justify-center items-center ${
+              bankRecords.length > 0 && !isEditing
                 ? "bg-gray-300 text-white cursor-not-allowed"
                 : "bg-gray-400 text-white hover:bg-gray-500 cursor-pointer"
-              }`}
+            }`}
           >
             {isEditing ? "CANCEL" : "RESET"}
           </button>
@@ -270,14 +297,15 @@ export default function BankingInformationPage() {
       </div>
 
       {bankRecords.length > 0 && (
-        <div className="flex flex-col mt-8 text-start bg-green-00">
+        <div className="flex flex-col mt-8 text-start">
           <label className="text-red-500 text-xs font-medium lg:ml-12">
-            Note: Remove your current bank details before adding new one.
+            Note: Remove your current bank details before adding a new one.
           </label>
 
           <TableComponent
             data={bankRecords}
             columns={columns}
+            style="w-[90%]"
             columnKeys={columnKeys}
             actions={(row) => (
               <div className="flex gap-3 justify-center">
@@ -298,7 +326,7 @@ export default function BankingInformationPage() {
               </div>
             )}
             onUpdateClick={() =>
-              console.log("Edit/Delete table doesn’t use this")
+              console.log("Edit/Delete handled internally")
             }
           />
         </div>
@@ -311,5 +339,4 @@ export default function BankingInformationPage() {
       />
     </div>
   );
-
 }

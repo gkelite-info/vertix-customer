@@ -10,6 +10,7 @@ export interface UserDocument {
   description?: string | null;
   createdAt?: string;
   updatedAt?: string;
+  comment?: string;
 }
 
 export const getUserDocuments = async (filingYearId: number): Promise<UserDocument[]> => {
@@ -143,6 +144,36 @@ export const deleteUserDocument = async (file_path: string): Promise<boolean> =>
     return true;
   } catch (error: any) {
     console.error("Delete failed:", error.message);
+    throw error;
+  }
+};
+
+export const upsertComment = async (summaryId: number, comment: string) => {
+  try {
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser();
+
+    if (authError || !user) throw new Error("Not authenticated");
+
+    const now = new Date().toISOString();
+
+    const { data, error } = await supabase
+      .from("payment_tax_summary")
+      .update({
+        comment,
+        updatedAt: now,
+      })
+      .eq("summaryId", summaryId)
+      .select()
+      .single();
+
+    if (error) throw error;
+
+    return data;
+  } catch (error: any) {
+    console.error("Error upserting comment:", error.message);
     throw error;
   }
 };

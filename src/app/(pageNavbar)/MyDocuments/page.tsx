@@ -115,39 +115,6 @@ export default function MyDocuments() {
     }
   };
 
-  const handleDeleteClick = (filePath: string) => {
-    setFileToDelete(filePath)
-    setIsDeleteModalOpen(true)
-  }
-
-  const handleConfirmDelete = async () => {
-    if (!fileToDelete) return
-    try {
-      await deleteUserDocument(fileToDelete)
-      toast.success("Document deleted successfully")
-      setDocuments((prev) =>
-        prev.filter((doc) => doc.file_path !== fileToDelete)
-      )
-      setUploadedDocTypes((prev) =>
-        prev.filter(
-          (type) =>
-            type !==
-            documents.find((doc) => doc.file_path === fileToDelete)?.doc_type
-        )
-      )
-    } catch (err: any) {
-      toast.error("Failed to delete: " + err.message)
-    } finally {
-      setIsDeleteModalOpen(false)
-      setFileToDelete(null)
-    }
-  }
-
-  const handleCancelDelete = () => {
-    setIsDeleteModalOpen(false)
-    setFileToDelete(null)
-  }
-
   const docTypeOptions = [
     "FBAR Organizer",
     "Tax Organizer Document",
@@ -235,6 +202,7 @@ export default function MyDocuments() {
         <div className="mt-5 bg-green-00 overflow-x-auto w-full pb-3">
           <TableComponent
             data={documents}
+            style="w-[90%]"
             columns={["Document Type", "File", "Description"]}
             columnKeys={["doc_type", "public_url", "description"]}
             actions={(row, index) => (
@@ -248,15 +216,9 @@ export default function MyDocuments() {
               </>
             )}
             onUpdateClick={() => console.log("Not used here")}
-            onDelete={handleDeleteClick}
           />
         </div>
       )}
-      <DeleteModal
-        isOpen={isDeleteModalOpen}
-        onConfirm={handleConfirmDelete}
-        onCancel={handleCancelDelete}
-      />
     </div>
   )
 }
