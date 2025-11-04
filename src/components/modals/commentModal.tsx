@@ -67,7 +67,7 @@ const CommentModal = ({ isOpen, initialComment, onClose, onSave }: Props) => {
             }}
             disabled={comment.trim().length === 0}
           >
-            Save
+            Submit
           </button>
         </div>
       </div>

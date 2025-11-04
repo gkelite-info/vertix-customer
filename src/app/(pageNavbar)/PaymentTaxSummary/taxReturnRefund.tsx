@@ -8,6 +8,7 @@ import { upsertComment } from "@/app/api/SupabaseAPI/customer/documentUploadAPI"
 import TableComponent from "../../../../utils/table/page";
 import toast from "react-hot-toast";
 import CommentModal from "@/components/modals/commentModal";
+import { useHandleMagicLinkAuth } from "../../../../utils/useHandleMagicLinkAuth";
 
 export default function TaxReturnRefund() {
   const { filingYearId } = useYear();
@@ -18,6 +19,7 @@ export default function TaxReturnRefund() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState<Record<string, any> | null>(null);
+  const { isTemporary } = useHandleMagicLinkAuth();
 
   const columns = [
     "TAX Type",
@@ -105,20 +107,22 @@ export default function TaxReturnRefund() {
                 columnKeys={columnKeys}
                 onUpdateClick={() => console.log("No update action yet")}
               />
-              <div className="flex mt-3 gap-3">
-                <button
-                  className="bg-green-600 hover:bg-green-500 py-1 px-3 text-white rounded-md cursor-pointer text-sm font-medium"
-                  onClick={() => toast.success("Accepted successfully!")}
-                >
-                  Accept
-                </button>
-                <button
-                  className="bg-red-600 hover:bg-red-500 py-1 px-3 text-white rounded-md cursor-pointer text-sm font-medium"
-                  onClick={() => handleRejectClick(summaries[0])}
-                >
-                  Reject
-                </button>
-              </div>
+              {!isTemporary &&
+                <div className="flex mt-3 gap-3">
+                  <button
+                    className="bg-green-600 hover:bg-green-500 py-1 px-3 text-white rounded-md cursor-pointer text-sm font-medium"
+                    onClick={() => toast.success("Accepted successfully!")}
+                  >
+                    Accept
+                  </button>
+                  <button
+                    className="bg-red-600 hover:bg-red-500 py-1 px-3 text-white rounded-md cursor-pointer text-sm font-medium"
+                    onClick={() => handleRejectClick(summaries[0])}
+                  >
+                    Reject
+                  </button>
+                </div>
+              }
             </div>
           </>
         ) : (

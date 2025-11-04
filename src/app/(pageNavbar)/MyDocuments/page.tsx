@@ -115,6 +115,39 @@ export default function MyDocuments() {
     }
   };
 
+  const handleDeleteClick = (filePath: string) => {
+    setFileToDelete(filePath)
+    setIsDeleteModalOpen(true)
+  }
+
+  const handleConfirmDelete = async () => {
+    if (!fileToDelete) return
+    try {
+      await deleteUserDocument(fileToDelete)
+      toast.success("Document deleted successfully")
+      setDocuments((prev) =>
+        prev.filter((doc) => doc.file_path !== fileToDelete)
+      )
+      setUploadedDocTypes((prev) =>
+        prev.filter(
+          (type) =>
+            type !==
+            documents.find((doc) => doc.file_path === fileToDelete)?.doc_type
+        )
+      )
+    } catch (err: any) {
+      toast.error("Failed to delete: " + err.message)
+    } finally {
+      setIsDeleteModalOpen(false)
+      setFileToDelete(null)
+    }
+  }
+
+  const handleCancelDelete = () => {
+    setIsDeleteModalOpen(false)
+    setFileToDelete(null)
+  }
+
   const docTypeOptions = [
     "FBAR Organizer",
     "Tax Organizer Document",
@@ -213,12 +246,23 @@ export default function MyDocuments() {
                 >
                   <DownloadSimple size={20} />
                 </button>
+                <button
+                  onClick={() => handleDeleteClick(row.file_path)}
+                  className="text-red-600 hover:text-red-800 cursor-pointer"
+                >
+                  <Trash size={20} />
+                </button>
               </>
             )}
             onUpdateClick={() => console.log("Not used here")}
           />
         </div>
       )}
+      <DeleteModal
+        isOpen={isDeleteModalOpen}
+        onConfirm={handleConfirmDelete}
+        onCancel={handleCancelDelete}
+      />
     </div>
   )
 }
