@@ -14,6 +14,8 @@ import { Trash } from "phosphor-react";
 import { MdEdit } from "react-icons/md";
 import DeleteModal from "@/components/modals/deleteModal";
 import YearSelect from "../../../../utils/yearSelect";
+import { useHandleMagicLinkAuth } from "../../../../utils/useHandleMagicLinkAuth";
+import DateForDue from "./dateForDue";
 
 export default function BankingInformationPage() {
   const { user } = useAuth();
@@ -33,6 +35,7 @@ export default function BankingInformationPage() {
   const [fetching, setFetching] = useState(true);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const { isTemporary } = useHandleMagicLinkAuth();
 
   useEffect(() => {
     if (!user || !filingYearId) return;
@@ -262,8 +265,8 @@ export default function BankingInformationPage() {
             onClick={handleSubmit}
             disabled={loading || (bankRecords.length > 0 && !isEditing)}
             className={`font-medium w-[60%] text-sm px-5 py-2 rounded-lg flex gap-2 justify-center items-center ${loading || (bankRecords.length > 0 && !isEditing)
-                ? "bg-gray-400 text-white cursor-not-allowed"
-                : "bg-[#1D2B48] text-white cursor-pointer"
+              ? "bg-gray-400 text-white cursor-not-allowed"
+              : "bg-[#1D2B48] text-white cursor-pointer"
               }`}
           >
             {isEditing
@@ -287,8 +290,8 @@ export default function BankingInformationPage() {
             }}
             disabled={bankRecords.length > 0 && !isEditing}
             className={`font-medium w-[60%] text-sm px-5 py-2 rounded-lg flex gap-2 justify-center items-center ${bankRecords.length > 0 && !isEditing
-                ? "bg-gray-300 text-white cursor-not-allowed"
-                : "bg-gray-400 text-white hover:bg-gray-500 cursor-pointer"
+              ? "bg-gray-300 text-white cursor-not-allowed"
+              : "bg-gray-400 text-white hover:bg-gray-500 cursor-pointer"
               }`}
           >
             {isEditing ? "CANCEL" : "RESET"}
@@ -329,6 +332,9 @@ export default function BankingInformationPage() {
               console.log("Edit/Delete handled internally")
             }
           />
+          {isTemporary && (
+            <DateForDue style="p-10" readonly={true} />
+          )}
         </div>
       )}
 

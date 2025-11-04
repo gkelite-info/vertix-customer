@@ -16,7 +16,7 @@ type IncomeProps = {
     setActiveTab: (tab: Tab) => void;
 };
 
-export default function IndomeDetails({ setActiveTab }: IncomeProps) {
+export default function SubIncomeDetails({ setActiveTab }: IncomeProps) {
 
     const [incomeDetails, setIncomeDetails] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState(false);
