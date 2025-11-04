@@ -76,7 +76,6 @@ const CommentModal = ({ isOpen, initialComment, onClose, onSave }: Props) => {
             Submit
           </button>
         </div>
-
       </div>
     </div>
   );
