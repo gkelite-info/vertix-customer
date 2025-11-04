@@ -57,13 +57,17 @@ export function useHandleMagicLinkAuth() {
       }
 
       // 3️⃣ Normal customer session restore only if not temp
-      const { data } = await supabase.auth.getSession()
-      if (data.session) {
-        setSession(data.session)
-        setIsTemporary(false)
+
+      if (!tempFlag) {
+        const { data } = await supabase.auth.getSession()
+        if (data.session) {
+          setSession(data.session)
+          setIsTemporary(false)
+        }
+        setIsSessionReady(true)
       }
-      setIsSessionReady(true)
     }
+
 
     restoreSession()
   }, [])

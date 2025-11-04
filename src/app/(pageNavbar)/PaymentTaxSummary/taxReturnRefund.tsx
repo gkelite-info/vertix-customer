@@ -19,35 +19,14 @@ export default function TaxReturnRefund() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState<Record<string, any> | null>(null);
-  // const { isTemporary } = useHandleMagicLinkAuth();
-  const  isTemporary  = localStorage.getItem("temporary_access_flag");
+  const { isTemporary, isSessionReady } = useHandleMagicLinkAuth();
   console.log("isTemporary value:", isTemporary);
 
-
-  const baseColumns = [
-    "TAX Type",
-    "State",
-    "Before Planning",
-    "After Planning",
-    "Type of Filing",
-    "Original/Updated",
-    "Belongs To",
-    "Payment Status",
-  ];
-
-  const baseColumnKeys = [
-    "taxType",
-    "state",
-    "beforePlanning",
-    "afterPlanning",
-    "typeOfFiling",
-    "originalUpdated",
-    "belongsTo",
-    "payment_status",
-  ];
-
-  const columns = isTemporary ? [...baseColumns, "Comment"] : baseColumns;
-  const columnKeys = isTemporary ? [...baseColumnKeys, "comment"] : baseColumnKeys;
+  useEffect(() => {
+    if (!isSessionReady)
+      return
+    fetchData();
+  }, [user, filingYearId, isSessionReady]);
 
   const fetchData = async () => {
     if (!user || !filingYearId) {
@@ -66,10 +45,6 @@ export default function TaxReturnRefund() {
       setFetchingData(false);
     }
   };
-
-  useEffect(() => {
-    fetchData();
-  }, [user, filingYearId]);
 
   const handleRejectClick = (record: Record<string, any>) => {
     setSelectedRecord(record);
@@ -113,6 +88,39 @@ export default function TaxReturnRefund() {
       toast.error("Failed to update status");
     }
   };
+
+  const baseColumns = [
+    "TAX Type",
+    "State",
+    "Before Planning",
+    "After Planning",
+    "Type of Filing",
+    "Original/Updated",
+    "Belongs To",
+    "Payment Status",
+  ];
+
+  const baseColumnKeys = [
+    "taxType",
+    "state",
+    "beforePlanning",
+    "afterPlanning",
+    "typeOfFiling",
+    "originalUpdated",
+    "belongsTo",
+    "payment_status",
+  ];
+
+  const columns = isTemporary ? [...baseColumns, "Comment"] : baseColumns;
+  const columnKeys = isTemporary ? [...baseColumnKeys, "comment"] : baseColumnKeys;
+
+  if (!isSessionReady) {
+    return (
+      <div className="flex items-center justify-center">
+        Loading session..
+      </div>
+    )
+  }
 
   return (
     <>
