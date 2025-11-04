@@ -163,6 +163,7 @@ export const upsertComment = async (summaryId: number, comment: string) => {
       .from("payment_tax_summary")
       .update({
         comment,
+        payment_status: "Rejected",
         updatedAt: now,
       })
       .eq("summaryId", summaryId)
@@ -174,6 +175,37 @@ export const upsertComment = async (summaryId: number, comment: string) => {
     return data;
   } catch (error: any) {
     console.error("Error upserting comment:", error.message);
+    throw error;
+  }
+};
+
+export const updatePaymentStatus = async (summaryId: number, payment_status: string, comment?: string) => {
+  try {
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser();
+
+    if (authError || !user) throw new Error("Not authenticated");
+
+    const now = new Date().toISOString();
+
+    const { data, error } = await supabase
+      .from("payment_tax_summary")
+      .update({
+        payment_status,
+        ...(comment && { comment }),
+        updatedAt: now,
+      })
+      .eq("summaryId", summaryId)
+      .select()
+      .single();
+
+    if (error) throw error;
+
+    return data;
+  } catch (error: any) {
+    console.error("Error updating payment status:", error.message);
     throw error;
   }
 };

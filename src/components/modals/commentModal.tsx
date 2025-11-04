@@ -48,10 +48,13 @@ const CommentModal = ({ isOpen, initialComment, onClose, onSave }: Props) => {
       >
         <h2 className="text-lg font-semibold mb-4">Add comment</h2>
         <textarea
-          className="w-full text-sm h-32 border border-gray-300 p-2 rounded mb-4"
+          className="w-full text-sm h-32 border border-gray-300 p-2 rounded mb-1"
           value={comment}
           onChange={handleChange}
         />
+        <p className="text-xs text-gray-500 text-end mb-1">
+          {comment.trim().length}/10 characters minimum
+        </p>
         <div className="flex justify-end gap-2">
           <button
             className="px-3 py-1 bg-gray-300 rounded cursor-pointer text-sm"
@@ -60,16 +63,20 @@ const CommentModal = ({ isOpen, initialComment, onClose, onSave }: Props) => {
             Cancel
           </button>
           <button
-            className="px-3 py-1 bg-[#1D2B48] text-white rounded cursor-pointer text-sm"
+            className={`px-3 py-1 rounded cursor-pointer text-sm ${comment.trim().length < 10
+                ? "bg-gray-400 text-white cursor-not-allowed"
+                : "bg-[#1D2B48] text-white"
+              }`}
             onClick={() => {
               onSave(comment);
               onClose();
             }}
-            disabled={comment.trim().length === 0}
+            disabled={comment.trim().length < 10}
           >
             Submit
           </button>
         </div>
+
       </div>
     </div>
   );

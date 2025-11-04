@@ -19,7 +19,7 @@ export default function TableComponent({
   columnKeys,
   actions,
   onDelete,
-  style = "w-[100%]",
+  style = "w-[90%]",
   onUpdateClick,
 }: TableProps) {
   const showActions = !!actions;

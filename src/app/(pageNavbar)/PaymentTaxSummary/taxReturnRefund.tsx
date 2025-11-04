@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useYear } from "@/app/api/context/yearContext";
 import { useAuth } from "@/components/AuthContext";
 import { getPaymentTaxSummary } from "@/app/api/SupabaseAPI/customer/paymentTaxSummaryAPI";
-import { upsertComment } from "@/app/api/SupabaseAPI/customer/documentUploadAPI";
+import { updatePaymentStatus } from "@/app/api/SupabaseAPI/customer/documentUploadAPI";
 import TableComponent from "../../../../utils/table/page";
 import toast from "react-hot-toast";
 import CommentModal from "@/components/modals/commentModal";
@@ -21,7 +21,7 @@ export default function TaxReturnRefund() {
   const [selectedRecord, setSelectedRecord] = useState<Record<string, any> | null>(null);
   const { isTemporary } = useHandleMagicLinkAuth();
 
-  const columns = [
+  const baseColumns = [
     "TAX Type",
     "State",
     "Before Planning",
@@ -32,7 +32,7 @@ export default function TaxReturnRefund() {
     "Payment Status",
   ];
 
-  const columnKeys = [
+  const baseColumnKeys = [
     "taxType",
     "state",
     "beforePlanning",
@@ -42,6 +42,9 @@ export default function TaxReturnRefund() {
     "belongsTo",
     "payment_status",
   ];
+
+  const columns = isTemporary ? [...baseColumns, "Comment"] : baseColumns;
+  const columnKeys = isTemporary ? [...baseColumnKeys, "comment"] : baseColumnKeys;
 
   const fetchData = async () => {
     if (!user || !filingYearId) {
@@ -80,14 +83,31 @@ export default function TaxReturnRefund() {
         return;
       }
 
-      await upsertComment(summaryId, comment);
-      toast.success("Comment saved successfully!");
+      await updatePaymentStatus(summaryId, "Rejected", comment);
+      toast.success("Comment saved and status set to Rejected!");
 
       setIsModalOpen(false);
       await fetchData();
     } catch (err) {
       console.error("Error saving comment:", err);
       toast.error("Failed to save comment");
+    }
+  };
+
+  const handleAcceptClick = async (record: Record<string, any>) => {
+    try {
+      if (!record.summaryId) {
+        toast.error("Missing summaryId for record");
+        return;
+      }
+
+      await updatePaymentStatus(record.summaryId, "Accepted");
+      toast.success("Payment status updated to Accepted!");
+
+      await fetchData();
+    } catch (err) {
+      console.error("Error updating to Accepted:", err);
+      toast.error("Failed to update status");
     }
   };
 
@@ -102,17 +122,21 @@ export default function TaxReturnRefund() {
           <>
             <div className="bg-blue-00 flex flex-col items-start">
               <TableComponent
-                data={summaries}
+                data={summaries.map((item) => ({
+                  ...item,
+                  comment: item.comment || "—",
+                }))}
                 columns={columns}
-                style="w-[90%]"
+                style="w-[100%]"
                 columnKeys={columnKeys}
                 onUpdateClick={() => console.log("No update action yet")}
               />
-              {!isTemporary &&
+
+              {!isTemporary && (
                 <div className="flex mt-3 gap-3">
                   <button
                     className="bg-green-600 hover:bg-green-500 py-1 px-3 text-white rounded-md cursor-pointer text-sm font-medium"
-                    onClick={() => toast.success("Accepted successfully!")}
+                    onClick={() => handleAcceptClick(summaries[0])}
                   >
                     Accept
                   </button>
@@ -123,7 +147,7 @@ export default function TaxReturnRefund() {
                     Reject
                   </button>
                 </div>
-              }
+              )}
             </div>
           </>
         ) : (
