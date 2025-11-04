@@ -104,6 +104,7 @@ export default function TaxReturnRefund() {
               <TableComponent
                 data={summaries}
                 columns={columns}
+                style="w-[90%]"
                 columnKeys={columnKeys}
                 onUpdateClick={() => console.log("No update action yet")}
               />
