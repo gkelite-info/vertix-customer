@@ -20,6 +20,8 @@ export default function TaxReturnRefund() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState<Record<string, any> | null>(null);
   const { isTemporary } = useHandleMagicLinkAuth();
+  console.log("isTemporary value:", isTemporary);
+
 
   const baseColumns = [
     "TAX Type",
