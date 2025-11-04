@@ -19,7 +19,8 @@ export default function TaxReturnRefund() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState<Record<string, any> | null>(null);
-  const { isTemporary } = useHandleMagicLinkAuth();
+  // const { isTemporary } = useHandleMagicLinkAuth();
+  const  isTemporary  = localStorage.getItem("temporary_access_flag");
   console.log("isTemporary value:", isTemporary);
 
 
