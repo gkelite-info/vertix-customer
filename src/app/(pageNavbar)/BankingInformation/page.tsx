@@ -13,6 +13,7 @@ import {
 import { Trash } from "phosphor-react";
 import { MdEdit } from "react-icons/md";
 import DeleteModal from "@/components/modals/deleteModal";
+import YearSelect from "../../../../utils/yearSelect";
 
 export default function BankingInformationPage() {
   const { user } = useAuth();
@@ -171,7 +172,8 @@ export default function BankingInformationPage() {
   ];
 
   return (
-    <div className="bg-white min-h-[100vh] overflow-y-auto mb-7">
+    <div className="bg-white h-[100vh] overflow-y-auto pb-7">
+      <YearSelect />
       <div className="flex flex-col justify-start items-center lg:pt-3 gap-2 text-center">
         <h2 className="font-semibold text-[#1D2B48] text-xl mb-3">
           Your Bank Details
@@ -259,17 +261,16 @@ export default function BankingInformationPage() {
           <button
             onClick={handleSubmit}
             disabled={loading || (bankRecords.length > 0 && !isEditing)}
-            className={`font-medium w-[60%] text-sm px-5 py-2 rounded-lg flex gap-2 justify-center items-center ${
-              loading || (bankRecords.length > 0 && !isEditing)
+            className={`font-medium w-[60%] text-sm px-5 py-2 rounded-lg flex gap-2 justify-center items-center ${loading || (bankRecords.length > 0 && !isEditing)
                 ? "bg-gray-400 text-white cursor-not-allowed"
                 : "bg-[#1D2B48] text-white cursor-pointer"
-            }`}
+              }`}
           >
             {isEditing
               ? "UPDATE DETAILS"
               : loading
-              ? "Saving..."
-              : "ADD BANK DETAILS"}
+                ? "Saving..."
+                : "ADD BANK DETAILS"}
           </button>
 
           <button
@@ -285,11 +286,10 @@ export default function BankingInformationPage() {
               setIsEditing(false);
             }}
             disabled={bankRecords.length > 0 && !isEditing}
-            className={`font-medium w-[60%] text-sm px-5 py-2 rounded-lg flex gap-2 justify-center items-center ${
-              bankRecords.length > 0 && !isEditing
+            className={`font-medium w-[60%] text-sm px-5 py-2 rounded-lg flex gap-2 justify-center items-center ${bankRecords.length > 0 && !isEditing
                 ? "bg-gray-300 text-white cursor-not-allowed"
                 : "bg-gray-400 text-white hover:bg-gray-500 cursor-pointer"
-            }`}
+              }`}
           >
             {isEditing ? "CANCEL" : "RESET"}
           </button>
