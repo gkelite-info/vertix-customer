@@ -19,8 +19,7 @@ export default function TaxReturnRefund() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState<Record<string, any> | null>(null);
-  // const { isTemporary } = useHandleMagicLinkAuth();
-  const  isTemporary  = localStorage.getItem("temporary_access_flag");
+  const { isTemporary, isSessionReady } = useHandleMagicLinkAuth();
   console.log("isTemporary value:", isTemporary);
 
 
@@ -113,6 +112,14 @@ export default function TaxReturnRefund() {
       toast.error("Failed to update status");
     }
   };
+
+  if (!isSessionReady) {
+    return (
+      <div className="flex items-center justify-center">
+        Loading session..
+      </div>
+    )
+  }
 
   return (
     <>
