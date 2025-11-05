@@ -89,9 +89,12 @@ import { supabase } from "./supabase/client"
 import { supabaseTemp } from "./supabase/tempClient"
 
 export function useHandleMagicLinkAuth() {
+  const tempFlag =
+    typeof window !== "undefined" &&
+    localStorage.getItem("temporary_access_flag") === "true"
   const [isSessionReady, setIsSessionReady] = useState(false)
   const [session, setSession] = useState<any>(null)
-  const [isTemporary, setIsTemporary] = useState(false)
+  const [isTemporary, setIsTemporary] = useState(tempFlag)
 
   useEffect(() => {
     const restoreSession = async () => {
