@@ -1,15 +1,16 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 
-import { useEffect, useState } from "react";
-import { useYear } from "@/app/api/context/yearContext";
-import { useAuth } from "@/components/AuthContext";
-import { getPaymentTaxSummary } from "@/app/api/SupabaseAPI/customer/paymentTaxSummaryAPI";
-import { updatePaymentStatus } from "@/app/api/SupabaseAPI/customer/documentUploadAPI";
-import TableComponent from "../../../../utils/table/page";
-import toast from "react-hot-toast";
-import CommentModal from "@/components/modals/commentModal";
-import { useHandleMagicLinkAuth } from "../../../../utils/useHandleMagicLinkAuth";
-import DateForDue from "../BankingInformation/dateForDue";
+import { useEffect, useMemo, useState } from "react"
+import { useYear } from "@/app/api/context/yearContext"
+import { useAuth } from "@/components/AuthContext"
+import { getPaymentTaxSummary } from "@/app/api/SupabaseAPI/customer/paymentTaxSummaryAPI"
+import { updatePaymentStatus } from "@/app/api/SupabaseAPI/customer/documentUploadAPI"
+import TableComponent from "../../../../utils/table/page"
+import toast from "react-hot-toast"
+import CommentModal from "@/components/modals/commentModal"
+import { useHandleMagicLinkAuth } from "../../../../utils/useHandleMagicLinkAuth"
+import DateForDue from "../BankingInformation/dateForDue"
 
 export default function TaxReturnRefund() {
   const { filingYearId } = useYear()
@@ -119,10 +120,19 @@ export default function TaxReturnRefund() {
     "payment_status",
   ]
 
-  const columns = isTemporary ? [...baseColumns, "Comment"] : baseColumns
-  const columnKeys = isTemporary
-    ? [...baseColumnKeys, "comment"]
-    : baseColumnKeys
+  // const columns = isTemporary ? [...baseColumns, "Comment"] : baseColumns
+  // const columnKeys = isTemporary
+  //   ? [...baseColumnKeys, "comment"]
+  //   : baseColumnKeys
+
+  const columns = useMemo(
+    () => (isTemporary ? [...baseColumns, "Comment"] : baseColumns),
+    [isTemporary, baseColumns]
+  )
+  const columnKeys = useMemo(
+    () => (isTemporary ? [...baseColumnKeys, "comment"] : baseColumnKeys),
+    [isTemporary, baseColumnKeys]
+  )
 
   console.log("📋 Rendering with columns:", columns)
   console.log("📋 Column keys:", columnKeys)
@@ -146,6 +156,7 @@ export default function TaxReturnRefund() {
           <>
             <div className="bg-blue-00 flex flex-col items-start">
               <TableComponent
+                key={`${isTemporary ? "temp" : "normal"}-tax-return-refund`}
                 data={summaries.map((item) => ({
                   ...item,
                   comment: item.comment || "—",
@@ -173,9 +184,7 @@ export default function TaxReturnRefund() {
                 </div>
               )}
             </div>
-            {!isTemporary && (
-              <DateForDue />
-            )}
+            {!isTemporary && <DateForDue />}
           </>
         ) : (
           !fetchingData && (
