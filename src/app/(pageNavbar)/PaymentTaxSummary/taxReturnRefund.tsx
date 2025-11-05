@@ -98,27 +98,33 @@ export default function TaxReturnRefund() {
     }
   }
 
-  const baseColumns = [
-    "TAX Type",
-    "State",
-    "Before Planning",
-    "After Planning",
-    "Type of Filing",
-    "Original/Updated",
-    "Belongs To",
-    "Payment Status",
-  ]
+  const baseColumns = useMemo(
+    () => [
+      "TAX Type",
+      "State",
+      "Before Planning",
+      "After Planning",
+      "Type of Filing",
+      "Original/Updated",
+      "Belongs To",
+      "Payment Status",
+    ],
+    []
+  )
 
-  const baseColumnKeys = [
-    "taxType",
-    "state",
-    "beforePlanning",
-    "afterPlanning",
-    "typeOfFiling",
-    "originalUpdated",
-    "belongsTo",
-    "payment_status",
-  ]
+  const baseColumnKeys = useMemo(
+    () => [
+      "taxType",
+      "state",
+      "beforePlanning",
+      "afterPlanning",
+      "typeOfFiling",
+      "originalUpdated",
+      "belongsTo",
+      "payment_status",
+    ],
+    []
+  )
 
   // const columns = isTemporary ? [...baseColumns, "Comment"] : baseColumns
   // const columnKeys = isTemporary
