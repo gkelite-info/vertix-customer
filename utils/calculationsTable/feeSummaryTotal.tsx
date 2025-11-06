@@ -4,6 +4,11 @@ import { useState, useEffect } from "react";
 
 type FeeSummaryTotalsProps = {
   total: number;
+  discount?: number;
+  referral?: number;
+  feePaid?: number;
+  code?: string;
+  width?: string;
   onTotalsChange: (values: {
     totalFee: number;
     discount: number;
@@ -13,13 +18,23 @@ type FeeSummaryTotalsProps = {
     code: string;
     netFee: number;
   }) => void;
+  readOnly?: boolean;
 };
 
-export default function FeeSummaryTotals({ total, onTotalsChange }: FeeSummaryTotalsProps) {
-  const [discount, setDiscount] = useState(0);
-  const [referral, setReferral] = useState(0);
-  const [feePaid, setFeePaid] = useState(0);
-  const [code, setCode] = useState("");
+export default function FeeSummaryTotals({
+  total,
+  discount: initialDiscount = 0,
+  referral: initialReferral = 0,
+  feePaid: initialFeePaid = 0,
+  code: initialCode = "",
+  width,
+  onTotalsChange,
+  readOnly = false,
+}: FeeSummaryTotalsProps) {
+  const [discount, setDiscount] = useState(initialDiscount);
+  const [referral, setReferral] = useState(initialReferral);
+  const [feePaid, setFeePaid] = useState(initialFeePaid);
+  const [code, setCode] = useState(initialCode);
 
   const [netFee, setNetFee] = useState(total);
   const [dueAmount, setDueAmount] = useState(total);
@@ -43,7 +58,6 @@ export default function FeeSummaryTotals({ total, onTotalsChange }: FeeSummaryTo
         netFee,
       });
     }, 100);
-
     return () => clearTimeout(timeout);
   }, [discount, referral, feePaid, dueAmount, code, netFee]);
 
@@ -58,8 +72,8 @@ export default function FeeSummaryTotals({ total, onTotalsChange }: FeeSummaryTo
   ];
 
   return (
-    <div className="flex justify-start mt-4 bg-green-00 w-[100%]">
-      <table className="border-collapse border border-gray-400 w-[50%]">
+    <div className={`flex justify-start mt-4 bg-pink-00 ${width}`}>
+      <table className="border-collapse border border-gray-400 w-full">
         <tbody>
           {rows.map((row, idx) => (
             <tr key={idx} className="text-[#1D2B48]">
@@ -67,7 +81,7 @@ export default function FeeSummaryTotals({ total, onTotalsChange }: FeeSummaryTo
                 {row.label}
               </td>
               <td className="border border-gray-300 text-xs px-4 py-2 text-center">
-                {row.isInput === false ? (
+                {readOnly || row.isInput === false ? (
                   <span>{row.value}</span>
                 ) : (
                   <input
@@ -75,7 +89,9 @@ export default function FeeSummaryTotals({ total, onTotalsChange }: FeeSummaryTo
                     value={row.value}
                     onChange={(e) =>
                       (row.onChange as (val: any) => void)(
-                        row.inputType === "text" ? e.target.value : Number(e.target.value)
+                        row.inputType === "text"
+                          ? e.target.value
+                          : Number(e.target.value)
                       )
                     }
                     className="border border-gray-400 rounded px-2 py-1 text-sm text-center w-24 focus:outline-none"

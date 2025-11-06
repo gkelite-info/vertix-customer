@@ -79,24 +79,15 @@ export default function YearSelect({ style = "" }: YearSelectProps) {
       </div>
 
       <div className="bg-indigo-00 h-[100%] w-[27%] flex items-center justify-end">
-        <div className="bg-red-00 lg:h-[70%] lg:px-3 lg:gap-2 flex flex-col items-center justify-center rounded-lg shadow-lg">
-          <h3
-            style={{
-              color: "#1D2B48",
-              fontWeight: "600",
-              fontSize: 12,
-            }}
-          >
-            Tax Management Dashboard
-          </h3>
-          <div className="flex justify-between lg:gap-0 bg-green-00 lg:w-[100%]">
+        <div className="bg-red-00 lg:h-[70%] w-[80%] lg:px-3 flex flex-col items-center justify-center rounded-lg shadow-lg">
+          <div className="flex justify-between lg:gap-5 bg-green-00 lg:w-[100%]">
             <div className="flex flex-col bg-indigo-00 w-[50%]">
               <h5 className="text-[#585E68] font-semibold text-xs">Name</h5>
               <p className="text-xs text-[#585E68] font-medium">{name}</p>
             </div>
-            <div className="flex flex-col bg-gray-00 text-end w-[50%]">
-              <h5 className="text-[#585E68] font-semibold text-xs">
-                Client Id
+            <div className="flex flex-col bg-gray-00 text-end w-[50%] box-border overflow-x-auto">
+              <h5 className="text-[#585E68] font-semibold text-xs w-[100%] bg-red-00">
+                Client ID
               </h5>
               <p className="text-xs text-[#585E68] font-medium">{customerId}</p>
             </div>
