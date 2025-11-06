@@ -1,18 +1,3 @@
-<<<<<<< Updated upstream
-/* eslint-disable @typescript-eslint/no-explicit-any */
-"use client"
-
-import { useEffect, useMemo, useState } from "react"
-import { useYear } from "@/app/api/context/yearContext"
-import { useAuth } from "@/components/AuthContext"
-import { getPaymentTaxSummary } from "@/app/api/SupabaseAPI/customer/paymentTaxSummaryAPI"
-import { updatePaymentStatus } from "@/app/api/SupabaseAPI/customer/documentUploadAPI"
-import TableComponent from "../../../../utils/table/page"
-import toast from "react-hot-toast"
-import CommentModal from "@/components/modals/commentModal"
-import { useHandleMagicLinkAuth } from "../../../../utils/useHandleMagicLinkAuth"
-import DateForDue from "../BankingInformation/dateForDue"
-=======
 "use client";
 
 import { useEffect, useState } from "react";
@@ -27,7 +12,6 @@ import { useHandleMagicLinkAuth } from "../../../../utils/useHandleMagicLinkAuth
 import DateForDue from "../BankingInformation/dateForDue";
 import { motion, AnimatePresence } from "framer-motion";
 import PaymentGateway from "./paymentGateway";
->>>>>>> Stashed changes
 
 export default function TaxReturnRefund() {
   const { filingYearId } = useYear();
@@ -105,52 +89,6 @@ export default function TaxReturnRefund() {
     setShowPaymentGateway(true);
   };
 
-<<<<<<< Updated upstream
-  const baseColumns = useMemo(
-    () => [
-      "TAX Type",
-      "State",
-      "Before Planning",
-      "After Planning",
-      "Type of Filing",
-      "Original/Updated",
-      "Belongs To",
-      "Payment Status",
-    ],
-    []
-  )
-
-  const baseColumnKeys = useMemo(
-    () => [
-      "taxType",
-      "state",
-      "beforePlanning",
-      "afterPlanning",
-      "typeOfFiling",
-      "originalUpdated",
-      "belongsTo",
-      "payment_status",
-    ],
-    []
-  )
-
-  // const columns = isTemporary ? [...baseColumns, "Comment"] : baseColumns
-  // const columnKeys = isTemporary
-  //   ? [...baseColumnKeys, "comment"]
-  //   : baseColumnKeys
-
-  const columns = useMemo(
-    () => (isTemporary ? [...baseColumns, "Comment"] : baseColumns),
-    [isTemporary, baseColumns]
-  )
-  const columnKeys = useMemo(
-    () => (isTemporary ? [...baseColumnKeys, "comment"] : baseColumnKeys),
-    [isTemporary, baseColumnKeys]
-  )
-
-  console.log("📋 Rendering with columns:", columns)
-  console.log("📋 Column keys:", columnKeys)
-=======
   const baseColumns = [
     "TAX Type",
     "State",
@@ -175,7 +113,6 @@ export default function TaxReturnRefund() {
 
   const columns = isTemporary ? [...baseColumns, "Comment"] : baseColumns;
   const columnKeys = isTemporary ? [...baseColumnKeys, "comment"] : baseColumnKeys;
->>>>>>> Stashed changes
 
   if (!isSessionReady) {
     return (
@@ -188,46 +125,6 @@ export default function TaxReturnRefund() {
   return (
     <>
       <div className="bg-red-00 p-4 flex flex-col items-center w-full">
-<<<<<<< Updated upstream
-        <h2 className="font-semibold text-[#1D2B48] text-xl">
-          Tax Return Refund/Due Summary
-        </h2>
-
-        {!fetchingData && summaries.length > 0 ? (
-          <>
-            <div className="bg-blue-00 flex flex-col items-start">
-              <TableComponent
-                key={`${isTemporary ? "temp" : "normal"}-tax-return-refund`}
-                data={summaries.map((item) => ({
-                  ...item,
-                  comment: item.comment || "—",
-                }))}
-                columns={columns}
-                style="w-[100%]"
-                columnKeys={columnKeys}
-                onUpdateClick={() => console.log("No update action yet")}
-              />
-
-              {!isTemporary && (
-                <div className="flex mt-3 gap-3">
-                  <button
-                    className="bg-green-600 hover:bg-green-500 py-1 px-3 text-white rounded-md cursor-pointer text-sm font-medium"
-                    onClick={() => handleAcceptClick(summaries[0])}
-                  >
-                    Accept
-                  </button>
-                  <button
-                    className="bg-red-600 hover:bg-red-500 py-1 px-3 text-white rounded-md cursor-pointer text-sm font-medium"
-                    onClick={() => handleRejectClick(summaries[0])}
-                  >
-                    Reject
-                  </button>
-                </div>
-              )}
-            </div>
-            {!isTemporary && <DateForDue />}
-          </>
-=======
         <div className="w-full flex justify-end mb-2">
           <AnimatePresence>
             {showPayNow && !showPaymentGateway && (
@@ -256,7 +153,6 @@ export default function TaxReturnRefund() {
           <div className="w-full mt-4">
             <PaymentGateway />
           </div>
->>>>>>> Stashed changes
         ) : (
           !fetchingData &&
           (summaries.length > 0 ? (
