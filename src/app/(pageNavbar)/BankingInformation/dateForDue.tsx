@@ -25,13 +25,11 @@ export default function DateForDue({ style = "", readonly = false }: Prop) {
   const [state5, setState5] = useState("");
   const [state6, setState6] = useState("");
 
-  // Load US states
   useEffect(() => {
     const states = State.getStatesOfCountry("US");
     setUsStates(states);
   }, []);
 
-  // Fetch existing data
   useEffect(() => {
     if (!filingYearId) return;
 
@@ -56,7 +54,6 @@ export default function DateForDue({ style = "", readonly = false }: Prop) {
     fetchData();
   }, [filingYearId]);
 
-  // Submit handler
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (readonly) return;
@@ -87,13 +84,12 @@ export default function DateForDue({ style = "", readonly = false }: Prop) {
     }
   };
 
-  // Store selected states for filtering
   const selectedStates = [state1, state2, state3, state4, state5, state6];
 
   return (
     <form
       onSubmit={handleSubmit}
-      className={`bg-white w-full mt-7 pb-7 rounded-md p-5 ${style}`}
+      className={`bg-white w-full mt-7 pb-7 rounded-md ${style}`}
     >
       <h3 className="text-[#1D2B48] font-semibold mb-3">
         Date for Due{" "}
@@ -101,7 +97,6 @@ export default function DateForDue({ style = "", readonly = false }: Prop) {
       </h3>
 
       <div className="flex flex-wrap gap-4">
-        {/* Date */}
         <div className="flex flex-col">
           <label className="text-xs text-[#1D2B48] mb-1">
             Date <span className="text-red-500 font-medium">*</span>
@@ -113,7 +108,6 @@ export default function DateForDue({ style = "", readonly = false }: Prop) {
           />
         </div>
 
-        {/* Federal */}
         <div className="flex flex-col">
           <label className="text-xs text-[#1D2B48] mb-1">
             Federal <span className="text-red-500 font-medium">*</span>
@@ -132,7 +126,6 @@ export default function DateForDue({ style = "", readonly = false }: Prop) {
           </select>
         </div>
 
-        {/* States */}
         {[
           { label: "State 1", value: state1, setter: setState1 },
           { label: "State 2", value: state2, setter: setState2 },
@@ -150,7 +143,7 @@ export default function DateForDue({ style = "", readonly = false }: Prop) {
               <label className="text-xs text-[#1D2B48] mb-1">
                 {label}
                 {label === "State 1" && (
-                  <span className="text-red-500 font-medium">*</span>
+                  <span className="text-red-500 font-medium ml-1">*</span>
                 )}
               </label>
               <select
@@ -175,7 +168,7 @@ export default function DateForDue({ style = "", readonly = false }: Prop) {
         <div className="mt-6">
           <button
             type="submit"
-            className="bg-[#1D2B48] cursor-pointer text-white font-medium py-2 px-6 rounded-md text-sm transition-all"
+            className="bg-[#1D2B48] shadow-md cursor-pointer text-white font-medium py-2 px-6 rounded-md text-sm transition-all"
           >
             Submit
           </button>
