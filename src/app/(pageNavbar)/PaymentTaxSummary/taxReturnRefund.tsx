@@ -11,9 +11,20 @@ import CommentModal from "@/components/modals/commentModal";
 import { useHandleMagicLinkAuth } from "../../../../utils/useHandleMagicLinkAuth";
 import DateForDue from "../BankingInformation/dateForDue";
 import { motion, AnimatePresence } from "framer-motion";
-import PaymentGateway from "./paymentGateway";
+import PaymentGateway from "../../(screens)/paymentGateway/page";
+import { useRouter } from "next/navigation";
 
 export default function TaxReturnRefund() {
+  const router = useRouter();
+
+  const handleGateway = () => {
+    if (!selectedRecord?.summaryId) {
+      toast.error("No valid summary selected!");
+      return;
+    }
+    router.push(`/paymentGateway?summaryId=${selectedRecord.summaryId}`);
+  };
+
   const { filingYearId } = useYear();
   const { user } = useAuth();
 
@@ -25,15 +36,6 @@ export default function TaxReturnRefund() {
 
   const [showPayNow, setShowPayNow] = useState(false);
   const [showPaymentGateway, setShowPaymentGateway] = useState(false);
-
-  useEffect(() => {
-    if (showPayNow) {
-      const timer = setTimeout(() => {
-        setShowPayNow(false);
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [showPayNow]);
 
   useEffect(() => {
     if (!isSessionReady) return;
@@ -81,13 +83,15 @@ export default function TaxReturnRefund() {
     }
   };
 
-  const handleAcceptClick = () => {
-    setShowPayNow(true);
+  const handleAcceptClick = (record: Record<string, any>) => {
+    if (summaries.length > 0) {
+      setSelectedRecord(summaries[0]);
+      setShowPayNow(true);
+    } else {
+      toast.error("No summary found to proceed with payment.");
+    }
   };
 
-  const handlePayNowClick = () => {
-    setShowPaymentGateway(true);
-  };
 
   const baseColumns = [
     "TAX Type",
@@ -135,7 +139,7 @@ export default function TaxReturnRefund() {
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.3 }}
                 className="bg-blue-600 cursor-pointer hover:bg-blue-500 text-white py-1.5 px-4 rounded-md text-sm font-medium shadow-md transition-all duration-200"
-                onClick={handlePayNowClick}
+                onClick={handleGateway}
               >
                 Pay Now
               </motion.button>
@@ -157,7 +161,7 @@ export default function TaxReturnRefund() {
           !fetchingData &&
           (summaries.length > 0 ? (
             <>
-              <div className="bg-blue-00 flex flex-col items-start">
+              <div className="bg-red-00 flex flex-col items-start">
                 <TableComponent
                   data={summaries.map((item) => ({
                     ...item,
@@ -173,7 +177,7 @@ export default function TaxReturnRefund() {
                   <div className="flex mt-3 gap-3">
                     <button
                       className="bg-green-600 hover:bg-green-500 py-1 px-3 text-white rounded-md cursor-pointer text-sm font-medium focus:outline-none shadow-md"
-                      onClick={handleAcceptClick}
+                      onClick={() => handleAcceptClick(summaries[0])}
                     >
                       Accept
                     </button>

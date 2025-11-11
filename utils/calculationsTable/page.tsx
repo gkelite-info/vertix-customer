@@ -10,6 +10,9 @@ type FeeSummaryTableProps = {
     description: string;
     baseFee: number;
     noStatus?: boolean;
+    status?: number | null;
+    total?: number;
+    fee?: number;
   }[];
   onTotalsChange: (values: {
     totalFee: number;
@@ -31,9 +34,23 @@ type FeeSummaryTableProps = {
       fee?: number;
     }[]
   ) => void;
+  initialTotals?: {
+    totalFee: number;
+    discount: number;
+    referral: number;
+    feePaid: number;
+    dueAmount: number;
+    code: string;
+    netFee: number;
+  };
 };
 
-export default function FeeSummaryTable({ data, onTotalsChange, onDataChange }: FeeSummaryTableProps) {
+export default function FeeSummaryTable({
+  data,
+  onTotalsChange,
+  onDataChange,
+  initialTotals,
+}: FeeSummaryTableProps) {
   const [total, setTotal] = useState(0);
 
   return (
@@ -55,7 +72,17 @@ export default function FeeSummaryTable({ data, onTotalsChange, onDataChange }: 
         />
       </table>
 
-      <FeeSummaryTotals total={total} onTotalsChange={onTotalsChange} />
+      <FeeSummaryTotals
+        total={initialTotals?.totalFee ?? 0}
+        discount={initialTotals?.discount ?? 0}
+        referral={initialTotals?.referral ?? 0}
+        feePaid={initialTotals?.feePaid ?? 0}
+        code={initialTotals?.code ?? ""}
+        netFee={initialTotals?.netFee ?? 0}
+        dueAmount={initialTotals?.dueAmount ?? 0}
+        onTotalsChange={onTotalsChange}
+      />
+
     </div>
   );
 }

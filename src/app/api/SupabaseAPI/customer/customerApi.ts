@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { supabase } from "../../../../../utils/supabase/client"
 
 export const getCustomer = async () => {

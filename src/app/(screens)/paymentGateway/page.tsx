@@ -5,9 +5,13 @@ import { useYear } from "@/app/api/context/yearContext";
 import { getFeeSummary } from "@/app/api/SupabaseAPI/customer/feeSummaryAPI";
 import FeeSummaryTotals from "../../../../utils/calculationsTable/feeSummaryTotal";
 import UPIModal from "@/components/modals/upiModal";
+import { useSearchParams } from "next/navigation";
 
 export default function PaymentGateway() {
-  const { filingYearId } = useYear();
+  const searchParams = useSearchParams();
+  const summaryId = searchParams.get("SummaryId");
+
+  const { filingYearId } = useYear(); 
 
   const [totals, setTotals] = useState({
     totalFee: 0,
@@ -73,26 +77,26 @@ export default function PaymentGateway() {
 
   if (!filingYearId) {
     return (
-      <p className="p-4 text-[#1D2B48]">
+      <p className="p-4 text-[#1D2B48] bg-white">
         Select a filing year to view payment details.
       </p>
     );
   }
 
   if (loading) {
-    return <p className="p-4 text-[#1D2B48]">Loading payment details...</p>;
+    return <p className="p-4 text-[#1D2B48] bg-white">Loading payment details...</p>;
   }
 
   if (noRecord) {
     return (
-      <div className="p-4 text-[#1D2B48]">
+      <div className="p-4 text-[#1D2B48] bg-white">
         <p>No payment records found for this year.</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-blue-00 px-4 min-h-screen">
+    <div className="bg-white px-4 py-4">
       <h2 className="text-xl font-semibold mb-4 text-[#1D2B48]">
         Payment Gateway
       </h2>

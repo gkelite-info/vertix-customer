@@ -8,6 +8,8 @@ type FeeSummaryTotalsProps = {
   referral?: number;
   feePaid?: number;
   code?: string;
+  netFee?: number;
+  dueAmount?: number;
   width?: string;
   onTotalsChange: (values: {
     totalFee: number;
@@ -27,6 +29,8 @@ export default function FeeSummaryTotals({
   referral: initialReferral = 0,
   feePaid: initialFeePaid = 0,
   code: initialCode = "",
+  netFee: initialNetFee = 0,
+  dueAmount: initialDueAmount = 0,
   width,
   onTotalsChange,
   readOnly = false,
@@ -35,16 +39,45 @@ export default function FeeSummaryTotals({
   const [referral, setReferral] = useState(initialReferral);
   const [feePaid, setFeePaid] = useState(initialFeePaid);
   const [code, setCode] = useState(initialCode);
+  const [netFee, setNetFee] = useState(initialNetFee);
+  const [dueAmount, setDueAmount] = useState(initialDueAmount);
 
-  const [netFee, setNetFee] = useState(total);
-  const [dueAmount, setDueAmount] = useState(total);
+  const [loadedFromDB, setLoadedFromDB] = useState(false);
 
   useEffect(() => {
+    if (
+      initialDiscount !== undefined ||
+      initialReferral !== undefined ||
+      initialFeePaid !== undefined ||
+      initialNetFee !== undefined ||
+      initialDueAmount !== undefined
+    ) {
+      setDiscount(initialDiscount ?? 0);
+      setReferral(initialReferral ?? 0);
+      setFeePaid(initialFeePaid ?? 0);
+      setCode(initialCode ?? "");
+      setNetFee(initialNetFee ?? 0);
+      setDueAmount(initialDueAmount ?? 0);
+      setLoadedFromDB(true);
+    }
+  }, [
+    initialDiscount,
+    initialReferral,
+    initialFeePaid,
+    initialCode,
+    initialNetFee,
+    initialDueAmount,
+  ]);
+
+  useEffect(() => {
+    if (!loadedFromDB) return;
+
     const calcNet = total - discount - referral;
     const calcDue = calcNet - feePaid;
+
     setNetFee(calcNet);
     setDueAmount(calcDue);
-  }, [total, discount, referral, feePaid]);
+  }, [discount, referral, feePaid, total, loadedFromDB]);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -58,8 +91,9 @@ export default function FeeSummaryTotals({
         netFee,
       });
     }, 100);
+
     return () => clearTimeout(timeout);
-  }, [discount, referral, feePaid, dueAmount, code, netFee]);
+  }, [discount, referral, feePaid, dueAmount, code, netFee, total]);
 
   const rows = [
     { label: "Total", value: total.toFixed(2), isInput: false },
@@ -72,7 +106,7 @@ export default function FeeSummaryTotals({
   ];
 
   return (
-    <div className={`flex justify-start mt-4 bg-pink-00 ${width}`}>
+    <div className={`flex justify-start mt-4 ${width || ""}`}>
       <table className="border-collapse border border-gray-400 w-full">
         <tbody>
           {rows.map((row, idx) => (
