@@ -1,13 +1,16 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { useYear } from "@/app/api/context/yearContext";
 import { getFeeSummary } from "@/app/api/SupabaseAPI/customer/feeSummaryAPI";
 import FeeSummaryTotals from "../../../../utils/calculationsTable/feeSummaryTotal";
 import UPIModal from "@/components/modals/upiModal";
+import { useSearchParams } from "next/navigation";
 
-export default function PaymentGateway() {
-  const { filingYearId } = useYear();
+function PaymentGatewayContent() {
+  const searchParams = useSearchParams();
+  const summaryId = searchParams.get("SummaryId");
+  const { filingYearId } = useYear(); 
 
   const [totals, setTotals] = useState({
     totalFee: 0,
@@ -37,7 +40,6 @@ export default function PaymentGateway() {
     const fetchFeeSummary = async () => {
       try {
         if (!filingYearId) return;
-
         const data = await getFeeSummary(filingYearId);
 
         if (data && data.length > 0) {
@@ -73,26 +75,26 @@ export default function PaymentGateway() {
 
   if (!filingYearId) {
     return (
-      <p className="p-4 text-[#1D2B48]">
+      <p className="p-4 text-[#1D2B48] bg-white">
         Select a filing year to view payment details.
       </p>
     );
   }
 
   if (loading) {
-    return <p className="p-4 text-[#1D2B48]">Loading payment details...</p>;
+    return <p className="p-4 text-[#1D2B48] bg-white">Loading payment details...</p>;
   }
 
   if (noRecord) {
     return (
-      <div className="p-4 text-[#1D2B48]">
+      <div className="p-4 text-[#1D2B48] bg-white">
         <p>No payment records found for this year.</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-blue-00 px-4 min-h-screen">
+    <div className="bg-white px-4 py-4">
       <h2 className="text-xl font-semibold mb-4 text-[#1D2B48]">
         Payment Gateway
       </h2>
@@ -126,30 +128,19 @@ export default function PaymentGateway() {
           )}
           {showPayment && (
             <div className="flex items-center justify-between bg-red-00 h-[30%] w-[70%] mt-5">
-              <div className="flex flex-col items-center justify-between bg-pink-00 w-[30%] h-[70%]"
+              <div
+                className="flex flex-col items-center justify-between bg-pink-00 w-[30%] h-[70%]"
                 onClick={() => setIsUpiModalOpen(true)}
               >
-                <img
-                  src="upi.png"
-                  alt="upi.png"
-                  className="w-10 h-10 cursor-pointer"
-                />
+                <img src="upi.png" alt="upi" className="w-10 h-10 cursor-pointer" />
                 <span className="text-[#1D2B48] font-bold text-xs mt-1">UPI</span>
               </div>
               <div className="flex flex-col items-center justify-between bg-green-00 pt-1 w-[30%] h-[70%]">
-                <img
-                  src="paypal.png"
-                  alt="paypal.png"
-                  className="w-8 h-8 cursor-pointer"
-                />
+                <img src="paypal.png" alt="paypal" className="w-8 h-8 cursor-pointer" />
                 <span className="text-[#1D2B48] font-bold text-xs mt-1">PayPal</span>
               </div>
               <div className="flex flex-col items-center justify-between bg-yellow-00 w-[30%] h-[70%]">
-                <img
-                  src="stripe.png"
-                  alt="stripe.png"
-                  className="w-10 h-10 cursor-pointer"
-                />
+                <img src="stripe.png" alt="stripe" className="w-10 h-10 cursor-pointer" />
                 <span className="text-[#1D2B48] font-bold text-xs mt-1">Stripe</span>
               </div>
             </div>
@@ -162,5 +153,13 @@ export default function PaymentGateway() {
         onCancel={handleUPICancel}
       />
     </div>
+  );
+}
+
+export default function PaymentGateway() {
+  return (
+    <Suspense fallback={<p className="p-4 text-[#1D2B48]">Loading Payment Gateway...</p>}>
+      <PaymentGatewayContent />
+    </Suspense>
   );
 }

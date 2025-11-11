@@ -1,13 +1,14 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useYear } from "@/app/api/context/yearContext";
 import FeeSummaryTable from "../../../../utils/calculationsTable/page";
-import { useState } from "react";
-import { upsertFeeSummary } from "@/app/api/SupabaseAPI/customer/feeSummaryAPI";
+import { getCustomer } from "@/app/api/SupabaseAPI/customer/customerApi";
+import { getFeeSummary, upsertFeeSummary } from "@/app/api/SupabaseAPI/customer/feeSummaryAPI";
 import { upsertFeeSummaryItem } from "@/app/api/SupabaseAPI/customer/feeSummaryItemsAPI";
-import toast from "react-hot-toast";
-import { supabase } from "../../../../utils/supabase/client";
 import { insertFeePayment } from "@/app/api/SupabaseAPI/customer/feePaymentsAPI";
+import { supabase } from "../../../../utils/supabase/client";
+import toast from "react-hot-toast";
 
 type FeeRow = {
     id: number;
@@ -53,10 +54,9 @@ export default function FeeSummary({ onTotalsChange }: { onTotalsChange: (values
         noStatus: true,
     };
 
-    const sampleData = [...baseData, dynamicYearRow];
-
-    const [tableData, setTableData] = useState<FeeRow[]>(sampleData);
+    const [tableData, setTableData] = useState<FeeRow[]>([...baseData, dynamicYearRow]);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isLoadingSummary, setIsLoadingSummary] = useState(true);
 
     const [totals, setTotals] = useState({
         totalFee: 0,
@@ -68,26 +68,79 @@ export default function FeeSummary({ onTotalsChange }: { onTotalsChange: (values
         netFee: 0,
     });
 
-    const handleTotalsChange = (values: typeof totals) => {
-        setTotals(values);
-    };
+    const handleTotalsChange = (values: typeof totals) => setTotals(values);
+
+    useEffect(() => {
+        const fetchExistingSummary = async () => {
+            try {
+                setIsLoadingSummary(true);
+
+                const customer = await getCustomer();
+                if (!customer?.customerId) {
+                    console.warn("No customer found");
+                    return;
+                }
+
+                const { data: filingYearRecord } = await supabase
+                    .from("filing_year")
+                    .select("filingYearId")
+                    .eq("customerId", customer.customerId)
+                    .eq("year", Number(dynamicYear))
+                    .single();
+
+                if (!filingYearRecord) {
+                    console.warn("No filing year found, skipping fee summary fetch.");
+                    return;
+                }
+
+                const filingYearId = filingYearRecord.filingYearId;
+
+                const summaries = await getFeeSummary(filingYearId);
+
+                if (summaries && summaries.length > 0) {
+                    const latest = summaries[0];
+
+                    const safeTotal = latest.totalAmount ?? latest.totalFee ?? 0;
+
+                    setTotals({
+                        totalFee: safeTotal,
+                        discount: latest.discount ?? 0,
+                        referral: latest.referral ?? 0,
+                        feePaid: latest.feePaid ?? 0,
+                        dueAmount: latest.dueAmount ?? 0,
+                        code: latest.code ?? "",
+                        netFee: latest.netFee ?? 0,
+                    });
+
+                } else {
+                    console.warn("⚠️ No summary record found, setting zeros.");
+                    setTotals({
+                        totalFee: 0,
+                        discount: 0,
+                        referral: 0,
+                        feePaid: 0,
+                        dueAmount: 0,
+                        code: "",
+                        netFee: 0,
+                    });
+                }
+            } catch (err: any) {
+                toast.error("Error fetching fee summary:", err.message);
+            } finally {
+                setIsLoadingSummary(false);
+            }
+        };
+
+        fetchExistingSummary();
+    }, [selectedYear]);
+
 
     const handleSubmit = async () => {
         try {
             setIsSubmitting(true);
 
-            const {
-                data: { user },
-                error: authError,
-            } = await supabase.auth.getUser();
-            if (authError || !user) throw new Error("Not authenticated");
-
-            const { data: customer, error: customerError } = await supabase
-                .from("vertixcustomers")
-                .select("customerId")
-                .eq("auth_id", user.id)
-                .single();
-            if (customerError || !customer) throw new Error("Customer not found");
+            const customer = await getCustomer();
+            if (!customer?.customerId) throw new Error("Customer not found");
 
             const { data: filingYearRecord, error: filingError } = await supabase
                 .from("filing_year")
@@ -96,9 +149,8 @@ export default function FeeSummary({ onTotalsChange }: { onTotalsChange: (values
                 .eq("year", Number(dynamicYear))
                 .single();
 
-            if (filingError || !filingYearRecord) {
+            if (filingError || !filingYearRecord)
                 throw new Error(`Filing year record not found for ${dynamicYear}`);
-            }
 
             const filingYearId = filingYearRecord.filingYearId;
 
@@ -108,17 +160,6 @@ export default function FeeSummary({ onTotalsChange }: { onTotalsChange: (values
                 totalFee && totalFee > 0
                     ? totalFee
                     : tableData.reduce((sum, item) => sum + (item.total || item.baseFee || 0), 0);
-
-            console.log("🟩 Final data being saved:", {
-                filingYearId,
-                computedTotal,
-                discount,
-                referral,
-                netFee,
-                feePaid,
-                dueAmount,
-                code,
-            });
 
             const feeSummary = await upsertFeeSummary({
                 filingYearId,
@@ -164,24 +205,23 @@ export default function FeeSummary({ onTotalsChange }: { onTotalsChange: (values
         }
     };
 
-
-
-    if (isLoading) {
+    if (isLoading || isLoadingSummary) {
         return (
             <div className="flex justify-center items-center h-40">
-                <p className="text-[#1D2B48] font-medium">Loading...</p>
+                <p className="text-[#1D2B48] font-medium">Loading Fee Summary...</p>
             </div>
         );
     }
 
     return (
-        <div className="flex flex-col items-center pb-7 bg-pink-00 overflow-y-auto">
-            <h3 className="text-[#1D2B48] font-semibold text-lg">Fee Summary</h3>
+        <div className="flex flex-col items-center pb-7 bg-white overflow-y-auto">
+            <h3 className="text-[#1D2B48] font-semibold text-lg mb-2">Fee Summary</h3>
 
             <FeeSummaryTable
                 data={tableData}
                 onTotalsChange={handleTotalsChange}
                 onDataChange={setTableData}
+                initialTotals={totals}
             />
 
             <button
