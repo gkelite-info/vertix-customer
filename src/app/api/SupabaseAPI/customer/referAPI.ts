@@ -48,3 +48,30 @@ export const upsertReferral = async (referral: ReferralInput) => {
     throw error;
   }
 };
+
+export const getReferrals = async () => {
+  try {
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    if (authError || !user) throw new Error("Not authenticated");
+
+    const { data: customer, error: customerError } = await supabase
+      .from("vertixcustomers")
+      .select("customerId")
+      .eq("auth_id", user.id)
+      .single();
+    if (customerError || !customer) throw new Error("Customer not found");
+
+    const { data, error } = await supabase
+      .from("referrals")
+      .select("*")
+      .eq("customerId", customer.customerId)
+      .order("createdAt", { ascending: false });
+
+    if (error) throw error;
+
+    return data;
+  } catch (error: any) {
+    console.error("Error fetching referrals:", error.message);
+    throw error;
+  }
+};
