@@ -158,7 +158,7 @@ function PaymentGatewayContent() {
 
 export default function PaymentGateway() {
   return (
-    <Suspense fallback={<p className="p-4 text-[#1D2B48]">Loading Payment Gateway...</p>}>
+    <Suspense fallback={<p className="p-4 text-[#1D2B48] bg-white">Loading Payment Gateway...</p>}>
       <PaymentGatewayContent />
     </Suspense>
   );
