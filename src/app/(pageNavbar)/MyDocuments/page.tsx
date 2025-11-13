@@ -9,10 +9,13 @@ import TableComponent from "../../../../utils/table/page";
 import DeleteModal from "@/components/modals/deleteModal";
 import { useYear } from "@/app/api/context/yearContext";
 import { DownloadSimple, Trash } from "phosphor-react";
+import { useRouter } from "next/navigation";
 
 export default function MyDocuments() {
-  const { selectedYear, filingYearId } = useYear();
+  const { filingYearId } = useYear();
   const { user } = useAuth();
+  const router = useRouter();
+
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [selectedDocType, setSelectedDocType] = useState<string>("");
   const [description, setDescription] = useState<string>("");
@@ -45,8 +48,9 @@ export default function MyDocuments() {
       setFetchingDocs(false);
       return;
     }
+
     const fetchDocs = async () => {
-      setFetchingDocs(true)
+      setFetchingDocs(true);
       try {
         const res = await getUserDocuments(filingYearId);
         setDocuments(res || []);
@@ -56,22 +60,22 @@ export default function MyDocuments() {
         setDocuments([]);
         setUploadedDocTypes([]);
       } finally {
-        setFetchingDocs(false)
+        setFetchingDocs(false);
       }
-    }
+    };
 
     fetchDocs();
   }, [user, filingYearId]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setSelectedFile(e.target.files[0])
+      setSelectedFile(e.target.files[0]);
     }
-  }
+  };
 
   const handleDocTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedDocType(e.target.value)
-  }
+    setSelectedDocType(e.target.value);
+  };
 
   const handleUpload = async () => {
     if (!selectedFile || !selectedDocType) {
@@ -86,6 +90,14 @@ export default function MyDocuments() {
 
     if (uploadedDocTypes.includes(selectedDocType)) {
       toast.error("This document type is already uploaded");
+      return;
+    }
+
+    if (
+      selectedDocType === "Form 8879" &&
+      documents.some((doc) => doc.file_path?.toLowerCase().includes("8879"))
+    ) {
+      toast.error("A Form 8879 file is already uploaded");
       return;
     }
 
@@ -106,6 +118,13 @@ export default function MyDocuments() {
         setSelectedDocType("");
         setDescription("");
         if (fileInputRef.current) fileInputRef.current.value = "";
+
+        if (
+          uploadedDoc.doc_type === "Form 8879" &&
+          selectedFile.name.toLowerCase().includes("8879")
+        ) {
+          router.push("/taxfiling?tab=feedback");
+        }
       }
     } catch (error: any) {
       toast.error("Upload failed: " + error.message);
@@ -115,38 +134,37 @@ export default function MyDocuments() {
     }
   };
 
+
   const handleDeleteClick = (filePath: string) => {
-    setFileToDelete(filePath)
-    setIsDeleteModalOpen(true)
-  }
+    setFileToDelete(filePath);
+    setIsDeleteModalOpen(true);
+  };
 
   const handleConfirmDelete = async () => {
-    if (!fileToDelete) return
+    if (!fileToDelete) return;
     try {
-      await deleteUserDocument(fileToDelete)
-      toast.success("Document deleted successfully")
-      setDocuments((prev) =>
-        prev.filter((doc) => doc.file_path !== fileToDelete)
-      )
+      await deleteUserDocument(fileToDelete);
+      toast.success("Document deleted successfully");
+      setDocuments((prev) => prev.filter((doc) => doc.file_path !== fileToDelete));
       setUploadedDocTypes((prev) =>
         prev.filter(
           (type) =>
             type !==
             documents.find((doc) => doc.file_path === fileToDelete)?.doc_type
         )
-      )
+      );
     } catch (err: any) {
-      toast.error("Failed to delete: " + err.message)
+      toast.error("Failed to delete: " + err.message);
     } finally {
-      setIsDeleteModalOpen(false)
-      setFileToDelete(null)
+      setIsDeleteModalOpen(false);
+      setFileToDelete(null);
     }
-  }
+  };
 
   const handleCancelDelete = () => {
-    setIsDeleteModalOpen(false)
-    setFileToDelete(null)
-  }
+    setIsDeleteModalOpen(false);
+    setFileToDelete(null);
+  };
 
   const docTypeOptions = [
     "FBAR Organizer",
@@ -157,6 +175,7 @@ export default function MyDocuments() {
     "1099-G",
     "1099-B",
     "1099-MISC",
+    "Form 8879",
     "Mortgage Interest",
     "1098-T",
     "Foreign Tax Certificates",
@@ -165,19 +184,17 @@ export default function MyDocuments() {
     "ID",
     "Notice",
     "Others",
-  ]
+  ];
+
   const availableOptions = docTypeOptions.filter(
     (type) => !uploadedDocTypes.includes(type)
-  )
-
-  const columns = ["Document Type", "File", "Description"]
-  const columnKeys = ["doc_type", "public_url", "description"]
+  );
 
   return (
     <div className="bg-white lg:h-[100vh] overflow-y-auto overflow-x-hidden pb-7">
       <YearSelect />
-      <div className="bg-yellow-00 flex flex-col justify-start items-center lg:pt-5 text-center overflow-y-auto">
-        <div className="bg-blue-00 flex items-center justify-between gap-3 h-12 w-[44%]">
+      <div className="flex flex-col justify-start items-center lg:pt-5 text-center overflow-y-auto">
+        <div className="flex items-center justify-between gap-3 h-12 w-[44%]">
           <div className="w-[45%]">
             <h5 className="text-[#1D2B48] font-medium">DOCUMENT TYPE :</h5>
           </div>
@@ -194,7 +211,8 @@ export default function MyDocuments() {
             ))}
           </select>
         </div>
-        <div className="bg-red-00 flex items-center justify-between gap-3 h-12 w-[44%] mt-3">
+
+        <div className="flex items-center justify-between gap-3 h-12 w-[44%] mt-3">
           <div className="w-[45%]">
             <h5 className="text-[#1D2B48] font-medium text-end pr-1.5">
               DOCUMENT :
@@ -208,16 +226,17 @@ export default function MyDocuments() {
             className="border border-gray-300 pt-1.5 text-[#616161] font-medium px-2 text-sm lg:w-[65%] lg:h-[85%] flex items-center rounded cursor-pointer shadow-sm file:mr-3 file:py-1 file:px-3 file:rounded file:border-0 file:text-sm file:font-medium file:bg-blue-600 file:text-white hover:file:bg-blue-700 file:cursor-pointer"
           />
         </div>
-        <div className="flex bg-pink-00 w-[44%] justify-center gap-3 mt-3">
+
+        <div className="flex w-[44%] justify-center gap-3 mt-3">
           <div className="w-[45%] text-end pr-1.5">
             <h5 className="mt-3 font-medium text-[#1D2B48]">DESCRIPTIONS :</h5>
           </div>
-          <div className="bg-green-00 w-[65%] flex flex-col items-center">
+          <div className="w-[65%] flex flex-col items-center">
             <textarea
               placeholder="Comment about document"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-[100%] text-sm p-2 text-[#616161] border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-[100%] text-sm p-2 text-[#616161] border border-gray-300 rounded shadow-sm focus:outline-none"
               rows={4}
             />
             <button
@@ -232,7 +251,7 @@ export default function MyDocuments() {
       </div>
 
       {documents.length > 0 && (
-        <div className="mt-5 bg-green-00 overflow-x-auto w-full pb-3">
+        <div className="mt-5 overflow-x-auto w-full pb-3">
           <TableComponent
             data={documents}
             style="w-[90%]"
@@ -258,11 +277,12 @@ export default function MyDocuments() {
           />
         </div>
       )}
+
       <DeleteModal
         isOpen={isDeleteModalOpen}
         onConfirm={handleConfirmDelete}
         onCancel={handleCancelDelete}
       />
     </div>
-  )
+  );
 }
