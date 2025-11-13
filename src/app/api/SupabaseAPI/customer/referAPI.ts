@@ -7,11 +7,15 @@ interface ReferralInput {
   phone: string;
   alternatePhone?: string | null;
   timezone: string;
+  filingYearId: number;
 }
 
 export const upsertReferral = async (referral: ReferralInput) => {
   try {
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser();
     if (authError || !user) throw new Error("Not authenticated");
 
     const { data: customer, error: customerError } = await supabase
@@ -19,6 +23,7 @@ export const upsertReferral = async (referral: ReferralInput) => {
       .select("customerId")
       .eq("auth_id", user.id)
       .single();
+
     if (customerError || !customer) throw new Error("Customer not found");
 
     const customerId = customer.customerId;
@@ -26,6 +31,7 @@ export const upsertReferral = async (referral: ReferralInput) => {
 
     const referralData = {
       customerId,
+      filingYearId: referral.filingYearId,
       firstName: referral.firstName,
       lastName: referral.lastName,
       email: referral.email,
@@ -49,9 +55,12 @@ export const upsertReferral = async (referral: ReferralInput) => {
   }
 };
 
-export const getReferrals = async () => {
+export const getReferrals = async (filingYearId: number) => {
   try {
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser();
     if (authError || !user) throw new Error("Not authenticated");
 
     const { data: customer, error: customerError } = await supabase
@@ -59,12 +68,14 @@ export const getReferrals = async () => {
       .select("customerId")
       .eq("auth_id", user.id)
       .single();
+
     if (customerError || !customer) throw new Error("Customer not found");
 
     const { data, error } = await supabase
       .from("referrals")
       .select("*")
       .eq("customerId", customer.customerId)
+      .eq("filingYearId", filingYearId)
       .order("createdAt", { ascending: false });
 
     if (error) throw error;
