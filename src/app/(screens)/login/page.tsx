@@ -21,18 +21,34 @@ export default function Page() {
     const value = e.target.value;
     setEmail(value);
 
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    setEmailError(emailRegex.test(value) ? "" : "Please enter a valid email address");
+    const emailRegex =
+      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    setEmailError(
+      emailRegex.test(value) ? "" : "Please enter a valid email address"
+    );
   };
 
   const handlePasswordChange = (e: { target: { value: string } }) => {
     const value = e.target.value;
     setPassword(value);
 
-    setPasswordError(value.length >= 6 ? "" : "Password must be at least 6 characters long");
+    setPasswordError(
+      value.length >= 6
+        ? ""
+        : "Password must be at least 6 characters long"
+    );
   };
 
   const { login } = useAuth();
+
+  const allowedEmails = [
+    "saralabose19@gmail.com",
+    "vamshivadla@gkeliteinfo.com",
+    "vamshichary117@gmail.com",
+    "gkeliteinfo@gmail.com",
+    "g.ramu6300@gmail.com",
+    "narrashiva195@gmail.com",
+  ];
 
   const handleLogin = async () => {
     try {
@@ -56,17 +72,20 @@ export default function Page() {
 
       if (hasError) return;
 
+      // LOGIN
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
       if (error) {
-        if (error.status === 400 && error.message.includes("Invalid login credentials")) {
+        if (
+          error.status === 400 &&
+          error.message.includes("Invalid login credentials")
+        ) {
           toast.error("Invalid email or password.");
         } else {
-          console.error("Supabase Auth Error:", error.message);
-          toast.error(error.message || "Login failed via Supabase.");
+          toast.error(error.message || "Login failed.");
         }
         return;
       }
@@ -74,33 +93,43 @@ export default function Page() {
       if (data.session && data.user) {
         login(data.session.access_token);
 
-        const { data: customerData, error: profileError } = await supabase
-          .from("vertixcustomers")
-          .select("is_consent_filled")
-          .eq("email", email)
-          .single();
+        // GET CONSENT STATUS
+        const { data: customerData, error: profileError } =
+          await supabase
+            .from("vertixcustomers")
+            .select("is_consent_filled")
+            .eq("email", email)
+            .single();
 
         if (profileError) {
-          console.error("Profile Fetch Error:", profileError.message);
-          toast.error("Login successful, but profile data failed to load.");
+          toast.error("Login successful, but profile failed to load.");
           router.push("/");
           return;
         }
 
         const isConsentFilled = customerData?.is_consent_filled;
+        toast.success("Login successful");
 
+        // STEP 1 → Consent check mandatory
         if (!isConsentFilled) {
           router.push("/consent");
-        } else {
-          router.push("/construction");
-          setTimeout(() => toast.success("Login successful"), 1000);
+          return;
         }
+
+        // STEP 2 → Special emails go to taxfiling
+        if (allowedEmails.includes(email)) {
+          router.push("/taxfiling?tab=filingyear");
+          return;
+        }
+
+        // STEP 3 → Others go to construction
+        router.push("/construction");
       } else {
-        toast.error("Login failed. No session or user data.");
+        toast.error("Login failed. No user or session found.");
       }
     } catch (err: any) {
       console.error("Login error:", err);
-      toast.error("An unexpected error occurred. Please try again.");
+      toast.error("Unexpected error. Try again.");
     }
   };
 
