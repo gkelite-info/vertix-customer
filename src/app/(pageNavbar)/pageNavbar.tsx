@@ -35,22 +35,36 @@ function Page({ activeTab, setActiveTab }: PageNavbarProps) {
   ];
 
   return (
-    <div className="flex flex-col lg:p-0 lg:w-[24%] h-[100vh] items-center justify-start sticky z-50">
-      <div className="bg-blue-400 lg:w-[100%] lg:h-[100%] lg:p-3 flex flex-col lg:gap-2 items-start justify-between">
+    <div className="flex flex-col lg:pb-5 lg:w-[24%] h-[100vh] items-center justify-start sticky z-50">
+      <div className="bg-[#1D2B48] lg:w-[100%] lg:h-[100%] lg:p-3 flex flex-col lg:gap-2 items-start justify-between rounded-md">
+
         {tabs.map(({ id, label, icon: Icon, width }) => {
           const isActive = activeTab === id;
+
           return (
             <div
               key={id}
               onClick={() => setActiveTab(id)}
-              className={`cursor-pointer flex items-center justify-start lg:gap-3 rounded-lg px-3 lg:h-[40%] ${width} 
-                ${isActive ? "bg-[#1D2B48] text-white" : "bg-[#E8E8E8] text-[#1D2B48]"}`}
+              className={`
+                cursor-pointer flex items-center justify-start lg:gap-3 rounded-md px-3 py-2
+                ${width}
+                transition-colors duration-200
+                ${isActive 
+                  ? "bg-[#ebebeb] text-black"
+                  : "bg-[#1D2B48] text-white hover:bg-[#2e3c5d]"
+                }
+              `}
             >
-              <Icon size={23} weight="fill" className={isActive ? "text-white" : "text-[#1D2B48]"} />
+              <Icon 
+                size={23} 
+                weight="fill" 
+                className={isActive ? "text-black" : "text-white"} 
+              />
               <span className="text-sm">{label}</span>
             </div>
           );
         })}
+
       </div>
     </div>
   );
