@@ -129,7 +129,7 @@ export default function Page() {
               <span className="text-indigo-600 text-xl">✉️</span>
               <div>
                 <h4 className="font-semibold text-[#1D2B48]">Email:</h4>
-                <p className="text-[#1D2B48]">Vertixtax@gmail.com</p>
+                <p className="text-[#1D2B48]">vertixtax@gmail.com</p>
               </div>
             </div>
 
