@@ -44,11 +44,12 @@ export default function Page() {
           <div className="">
             <iframe
               className="w-full h-[400px] rounded-lg shadow-md"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7612.986577123368!2d78.44641198813004!3d17.436088483837402!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb90b7b28eced7%3A0x53434bd3914f4737!2sGreenland%20Towers!5e0!3m2!1sen!2sin!4v1755668697654!5m2!1sen!2sin"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3093.7976065252356!2d-75.52672902483106!3d39.15658477166975!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c764aa7c225e51%3A0x923f74929919960!2s8%20The%20Green%2C%20Dover%2C%20DE%2019901%2C%20USA!5e0!3m2!1sen!2sin!4v1763123821465!5m2!1sen!2sin"
               allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-            ></iframe>
+            >
+            </iframe>
           </div>
 
           <div className="h-[400px]">
