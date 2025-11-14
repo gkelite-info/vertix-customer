@@ -63,7 +63,7 @@ export default function Page() {
                   onChange={handleChange}
                   placeholder="Your Name"
                   required
-                  className="w-full p-3 border border-black text-[#1D2B48] border-1 rounded-md focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                  className="w-full p-3 border border-black text-[#1D2B48] border-1 rounded-md focus:outline-none"
                 />
                 <input
                   type="email"
@@ -72,7 +72,7 @@ export default function Page() {
                   onChange={handleChange}
                   placeholder="Your Email"
                   required
-                  className="w-full p-3 border border-1 border-black text-[#1D2B48] rounded-md focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                  className="w-full p-3 border border-1 border-black text-[#1D2B48] rounded-md focus:outline-none"
                 />
               </div>
               <input
@@ -82,7 +82,7 @@ export default function Page() {
                 onChange={handleChange}
                 placeholder="Subject"
                 required
-                className="w-full p-3 border border-1 border-black text-[#1D2B48] rounded-md focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                className="w-full p-3 border border-1 border-black text-[#1D2B48] rounded-md focus:outline-none"
               />
               <textarea
                 name="message"
@@ -90,12 +90,12 @@ export default function Page() {
                 onChange={handleChange}
                 placeholder="Message"
                 required
-                className="w-full p-3 border rounded-md border-1 border-black text-[#1D2B48] h-32 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                className="w-full p-3 border rounded-md border-1 border-black text-[#1D2B48] h-32 focus:outline-none"
               ></textarea>
               <div className="text-center">
                 <button
                   type="submit"
-                  className="bg-[#1D2A46] cursor-pointer hover:bg-indigo-700 text-white font-semibold px-6 py-3 rounded-md shadow-md transition"
+                  className="bg-[#1D2A46] cursor-pointer text-white font-semibold px-6 py-3 rounded-md shadow-md transition"
                 >
                   Send Message
                 </button>
