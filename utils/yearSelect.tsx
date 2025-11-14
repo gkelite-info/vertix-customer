@@ -67,7 +67,7 @@ export default function YearSelect({ style = "" }: YearSelectProps) {
         <select
           value={selectedYear}
           onChange={handleYearChange}
-          className="text-black border rounded-sm p-1"
+          className="text-black border rounded-sm p-1 focus:outline-none"
         >
           <option value="">Select Year</option>
           {years.map((year) => (
