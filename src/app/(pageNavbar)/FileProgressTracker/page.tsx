@@ -80,12 +80,10 @@ export default function FileProgressTracker() {
                   <div className="bg-[#DDDEE3] p-3 rounded-full flex items-center justify-center">
                     <Icon size={27} weight="fill" className="text-[#1D2A46]" />
                   </div>
-
                   <h3 className="font-semibold text-xs text-[#1D2B48] tracking-wider">
                     {step.label}
                   </h3>
                 </div>
-
                 <div className="h-[75%] w-[50%] flex items-center justify-end gap-2">
                   {statusText === "Completed" && (
                     <CheckCircle
@@ -94,7 +92,6 @@ export default function FileProgressTracker() {
                       className="text-green-600"
                     />
                   )}
-
                   {statusText === "In Progress" && (
                     <Gear
                       size={18}
@@ -102,7 +99,6 @@ export default function FileProgressTracker() {
                       className="text-blue-600 animate-spin"
                     />
                   )}
-
                   <p className={`text-sm font-medium ${color}`}>
                     {statusText}
                   </p>
