@@ -44,8 +44,12 @@ export default function Feedback() {
 
       <div className="flex flex-col justify-start items-center lg:h-[80%] lg:pt-5 text-center">
         <h2 className="font-semibold text-[#1D2B48] text-xl mt-3 mb-5">Feedback</h2>
+        <div className="bg-red-00 w-[45%] mb-5 text-center">
+          <p className="text-red-500 text-xs">Note: You're on the feedback page — feel free to share your thoughts.</p>
 
+        </div>
         <div className="flex items-center justify-between h-[10%] w-[44%]">
+
           <div className="w-[30%] flex items-center justify-center pl-1">
             <h5 className="text-[#1D2B48] font-medium">Service :</h5>
           </div>
