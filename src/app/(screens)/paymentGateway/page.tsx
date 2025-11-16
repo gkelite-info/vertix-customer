@@ -10,7 +10,7 @@ import { useSearchParams } from "next/navigation";
 function PaymentGatewayContent() {
   const searchParams = useSearchParams();
   const summaryId = searchParams.get("SummaryId");
-  const { filingYearId } = useYear(); 
+  const { filingYearId } = useYear();
 
   const [totals, setTotals] = useState({
     totalFee: 0,
@@ -82,7 +82,9 @@ function PaymentGatewayContent() {
   }
 
   if (loading) {
-    return <p className="p-4 text-[#1D2B48] bg-white">Loading payment details...</p>;
+    return (
+      <p className="p-4 text-[#1D2B48] bg-white">Loading payment details...</p>
+    );
   }
 
   if (noRecord) {
@@ -124,7 +126,9 @@ function PaymentGatewayContent() {
 
         <div className="bg-green-00 w-[50%] flex flex-col items-center justify-center">
           {showPayment && (
-            <p className="text-[#1D2B48] text-sm font-semibold">Choose your payment</p>
+            <p className="text-[#1D2B48] text-sm font-semibold">
+              Choose your payment
+            </p>
           )}
           {showPayment && (
             <div className="flex items-center justify-between bg-red-00 h-[30%] w-[70%] mt-5">
@@ -132,16 +136,48 @@ function PaymentGatewayContent() {
                 className="flex flex-col items-center justify-between bg-pink-00 w-[30%] h-[70%]"
                 onClick={() => setIsUpiModalOpen(true)}
               >
-                <img src="upi.png" alt="upi" className="w-10 h-10 cursor-pointer" />
-                <span className="text-[#1D2B48] font-bold text-xs mt-1">UPI</span>
+                <img
+                  src="upi.png"
+                  alt="upi"
+                  className="w-10 h-10 cursor-pointer"
+                />
+                <span className="text-[#1D2B48] font-bold text-xs mt-1">
+                  UPI
+                </span>
               </div>
               <div className="flex flex-col items-center justify-between bg-green-00 pt-1 w-[30%] h-[70%]">
-                <img src="paypal.png" alt="paypal" className="w-8 h-8 cursor-pointer" />
-                <span className="text-[#1D2B48] font-bold text-xs mt-1">PayPal</span>
+                <img
+                  src="paypal.png"
+                  alt="paypal"
+                  className="w-8 h-8 cursor-pointer"
+                />
+                <span className="text-[#1D2B48] font-bold text-xs mt-1">
+                  PayPal
+                </span>
               </div>
-              <div className="flex flex-col items-center justify-between bg-yellow-00 w-[30%] h-[70%]">
-                <img src="stripe.png" alt="stripe" className="w-10 h-10 cursor-pointer" />
-                <span className="text-[#1D2B48] font-bold text-xs mt-1">Stripe</span>
+              <div
+                className="flex flex-col items-center justify-between bg-yellow-00 w-[30%] h-[70%] cursor-pointer"
+                onClick={async () => {
+                  const res = await fetch("/api/stripe", {
+                    method: "POST",
+                    body: JSON.stringify({
+                      priceId: "price_1SKkE6GcecwN5NVe1CGPUSeg",
+                    }),
+                  });
+
+                  const data = await res.json();
+
+                  if (data.url) {
+                    window.location.href = data.url;
+                  } else {
+                    alert("Failed to create Stripe session");
+                  }
+                }}
+              >
+                <img src="stripe.png" alt="stripe" className="w-10 h-10" />
+                <span className="text-[#1D2B48] font-bold text-xs mt-1">
+                  Stripe
+                </span>
               </div>
             </div>
           )}
@@ -158,7 +194,13 @@ function PaymentGatewayContent() {
 
 export default function PaymentGateway() {
   return (
-    <Suspense fallback={<p className="p-4 text-[#1D2B48] bg-white">Loading Payment Gateway...</p>}>
+    <Suspense
+      fallback={
+        <p className="p-4 text-[#1D2B48] bg-white">
+          Loading Payment Gateway...
+        </p>
+      }
+    >
       <PaymentGatewayContent />
     </Suspense>
   );

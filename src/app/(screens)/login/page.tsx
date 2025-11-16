@@ -16,13 +16,13 @@ export default function Page() {
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [remember, setRemember] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleEmailChange = (e: { target: { value: string } }) => {
     const value = e.target.value;
     setEmail(value);
 
-    const emailRegex =
-      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     setEmailError(
       emailRegex.test(value) ? "" : "Please enter a valid email address"
     );
@@ -33,9 +33,7 @@ export default function Page() {
     setPassword(value);
 
     setPasswordError(
-      value.length >= 6
-        ? ""
-        : "Password must be at least 6 characters long"
+      value.length >= 6 ? "" : "Password must be at least 6 characters long"
     );
   };
 
@@ -53,6 +51,7 @@ export default function Page() {
   const handleLogin = async () => {
     try {
       let hasError = false;
+      setLoading(true);
 
       if (!email) {
         toast.error("Email is required.");
@@ -72,7 +71,6 @@ export default function Page() {
 
       if (hasError) return;
 
-      // LOGIN
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
@@ -93,13 +91,11 @@ export default function Page() {
       if (data.session && data.user) {
         login(data.session.access_token);
 
-        // GET CONSENT STATUS
-        const { data: customerData, error: profileError } =
-          await supabase
-            .from("vertixcustomers")
-            .select("is_consent_filled")
-            .eq("email", email)
-            .single();
+        const { data: customerData, error: profileError } = await supabase
+          .from("vertixcustomers")
+          .select("is_consent_filled")
+          .eq("email", email)
+          .single();
 
         if (profileError) {
           toast.error("Login successful, but profile failed to load.");
@@ -110,20 +106,18 @@ export default function Page() {
         const isConsentFilled = customerData?.is_consent_filled;
         toast.success("Login successful");
 
-        // STEP 1 → Consent check mandatory
         if (!isConsentFilled) {
           router.push("/consent");
           return;
         }
 
-        // STEP 2 → Special emails go to taxfiling
         if (allowedEmails.includes(email)) {
           router.push("/taxfiling?tab=filingyear");
           return;
         }
 
-        // STEP 3 → Others go to construction
         router.push("/construction");
+        setLoading(false);
       } else {
         toast.error("Login failed. No user or session found.");
       }
@@ -224,8 +218,9 @@ export default function Page() {
                 <button
                   className="cursor-pointer text-white h-12 w-full text-base sm:text-lg font-medium rounded-full bg-[#1D2B48] hover:bg-opacity-90 transition duration-150"
                   onClick={handleLogin}
+                  disabled={loading}
                 >
-                  Login
+                  {loading ? "Loading..." : "Login"}
                 </button>
                 <div className="flex gap-1 items-center justify-center h-8 w-full">
                   <h5 className="font-medium text-[#979797] text-sm">
