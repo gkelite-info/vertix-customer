@@ -41,15 +41,6 @@ export default function Page() {
 
   const { login } = useAuth();
 
-  const allowedEmails = [
-    "saralabose19@gmail.com",
-    "vamshivadla@gkeliteinfo.com",
-    "vamshichary117@gmail.com",
-    "gkeliteinfo@gmail.com",
-    "g.ramu6300@gmail.com",
-    "narrashiva195@gmail.com",
-  ];
-
   const handleLogin = async () => {
     try {
       let hasError = false;
@@ -72,7 +63,6 @@ export default function Page() {
 
       if (hasError) return;
 
-      // LOGIN
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
@@ -93,7 +83,6 @@ export default function Page() {
       if (data.session && data.user) {
         login(data.session.access_token);
 
-        // GET CONSENT STATUS
         const { data: customerData, error: profileError } =
           await supabase
             .from("vertixcustomers")
@@ -110,20 +99,11 @@ export default function Page() {
         const isConsentFilled = customerData?.is_consent_filled;
         toast.success("Login successful");
 
-        // STEP 1 → Consent check mandatory
         if (!isConsentFilled) {
           router.push("/consent");
           return;
         }
-
-        // STEP 2 → Special emails go to taxfiling
-        if (allowedEmails.includes(email)) {
-          router.push("/taxfiling?tab=filingyear");
-          return;
-        }
-
-        // STEP 3 → Others go to construction
-        router.push("/construction");
+        router.push("/taxfiling?tab=filingyear");
       } else {
         toast.error("Login failed. No user or session found.");
       }
