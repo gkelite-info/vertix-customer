@@ -16,6 +16,7 @@ export default function Page() {
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [remember, setRemember] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleEmailChange = (e: { target: { value: string } }) => {
     const value = e.target.value;
@@ -42,6 +43,9 @@ export default function Page() {
   const { login } = useAuth();
 
   const handleLogin = async () => {
+
+    setLoading(true);
+
     try {
       let hasError = false;
 
@@ -104,6 +108,7 @@ export default function Page() {
           return;
         }
         router.push("/taxfiling?tab=filingyear");
+        setLoading(false);
       } else {
         toast.error("Login failed. No user or session found.");
       }
@@ -204,8 +209,9 @@ export default function Page() {
                 <button
                   className="cursor-pointer text-white h-12 w-full text-base sm:text-lg font-medium rounded-full bg-[#1D2B48] hover:bg-opacity-90 transition duration-150"
                   onClick={handleLogin}
+                  disabled={loading}
                 >
-                  Login
+                  {loading ? "Loading..." : "Login"}
                 </button>
                 <div className="flex gap-1 items-center justify-center h-8 w-full">
                   <h5 className="font-medium text-[#979797] text-sm">
