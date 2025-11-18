@@ -9,15 +9,20 @@ import { IoMdArrowDropright } from "react-icons/io"
 import LogoutModal from "../modals/logoutModal"
 import { useHandleMagicLinkAuth } from "../../../utils/useHandleMagicLinkAuth"
 import toast from "react-hot-toast"
+import { HiOutlineMenu, HiX } from "react-icons/hi"
+import MobileNav from "./mobileNav"
 
 function Header() {
   const router = useRouter()
   const { isTemporary } = useHandleMagicLinkAuth()
-
   const pathname = usePathname()
   const [, setIsLoggedIn] = useState(false)
   const { isAuthenticated, logout } = useAuth()
+
   const [showLogoutModal, setShowLogoutModal] = useState(false)
+  const [mobileNavOpen, setMobileNavOpen] = useState(false)
+
+  const toggleMobileNav = () => setMobileNavOpen((prev) => !prev)
 
   const linkClass = (href: string) =>
     `relative text-black font-medium
@@ -49,17 +54,32 @@ function Header() {
 
   const cancelLogout = () => setShowLogoutModal(false)
 
+  const [openService, setOpenService] = useState(false)
+  const [openResearch, setOpenResearch] = useState(false)
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setMobileNavOpen(false)
+      }
+    }
+
+    window.addEventListener("resize", handleResize)
+    return () => window.removeEventListener("resize", handleResize)
+  }, [])
+
+
   return (
     <>
-      <div className="flex justify-center items-center bg-white sticky z-100 top-0 lg:h-25">
+      <div className="hidden lg:flex justify-center items-center bg-white sticky z-100 top-0 lg:h-25">
         <header className="bg-[#1D2B48] sticky top-0 z-50 shadow-lg lg:mt-0 lg:h-15 lg:w-[95%] rounded-full flex justify-between items-center px-7 lg:gap-5">
-          
+
           <div className="h-[100%] flex items-center justify-center">
             <img src="/logo.png" alt="logo.png" className="h-10 w-30" />
           </div>
 
           <div className="lg:h-[100%] lg:w-[60%] flex justify-center items-center lg:gap-8">
-            
+
             <Link
               href="/"
               className={`${linkClass("/")} text-white p-2 hover:bg-white hover:text-[#1D2B48] transition-colors duration-200 rounded-full`}
@@ -74,52 +94,41 @@ function Header() {
               About us
             </Link>
 
-            {/* SERVICES DROPDOWN */}
             <div className="relative lg:h-[100%] group flex items-center cursor-pointer">
               <div className="flex items-center">
-                <Link
-                  href=""
-                  className={`${linkClass("")} text-white hover:bg-white hover:text-[#1D2B48] p-2 transition-colors duration-200 rounded-full`}
-                >
+                <span className={`${linkClass("")} text-white hover:bg-white hover:text-[#1D2B48] p-2 transition-colors duration-200 rounded-full`}>
                   Services
-                </Link>
+                </span>
                 <MdArrowDropDown className="text-white text-xl" />
               </div>
 
               <div className="absolute top-full left-0 hidden group-hover:block bg-white shadow-md rounded w-65 z-50">
                 <ul className="flex flex-col text-black">
+
                   <li className="relative group/submenu">
-                    <div className="flex items-center justify-between lg:pr-1 hover:bg-gray-100 hover:rounded">
-                      <Link href="" className="block px-4 py-2 lg:text-sm">Tax Filing</Link>
+                    <div className="flex items-center justify-between hover:bg-gray-100 px-4 py-2">
+                      <span className="lg:text-sm">Tax Filing</span>
                       <IoMdArrowDropright className="text-black text-lg" />
                     </div>
 
                     <div className="absolute top-0 left-full hidden group-hover/submenu:block bg-white shadow-md rounded w-40 z-50">
                       <ul className="flex flex-col text-black">
-                        <li>
-                          <Link href="/individual" className="block px-4 py-2 text-sm hover:bg-gray-100">Individual</Link>
-                        </li>
-                        <li>
-                          <Link href="/business" className="block px-4 py-2 text-sm hover:bg-gray-100">Business</Link>
-                        </li>
+                        <li><Link href="/individual" className="block px-4 py-2 text-sm hover:bg-gray-100">Individual</Link></li>
+                        <li><Link href="/business" className="block px-4 py-2 text-sm hover:bg-gray-100">Business</Link></li>
                       </ul>
                     </div>
                   </li>
 
                   <li className="relative group/submenu">
-                    <div className="flex items-center justify-between lg:pr-1 hover:bg-gray-100 hover:rounded">
-                      <Link href="" className="block px-4 py-2 lg:text-sm">Expert Tax Advice</Link>
+                    <div className="flex items-center justify-between hover:bg-gray-100 px-4 py-2">
+                      <span className="lg:text-sm">Expert Tax Advice</span>
                       <IoMdArrowDropright className="text-black text-lg" />
                     </div>
 
                     <div className="absolute top-0 left-full hidden group-hover/submenu:block bg-white shadow-md rounded w-50 z-50">
                       <ul className="flex flex-col text-black">
-                        <li>
-                          <Link href="/incorporation_business" className="block px-4 py-2 text-sm hover:bg-gray-100">Incorporation Business</Link>
-                        </li>
-                        <li>
-                          <Link href="/amendement_tax_returns" className="block px-4 py-2 text-sm hover:bg-gray-100">Amendement of Tax Returns</Link>
-                        </li>
+                        <li><Link href="/incorporation_business" className="block px-4 py-2 text-sm hover:bg-gray-100">Incorporation Business</Link></li>
+                        <li><Link href="/amendement_tax_returns" className="block px-4 py-2 text-sm hover:bg-gray-100">Amendement of Tax Returns</Link></li>
                       </ul>
                     </div>
                   </li>
@@ -129,8 +138,8 @@ function Header() {
                   <li><Link href="/smart_tax_strategy" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Smart Tax Strategy</Link></li>
 
                   <li className="relative group/submenu">
-                    <div className="flex items-center justify-between lg:pr-1 hover:bg-gray-100 hover:rounded">
-                      <Link href="#" className="block px-4 py-2 lg:text-sm">IRS Issue Resolution</Link>
+                    <div className="flex items-center justify-between hover:bg-gray-100 px-4 py-2">
+                      <span className="lg:text-sm">IRS Issue Resolution</span>
                       <IoMdArrowDropright className="text-black text-lg" />
                     </div>
 
@@ -152,7 +161,6 @@ function Header() {
               </div>
             </div>
 
-            {/* RESEARCH DROPDOWN */}
             <div className="relative group flex items-center cursor-pointer">
               <div className="flex items-center">
                 <Link
@@ -171,7 +179,7 @@ function Header() {
                   <li><Link href="/healthcare" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Health Care</Link></li>
                   <li><Link href="/bankaccount_reporting" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Bank Account Reporting</Link></li>
                   <li><Link href="/reit" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">REIT</Link></li>
-                  <li><Link href="/unreimbursed_expenses" className="block px-4 py-2 hover:bg-gray-100 hover:rounded lg:text-sm">Unreimbursed Expenses</Link></li>
+                  <li><Link href="/unreimbursed_expenses" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Unreimbursed Expenses</Link></li>
                 </ul>
               </div>
             </div>
@@ -184,7 +192,6 @@ function Header() {
             </Link>
           </div>
 
-          {/* SIGNIN / SIGNOUT BUTTON */}
           <div className="lg:h-[100%] flex justify-end items-center lg:w-[10%]">
             {isAuthenticated ? (
               <button
@@ -204,6 +211,31 @@ function Header() {
           </div>
         </header>
       </div>
+
+      <div className="lg:hidden bg-[#1D2B48] sticky top-0 z-50 shadow-md px-4 py-2 flex justify-between items-center h-14">
+
+        <img src="/logo.png" alt="logo" className="h-8" />
+
+        {!mobileNavOpen ? (
+          <HiOutlineMenu
+            className="text-white text-3xl cursor-pointer"
+            onClick={toggleMobileNav}
+          />
+        ) : (
+          <HiX
+            className="text-white text-3xl cursor-pointer"
+            onClick={toggleMobileNav}
+          />
+        )}
+      </div>
+      <MobileNav
+        mobileNavOpen={mobileNavOpen}
+        toggleMobileNav={toggleMobileNav}
+        openService={openService}
+        setOpenService={setOpenService}
+        openResearch={openResearch}
+        setOpenResearch={setOpenResearch}
+      />
 
       <LogoutModal
         isOpen={showLogoutModal}
