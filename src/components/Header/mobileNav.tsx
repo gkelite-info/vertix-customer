@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { HiX } from "react-icons/hi"
 import { MdArrowDropDown } from "react-icons/md"
+import { usePathname } from "next/navigation"
 
 export default function MobileNav({
   mobileNavOpen,
@@ -14,6 +15,36 @@ export default function MobileNav({
 }: any) {
 
   if (!mobileNavOpen) return null
+
+  const pathname = usePathname();
+
+  const isActive = (href: string) => pathname === href;
+
+  const isServicePath = () => {
+    return [
+      "/individual",
+      "/business",
+      "/incorporation_business",
+      "/amendement_tax_returns",
+      "/our_accuracy_promise",
+      "/data_protection_privacy",
+      "/smart_tax_strategy",
+      "/irs_statelevy",
+      "/tax_problem_solving",
+      "/the_five"
+    ].includes(pathname);
+  };
+
+  const isResearchPath = () => {
+    return [
+      "/tax_treaties",
+      "/elections",
+      "/healthcare",
+      "/bankaccount_reporting",
+      "/reit",
+      "/unreimbursed_expenses"
+    ].includes(pathname);
+  };
 
   return (
     <>
@@ -32,65 +63,65 @@ export default function MobileNav({
           />
         </div>
 
-        <Link href="/" className="block py-3 text-white font-medium" onClick={toggleMobileNav}>
-          Home
+        <Link
+          href="/"
+          onClick={toggleMobileNav}
+          className="block py-3 font-medium text-white"
+        >
+          <span className={`inline-block ${isActive('/') ? "border-b-2 border-red-400" : ""}`}>
+            Home
+          </span>
         </Link>
 
-        <Link href="/about" className="block py-3 text-white font-medium" onClick={toggleMobileNav}>
-          About Us
+        <Link
+          href="/about"
+          onClick={toggleMobileNav}
+          className="block py-3 font-medium text-white"
+        >
+          <span className={`inline-block ${isActive('/about') ? "border-b-2 border-red-400" : ""}`}>
+            About Us
+          </span>
         </Link>
 
         <div>
           <button
-            className="w-full py-3 text-left font-medium flex justify-between items-center"
+            className="w-full py-3 text-left font-medium flex justify-between items-center text-white"
             onClick={() => setOpenService(!openService)}
           >
-            Services
+            <span className={`inline-block ${isServicePath() ? "border-b-2 border-red-400" : ""}`}>
+              Services
+            </span>
             <MdArrowDropDown className={`transition ${openService ? "rotate-180" : ""}`} />
           </button>
 
           {openService && (
             <div className="flex flex-col items-start">
 
-              <button className="py-2 font-medium">Tax Filing</button>
+              <button className="py-2 font-medium text-white">Tax Filing</button>
 
-              <Link href="/individual" className="py-2 text-xs ml-4" onClick={toggleMobileNav}>
-                Individual
-              </Link>
-              <Link href="/business" className="py-2 text-xs ml-4" onClick={toggleMobileNav}>
-                Business
-              </Link>
-
-              <button className="py-2 font-medium">Expert Tax Advice</button>
-
-              <Link href="/incorporation_business" className="py-2 text-xs ml-4" onClick={toggleMobileNav}>
-                Incorporation Business
-              </Link>
-              <Link href="/amendement_tax_returns" className="py-2 text-xs ml-4" onClick={toggleMobileNav}>
-                Amendement of Tax Returns
-              </Link>
-
-              <Link href="/our_accuracy_promise" className="py-2 text-xs" onClick={toggleMobileNav}>
-                Our Accuracy Promise
-              </Link>
-              <Link href="/data_protection_privacy" className="py-2 text-xs" onClick={toggleMobileNav}>
-                Data Protection & Privacy
-              </Link>
-              <Link href="/smart_tax_strategy" className="py-2 text-xs" onClick={toggleMobileNav}>
-                Smart Tax Strategy
-              </Link>
-
-              <button className="py-2 font-medium">IRS Issue Resolution</button>
-
-              <Link href="/irs_statelevy" className="py-2 text-xs ml-4" onClick={toggleMobileNav}>
-                IRS or State Levy
-              </Link>
-              <Link href="/tax_problem_solving" className="py-2 text-xs ml-4" onClick={toggleMobileNav}>
-                Tax Problem Solving
-              </Link>
-              <Link href="/the_five" className="py-2 text-xs ml-4" onClick={toggleMobileNav}>
-                The Five W’s & H of Liens
-              </Link>
+              {[
+                ["/individual", "Individual"],
+                ["/business", "Business"],
+                ["/incorporation_business", "Incorporation Business"],
+                ["/amendement_tax_returns", "Amendement of Tax Returns"],
+                ["/our_accuracy_promise", "Our Accuracy Promise"],
+                ["/data_protection_privacy", "Data Protection & Privacy"],
+                ["/smart_tax_strategy", "Smart Tax Strategy"],
+                ["/irs_statelevy", "IRS or State Levy"],
+                ["/tax_problem_solving", "Tax Problem Solving"],
+                ["/the_five", "The Five W’s & H of Liens"],
+              ].map(([href, label]) => (
+                <Link
+                  key={href}
+                  href={href as string}
+                  onClick={toggleMobileNav}
+                  className="py-2 text-xs ml-4 text-white"
+                >
+                  <span className={`inline-block ${isActive(href as string) ? "border-b-2 border-red-400" : ""}`}>
+                    {label}
+                  </span>
+                </Link>
+              ))}
 
             </div>
           )}
@@ -98,28 +129,50 @@ export default function MobileNav({
 
         <div>
           <button
-            className="w-full py-3 text-left font-medium flex justify-between items-center"
+            className="w-full py-3 text-left font-medium flex justify-between items-center text-white"
             onClick={() => setOpenResearch(!openResearch)}
           >
-            Research
+            <span className={`inline-block ${isResearchPath() ? "border-b-2 border-red-400" : ""}`}>
+              Research
+            </span>
             <MdArrowDropDown className={`transition ${openResearch ? "rotate-180" : ""}`} />
           </button>
 
           {openResearch && (
-            <div className="ml-3 flex flex-col items-start">
-              <Link href="/tax_treaties" className="py-2 text-xs" onClick={toggleMobileNav}>Tax Treaties</Link>
-              <Link href="/elections" className="py-2 text-xs" onClick={toggleMobileNav}>Elections</Link>
-              <Link href="/healthcare" className="py-2 text-xs" onClick={toggleMobileNav}>Health Care</Link>
-              <Link href="/bankaccount_reporting" className="py-2 text-xs" onClick={toggleMobileNav}>Bank Account Reporting</Link>
-              <Link href="/reit" className="py-2 text-xs" onClick={toggleMobileNav}>REIT</Link>
-              <Link href="/unreimbursed_expenses" className="py-2 text-xs" onClick={toggleMobileNav}>Unreimbursed Expenses</Link>
+            <div className="ml-3 flex flex-col items-start text-white">
+              {[
+                ["/tax_treaties", "Tax Treaties"],
+                ["/elections", "Elections"],
+                ["/healthcare", "Health Care"],
+                ["/bankaccount_reporting", "Bank Account Reporting"],
+                ["/reit", "REIT"],
+                ["/unreimbursed_expenses", "Unreimbursed Expenses"],
+              ].map(([href, label]) => (
+                <Link
+                  key={href}
+                  href={href as string}
+                  onClick={toggleMobileNav}
+                  className="py-2 text-xs text-white"
+                >
+                  <span className={`inline-block ${isActive(href as string) ? "border-b-2 border-red-400" : ""}`}>
+                    {label}
+                  </span>
+                </Link>
+              ))}
             </div>
           )}
         </div>
 
-        <Link href="/contact" className="block py-3 text-white font-medium" onClick={toggleMobileNav}>
-          Contact
+        <Link
+          href="/contact"
+          onClick={toggleMobileNav}
+          className="block py-3 font-medium text-white"
+        >
+          <span className={`inline-block ${isActive('/contact') ? "border-b-2 border-red-400" : ""}`}>
+            Contact
+          </span>
         </Link>
+
       </div>
     </>
   )

@@ -24,12 +24,37 @@ function Header() {
 
   const toggleMobileNav = () => setMobileNavOpen((prev) => !prev)
 
-  const linkClass = (href: string) =>
+  const isServicesActive =
+    pathname.startsWith("/individual") ||
+    pathname.startsWith("/business") ||
+    pathname.startsWith("/incorporation_business") ||
+    pathname.startsWith("/amendement_tax_returns") ||
+    pathname.startsWith("/our_accuracy_promise") ||
+    pathname.startsWith("/data_protection_privacy") ||
+    pathname.startsWith("/smart_tax_strategy") ||
+    pathname.startsWith("/irs_statelevy") ||
+    pathname.startsWith("/tax_problem_solving") ||
+    pathname.startsWith("/the_five") ||
+    pathname.startsWith("/business_tax_services") ||
+    pathname.startsWith("/expats_overseas_filers") ||
+    pathname.startsWith("/non_citizen_tax_guidance") ||
+    pathname.startsWith("/itin_application_help") ||
+    pathname.startsWith("/foreign_account_reporting")
+
+  const isResearchActive =
+    pathname.startsWith("/tax_treaties") ||
+    pathname.startsWith("/elections") ||
+    pathname.startsWith("/healthcare") ||
+    pathname.startsWith("/bankaccount_reporting") ||
+    pathname.startsWith("/reit") ||
+    pathname.startsWith("/unreimbursed_expenses")
+
+  const linkClass = (active: boolean) =>
     `relative text-black font-medium
-         after:content-[''] after:absolute after:left-0 after:bottom-0
-         after:h-[2px] after:bg-red-400 
-         after:transition-[width] after:duration-200 after:ease-linear
-         ${pathname === href ? "after:w-full" : "after:w-0"}`
+     after:content-[''] after:absolute after:left-0 after:bottom-0
+     after:h-[2px] after:bg-red-400 
+     after:transition-[width] after:duration-200 after:ease-linear
+     ${active ? "after:w-full" : "after:w-0"}`
 
   useEffect(() => {
     const token = localStorage.getItem("token")
@@ -68,7 +93,6 @@ function Header() {
     return () => window.removeEventListener("resize", handleResize)
   }, [])
 
-
   return (
     <>
       <div className="hidden lg:flex justify-center items-center bg-white sticky z-100 top-0 lg:h-25">
@@ -82,21 +106,21 @@ function Header() {
 
             <Link
               href="/"
-              className={`${linkClass("/")} text-white p-2 hover:bg-white hover:text-[#1D2B48] transition-colors duration-200 rounded-full`}
+              className={`${linkClass(pathname === "/")} text-white p-2 hover:bg-white hover:text-[#1D2B48] transition-colors duration-200 rounded-full`}
             >
               Home
             </Link>
 
             <Link
               href="/about"
-              className={`${linkClass("/about")} text-white hover:bg-white hover:text-[#1D2B48] p-2 transition-colors duration-200 rounded-full`}
+              className={`${linkClass(pathname === "/about")} text-white hover:bg-white hover:text-[#1D2B48] p-2 transition-colors duration-200 rounded-full`}
             >
               About us
             </Link>
 
             <div className="relative lg:h-[100%] group flex items-center cursor-pointer">
               <div className="flex items-center">
-                <span className={`${linkClass("")} text-white hover:bg-white hover:text-[#1D2B48] p-2 transition-colors duration-200 rounded-full`}>
+                <span className={`${linkClass(isServicesActive)} text-white hover:bg-white hover:text-[#1D2B48] p-2 transition-colors duration-200 rounded-full`}>
                   Services
                 </span>
                 <MdArrowDropDown className="text-white text-xl" />
@@ -163,12 +187,11 @@ function Header() {
 
             <div className="relative group flex items-center cursor-pointer">
               <div className="flex items-center">
-                <Link
-                  href="/research"
-                  className={`${linkClass("/research")} text-white hover:bg-white hover:text-[#1D2B48] p-2 transition-colors duration-200 rounded-full`}
+                <span
+                  className={`${linkClass(isResearchActive)} text-white hover:bg-white hover:text-[#1D2B48] p-2 transition-colors duration-200 rounded-full`}
                 >
                   Research
-                </Link>
+                </span>
                 <MdArrowDropDown className="text-white text-xl cursor-pointer" />
               </div>
 
@@ -186,7 +209,7 @@ function Header() {
 
             <Link
               href="/contact"
-              className={`${linkClass("/contact")} text-white hover:bg-white hover:text-[#1D2B48] p-2 transition-colors duration-200 rounded-full`}
+              className={`${linkClass(pathname === "/contact")} text-white hover:bg-white hover:text-[#1D2B48] p-2 transition-colors duration-200 rounded-full`}
             >
               Contact
             </Link>
@@ -228,6 +251,7 @@ function Header() {
           />
         )}
       </div>
+
       <MobileNav
         mobileNavOpen={mobileNavOpen}
         toggleMobileNav={toggleMobileNav}
