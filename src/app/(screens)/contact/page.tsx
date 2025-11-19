@@ -35,12 +35,12 @@ export default function Page() {
     <main>
       <div className="bg-white text-white py-5 -mt-[20px]">
         <div className="container mx-auto flex flex-col lg:flex-row items-center justify-center px-4">
-          <h1 className="text-3xl font-bold text-[#1D2B48]">Contact</h1>
+          <h1 className="text-3xl font-bold text-[#1D2B48] mt-4 lg:mt-0">Contact</h1>
         </div>
       </div>
 
-      <section id="contact" className="py-0 bg-white lg:pb-10">
-        <div className=" mx-auto px-6  gap-5 grid grid-cols-1 lg:grid-cols-2">
+      <section id="contact" className="py-0 bg-white pb-5 lg:pb-10">
+        <div className="mx-auto px-6 gap-5 grid grid-cols-1 lg:grid-cols-2">
           <div className="">
             <iframe
               className="w-full h-[400px] rounded-lg shadow-md"
@@ -105,7 +105,7 @@ export default function Page() {
           </div>
 
 
-          <div className="space-y-6 p-6 shadow-2xl pt-5 rounded-lg h-[400px] ">
+          <div className="space-y-6 p-6 bg-white shadow-2xl pt-5 rounded-lg h-[400px] ">
             <div>
               <h3 className="text-xl font-semibold text-[#1D2B48] text-center">
                 Get in touch
