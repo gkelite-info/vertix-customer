@@ -97,13 +97,11 @@ function Header() {
     <>
       <div className="hidden lg:flex justify-center items-center bg-white sticky z-100 top-0 lg:h-25">
         <header className="bg-[#1D2B48] sticky top-0 z-50 shadow-lg lg:mt-0 lg:h-15 lg:w-[95%] rounded-full flex justify-between items-center px-7 lg:gap-5">
-
           <div className="h-[100%] flex items-center justify-center">
             <img src="/logo.png" alt="logo.png" className="h-10 w-30" />
           </div>
 
           <div className="lg:h-[100%] lg:w-[60%] flex justify-center items-center lg:gap-8">
-
             <Link
               href="/"
               className={`${linkClass(pathname === "/")} text-white p-2 hover:bg-white hover:text-[#1D2B48] transition-colors duration-200 rounded-full`}
@@ -235,8 +233,7 @@ function Header() {
         </header>
       </div>
 
-      <div className="lg:hidden bg-[#1D2B48] sticky top-0 z-50 shadow-md px-4 py-2 flex justify-between items-center h-14">
-
+      <div className="lg:hidden bg-[#1D2B48] w-full sticky top-0 z-50 shadow-md px-4 py-2 flex justify-between items-center h-14">
         <img src="/logo.png" alt="logo" className="h-8" />
 
         {!mobileNavOpen ? (
