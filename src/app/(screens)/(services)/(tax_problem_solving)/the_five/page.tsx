@@ -1,15 +1,18 @@
+"use client"
 
 function Page() {
   return (
     <>
-      <div className="flex flex-col items-center bg-[#FFFEFE] overflow-y-auto lg:px-4 lg:gap-2 lg:pb-10">
-        <div className="lg:h-[20%] lg:w-[45%] flex flex-col items-center lg:mt-10">
-          <h1 className="border border-b-4 border-l-0 border-t-0 border-r-0 text-[#1D2B48] text-xl font-bold lg:w-[74%]">
+      <div className="flex flex-col items-center bg-[#FFFEFE] overflow-y-auto px-3 gap-4 pb-6 lg:px-4 lg:gap-2 lg:pb-10">
+
+        <div className="mt-6 lg:h-[20%] lg:w-[45%] flex flex-col items-center lg:mt-10">
+          <h1 className="border border-b-4 border-l-0 border-t-0 border-r-0 text-[#1D2B48] text-xl font-bold w-fit lg:w-[74%]">
             THE FIVE”WS” AND ONE “H” OF TAX LIENS
           </h1>
         </div>
-        <div className="bg-yellow-00 lg:w-[90%] lg:mt-10 flex">
-          <div className="lg:w-[60%] lg:pt-5 lg:pr-7">
+
+        <div className="w-full mt-6 flex flex-col lg:flex-row lg:w-[90%] lg:mt-10">
+          <div className="w-full lg:w-[60%] lg:pt-5 lg:pr-7">
             <p className="text-[#1C2A46] lg:text-sm lg:mt-2">
               “I owe back taxes and need help because I don’t have the money to
               pay it all.” Could you have said that? Has the IRS or state tax
@@ -17,9 +20,11 @@ function Page() {
               read on to learn the who, what, why, where, when and how of tax
               liens.
             </p>
+
             <h1 className="text-[#1C2A46] font-medium lg:mt-8">
               What is a tax lien?
             </h1>
+
             <p className="text-[#1C2A46] lg:text-sm lg:mt-2">
               The IRS or a state tax department can file a lien document in the
               county where you live or own property. A tax lien is a claim
@@ -31,9 +36,11 @@ function Page() {
               paid or otherwise released. It damages your credit rating and your
               ability to borrow money.
             </p>
+
             <h1 className="text-[#1C2A46] font-medium lg:mt-8">
               Who can file a tax lien against me?
             </h1>
+
             <p className="text-[#1C2A46] lg:text-sm lg:mt-2">
               The IRS and the state tax department both have legal authority to
               place a lien on your property if you owe back taxes. The legal
@@ -42,25 +49,35 @@ function Page() {
               process and notice are met before the lien is placed on your
               property.
             </p>
+
           </div>
-          <div className="lg:w-[40%] bg-red-00 flex justify-center">
+
+          <div className="w-full mt-6 flex justify-center lg:mt-0 lg:w-[40%]">
             <img
               src="/the_five.jpg"
               alt="the_five.jpg"
-              className="lg:h-[100%] lg:w-[74%] lg:rounded-lg"
+              className="
+                h-auto w-[90%] rounded-lg object-cover
+                md:h-auto md:w-[70%]
+                lg:h-[100%] lg:w-[74%]
+              "
             />
           </div>
+
         </div>
-        <div className="bg-green-00 lg:w-[90%]">
+
+        <div className="w-full lg:w-[90%]">
           <h1 className="text-[#1C2A46] font-medium lg:mt-8">
             When is a tax lien effective?
           </h1>
+
           <p className="lg:mt-2 text-[#1C2A46] lg:text-sm">
             A lien is effective ten days after the date of a bill for assessed
             tax is sent to you by the IRS. The IRS can file a tax lien at any
             time after that time. State laws have different time frames that are
             established by each state’s regulations and procedures.
           </p>
+
           <p className="lg:mt-2 text-[#1C2A46] lg:text-sm">
             A tax lien can be filed with the county recorder at any time after a
             tax is deemed unpaid or delinquent. There are costs associated with
@@ -73,6 +90,7 @@ function Page() {
           <h1 className="text-[#1C2A46] font-medium lg:mt-8">
             Where are tax liens filed?
           </h1>
+
           <p className="lg:mt-2 text-[#1C2A46] lg:text-sm">
             Tax liens are filed in public records, with a state or local
             authority such as a county recorder of deeds or a Secretary of
@@ -83,6 +101,7 @@ function Page() {
           <h1 className="text-[#1C2A46] font-medium lg:mt-8">
             Why has a tax lien been filed against me?
           </h1>
+
           <p className="lg:mt-2 text-[#1C2A46] lg:text-sm">
             Short and simple, because you owe delinquent taxes and the IRS or
             state government wants to be paid. This is one of the collection
@@ -92,6 +111,7 @@ function Page() {
           <h1 className="text-[#1C2A46] font-medium lg:mt-8">
             What can I do if I don’t believe I owe the tax debt?
           </h1>
+
           <p className="lg:mt-2 text-[#1C2A46] lg:text-sm">
             You have the right to appeal a Notice of Federal Tax Lien in either
             a Collection Due Process hearing or through a Collect Appeals
@@ -100,13 +120,16 @@ function Page() {
             court if you don’t agree with the outcome of the hearing. The
             Collection Appeals Program does not.
           </p>
+
           <h1 className="text-[#1C2A46] font-medium lg:mt-8">
             What can I do if I can’t pay the tax debt?
           </h1>
+
           <p className="lg:mt-2 text-[#1C2A46] lg:text-sm">
             You have options. The type of options depends upon your specific
             financial, health and living situation
           </p>
+
           <p className="lg:mt-2 text-[#1C2A46] lg:text-sm">
             Below is a listing of some of the options that may be available.
             Please note that these options won’t automatically remove a tax lien
@@ -114,7 +137,8 @@ function Page() {
             hold the lien filing, but only if the IRS agrees. They are also
             possible avenues to help stop a levy or garnishment.
           </p>
-          <ol className="list-disc lg:mt-2 lg:ml-8">
+
+          <ol className="list-disc lg:mt-2 ml-4 lg:ml-8">
             <li className="text-[#1C2A46] text-sm">
               Payment plan to make monthly payments for the full tax or a
               partial amount of the tax.
@@ -133,6 +157,7 @@ function Page() {
             <li className="text-[#1C2A46] text-sm">Equitable relief</li>
             <li className="text-[#1C2A46] text-sm">Economic hardship</li>
           </ol>
+
           <h1 className="text-[#1C2A46] font-medium lg:mt-8">
             How do I get a lien withdrawn?
           </h1>
@@ -147,23 +172,28 @@ function Page() {
             contact any creditors or any credit reporting bureaus unless you
             specifically request it in writing.
           </p>
+
           <p className="lg:mt-2 text-[#1C2A46] lg:text-sm">
             A lien withdrawal can clear your credit report. A lien release
             won’t.
           </p>
+
           <p className="lg:mt-2 text-[#1C2A46] lg:text-sm">
             How can I get a lien removed so I can sell or refinance my house?
           </p>
+
           <p className="lg:mt-2 text-[#1C2A46] lg:text-sm">
             You can request a discharge of the lien to have it removed from a
             specific piece of property, such as your home. This typically would
             occur when the taxman would be paid from the proceeds of the sale.
           </p>
+
           <p className="lg:mt-2 text-[#1C2A46] lg:text-sm">
             There is also something called subordination of the IRS lien. This
             would allow you to refinance the home because the IRS would agree to
             let the lender be in the primary creditor position.
           </p>
+
           <p className="lg:mt-2 text-[#1C2A46] lg:text-sm">
             Both of these requests must be made using IRS forms and are at the
             discretion of the IRS. State tax departments may or may not have
@@ -173,7 +203,10 @@ function Page() {
             denial reviewed by a settlement officer. Timing is critical. The
             appeal must be filed timely to be accepted.
           </p>
-          <h1 className="text-[#1C2A46] font-medium lg:mt-8">Conclusion</h1>
+
+          <h1 className="text-[#1C2A46] font-medium lg:mt-8">
+            Conclusion
+          </h1>
 
           <p className="lg:mt-2 text-[#1C2A46] lg:text-sm">
             I’ve had many stressed-out and worried people with delinquent tax
@@ -184,6 +217,7 @@ function Page() {
             the IRS or the state about their tax debt. The next step is to get
             professional help if you need it.
           </p>
+
           <p className="lg:mt-2 text-[#1C2A46] lg:text-sm">
             Please give us a call or send us a message to find out if we can
             help you. We provide a free, one hour consultation to visit with you
@@ -195,4 +229,5 @@ function Page() {
     </>
   )
 }
+
 export default Page

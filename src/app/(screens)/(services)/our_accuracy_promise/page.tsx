@@ -5,77 +5,96 @@ import { CheckCircle, CreditCard, Warning } from "phosphor-react"
 function Page() {
   return (
     <>
-      <div className="flex flex-col items-center bg-[#FFFEFE] overflow-y-auto lg:px-4 lg:gap-2 lg:pb-10">
-        <div className="lg:h-[20%] lg:w-[45%] flex flex-col items-center lg:mt-10">
-          <h1 className="border border-b-4 border-l-0 border-t-0 border-r-0 text-[#1D2B48] text-xl font-bold lg:w-[42%]">
+      <div className="flex flex-col items-center bg-[#FFFEFE] overflow-y-auto px-3 gap-4 pb-6 lg:px-4 lg:gap-2 lg:pb-10">
+
+        <div className="mt-6 lg:h-[20%] lg:w-[45%] flex flex-col items-center lg:mt-10">
+          <h1 className="border border-b-4 border-l-0 border-t-0 border-r-0 text-[#1D2B48] text-xl font-bold w-fit lg:w-[42%]">
             Our Accuracy Promise
           </h1>
         </div>
-        <div className="bg-yellow-00 lg:w-[90%] lg:mt-10 flex">
-          <div className="lg:w-[60%] lg:pt-5 lg:pr-7 flex flex-wrap lg:gap-5">
+
+        <div className="w-full mt-6 flex flex-col lg:flex-row lg:w-[90%] lg:mt-10">
+          <div
+            className="
+              w-full 
+              grid grid-cols-2 md:grid-cols-3 gap-4
+              lg:w-[60%] lg:pt-5 lg:pr-7 lg:flex lg:flex-wrap lg:gap-5
+            "
+          >
             <a
               href="#notices"
-              className="lg:h-[45%] lg:w-[40%] lg:rounded-2xl lg:shadow-lg hover:shadow-xl cursor-pointer"
+              className="rounded-xl shadow-md hover:shadow-xl cursor-pointer h-auto w-full
+              lg:h-[45%] lg:w-[40%] lg:rounded-2xl lg:shadow-lg"
             >
-              <div className="bg-red-00 flex flex-col items-center justify-around lg:h-[100%] lg:w-[100%] lg:p-5 lg:rounded-2xl lg:shadow-lg hover:shadow-xl cursor-pointer">
-                <div className="bg-blue-200 lg:p-2 lg:h-[49%] lg:w-[29%] lg:rounded-full flex justify-center items-center">
+              <div className="bg-red-00 flex flex-col items-center justify-around p-4 rounded-xl shadow-md hover:shadow-xl 
+              lg:h-[100%] lg:w-[100%] lg:p-5 lg:rounded-2xl lg:shadow-lg">
+                <div className="bg-blue-200 p-2 h-[60px] w-[60px] rounded-full flex justify-center items-center
+                lg:h-[49%] lg:w-[29%]">
                   <Warning size={30} weight="fill" className="text-[#1D2B48]" />
                 </div>
-                <div className="bg-yellow-00 lg:h-[30%] lg:w-full flex justify-center items-center">
+                <div className="lg:h-[30%] lg:w-full flex justify-center items-center">
                   <h3 className="text-[#1D2B48] font-semibold">Notices</h3>
                 </div>
               </div>
             </a>
+
             <a
               href="#accuracy"
-              className="lg:h-[45%] lg:w-[40%] lg:rounded-2xl lg:shadow-lg hover:shadow-xl cursor-pointer"
+              className="rounded-xl shadow-md hover:shadow-xl cursor-pointer h-auto w-full
+              lg:h-[45%] lg:w-[40%]"
             >
-              <div className="bg-red-00 flex flex-col items-center justify-around lg:h-[100%] lg:w-[100%] lg:p-5 lg:rounded-2xl lg:shadow-lg hover:shadow-xl cursor-pointer">
-                <div className="bg-blue-200 lg:p-2 lg:h-[49%] lg:w-[29%] lg:rounded-full flex justify-center items-center">
-                  <CheckCircle
-                    size={30}
-                    weight="fill"
-                    className="text-[#1D2B48]"
-                  />
+              <div className="bg-red-00 flex flex-col items-center justify-around p-4 rounded-xl shadow-md hover:shadow-xl 
+              lg:h-[100%] lg:w-[100%] lg:p-5 lg:rounded-2xl lg:shadow-lg">
+                <div className="bg-blue-200 p-2 h-[60px] w-[60px] rounded-full flex justify-center items-center
+                lg:h-[49%] lg:w-[29%]">
+                  <CheckCircle size={30} weight="fill" className="text-[#1D2B48]" />
                 </div>
-                <div className="bg-yellow-00 lg:h-[30%] lg:w-full flex justify-center items-center">
+                <div className="lg:h-[30%] lg:w-full flex justify-center items-center">
                   <h3 className="text-[#1D2B48] font-semibold">Accuracy</h3>
                 </div>
               </div>
             </a>
+
             <a
               href="#taxpayment"
-              className="lg:h-[45%] lg:w-[40%] lg:rounded-2xl lg:shadow-lg hover:shadow-xl cursor-pointer"
+              className="rounded-xl shadow-md hover:shadow-xl cursor-pointer h-auto w-full
+              lg:h-[45%] lg:w-[40%]"
             >
-              <div className="bg-red-00 flex flex-col items-center justify-around lg:h-[100%] lg:w-[100%] lg:p-5 lg:rounded-2xl lg:shadow-lg hover:shadow-xl cursor-pointer">
-                <div className="bg-blue-200 lg:p-2 lg:h-[49%] lg:w-[29%] lg:rounded-full flex justify-center items-center">
-                  <CreditCard
-                    size={30}
-                    weight="fill"
-                    className="text-[#1D2B48]"
-                  />
+              <div className="bg-red-00 flex flex-col items-center justify-around p-4 rounded-xl shadow-md hover:shadow-xl
+              lg:h-[100%] lg:w-[100%] lg:p-5 lg:rounded-2xl lg:shadow-lg">
+                <div className="bg-blue-200 p-2 h-[60px] w-[60px] rounded-full flex justify-center items-center
+                lg:h-[49%] lg:w-[29%]">
+                  <CreditCard size={30} weight="fill" className="text-[#1D2B48]" />
                 </div>
-                <div className="bg-yellow-00 lg:h-[30%] lg:w-full flex justify-center items-center">
+                <div className="lg:h-[30%] lg:w-full flex justify-center items-center">
                   <h3 className="text-[#1D2B48] font-semibold">Tax Payment</h3>
                 </div>
               </div>
             </a>
           </div>
-          <div className="lg:w-[40%] bg-red-00 flex justify-center">
+
+          <div className="w-full mt-5 flex justify-center lg:mt-0 lg:w-[40%]">
             <img
               src="/guarantee.jpg"
               alt="guarantee.jpg"
-              className="lg:h-[100%] lg:w-[74%] lg:rounded-lg"
+              className="
+                h-[200px] w-[90%] rounded-lg object-cover
+                md:h-auto md:w-[60%]
+                lg:h-[100%] lg:w-[74%]
+              "
             />
           </div>
         </div>
-        <div className="bg-green-00 lg:w-[90%]">
+
+        <div className="w-full lg:w-[90%]">
+
           <p className="text-[#1C2A46] lg:text-sm lg:mt-2">
             Nobody likes making a mistake. Unfortunately, we are all human and
             no matter how hard we try to be perfect…sometimes it just doesn’t
             happen. The test of character and integrity is to admit when you
             make a mistake and to do what you can to correct it.
           </p>
+
           <p className="text-[#1C2A46] text-sm lg:mt-3">
             We are diligent in our tax preparation services with quality control
             and reviews built into our policies and procedures. We support our
@@ -86,12 +105,14 @@ function Page() {
             free audit representation if the audit is due to a legitimate
             preparer error.
           </p>
+
           <h1
             id="notices"
             className="text-[#1C2A46] font-medium lg:mt-8 lg:scroll-mt-24"
           >
             If You Receive a Notice
           </h1>
+
           <p className="text-[#1C2A46] text-sm lg:mt-3">
             If you receive a notice from the IRS or a state tax department,
             please get it to us within 45 days of the date on the notice. We
@@ -101,29 +122,34 @@ function Page() {
             information about your tax account directly from the IRS or from the
             state tax department.
           </p>
+
           <p className="text-[#1C2A46] text-sm lg:mt-3">
             We will review our files and, if we made a mistake, we will tell you
             and reimburse you, subject to our reimbursement policies, for
             initially assessed interest and penalty that you have to pay due to
             our mistake.
           </p>
-          <p className="lg:mt-2 text-[#1C2A46] lg:text-sm">
+
+          <p className="text-[#1C2A46] text-sm lg:mt-3">
             Please don’t assume that the IRS or state is correct! Sometimes
             there are computer glitches, misunderstandings or missing
             information that can clear everything up. Get the notice to us
             within 30 days of the date of the notice!
           </p>
-          <p className="lg:mt-2 text-[#1C2A46] lg:text-sm">
+
+          <p className="text-[#1C2A46] text-sm lg:mt-3">
             Our policy is to reimburse clients for interest initially assessed
             by the IRS or a state tax department due to our error.
           </p>
-          <p className="lg:mt-2 text-[#1C2A46] lg:text-sm">
+
+          <p className="text-[#1C2A46] text-sm lg:mt-3">
             We reimburse clients for late payment penalties initially assessed
             by the IRS or state tax department due to our error. Again there are
             time constraints that apply and you must give us the opportunity to
             dispute the penalty or to ask that it be waived if the law allows.
           </p>
-          <p className="lg:mt-2 text-[#1C2A46] lg:text-sm">
+
+          <p className="text-[#1C2A46] text-sm lg:mt-3">
             Please get any notices to us within 45 days of the date of the
             notice. In fact, get all notices to us no matter how much time has
             passed. We may not reimburse you for all the interest or late
@@ -138,16 +164,19 @@ function Page() {
           >
             If We Didn’t Make a Mistake:
           </h1>
+
           <p className="lg:mt-3 text-[#1C2A46] lg:text-sm">
             Sometimes things happen. You don’t get a document until after the
             tax return is filed. You get a corrected document late. You forgot
             something. Something got lost. Things fell through the cracks. We
             understand.
           </p>
+
           <p className="lg:mt-3 text-[#1C2A46] lg:text-sm">
             First of all, don’t assume that you will owe additional taxes if
             this should happen to you. Sometimes you may get a refund!
           </p>
+
           <p className="lg:mt-3 text-[#1C2A46] lg:text-sm">
             Please advise us of the situation right away. We will help you with
             a corrected tax return at a discounted price and help you request a
@@ -163,6 +192,7 @@ function Page() {
           >
             Income Tax Due:
           </h1>
+
           <p className="lg:mt-3 text-[#1C2A46] lg:text-sm">
             Sorry, we do not reimburse for additional income tax due or for
             excess refunds that have to be paid back to the IRS or state.
@@ -172,4 +202,5 @@ function Page() {
     </>
   )
 }
+
 export default Page
