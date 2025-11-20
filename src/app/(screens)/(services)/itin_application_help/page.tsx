@@ -1,18 +1,21 @@
+"use client"
+
 function Page() {
   return (
     <>
-      <div className="flex flex-col items-center bg-[#FFFEFE] overflow-y-auto lg:px-4 lg:gap-2 lg:pb-10">
-        <div className="lg:h-[20%] lg:w-[45%] flex flex-col items-center lg:mt-10">
-          <h1 className="border border-b-4 border-l-0 border-t-0 border-r-0 text-[#1D2B48] text-xl font-bold lg:w-[39%]">
+      <div className="flex flex-col items-center bg-[#FFFEFE] overflow-y-auto px-3 gap-4 pb-6 lg:px-4 lg:gap-2 lg:pb-10">
+        <div className="mt-6 lg:h-[20%] lg:w-[45%] flex flex-col items-center lg:mt-10">
+          <h1 className="border border-b-4 border-l-0 border-t-0 border-r-0 text-[#1D2B48] text-xl font-bold w-fit lg:w-[39%]">
             ITIN Application Help
           </h1>
         </div>
-        <div className="bg-yellow-00 lg:w-[90%] lg:mt-10 flex">
-          <div className="lg:w-[60%] lg:pt-5 lg:pr-7">
-            <h1 className="text-[#1C2A46] font-medium lg:mt-8">
+        <div className="w-full mt-6 flex flex-col lg:flex-row lg:w-[90%] lg:mt-10">
+          <div className="w-full lg:w-[60%] lg:pt-5 lg:pr-7">
+            <h1 className="text-[#1C2A46] font-semibold lg:mt-8 mt-4">
               How a Person Applies
             </h1>
-            <p className="text-[#1C2A46] text-sm lg:mt-3">
+
+            <p className="text-[#1C2A46] text-sm lg:mt-3 mt-1">
               A person applies for an ITIN using Form W-7. The documentation
               requirements are essentially the same as before. The submission of
               the application is a bit different. The applications have to be
@@ -22,12 +25,14 @@ function Page() {
               certified acceptance agent approved by the IRS. The procedure for
               mailed in applications appears, at this time, to be unchanged.
             </p>
+
             <p className="text-[#1C2A46] text-sm lg:mt-3">
               There are going to be customer service issues for those who go to
               an IRS office in person. There are reduced service levels and
               reduced staff at nearly all of the IRS Taxpayer Assistance Centers
               due to budget cuts.
             </p>
+
             <p className="text-[#1C2A46] text-sm lg:mt-3">
               If the person lives outside the United States, in-person
               applications may be submitted to an authorized employee of the IRS
@@ -36,27 +41,38 @@ function Page() {
               overseas applications via mail.
             </p>
           </div>
-          <div className="lg:w-[40%] bg-red-00 flex justify-center">
+
+          <div className="w-full mt-6 flex justify-center lg:mt-0 lg:w-[40%]">
             <img
               src="/itin.jpg"
               alt="itin.jpg"
-              className="lg:h-[100%] lg:w-[74%] lg:rounded-lg"
+              className="
+                h-auto w-[90%] rounded-lg object-cover
+                md:h-auto md:w-[60%]
+                lg:h-[100%] lg:w-[74%]
+              "
             />
           </div>
+
         </div>
-        <div className="bg-green-00 lg:w-[90%]">
-          <h1 className="text-[#1C2A46] font-medium lg:mt-8">
+
+        <div className="w-full lg:w-[90%]">
+
+          <h1 className="text-[#1C2A46] font-semibold mt-4 lg:mt-8">
             Expiration of an ITIN
           </h1>
-          <p className="text-[#1C2A46] text-sm lg:mt-3">
+
+          <p className="text-[#1C2A46] text-sm lg:mt-3 mt-1">
             ITINs issued before 2013 will expire, unless they are timely
             renewed, according to a staggered schedule between 2017 and 2020.
           </p>
+
           <p className="text-[#1C2A46] text-sm lg:mt-3">
             If the ITIN was issued before 2008, it is no longer valid as of
             January 1, 2017. An application for a new ITIN will need to be
             submitted with the 2016 tax return.
           </p>
+
           <p className="text-[#1C2A46] text-sm lg:mt-3">
             Any tax returns filed with an invalid ITIN will be automatically
             adjusted by the IRS using its Math Error Notice powers. This will
@@ -67,7 +83,8 @@ function Page() {
             the services of an Enrolled Agent for assistance or representation.
             You have 30 days from the date of the Notice to disagree.
           </p>
-          <ol className="list-disc lg:mt-2 lg:ml-8">
+
+          <ol className="list-disc lg:mt-2 ml-4 lg:ml-8">
             <li className="text-[#1C2A46] text-sm">
               If the ITIN was issued in 2008, it expires on January 1, 2018.
             </li>
@@ -89,6 +106,7 @@ function Page() {
             would be deactivated only if the ITIN was not used during any tax
             year for a period of five consecutive years.)
           </p>
+
           <p className="text-[#1C2A46] text-sm lg:mt-3">
             Child Tax Credit and the American Opportunity Credit
           </p>
@@ -102,16 +120,19 @@ function Page() {
             ITIN application still allows the child tax credit and the American
             Opportunity Credit for the 2015 tax period going forward.
           </p>
-          <h1 className="text-[#1C2A46] font-medium lg:mt-8">
+
+          <h1 className="text-[#1C2A46] font-semibold mt-4 lg:mt-8">
             Earned Income Tax Credit
           </h1>
-          <p className="text-[#1C2A46] text-sm lg:mt-3">
+
+          <p className="text-[#1C2A46] text-sm lg:mt-3 mt-1">
             Taxpayers that have an ITIN for any person on the tax return have
             never been able to claimed Earned Income Tax Credit (EITC). However,
             if the person with the ITIN became eligible for a Social Security
             Number and obtained one, amended returns could be filed to claim the
             EITC. That is no longer allowed.
           </p>
+
           <p className="text-[#1C2A46] text-sm lg:mt-3">
             Penalties for Improper Claims of Refundable Credits There have
             always been penalties to the taxpayer who had been convicted of
@@ -121,6 +142,7 @@ function Page() {
             American Opportunity Tax Credit. This expansion starts with the 2016
             tax year.
           </p>
+
           <p className="text-[#1C2A46] text-sm lg:mt-3">
             An accuracy related penalty of 20% of the understatement of income
             tax due on a tax return will, beginning with 2016 tax returns, apply
@@ -133,4 +155,5 @@ function Page() {
     </>
   )
 }
+
 export default Page

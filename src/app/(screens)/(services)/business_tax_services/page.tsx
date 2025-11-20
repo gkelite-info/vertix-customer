@@ -1,18 +1,22 @@
+"use client"
+
 function Page() {
   return (
     <>
-      <div className="flex flex-col items-center bg-[#FFFEFE] overflow-y-auto lg:px-4 lg:gap-2 lg:pb-10">
-        <div className="lg:h-[20%] lg:w-[45%] flex flex-col items-center lg:mt-10">
-          <h1 className="border border-b-4 border-l-0 border-t-0 border-r-0 text-[#1D2B48] text-xl font-bold lg:w-[41%]">
+      <div className="flex flex-col items-center bg-[#FFFEFE] overflow-y-auto px-3 gap-4 pb-6 lg:px-4 lg:gap-2 lg:pb-10">
+        <div className="mt-6 lg:h-[20%] lg:w-[45%] flex flex-col items-center lg:mt-10">
+          <h1 className="border border-b-4 border-l-0 border-t-0 border-r-0 text-[#1D2B48] text-xl font-bold w-fit lg:w-[41%]">
             Business Tax Services
           </h1>
         </div>
-        <div className="bg-yellow-00 lg:w-[90%] lg:mt-10 flex">
-          <div className="lg:w-[60%] lg:pt-5 lg:pr-7">
-            <h1 className="text-[#1C2A46] font-medium lg:mt-8">
+
+        <div className="w-full mt-6 flex flex-col lg:flex-row lg:w-[90%] lg:mt-10">
+          <div className="w-full lg:w-[60%] lg:pt-5 lg:pr-7">
+            <h1 className="text-[#1C2A46] font-semibold mt-4 lg:mt-8">
               Sole Proprietors and Single Member LLC’s
             </h1>
-            <p className="text-[#1C2A46] text-sm lg:mt-3">
+
+            <p className="text-[#1C2A46] text-sm lg:mt-3 mt-1">
               Are you self-employed and operate your business as a sole
               proprietorship or a single member LLC? Your income and expenses
               from this type of operation are reported to the IRS using Schedule
@@ -22,6 +26,7 @@ function Page() {
               reported on your personal tax return, Form 1040. There is one
               exception.
             </p>
+
             <p className="text-[#1C2A46] text-sm lg:mt-3">
               A single member LLC has the option to file proper paperwork with
               the IRS to elect taxation as a corporation, typically one known as
@@ -36,33 +41,47 @@ function Page() {
               some credits are reported on the personal return and the tax, if
               any is due, is part of the personal tax due.
             </p>
+
           </div>
-          <div className="lg:w-[40%] bg-red-00 flex justify-center">
+
+          <div className="w-full mt-6 flex justify-center lg:mt-0 lg:w-[40%]">
             <img
               src="/small_business.jpg"
               alt="small_business.jpg"
-              className="lg:h-[100%] lg:w-[74%] lg:rounded-lg"
+              className="
+                h-[200px] w-[90%] rounded-lg object-cover
+                md:h-auto md:w-[60%]
+                lg:h-[100%] lg:w-[74%] lg:rounded-lg
+              "
             />
           </div>
+
         </div>
-        <div className="bg-green-00 lg:w-[90%]">
-          <h1 className="text-[#1C2A46] font-medium lg:mt-8">
+
+        <div className="w-full lg:w-[90%]">
+
+          <h1 className="text-[#1C2A46] font-semibold mt-4 lg:mt-8">
             Multiple Member LLC’s, Partnerships, S-Corps
           </h1>
-          <p className="text-[#1C2A46] text-sm lg:mt-3">
+
+          <p className="text-[#1C2A46] mt-1 text-sm lg:mt-3">
             The default tax status of this type of LLC is that of a partnership.
             The LLC members can file proper paperwork with the IRS to elect a
             different tax status, usually that of an S-corporation.
           </p>
+
           <p className="text-[#1C2A46] text-sm lg:mt-3">
             The business is required to file it’s tax return first and then
             issue a tax form, K-1, reporting each partner’s or shareholder’s
             share of income, deductions and credits that has to be reported on
             the partner’s personal tax return.
           </p>
+
         </div>
+
       </div>
     </>
   )
 }
+
 export default Page
