@@ -32,7 +32,7 @@ function ConsentPage() {
             if (error) throw error;
 
             toast.success("Consent accepted successfully!");
-            router.push("/construction");
+            router.push("/login");
         } catch (err: any) {
             toast.error(err.message || "Failed to update consent.");
         } finally {
