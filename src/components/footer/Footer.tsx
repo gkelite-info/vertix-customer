@@ -71,7 +71,7 @@ const Footer = () => {
               <li>
                 <Link href="https://sa.www4.irs.gov/wmr/" target="_blank" className="text-[#D1D5DC] hover:text-white">Federal Refund</Link>
               </li>
-              <li className="cursor-pointer text-[#D1D5DC] hover:text-white">
+              <li className="cursor-pointer text-[#D1D5DC] hover:text-white" onClick={handleStateRefund}>
                 State Refund
               </li>
             </ul>
