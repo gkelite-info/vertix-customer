@@ -116,7 +116,6 @@ export default function Page() {
           </div>
         </section>
 
-        {/*  */}
         <div className="lg:mt-8 bg-white flex flex-col items-center justify-center gap-6 w-full text-center lg:mt-10 lg:gap-4">
           <h3 className="text-[#1D2B48] text-xl font-bold lg:text-2xl">
             Why Clients Trust Us
@@ -151,9 +150,7 @@ export default function Page() {
             </div>
           </div>
         </div>
-        {/*  */}
 
-        {/*  */}
         <div className="bg-red-00 mt-8  flex flex-col items-center justify-center gap-6 w-full text-center lg:mt-10 lg:gap-4">
           <h3 className="text-[#1D2B48] text-xl font-bold lg:text-2xl">
             Our Services
@@ -174,7 +171,7 @@ export default function Page() {
 
                   <div className="bg-yellow-00 w-full flex flex-col justify-start items-start pl-3 gap-1 text-start lg:w-[90%] lg:h-full lg:py-2">
                     <h5 className="text-[#1D2B48] text-sm font-bold">{service.title}</h5>
-                    <p className="text-gray-500 text-xs font-semibold">
+                    <p className="text-gray-500 text-xs font-medium">
                       {service.description}
                     </p>
                   </div>
@@ -183,9 +180,7 @@ export default function Page() {
             ))}
           </div>
         </div>
-        {/*  */}
 
-        {/*  */}
         <div className="mt-5 flex flex-col items-center justify-center w-full gap-6 text-center lg:mt-10 lg:gap-4">
           <h3 className="text-[#1D2B48] text-xl font-bold lg:text-2xl">
             How It Works
@@ -314,9 +309,7 @@ export default function Page() {
             </div>
           </div>
         </div>
-        {/*  */}
 
-        {/*  */}
         <div className="w-full hidden lg:flex justify-center mt-10 sm:mt-12 md:mt-14 lg:mt-15 bg-red-00">
           <div className="relative w-[95%] sm:w-[85%] md:w-[75%] lg:w-[80%] 
                       h-[500px] xs:h-[520px] sm:h-[550px] md:h-[580px] lg:h-100 
@@ -367,9 +360,7 @@ export default function Page() {
             </div>
           </div>
         </div>
-        {/*  */}
 
-        {/*  */}
         <div className="w-full bg-indigo-00 max-w-7xl mx-auto sm:px-6 lg:px-8 mt-10">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 bg-yellow-00 justify-items-center">
             {cards.map((card, index) => {
@@ -377,7 +368,7 @@ export default function Page() {
               return (
                 <div
                   key={index}
-                  className="bg-[#F7F7F7] rounded-xl shadow-lg cursor-pointer transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 h-48 w-[80%] sm:h-38 sm:w-[100%] lg:h-32 lg:w-[85%] flex flex-col items-center justify-center gap-4 px-6"
+                  className="bg-[#F7F7F7] rounded-xl shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 h-48 w-[80%] sm:h-38 sm:w-[100%] lg:h-32 lg:w-[85%] flex flex-col items-center justify-center gap-4 px-6"
                 >
                   <div className="bg-[#E1E2E5] lg:p-2 p-4 rounded-full">
                     <Icon size={32} weight="fill" className="text-[#1D2B48]" />
@@ -390,7 +381,6 @@ export default function Page() {
             })}
           </div>
         </div>
-        {/*  */}
       </div>
     </>
   );
