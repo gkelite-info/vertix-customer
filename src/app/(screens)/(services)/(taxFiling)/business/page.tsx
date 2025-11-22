@@ -91,13 +91,12 @@ function Page() {
             <img
               src="/business_tax.jpg"
               alt="aboutpage.png"
-              className="h-[200px] w-[90%] rounded-lg object-cover lg:h-[100%] lg:w-[74%]"
+              className="h-auto w-[90%] rounded-lg object-cover lg:h-[100%] lg:w-[74%]"
             />
           </div>
         </div>
 
         <div className="w-full lg:w-[90%]">
-
           <p className="text-[#1C2A46] lg:text-sm lg:mt-2">
             At Vertix Tax Solutions LLC we help our clients understand and
             manage tax compliance and reporting obligations responsibly and
