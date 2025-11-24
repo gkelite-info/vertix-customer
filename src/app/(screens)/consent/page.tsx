@@ -10,9 +10,57 @@ import toast from "react-hot-toast";
 function ConsentPage() {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
+    const [date1, setDate1] = useState("");
+    const [date2, setDate2] = useState("");
+    const [taxPayerName, setTaxpayerName] = useState("");
+    const [taxPayerSignature, setTaxPayerSignature] = useState("");
+    const [jointTaxpayerName, setJointTaxpayerName] = useState("");
+    const [jointTaxpayerSignature, setJointTaxpayerSignature] = useState("");
+
+
+    const handleNameInput = (value: string, setter: (val: string) => void) => {
+        if (!/^[A-Za-z ]*$/.test(value)) return;
+
+        setter(value);
+    };
+
+
+    const isValidDateFormat = (value: string) => {
+        const dateRegex = /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d{4}$/;
+        return dateRegex.test(value);
+    };
+
+    const handleDateInput = (value: string, setter: (val: string) => void) => {
+        if (!/^[0-9/]*$/.test(value)) return;
+
+        if (value.length > 10) return;
+
+        setter(value);
+    };
+
 
     const handleAccept = async () => {
         setLoading(true);
+
+        if (!taxPayerName.trim() || !taxPayerSignature.trim()) {
+            toast.error("Please fill all required fields.");
+            setLoading(false);
+            return;
+        }
+
+        if (jointTaxpayerName || jointTaxpayerSignature) {
+            if (!jointTaxpayerName.trim() || !jointTaxpayerSignature.trim()) {
+                toast.error("Please complete joint taxpayer fields.");
+                setLoading(false);
+                return;
+            }
+        }
+
+        if (!isValidDateFormat(date1) || !isValidDateFormat(date2)) {
+            toast.error("Please enter valid dates in MM/DD/YYYY format.");
+            setLoading(false);
+            return;
+        }
 
         const user = supabase.auth.getUser();
 
@@ -39,6 +87,7 @@ function ConsentPage() {
             setLoading(false);
         }
     };
+
 
     return (
         <div className="flex items-start p-10 justify-center h-screen bg-gray-100">
@@ -71,6 +120,8 @@ function ConsentPage() {
                         <p className="text-start text-xs mt-2 text-[#616161]">Name of taxpayer : </p>
                         <input
                             type="text"
+                            value={taxPayerName}
+                            onChange={(e) => handleNameInput(e.target.value, setTaxpayerName)}
                             className="text-[#1D2B48] w-[19%] text-xs border border-b-1 border-l-0 border-r-0 border-t-0 focus:outline-none ml-2"
                         />
                     </div>
@@ -78,11 +129,15 @@ function ConsentPage() {
                         <p className="text-start text-xs mt-2 text-[#616161]">Taxpayer Signature : </p>
                         <input
                             type="text"
+                            value={taxPayerSignature}
+                            onChange={(e) => handleNameInput(e.target.value, setTaxPayerSignature)}
                             className="text-[#1D2B48] w-[19%] text-xs border border-b-1 border-l-0 border-r-0 border-t-0 focus:outline-none ml-2"
                         />
                         <p className="text-start text-xs mt-2 text-[#616161] ml-3">Date : </p>
                         <input
                             type="text"
+                            value={date1}
+                            onChange={(e) => handleDateInput(e.target.value, setDate1)}
                             className="text-[#1D2B48] w-[19%] text-xs border border-b-1 border-l-0 border-r-0 border-t-0 focus:outline-none ml-2"
                         />
                     </div>
@@ -90,6 +145,8 @@ function ConsentPage() {
                         <p className="text-start text-xs mt-2 text-[#616161]">Name of Joint taxpayer : </p>
                         <input
                             type="text"
+                            value={jointTaxpayerName}
+                            onChange={(e) => handleNameInput(e.target.value, setJointTaxpayerName)}
                             className="text-[#1D2B48] w-[19%] text-xs border border-b-1 border-l-0 border-r-0 border-t-0 focus:outline-none ml-2"
                         />
                     </div>
@@ -97,11 +154,15 @@ function ConsentPage() {
                         <p className="text-start text-xs mt-2 text-[#616161]">Joint Taxpayer Signature : </p>
                         <input
                             type="text"
+                            value={jointTaxpayerSignature}
+                            onChange={(e) => handleNameInput(e.target.value, setJointTaxpayerSignature)}
                             className="text-[#1D2B48] w-[19%] text-xs border border-b-1 border-l-0 border-r-0 border-t-0 focus:outline-none ml-2"
                         />
                         <p className="text-start text-xs mt-2 text-[#616161] ml-3">Date : </p>
                         <input
                             type="text"
+                            value={date2}
+                            onChange={(e) => handleDateInput(e.target.value, setDate2)}
                             className="text-[#1D2B48] w-[19%] text-xs border border-b-1 border-l-0 border-r-0 border-t-0 focus:outline-none ml-2"
                             onKeyDown={(e) => {
                                 if (e.key === "Enter") {

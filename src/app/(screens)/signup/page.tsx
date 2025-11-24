@@ -73,7 +73,6 @@ export default function Page() {
     confirmPassword: "",
     timezone: "",
   })
-  const [, setLoading] = useState(false)
   const [, setEmail] = useState("")
   const [, setEmailError] = useState("")
   const [remember, setRemember] = useState(false)
@@ -81,6 +80,7 @@ export default function Page() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [phoneCode, setPhoneCode] = useState("");
   const [phone, setPhone] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handlePhoneCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
@@ -125,6 +125,8 @@ export default function Page() {
   }
 
   const handleSignup = async () => {
+    setLoading(true);
+
     if (!formData.firstname) {
       toast.error("First name is required!");
       return;
@@ -329,8 +331,9 @@ export default function Page() {
                     type="button"
                     className="text-white lg:h-[50%] lg:w-[100%] text-lg font-medium lg:rounded-full bg-[#1D2B48] cursor-pointer"
                     onClick={handleSignup}
+                    disabled={loading}
                   >
-                    Create Account !
+                    {loading ? "Loading..." : "Create Account !"}
                   </button>
 
                   <div className="flex lg:gap-2 items-end bg-red-00 lg:h-[35%] ">
