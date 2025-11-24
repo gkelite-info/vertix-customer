@@ -10,6 +10,8 @@ interface YearSelectProps {
 }
 
 export default function YearSelect({ style = "" }: YearSelectProps) {
+  console.log("YearSelect rendered");
+
   const [name, setName] = useState("");
   const [customerId, setCustomerId] = useState<string | number>("");
   const { selectedYear, setSelectedYear } = useYear();
@@ -22,6 +24,8 @@ export default function YearSelect({ style = "" }: YearSelectProps) {
   );
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
     const fetchCustomer = async () => {
       try {
         const customer = await getCustomer();

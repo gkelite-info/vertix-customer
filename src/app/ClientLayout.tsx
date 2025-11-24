@@ -4,11 +4,7 @@ import { usePathname } from "next/navigation"
 import Header from "@/components/Header/Header"
 import Footer from "@/components/footer/Footer"
 
-export default function ClientLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
 
   const hideLayoutRoutes = [
@@ -29,4 +25,5 @@ export default function ClientLayout({
       {!shouldHideLayout && <Footer />}
     </>
   )
+
 }
