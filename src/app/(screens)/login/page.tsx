@@ -81,7 +81,7 @@ export default function Page() {
         } else {
           toast.error(error.message || "Login failed.");
         }
-        return;
+        return
       }
 
       if (data.session && data.user) {
@@ -115,6 +115,9 @@ export default function Page() {
     } catch (err: any) {
       console.error("Login error:", err);
       toast.error("Unexpected error. Try again.");
+    }
+    finally {
+      setLoading(false);
     }
   };
 

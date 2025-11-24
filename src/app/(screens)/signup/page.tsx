@@ -8,58 +8,6 @@ import { supabase } from "../../../../utils/supabase/client"
 import { insertCustomer } from "@/app/api/SupabaseAPI/customer/customerApi"
 import TimezoneSelect from "../../../../utils/timezone"
 
-// const countries = [
-//   "United States",
-//   "Canada",
-//   "United Kingdom",
-//   "Australia",
-//   "Germany",
-//   "France",
-//   "Spain",
-//   "Italy",
-//   "Japan",
-//   "China",
-//   "India",
-//   "Brazil",
-//   "Mexico",
-//   "South Africa",
-//   "Egypt",
-//   "Nigeria",
-//   "Argentina",
-//   "Chile",
-//   "Colombia",
-//   "Peru",
-//   "Russia",
-//   "Ukraine",
-//   "Poland",
-//   "Sweden",
-//   "Norway",
-//   "Finland",
-//   "Denmark",
-//   "Ireland",
-//   "Netherlands",
-//   "Belgium",
-//   "Switzerland",
-//   "Austria",
-//   "Greece",
-//   "Portugal",
-//   "Turkey",
-//   "Saudi Arabia",
-//   "United Arab Emirates",
-//   "Israel",
-//   "Iran",
-//   "Pakistan",
-//   "Bangladesh",
-//   "Indonesia",
-//   "Malaysia",
-//   "Thailand",
-//   "Vietnam",
-//   "Philippines",
-//   "South Korea",
-//   "Singapore",
-//   "New Zealand",
-// ]
-
 export default function Page() {
   const router = useRouter()
   const [timezone, setTimezone] = useState("");
@@ -125,7 +73,6 @@ export default function Page() {
   }
 
   const handleSignup = async () => {
-    setLoading(true);
 
     if (!formData.firstname) {
       toast.error("First name is required!");
@@ -138,6 +85,10 @@ export default function Page() {
     if (!formData.email) {
       toast.error("Email is required!");
       return;
+    }
+    if (!phoneCode) {
+      toast.error("Phone number must include a valid country code.");
+      return
     }
     if (!formData.phone) {
       toast.error("Phone number is required!");
@@ -161,9 +112,9 @@ export default function Page() {
       return;
     }
 
-    try {
-      setLoading(true);
+    setLoading(true);
 
+    try {
       const { data, error } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
@@ -341,7 +292,7 @@ export default function Page() {
                       Already have an account ?{" "}
                     </h5>
                     <p
-                      className="font-medium text-sm text-black border border-b-1 border-l-0 border-r-0 border-t-0 cursor-pointer"
+                      className="font-medium text-sm text-black underline cursor-pointer"
                       onClick={handlelogin}
                     >
                       Login
