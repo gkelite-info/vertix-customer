@@ -43,7 +43,6 @@ export default function Page() {
   const { login } = useAuth();
 
   const handleLogin = async () => {
-
     setLoading(true);
 
     try {
@@ -202,7 +201,7 @@ export default function Page() {
                   </label>
                 </div>
                 <p
-                  className="font-medium text-xs sm:text-sm border-b border-[#3A4969] text-[#3A4969] cursor-pointer"
+                  className="font-medium text-xs sm:text-sm underline text-[#3A4969] cursor-pointer"
                   onClick={() => router.push("/forgot_password")}
                 >
                   Forgot Password ?
@@ -221,7 +220,7 @@ export default function Page() {
                     Don&apos;t have an account ?{" "}
                   </h5>
                   <p
-                    className="font-medium text-sm text-black border-b border-black cursor-pointer hover:text-[#1D2B48] hover:border-[#1D2B48] transition duration-150"
+                    className="font-medium text-sm text-black underline cursor-pointer hover:text-[#1D2B48] hover:border-[#1D2B48] transition duration-150"
                     onClick={handlesignUp}
                   >
                     Register Now

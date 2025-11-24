@@ -73,6 +73,7 @@ function Header() {
     } else {
       logout()
     }
+    window.dispatchEvent(new Event("storage"))
     setShowLogoutModal(false)
     router.push("/login")
   }

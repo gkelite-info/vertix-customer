@@ -1,32 +1,55 @@
-"use client"
+"use client";
 
-import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useRouter, usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
-interface ProtectedRouteProps {
-  children: React.ReactNode
-  isSessionReady: boolean
-}
+export default function ProtectedRoute({ children }: { children: React.ReactNode }) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const [isAllowed, setIsAllowed] = useState<boolean | null>(null);
 
-export default function ProtectedRoute({ children, isSessionReady }: ProtectedRouteProps) {
-  const router = useRouter()
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    if (!isSessionReady) return 
-    const token = localStorage.getItem("token")
+  const checkAuth = () => {
+    const token = localStorage.getItem("token");
+    const publicRoutes = ["/login", "/signup", "/forgot_password"];
 
     if (!token) {
-      router.replace("/login")
-      return
+      if (!publicRoutes.includes(pathname)) {
+        router.replace("/login");
+        setIsAllowed(false);
+        return;
+      }
+      setIsAllowed(true);
+      return;
     }
 
-    setLoading(false)
-  }, [router, isSessionReady])
+    if (pathname === "/login") {
+      router.replace("/");
+      setIsAllowed(false);
+      return;
+    }
 
-  if (loading || !isSessionReady) {
-    return <div className="flex justify-center items-center h-screen w-screen">Loading...</div>
+    setIsAllowed(true);
+  };
+
+  useEffect(() => {
+    checkAuth();
+
+    const handleStorage = () => checkAuth();
+
+    window.addEventListener("storage", handleStorage);
+
+    return () => window.removeEventListener("storage", handleStorage);
+  }, [pathname]);
+
+  if (isAllowed === null) {
+    return (
+      <div className="flex justify-center items-center h-screen w-screen">
+        Loading...
+      </div>
+    );
   }
 
-  return <>{children}</>
+  if (isAllowed === false) return null;
+
+  return <>{children}</>;
 }
