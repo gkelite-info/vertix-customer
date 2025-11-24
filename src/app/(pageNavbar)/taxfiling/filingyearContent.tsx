@@ -102,7 +102,7 @@ export default function TaxfilingContent() {
   }
 
   return (
-    <ProtectedRoute isSessionReady={isSessionReady}>
+    <ProtectedRoute>
       <div className="flex justify-between bg-white">
         <PageNavbar activeTab={activeTab} setActiveTab={setActiveTab} />
         <div className="lg:w-[76%]">
