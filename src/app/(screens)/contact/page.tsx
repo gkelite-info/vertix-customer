@@ -12,6 +12,7 @@ export default function Page() {
     subject: "",
     message: "",
   });
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -20,13 +21,38 @@ export default function Page() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const res = await insertContact(form);
+    try {
+      if (!form.name) {
+        toast.error("Name is required")
+        return
+      }
+      if (!form.email) {
+        toast.error("Email is required")
+        return
+      }
+      if (!form.subject) {
+        toast.error("Subject is required")
+        return
+      }
+      if (!form.message) {
+        toast.error("Message is required")
+        return
+      }
 
-    if (res.success) {
-      toast.success("Message sent successfully!");
-      setForm({ name: "", email: "", subject: "", message: "" });
-    } else {
-      toast.error(res.error || "Failed to send message");
+      setLoading(true);
+      const res = await insertContact(form);
+      if (res.success) {
+        toast.success("Message sent successfully!");
+        setForm({ name: "", email: "", subject: "", message: "" });
+      } else {
+        toast.error(res.error || "Failed to send message");
+      }
+    } catch (error) {
+      toast.error("Something went wrong.")
+      console.error(error)
+    }
+    finally {
+      setLoading(false)
     }
   };
 
@@ -93,12 +119,14 @@ export default function Page() {
                 required
                 className="w-full p-3 border rounded-md border-1 border-black text-[#1D2B48] h-32 focus:outline-none"
               ></textarea>
+
               <div className="text-center">
                 <button
                   type="submit"
                   className="bg-[#1D2A46] cursor-pointer text-white font-semibold px-6 py-3 rounded-md shadow-md transition"
+                  disabled={loading}
                 >
-                  Send Message
+                  {loading ? "Sending..." : "Send Message"}
                 </button>
               </div>
             </form>

@@ -10,11 +10,38 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
 
   const checkAuth = () => {
     const token = localStorage.getItem("token");
-    const publicRoutes = ["/login", "/signup", "/forgot_password"];
+    const publicRoutes = ["/",
+      "/login",
+      "/signup",
+      "/forgot_password",
+      "/about",
+      "/individual",
+      "/business",
+      "/incorporate_business",
+      "/amendement_tax_returns",
+      "/our_accuracy_promise",
+      "/data_protection_privacy",
+      "/smart_tax_strategy",
+      "/irs_statelevy",
+      "/tax_problem_solving",
+      "/the_five",
+      "/business_tax_services",
+      "/expats_overseas_filers",
+      "/non_citizen_tax_guidance",
+      "/itin_application_help",
+      "/foreign_account_reporting",
+      "/tax_treaties",
+      "/elections",
+      "/healthcare",
+      "/bankaccount_reporting",
+      "/reit",
+      "/unreimbursed_expenses",
+      "/contact"
+    ];
 
     if (!token) {
       if (!publicRoutes.includes(pathname)) {
-        router.replace("/login");
+        router.replace("/");
         setIsAllowed(false);
         return;
       }
