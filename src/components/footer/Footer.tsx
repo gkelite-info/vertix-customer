@@ -88,7 +88,7 @@ const Footer = () => {
           <p className="mt-2">
             Designed by
             <Link
-              href="https://bootstrapmade.com/"
+              href="https://www.gkeliteinfo.com/"
               target="_blank"
               className="text-blue-400 hover:underline"
             >
