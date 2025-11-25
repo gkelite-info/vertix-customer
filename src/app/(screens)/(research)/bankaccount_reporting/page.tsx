@@ -2,7 +2,6 @@ export default function Page() {
   return (
     <>
       <div className="flex flex-col items-center bg-[#FFFEFE] overflow-y-auto px-4 gap-6 pb-10 lg:px-4 lg:gap-2 lg:pb-10">
-
         <div className="h-auto w-full flex flex-col items-center mt-6 lg:h-[20%] lg:w-[45%] lg:mt-10">
           <h1 className="border border-b-4 border-l-0 border-t-0 border-r-0 text-[#1D2B48] text-xl font-bold w-fit">
             BANK ACCOUNT REPORTING

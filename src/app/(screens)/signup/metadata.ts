@@ -1,4 +1,4 @@
-import { Metadata } from "next"
+import type { Metadata } from "next"
 
 export const metadata: Metadata = {
     title: "Sign Up | Vertix Tax Solutions",
@@ -11,4 +11,7 @@ export const metadata: Metadata = {
         "Vertix signup",
         "tax filing"
     ],
+    alternates: {
+        canonical: "https://vertixtax.com/signup"
+    }
 };

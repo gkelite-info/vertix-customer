@@ -18,7 +18,7 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
       "/about",
       "/individual",
       "/business",
-      "/incorporate_business",
+      "/incorporation_business",
       "/amendement_tax_returns",
       "/our_accuracy_promise",
       "/data_protection_privacy",
@@ -37,6 +37,7 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
       "/bankaccount_reporting",
       "/reit",
       "/unreimbursed_expenses",
+      "/state_refund",
       "/contact"
     ];
 

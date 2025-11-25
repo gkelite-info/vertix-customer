@@ -6,7 +6,7 @@ function Page() {
       <div className="flex flex-col items-center bg-[#FFFEFE] overflow-y-auto px-3 gap-4 pb-6 lg:px-4 lg:gap-2 lg:pb-10">
 
         <div className="mt-6 lg:h-[20%] lg:w-[45%] flex flex-col items-center lg:mt-10">
-          <h1 className="border border-b-4 border-l-0 border-t-0 border-r-0 text-[#1D2B48] text-xl font-bold w-fit lg:w-[74%]">
+          <h1 className="border border-b-4 border-l-0 border-t-0 border-r-0 text-[#1D2B48] text-xl font-bold w-fit">
             THE FIVE”WS” AND ONE “H” OF TAX LIENS
           </h1>
         </div>
@@ -21,7 +21,7 @@ function Page() {
               liens.
             </p>
 
-            <h1 className="text-[#1C2A46] font-medium lg:mt-8">
+            <h1 className="text-[#1C2A46] font-semibold lg:mt-8">
               What is a tax lien?
             </h1>
 
@@ -37,7 +37,7 @@ function Page() {
               ability to borrow money.
             </p>
 
-            <h1 className="text-[#1C2A46] font-medium lg:mt-8">
+            <h1 className="text-[#1C2A46] font-semibold lg:mt-8">
               Who can file a tax lien against me?
             </h1>
 
@@ -67,7 +67,7 @@ function Page() {
         </div>
 
         <div className="w-full lg:w-[90%]">
-          <h1 className="text-[#1C2A46] font-medium lg:mt-8">
+          <h1 className="text-[#1C2A46] font-semibold lg:mt-8">
             When is a tax lien effective?
           </h1>
 
@@ -87,7 +87,7 @@ function Page() {
             sometimes without following due process and notice requirements.
           </p>
 
-          <h1 className="text-[#1C2A46] font-medium lg:mt-8">
+          <h1 className="text-[#1C2A46] font-semibold lg:mt-8">
             Where are tax liens filed?
           </h1>
 
@@ -98,7 +98,7 @@ function Page() {
             people can review the tax lien — it is open to the public.
           </p>
 
-          <h1 className="text-[#1C2A46] font-medium lg:mt-8">
+          <h1 className="text-[#1C2A46] font-semibold lg:mt-8">
             Why has a tax lien been filed against me?
           </h1>
 
@@ -108,7 +108,7 @@ function Page() {
             tools in the governments “tool box” to get money owed by taxpayers.
           </p>
 
-          <h1 className="text-[#1C2A46] font-medium lg:mt-8">
+          <h1 className="text-[#1C2A46] font-semibold lg:mt-8">
             What can I do if I don’t believe I owe the tax debt?
           </h1>
 
@@ -121,7 +121,7 @@ function Page() {
             Collection Appeals Program does not.
           </p>
 
-          <h1 className="text-[#1C2A46] font-medium lg:mt-8">
+          <h1 className="text-[#1C2A46] font-semibold lg:mt-8">
             What can I do if I can’t pay the tax debt?
           </h1>
 
@@ -158,7 +158,7 @@ function Page() {
             <li className="text-[#1C2A46] text-sm">Economic hardship</li>
           </ol>
 
-          <h1 className="text-[#1C2A46] font-medium lg:mt-8">
+          <h1 className="text-[#1C2A46] font-semibold lg:mt-8">
             How do I get a lien withdrawn?
           </h1>
 
@@ -204,7 +204,7 @@ function Page() {
             appeal must be filed timely to be accepted.
           </p>
 
-          <h1 className="text-[#1C2A46] font-medium lg:mt-8">
+          <h1 className="text-[#1C2A46] font-semibold lg:mt-8">
             Conclusion
           </h1>
 

@@ -5,17 +5,14 @@ function Page() {
     <>
       <div className="flex flex-col items-center bg-[#FFFEFE] overflow-y-auto px-3 gap-4 pb-6 lg:px-4 lg:gap-2 lg:pb-10">
 
-        {/* PAGE TITLE */}
         <div className="mt-6 lg:h-[20%] lg:w-[45%] flex flex-col items-center lg:mt-10">
-          <h1 className="border border-b-4 border-l-0 border-t-0 border-r-0 text-[#1D2B48] text-xl font-bold w-fit lg:w-[36%]">
+          <h1 className="border border-b-4 border-l-0 border-t-0 border-r-0 text-[#1D2B48] text-xl font-bold w-fit">
             Smart Tax Strategy
           </h1>
         </div>
 
-        {/* TEXT + IMAGE WRAPPER */}
         <div className="w-full mt-6 flex flex-col lg:flex-row lg:w-[90%] lg:mt-10">
 
-          {/* LEFT CONTENT */}
           <div className="w-full lg:w-[60%] lg:pt-5 lg:pr-7">
 
             <h1 className="text-[#1C2A46] font-semibold mt-4 lg:mt-8">Planning</h1>
@@ -51,7 +48,6 @@ function Page() {
 
           </div>
 
-          {/* IMAGE SECTION */}
           <div className="w-full mt-5 flex justify-center lg:mt-0 lg:w-[40%]">
             <img
               src="/tax_planning.jpg"
