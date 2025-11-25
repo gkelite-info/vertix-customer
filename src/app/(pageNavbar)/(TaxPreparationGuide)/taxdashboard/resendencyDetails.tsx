@@ -27,10 +27,32 @@ export default function ResidencyDetails({ setActiveTab }: ResidencyDetailsProps
 
     const handleDateChange = (setter: React.Dispatch<React.SetStateAction<string>>) =>
         (e: React.ChangeEvent<HTMLInputElement>) => {
-            let input = e.target.value.replace(/[^0-9/]/g, "");
-            if (input.length > 10) input = input.slice(0, 10);
-            setter(input);
+            let input = e.target.value.replace(/\D/g, "");
+            if (input.length > 8) input = input.slice(0, 8);
+
+            let formatted = "";
+            if (input.length <= 2) {
+                formatted = input;
+                if (input.length === 2) formatted += "/";
+            } else if (input.length <= 4) {
+                formatted = input.slice(0, 2) + "/" + input.slice(2);
+                if (input.length === 4) formatted += "/";
+            } else {
+                formatted = input.slice(0, 2) + "/" + input.slice(2, 4) + "/" + input.slice(4);
+            }
+
+            setter(formatted);
         };
+
+
+    const handleTextInput = (setter: React.Dispatch<React.SetStateAction<string>>) =>
+        (e: React.ChangeEvent<HTMLInputElement>) => {
+            const value = e.target.value;
+            if (/^[A-Za-z ]*$/.test(value)) {
+                setter(value);
+            }
+        };
+
 
     const handleSave = async () => {
         try {
@@ -91,7 +113,7 @@ export default function ResidencyDetails({ setActiveTab }: ResidencyDetailsProps
                                         type="text"
                                         placeholder="Enter state"
                                         value={state}
-                                        onChange={(e) => setState(e.target.value)}
+                                        onChange={handleTextInput(setState)}
                                         className="w-full text-[#666A74] bg-transparent text-sm outline-none placeholder-[#666A74]"
                                     />
                                 </div>
@@ -103,7 +125,7 @@ export default function ResidencyDetails({ setActiveTab }: ResidencyDetailsProps
                                         type="text"
                                         placeholder="Enter country"
                                         value={country}
-                                        onChange={(e) => setCountry(e.target.value)}
+                                        onChange={handleTextInput(setCountry)}
                                         className="w-full text-[#666A74] bg-transparent text-sm outline-none placeholder-[#666A74]"
                                     />
                                 </div>
