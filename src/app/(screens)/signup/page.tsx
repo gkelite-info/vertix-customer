@@ -29,6 +29,7 @@ export default function Page() {
   const [phoneCode, setPhoneCode] = useState("");
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
+  const [passwordError, setPasswordError] = useState("");
 
 
   const handlePhoneCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,6 +57,23 @@ export default function Page() {
   const handlelogin = () => {
     router.push("/login")
   }
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setFormData((prev) => ({ ...prev, password: value }));
+
+    const hasUpperCase = /[A-Z]/.test(value);
+    const hasLowerCase = /[a-z]/.test(value);
+    const hasSpecialChar = /[!@#$%^&*()_+\-[\]{};':"\\|,.<>/?]/.test(value);
+
+    if (!hasUpperCase || !hasLowerCase || !hasSpecialChar) {
+      setPasswordError(
+        "Password must contain at least 1 uppercase, 1 lowercase, and 1 special character."
+      );
+    } else {
+      setPasswordError("");
+    }
+  };
 
   const handleEmailChange = (e: { target: { value: string } }) => {
     const value = e.target.value
@@ -235,7 +253,7 @@ export default function Page() {
                     id="password"
                     type={showPassword ? "text" : "password"}
                     value={formData.password}
-                    onChange={handleChange}
+                    onChange={handlePasswordChange}
                     placeholder="Enter your password"
                     className="lg:h-[100%] lg:w-[100%] text-black font-medium lg:p-2 lg:ml-2 border-none focus:outline-none focus:ring-0"
                   />
@@ -245,6 +263,9 @@ export default function Page() {
                     onClick={() => setShowPassword(!showPassword)}
                   />
                 </div>
+                {passwordError && (
+                  <p className="text-red-500 text-xs mt-1">{passwordError}</p>
+                )}
                 <div className="lg:w-[100%] lg:h-[10%] flex items-center border border-b-2 border-l-0 border-t-0 border-r-0 border-[#D0D0D0] lg:pr-2 lg:gap-2">
                   <Icon
                     icon="weui:lock-filled"
@@ -284,14 +305,16 @@ export default function Page() {
                   </label>
                 </div>
                 <div className="bg-green-00 lg:h-[20%] flex flex-col lg:gap-2 lg:mt-2 items-center">
-                  <button
-                    type="button"
-                    className="text-white lg:h-[50%] lg:w-[100%] text-lg font-medium lg:rounded-full bg-[#1D2B48] cursor-pointer"
-                    onClick={handleSignup}
-                    disabled={loading}
-                  >
-                    {loading ? "Loading..." : "Create Account !"}
-                  </button>
+                  {!passwordError && (
+                    <button
+                      type="button"
+                      className="text-white lg:h-[50%] lg:w-[100%] text-lg font-medium lg:rounded-full bg-[#1D2B48] cursor-pointer"
+                      onClick={handleSignup}
+                      disabled={loading}
+                    >
+                      {loading ? "Loading..." : "Create Account !"}
+                    </button>
+                  )}
 
                   <div className="flex lg:gap-2 items-end bg-red-00 lg:h-[35%] ">
                     <h5 className="font-medium text-[#979797] text-sm lg:w-[100%]">
