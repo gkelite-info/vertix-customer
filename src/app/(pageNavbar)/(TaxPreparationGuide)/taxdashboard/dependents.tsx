@@ -47,6 +47,30 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
 
   const { selectedYear } = useYear();
 
+  const handleDateChangeForDependent = (index: number, field: "dob" | "date") =>
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      let input = e.target.value.replace(/\D/g, ""); // remove non-digits
+      if (input.length > 8) input = input.slice(0, 8);
+
+      let formatted = "";
+      if (input.length <= 2) {
+        formatted = input;
+        if (input.length === 2) formatted += "/";
+      } else if (input.length <= 4) {
+        formatted = input.slice(0, 2) + "/" + input.slice(2);
+        if (input.length === 4) formatted += "/";
+      } else {
+        formatted = input.slice(0, 2) + "/" + input.slice(2, 4) + "/" + input.slice(4);
+      }
+
+      setDependents((prev) =>
+        prev.map((dep, i) =>
+          i === index ? { ...dep, [field]: formatted } : dep
+        )
+      );
+    };
+
+
   const handleNameChange = (value: string, index: number, field: keyof Dependent) => {
     const filteredValue = value.replace(/[^a-zA-Z\s]/g, "");
     setDependents((prevDependents) =>
@@ -192,13 +216,15 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
               />
             </div>
             <div className="flex justify-center items-center">
-              <label className="text-sm text-[#1D2B48] font-medium w-1/2">Date of Birth <span className="text-red-500">*</span></label>
+              <label className="text-sm text-[#1D2B48] font-medium w-1/2">
+                Date of Birth <span className="text-red-500">*</span>
+              </label>
               <input
                 type="text"
                 placeholder="DD/MM/YYYY"
                 className="w-1/2 mt-1 border text-[#616161] border-gray-300 rounded-md px-3 py-2 text-sm outline-0"
                 value={dep.dob}
-                onChange={(e) => handleInputChange(e.target.value, index, "dob", /[^0-9/]/g, 10)}
+                onChange={handleDateChangeForDependent(index, "dob")}
               />
             </div>
             <div className="flex justify-center items-center">
@@ -211,34 +237,14 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
                 onChange={(e) => handleInputChange(e.target.value, index, "months", /[^0-9]/g)}
               />
             </div>
-            <div className="flex justify-center items-center">
-              <label className="text-sm text-[#1D2B48] font-medium w-1/2">SSN / ITIN Number <span className="text-red-500">*</span></label>
-              <input
-                type="text"
-                placeholder="XXX-XXX-XXXX"
-                className="w-1/2 mt-1 border text-[#616161] border-gray-300 rounded-md px-3 py-2 text-sm outline-0"
-                value={dep.depOneSSN}
-                onChange={(e) => handleInputChange(e.target.value, index, "depOneSSN", /[^0-9-]/g, 11)}
-              />
-            </div>
-            <div className="flex justify-center items-center">
-              <label className="text-sm text-[#1D2B48] font-medium w-1/2">First Date of Entry in US <span className="text-red-500">*</span></label>
-              <input
-                type="text"
-                placeholder="DD/MM/YYYY"
-                className="w-1/2 mt-1 border text-[#616161] border-gray-300 rounded-md px-3 py-2 text-sm outline-0"
-                value={dep.date}
-                onChange={(e) => handleInputChange(e.target.value, index, "date", /[^0-9/]/g, 10)}
-              />
-            </div>
             <div className="flex items-center justify-between">
-              <label className="text-sm text-[#1D2B48] font-medium">US Citizen / Green Card Holder <span className="text-red-500">*</span></label>
+              <label className="text-sm text-[#1D2B48] font-medium">Childcare Expenses <span className="text-red-500">*</span></label>
               <div className="flex gap-2 w-1/2">
                 <ToggleSwitch
-                  value={dep.isUSCitizen}
+                  value={dep.hasChildcare}
                   labelLeft="No"
                   labelRight="Yes"
-                  onToggle={(val) => handleToggleChange(val, index, "isUSCitizen")}
+                  onToggle={(val) => handleToggleChange(val, index, "hasChildcare")}
                 />
               </div>
             </div>
@@ -253,19 +259,40 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
                   onChange={(val) => handleIdTypeChange(val as "SSN" | "ITIN" | "NEED TO APPLY", index)}
                   style="w-full"
                 />
-
               </div>
             </div>
+            <div className="flex justify-center items-center">
+              <label className="text-sm text-[#1D2B48] font-medium w-1/2">SSN / ITIN Number</label>
+              <input
+                type="text"
+                placeholder="XXX-XXX-XXXX"
+                className="w-1/2 mt-1 border text-[#616161] border-gray-300 rounded-md px-3 py-2 text-sm outline-0"
+                value={dep.depOneSSN}
+                onChange={(e) => handleInputChange(e.target.value, index, "depOneSSN", /[^0-9-]/g, 11)}
+              />
+            </div>
+
             <div className="flex items-center justify-between">
-              <label className="text-sm text-[#1D2B48] font-medium">Childcare Expenses <span className="text-red-500">*</span></label>
+              <label className="text-sm text-[#1D2B48] font-medium">US Citizen / Green Card Holder <span className="text-red-500">*</span></label>
               <div className="flex gap-2 w-1/2">
                 <ToggleSwitch
-                  value={dep.hasChildcare}
+                  value={dep.isUSCitizen}
                   labelLeft="No"
                   labelRight="Yes"
-                  onToggle={(val) => handleToggleChange(val, index, "hasChildcare")}
+                  onToggle={(val) => handleToggleChange(val, index, "isUSCitizen")}
                 />
               </div>
+            </div>
+
+            <div className="flex justify-center items-center">
+              <label className="text-sm text-[#1D2B48] font-medium w-1/2">First Date of Entry in US <span className="text-red-500">*</span></label>
+              <input
+                type="text"
+                placeholder="DD/MM/YYYY"
+                className="w-1/2 mt-1 border text-[#616161] border-gray-300 rounded-md px-3 py-2 text-sm outline-0"
+                value={dep.date}
+                onChange={handleDateChangeForDependent(index, "date")}
+              />
             </div>
           </div>
         </div>
