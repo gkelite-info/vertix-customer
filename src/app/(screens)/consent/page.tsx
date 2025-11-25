@@ -26,7 +26,7 @@ function ConsentPage() {
 
 
     const isValidDateFormat = (value: string) => {
-        const dateRegex = /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d{4}$/;
+        const dateRegex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
         return dateRegex.test(value);
     };
 
@@ -57,7 +57,7 @@ function ConsentPage() {
         }
 
         if (!isValidDateFormat(date1) || !isValidDateFormat(date2)) {
-            toast.error("Please enter valid dates in MM/DD/YYYY format.");
+            toast.error("Please enter valid dates in DD/MM/YYYY format.");
             setLoading(false);
             return;
         }
