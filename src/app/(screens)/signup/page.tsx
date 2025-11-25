@@ -8,6 +8,7 @@ import { supabase } from "../../../../utils/supabase/client"
 import { insertCustomer } from "@/app/api/SupabaseAPI/customer/customerApi"
 import TimezoneSelect from "../../../../utils/timezone"
 
+
 export default function Page() {
   const router = useRouter()
 
@@ -28,7 +29,7 @@ export default function Page() {
   const [phoneCode, setPhoneCode] = useState("");
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
-  
+
 
   const handlePhoneCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let val = e.target.value;
