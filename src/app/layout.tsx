@@ -16,6 +16,17 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   title: "Vertix Tax Solutions",
+  description: "Expert tax filing, amendments, ITIN services, IRS representation and more.",
+  keywords: [
+    "US Tax Filing",
+    "Tax Amendments",
+    "ITIN Application",
+    "IRS Issues",
+    "Tax Solutions",
+    "Vertix Tax",
+    "Business Tax Filing",
+    "Individual Tax Filing"
+  ],
   icons: [
     {
       rel: "icon",
