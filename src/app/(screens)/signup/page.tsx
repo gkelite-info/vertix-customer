@@ -10,7 +10,6 @@ import TimezoneSelect from "../../../../utils/timezone"
 
 export default function Page() {
   const router = useRouter()
-  const [timezone, setTimezone] = useState("");
 
   const [formData, setFormData] = useState({
     firstname: "",
@@ -29,14 +28,22 @@ export default function Page() {
   const [phoneCode, setPhoneCode] = useState("");
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
+  
 
   const handlePhoneCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = e.target.value;
-    if (/^[+0-9]*$/.test(val)) {
-      setPhoneCode(val);
-      setFormData((prev) => ({ ...prev, phone: val + phone }));
+    let val = e.target.value;
+
+    if (!val.startsWith("+")) {
+      val = "+" + val.replace(/\D/g, "");
     }
+
+    val = "+" + val.substring(1).replace(/\D/g, "");
+
+    setPhoneCode(val);
+
+    setFormData((prev) => ({ ...prev, phone: val + phone }));
   };
+
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -194,15 +201,13 @@ export default function Page() {
                   />
                 </div>
                 <div className="lg:w-[100%] lg:h-[10%] flex items-center border border-b-2 border-l-0 border-t-0 border-r-0 border-[#D0D0D0] lg:gap-3.5">
-                  {/* <Icon icon="line-md:phone" className="text-[#979797] w-6 h-6" /> */}
                   <input
                     type="text"
-                    placeholder="+1"
+                    placeholder="+91"
                     value={phoneCode}
                     onChange={handlePhoneCodeChange}
                     className="border border-gray-300 rounded text-[#1D2B48] px-2 py-2 mt-1 focus:outline-none w-[15%]"
                     maxLength={4}
-                    required
                   />
                   <input
                     type="number"

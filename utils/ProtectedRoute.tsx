@@ -10,7 +10,8 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
 
   const checkAuth = () => {
     const token = localStorage.getItem("token");
-    const publicRoutes = ["/",
+    const publicRoutes = [
+      "/",
       "/login",
       "/signup",
       "/forgot_password",
@@ -71,7 +72,7 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
   if (isAllowed === null) {
     return (
       <div className="flex justify-center items-center h-screen w-screen">
-        Loading...
+        <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }

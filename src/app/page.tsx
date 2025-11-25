@@ -193,28 +193,19 @@ export default function Page() {
             <div className="w-full flex flex-col items-center gap-2 lg:w-[30%] lg:h-auto">
               <div className="h-20 w-full flex items-center justify-center relative">
                 <div className="border border-3 border-dashed border-[#1D2B48] w-16 h-16 rounded-full flex justify-center items-center">
-                  <div className="            bg-[#1D2B48] h-[90%] w-[90%] rounded-full
-            flex justify-center items-center
-          ">
+                  <div className="bg-[#1D2B48] h-[90%] w-[90%] rounded-full flex justify-center items-center">
                     <h1 className="text-white text-xl font-bold">1</h1>
                   </div>
                 </div>
 
-                <div className="
-          hidden lg:block absolute right-0 transform translate-x-[90px]
-          w-[calc(50%)] h-0 border-t-2 border-dashed border-[#1D2B48]
-          z-0
-        "></div>
+                <div className="hidden lg:block absolute right-0 transform translate-x-[90px] w-[calc(50%)] h-0 border-t-2 border-dashed border-[#1D2B48] z-0">
+                </div>
               </div>
 
-              <h3 className="
-        text-[#1D2B48] text-lg font-semibold mt-2
-      ">
+              <h3 className="text-[#1D2B48] text-lg font-semibold mt-2">
                 Upload Your Documents
               </h3>
-              <p className="
-        text-gray-500 text-sm leading-snug
-      ">
+              <p className="text-gray-500 text-sm leading-snug">
                 Use our encrypted online portal to securely share your tax forms and financial details.
               </p>
             </div>
