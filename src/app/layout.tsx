@@ -16,7 +16,20 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   title: "Vertix Tax Solutions",
-}
+  icons: [
+    {
+      rel: "icon",
+      url: "/seo_logo_dark.png",
+      media: "(prefers-color-scheme: light)",
+    },
+    {
+      rel: "icon",
+      url: "/seo_logo_light.png",
+      media: "(prefers-color-scheme: dark)",
+    },
+  ],
+};
+
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
