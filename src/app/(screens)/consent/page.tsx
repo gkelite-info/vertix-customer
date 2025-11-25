@@ -80,7 +80,7 @@ function ConsentPage() {
             if (error) throw error;
 
             toast.success("Consent accepted successfully!");
-            router.push("/login");
+            router.push("/taxfiling?tab=filingyear");
         } catch (err: any) {
             toast.error(err.message || "Failed to update consent.");
         } finally {
