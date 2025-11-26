@@ -3,21 +3,28 @@ import { supabase } from "../../../../../utils/supabase/client"
 export const getCustomer = async () => {
   try {
     const {
-      data: { user },
-      error: authError,
-    } = await supabase.auth.getUser()
-    if (authError || !user) throw new Error("Not authenticated")
-    const customerId = user.id
+      data: { session },
+      error: sessionError,
+    } = await supabase.auth.getSession()
+
+    if (sessionError) throw sessionError
+
+    if (!session) return null
+
+    const authId = session.user.id
     const { data, error } = await supabase
       .from("vertixcustomers")
       .select("*")
-      .eq("auth_id", customerId)
+      .eq("auth_id", authId)
       .single()
+
     if (error) throw error
+
     return data
+
   } catch (error: any) {
     console.error("Error fetching customer:", error.message)
-    throw error
+    return null
   }
 }
 
