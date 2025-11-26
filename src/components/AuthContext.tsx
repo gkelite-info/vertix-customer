@@ -4,6 +4,8 @@ import React, { createContext, useContext, useEffect, useState } from "react"
 import { jwtDecode } from "jwt-decode"
 import { supabase } from "../../utils/supabase/client"
 import toast from "react-hot-toast"
+import { useRouter } from "next/navigation"
+import { getCustomer } from "@/app/api/SupabaseAPI/customer/customerApi"
 
 interface User {
   customerId: string
@@ -16,19 +18,17 @@ interface AuthContextType {
   user: User | null
   login: (token: string) => void
   logout: () => void
+  forceLogout: (message?: string) => void;
 }
+
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 const decodeToken = (token: string): User | null => {
   try {
-    const decoded = jwtDecode(token) as { customerId: string; name: string }
-    console.log("Here's the customer issue", decoded);
-
-    return {
-      customerId: decoded.customerId,
-      name: decoded.name,
-    }
+    const decoded = jwtDecode(token)
+    console.log("Decoded JWT:", decoded)
+    return null
   } catch (error) {
     console.error("Error decoding token:", error)
     return null
@@ -36,44 +36,61 @@ const decodeToken = (token: string): User | null => {
 }
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  const router = useRouter()
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [user, setUser] = useState<User | null>(null)
 
   useEffect(() => {
-    const token = localStorage.getItem("token")
-    const tempFlag = localStorage.getItem("temporary_access_flag")
+    const restoreSession = async () => {
+      const token = localStorage.getItem("token")
+      const tempFlag = localStorage.getItem("temporary_access_flag")
 
-    if (token) {
-      const userData = decodeToken(token)
+      if (token) {
+        const customerData = await getCustomer()
+        if (customerData) {
+          setIsAuthenticated(true)
+          setUser({
+            customerId: String(customerData.customerId),
+            name: customerData.firstname
+          })
+          localStorage.setItem("customerId", String(customerData.customerId))
+        } else {
+          localStorage.removeItem("token")
+          localStorage.removeItem("customerId")
+        }
+      }
 
-      if (userData) {
+      if (tempFlag === "true") {
         setIsAuthenticated(true)
-        setUser(userData)
-        localStorage.setItem("customerId", userData.customerId)
-      } else {
-        localStorage.removeItem("token")
-        localStorage.removeItem("customerId")
+        setUser({ customerId: "temp", name: "Temporary User" })
       }
     }
-    if (tempFlag === "true") {
-      console.log("Detected temporary access — keeping authenticated.")
-      setIsAuthenticated(true)
-      setUser({ customerId: "temp", name: "Temporary User" })
-    }
+
+    restoreSession()
   }, [])
 
-  const login = (token: string) => {
-    const userData = decodeToken(token)
 
-    if (userData) {
-      localStorage.setItem("token", token)
-      localStorage.setItem("customerId", userData.customerId)
-      setIsAuthenticated(true)
-      setUser(userData)
-    } else {
-      console.error("Invalid token — unable to decode user data")
+  const login = async (token: string) => {
+    localStorage.setItem("token", token)
+
+    const customerData = await getCustomer()
+
+    if (!customerData) {
+      toast.error("Failed to fetch customer info")
+      return
     }
+
+    const userData: User = {
+      customerId: String(customerData.customerId),
+      name: customerData.firstname,
+    }
+
+    localStorage.setItem("customerId", userData.customerId)
+    setIsAuthenticated(true)
+    setUser(userData)
   }
+
+
 
   const logout = async () => {
     try {
@@ -101,9 +118,20 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }
 
+  const forceLogout = async (message?: string) => {
+    try {
+      await logout();
+      if (message) toast.error(message);
+      router.push('/about');
+    } catch (err) {
+      console.error("Force logout error:", err);
+    }
+  };
+
+
   return (
     <AuthContext.Provider
-      value={{ isAuthenticated, setIsAuthenticated, user, login, logout }}
+      value={{ isAuthenticated, setIsAuthenticated, user, login, logout, forceLogout }}
     >
       {children}
     </AuthContext.Provider>

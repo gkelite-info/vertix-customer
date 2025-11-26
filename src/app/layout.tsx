@@ -7,7 +7,8 @@ import ClientLayout from "./ClientLayout"
 import { AuthProvider } from "@/components/AuthContext"
 import { YearProvider } from "./api/context/yearContext"
 import ProtectedRoute from "../../utils/ProtectedRoute"
-import SupabaseSessionProvider from "@/components/SupabaseSessionProvider"
+import AuthSessionLoader from "@/components/AuthSessionLoader"
+// import SupabaseSessionProvider from "@/components/SupabaseSessionProvider"
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -48,7 +49,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={poppins.className}>
       <body>
-        <SupabaseSessionProvider>
+        {/* <SupabaseSessionProvider> */}
+        <AuthSessionLoader>
           <ProtectedRoute>
             <AuthProvider>
               <YearProvider>
@@ -66,7 +68,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               </YearProvider>
             </AuthProvider>
           </ProtectedRoute>
-        </SupabaseSessionProvider>
+        </AuthSessionLoader>
+        {/* </SupabaseSessionProvider> */}
       </body>
     </html>
   )
