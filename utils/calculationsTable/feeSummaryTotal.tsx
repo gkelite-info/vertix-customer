@@ -8,8 +8,11 @@ type FeeSummaryTotalsProps = {
   referral?: number;
   feePaid?: number;
   code?: string;
+<<<<<<< Updated upstream
   netFee?: number;
   dueAmount?: number;
+=======
+>>>>>>> Stashed changes
   width?: string;
   onTotalsChange: (values: {
     totalFee: number;
@@ -29,8 +32,11 @@ export default function FeeSummaryTotals({
   referral: initialReferral = 0,
   feePaid: initialFeePaid = 0,
   code: initialCode = "",
+<<<<<<< Updated upstream
   netFee: initialNetFee = 0,
   dueAmount: initialDueAmount = 0,
+=======
+>>>>>>> Stashed changes
   width,
   onTotalsChange,
   readOnly = false,
@@ -39,8 +45,11 @@ export default function FeeSummaryTotals({
   const [referral, setReferral] = useState(initialReferral);
   const [feePaid, setFeePaid] = useState(initialFeePaid);
   const [code, setCode] = useState(initialCode);
+<<<<<<< Updated upstream
   const [netFee, setNetFee] = useState(initialNetFee);
   const [dueAmount, setDueAmount] = useState(initialDueAmount);
+=======
+>>>>>>> Stashed changes
 
   const [loadedFromDB, setLoadedFromDB] = useState(false);
 
@@ -91,7 +100,6 @@ export default function FeeSummaryTotals({
         netFee,
       });
     }, 100);
-
     return () => clearTimeout(timeout);
   }, [discount, referral, feePaid, dueAmount, code, netFee, total]);
 
@@ -106,7 +114,11 @@ export default function FeeSummaryTotals({
   ];
 
   return (
+<<<<<<< Updated upstream
     <div className={`flex justify-start mt-4 ${width || ""}`}>
+=======
+    <div className={`flex justify-start mt-4 bg-pink-00 ${width}`}>
+>>>>>>> Stashed changes
       <table className="border-collapse border border-gray-400 w-full">
         <tbody>
           {rows.map((row, idx) => (

@@ -11,6 +11,7 @@ import CommentModal from "@/components/modals/commentModal";
 import { useHandleMagicLinkAuth } from "../../../../utils/useHandleMagicLinkAuth";
 import DateForDue from "../BankingInformation/dateForDue";
 import { motion, AnimatePresence } from "framer-motion";
+<<<<<<< Updated upstream
 import PaymentGateway from "../../(screens)/paymentGateway/page";
 import { useRouter } from "next/navigation";
 
@@ -34,10 +35,36 @@ export default function TaxReturnRefund() {
   const [selectedRecord, setSelectedRecord] = useState<Record<string, any> | null>(null);
   const { isTemporary, isSessionReady } = useHandleMagicLinkAuth();
 
+=======
+import PaymentGateway from "./paymentGateway";
+
+export default function TaxReturnRefund() {
+  const { filingYearId } = useYear();
+  const { user } = useAuth();
+
+  const [summaries, setSummaries] = useState<Record<string, any>[]>([]);
+  const [fetchingData, setFetchingData] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedRecord, setSelectedRecord] = useState<Record<string, any> | null>(null);
+  const { isTemporary, isSessionReady } = useHandleMagicLinkAuth();
+
+>>>>>>> Stashed changes
   const [showPayNow, setShowPayNow] = useState(false);
   const [showPaymentGateway, setShowPaymentGateway] = useState(false);
 
   useEffect(() => {
+<<<<<<< Updated upstream
+=======
+    if (showPayNow) {
+      const timer = setTimeout(() => {
+        setShowPayNow(false);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [showPayNow]);
+
+  useEffect(() => {
+>>>>>>> Stashed changes
     if (!isSessionReady) return;
     fetchData();
   }, [user, filingYearId, isSessionReady]);
@@ -83,6 +110,7 @@ export default function TaxReturnRefund() {
     }
   };
 
+<<<<<<< Updated upstream
   const handleAcceptClick = (record: Record<string, any>) => {
     if (summaries.length > 0) {
       setSelectedRecord(summaries[0]);
@@ -92,6 +120,15 @@ export default function TaxReturnRefund() {
     }
   };
 
+=======
+  const handleAcceptClick = () => {
+    setShowPayNow(true);
+  };
+
+  const handlePayNowClick = () => {
+    setShowPaymentGateway(true);
+  };
+>>>>>>> Stashed changes
 
   const baseColumns = [
     "TAX Type",
@@ -139,7 +176,11 @@ export default function TaxReturnRefund() {
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.3 }}
                 className="bg-blue-600 cursor-pointer hover:bg-blue-500 text-white py-1.5 px-4 rounded-md text-sm font-medium shadow-md transition-all duration-200"
+<<<<<<< Updated upstream
                 onClick={handleGateway}
+=======
+                onClick={handlePayNowClick}
+>>>>>>> Stashed changes
               >
                 Pay Now
               </motion.button>
@@ -161,7 +202,11 @@ export default function TaxReturnRefund() {
           !fetchingData &&
           (summaries.length > 0 ? (
             <>
+<<<<<<< Updated upstream
               <div className="bg-red-00 flex flex-col items-start">
+=======
+              <div className="bg-blue-00 flex flex-col items-start">
+>>>>>>> Stashed changes
                 <TableComponent
                   data={summaries.map((item) => ({
                     ...item,
@@ -177,7 +222,11 @@ export default function TaxReturnRefund() {
                   <div className="flex mt-3 gap-3">
                     <button
                       className="bg-green-600 hover:bg-green-500 py-1 px-3 text-white rounded-md cursor-pointer text-sm font-medium focus:outline-none shadow-md"
+<<<<<<< Updated upstream
                       onClick={() => handleAcceptClick(summaries[0])}
+=======
+                      onClick={handleAcceptClick}
+>>>>>>> Stashed changes
                     >
                       Accept
                     </button>
