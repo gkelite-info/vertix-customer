@@ -23,6 +23,8 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined)
 const decodeToken = (token: string): User | null => {
   try {
     const decoded = jwtDecode(token) as { customerId: string; name: string }
+    console.log("Here's the customer issue", decoded);
+
     return {
       customerId: decoded.customerId,
       name: decoded.name,

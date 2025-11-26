@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useYear } from "@/app/api/context/yearContext";
 import { getCustomer } from "@/app/api/SupabaseAPI/customer/customerApi";
 import { getLatestFilingYearRecord } from "@/app/api/SupabaseAPI/customer/filingYearAPI";
+import { supabase } from "@/api-requests/supabaseClient";
 
 interface YearSelectProps {
   style?: string;
@@ -27,13 +28,13 @@ export default function YearSelect({ style = "" }: YearSelectProps) {
     const token = localStorage.getItem("token");
     if (!token) return;
     const fetchCustomer = async () => {
-      try {
-        const customer = await getCustomer();
-        setName(customer.firstname);
-        setCustomerId(customer.customerId);
-      } catch (error) {
-        console.error("Failed to fetch customer", error);
-      }
+      await supabase.auth.setSession({
+        access_token: token,
+        refresh_token: ""
+      });
+      const customer = await getCustomer();
+      setName(customer.firstname);
+      setCustomerId(customer.customerId);
     };
     fetchCustomer();
   }, []);

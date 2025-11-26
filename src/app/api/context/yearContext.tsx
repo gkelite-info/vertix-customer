@@ -3,6 +3,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { getCustomer } from "../SupabaseAPI/customer/customerApi";
 import { getFilingYearIdForCustomerAndYear } from "../SupabaseAPI/customer/filingYearAPI";
+import { supabase } from "../../../../utils/supabase/client";
 
 interface YearContextType {
   selectedYear: string;
@@ -17,6 +18,25 @@ export const YearProvider = ({ children }: { children: React.ReactNode }) => {
   const [selectedYear, setSelectedYear] = useState<string>("");
   const [filingYearId, setFilingYearId] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const restoreSession = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      try {
+        await supabase.auth.setSession({
+          access_token: localStorage.getItem("access_token")!,
+          refresh_token: localStorage.getItem("refresh_token")!,
+        });
+        console.log("Supabase session restored");
+      } catch (err) {
+        console.error("Failed to restore Supabase session:", err);
+      }
+    };
+
+    restoreSession();
+  }, []);
 
   useEffect(() => {
     const storedYear = localStorage.getItem("selectedYear");
