@@ -49,7 +49,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={poppins.className}>
       <body>
-        {/* <SupabaseSessionProvider> */}
         <AuthSessionLoader>
           <ProtectedRoute>
             <AuthProvider>
@@ -69,7 +68,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </AuthProvider>
           </ProtectedRoute>
         </AuthSessionLoader>
-        {/* </SupabaseSessionProvider> */}
       </body>
     </html>
   )
