@@ -47,7 +47,7 @@ export default function TaxfilingContent() {
       !sessionStorage.getItem("tempHardRefreshed")
 
     if (shouldReload) {
-      console.log("🔄 Performing hard refresh for temp access")
+      console.log("Performing hard refresh for temp access")
       sessionStorage.setItem("tempHardRefreshed", "true")
       setTimeout(() => window.location.reload(), 300)
     }

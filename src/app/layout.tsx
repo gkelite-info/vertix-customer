@@ -7,6 +7,7 @@ import ClientLayout from "./ClientLayout"
 import { AuthProvider } from "@/components/AuthContext"
 import { YearProvider } from "./api/context/yearContext"
 import ProtectedRoute from "../../utils/ProtectedRoute"
+import SupabaseSessionProvider from "@/components/SupabaseSessionProvider"
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -18,6 +19,7 @@ export const metadata: Metadata = {
   title: "Vertix Tax Solutions",
   description: "Expert tax filing, amendments, ITIN services, IRS representation and more.",
   keywords: [
+    "Vertix",
     "US Tax Filing",
     "Tax Amendments",
     "ITIN Application",
@@ -46,23 +48,25 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={poppins.className}>
       <body>
-        <ProtectedRoute>
-          <AuthProvider>
-            <YearProvider>
-              <ClientLayout>{children}</ClientLayout>
-              <Toaster
-                position="top-right"
-                reverseOrder={false}
-                toastOptions={{
-                  className: "",
-                  style: {
-                    fontSize: "18px",
-                  },
-                }}
-              />
-            </YearProvider>
-          </AuthProvider>
-        </ProtectedRoute>
+        <SupabaseSessionProvider>
+          <ProtectedRoute>
+            <AuthProvider>
+              <YearProvider>
+                <ClientLayout>{children}</ClientLayout>
+                <Toaster
+                  position="top-right"
+                  reverseOrder={false}
+                  toastOptions={{
+                    className: "",
+                    style: {
+                      fontSize: "18px",
+                    },
+                  }}
+                />
+              </YearProvider>
+            </AuthProvider>
+          </ProtectedRoute>
+        </SupabaseSessionProvider>
       </body>
     </html>
   )
