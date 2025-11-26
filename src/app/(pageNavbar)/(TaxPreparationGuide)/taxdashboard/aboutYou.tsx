@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ThreeOptionToggle from "../../../../../utils/threeOptionToggle";
 import { supabase } from "../../../../../utils/supabase/client";
 import { getCustomer } from "@/app/api/SupabaseAPI/customer/customerApi";
@@ -49,6 +49,27 @@ export default function AboutYou({ setActiveTab }: AboutYouProps): React.ReactEl
     const [spouseVisaDec, setSpouseVisaDec] = useState(VISA_OPTIONS[0]);
     const [spouseFirstEntryDate, setSpouseFirstEntryDate] = useState("");
     const [spouseMonthsInUS, setSpouseMonthsInUS] = useState("");
+
+
+    const handleDateChange = (setter: (val: string) => void) =>
+        (e: React.ChangeEvent<HTMLInputElement>) => {
+            let input = e.target.value.replace(/\D/g, "");
+            if (input.length > 8) input = input.slice(0, 8);
+
+            let formatted = "";
+            if (input.length <= 2) {
+                formatted = input;
+                if (input.length === 2) formatted += "/";
+            } else if (input.length <= 4) {
+                formatted = input.slice(0, 2) + "/" + input.slice(2);
+                if (input.length === 4) formatted += "/";
+            } else {
+                formatted = input.slice(0, 2) + "/" + input.slice(2, 4) + "/" + input.slice(4);
+            }
+
+            setter(formatted);
+        };
+
 
     const validateBeforeSubmit = () => {
 
@@ -160,6 +181,9 @@ export default function AboutYou({ setActiveTab }: AboutYouProps): React.ReactEl
             console.error("Error saving data:", error);
             toast.error("Failed to save details.");
         }
+        finally {
+            setLoading(false)
+        }
     };
 
 
@@ -206,12 +230,9 @@ export default function AboutYou({ setActiveTab }: AboutYouProps): React.ReactEl
                     <div className="flex bg-green-00 w-[90%] mt-5 h-10 items-center justify-between">
                         <h4 className="text-[#1D2B48] font-medium">Date of Birth <span className="text-red-500">*</span></h4>
                         <input
+                            type="text"
                             value={dob}
-                            onChange={(e) => {
-                                const newValue = e.target.value;
-                                const filteredValue = newValue.replace(/[^0-9/]/g, '').slice(0, 10);
-                                setDob(filteredValue);
-                            }}
+                            onChange={handleDateChange(setDob)}
                             placeholder="DD/MM/YYYY"
                             className="border bg-red-00 rounded-md text-[#616161] border-[#B5B5B5] w-[50%] h-[100%] px-3 text-sm focus:outline-none"
                         />
@@ -309,12 +330,7 @@ export default function AboutYou({ setActiveTab }: AboutYouProps): React.ReactEl
                         <h4 className="text-[#1D2B48] font-medium">First Date of entry in US</h4>
                         <input type="text"
                             value={firstEntryDate}
-                            onChange={(e) => {
-                                const value = e.target.value;
-                                if (/^[0-9/]*$/.test(value) && value.length <= 10) {
-                                    setFirstEntryDate(value);
-                                }
-                            }}
+                            onChange={handleDateChange(setFirstEntryDate)}
                             placeholder="DD/MM/YYYY"
                             className="border bg-red-00 rounded-md text-[#3E3E3E] border-[#B5B5B5] w-[50%] h-[100%] px-3 text-sm focus:outline-none"
                         />
@@ -401,7 +417,7 @@ export default function AboutYou({ setActiveTab }: AboutYouProps): React.ReactEl
                                     <h4 className="text-[#1D2B48] font-medium">Date of Birth <span className="text-red-500">*</span></h4>
                                     <input type="text"
                                         value={spouseDOB}
-                                        onChange={(e) => setSpouseDOB(e.target.value)}
+                                        onChange={handleDateChange(setSpouseDOB)}
                                         placeholder="DD/MM/YYYY"
                                         className="border bg-red-00 rounded-md text-[#616161] border-[#B5B5B5] w-[50%] h-[100%] px-3 text-sm focus:outline-none"
                                     />
@@ -529,7 +545,7 @@ export default function AboutYou({ setActiveTab }: AboutYouProps): React.ReactEl
                                 <button onClick={handleSave}
                                     disabled={loading}
                                     className="mt-5 w-[15%] bg-[#1D2A46] text-white font-medium text-sm cursor-pointer py-2 rounded">
-                                    {loading ? "Saving" : "Save"}
+                                    {loading ? "Saving..." : "Save"}
                                 </button>
 
                                 <button

@@ -16,7 +16,6 @@ function Header() {
   const router = useRouter()
   const { isTemporary } = useHandleMagicLinkAuth()
   const pathname = usePathname()
-  const [, setIsLoggedIn] = useState(false)
   const { isAuthenticated, logout } = useAuth()
 
   const [showLogoutModal, setShowLogoutModal] = useState(false)
@@ -56,11 +55,6 @@ function Header() {
      after:transition-[width] after:duration-200 after:ease-linear
      ${active ? "after:w-full" : "after:w-0"}`
 
-  useEffect(() => {
-    const token = localStorage.getItem("token")
-    setIsLoggedIn(!!token)
-  }, [pathname])
-
   const handleLogout = () => setShowLogoutModal(true)
 
   const confirmLogout = () => {
@@ -73,9 +67,8 @@ function Header() {
     } else {
       logout()
     }
-    window.dispatchEvent(new Event("storage"))
     setShowLogoutModal(false)
-    router.push("/login")
+    router.push("/")
   }
 
   const cancelLogout = () => setShowLogoutModal(false)

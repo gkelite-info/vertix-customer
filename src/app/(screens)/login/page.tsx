@@ -130,12 +130,12 @@ export default function Page() {
         <div className="flex flex-col lg:flex-row w-full max-w-5xl lg:max-w-7xl lg:h-[100%] shadow-2xl overflow-hidden">
           <div className="hidden lg:flex lg:w-1/2 w-[100%] bg-[url('/login.png')] bg-cover bg-center justify-center items-center p-0 text-white">
             <h1 className="text-[#1D2B48] text-2xl font-medium text-center p-4 bg-opacity-30 rounded-lg absolute top-25">
-              Login to Manage Your Taxes Safely.
+              Signin to Manage Your Taxes Safely.
             </h1>
           </div>
           <div className="w-full lg:w-1/2 p-4 sm:p-8 md:p-12 flex flex-col items-center justify-center bg-white lg:rounded-l-none">
             <h1 className="text-xl sm:text-2xl font-semibold text-black mb-8">
-              Login
+              Signin
             </h1>
             <div className="w-full max-w-sm sm:max-w-md">
               <div className="mb-4">
@@ -200,20 +200,24 @@ export default function Page() {
                     Remember Password
                   </label>
                 </div>
-                <p
+                {/* <p
                   className="font-medium text-xs sm:text-sm underline text-[#3A4969] cursor-pointer"
                   onClick={() => router.push("/forgot_password")}
                 >
                   Forgot Password ?
-                </p>
+                </p> */}
               </div>
               <div className="flex flex-col gap-4 items-center">
                 <button
-                  className="cursor-pointer text-white h-12 w-full text-base sm:text-lg font-medium rounded-full bg-[#1D2B48] hover:bg-opacity-90 transition duration-150"
+                  className="cursor-pointer flex items-center justify-center text-white h-12 w-full text-base sm:text-lg font-medium rounded-full bg-[#1D2B48] hover:bg-opacity-90 transition duration-150"
                   onClick={handleLogin}
                   disabled={loading}
                 >
-                  {loading ? "Loading..." : "Login"}
+                  {loading ? (
+                    <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                  ) : (
+                    "Signin"
+                  )}
                 </button>
                 <div className="flex gap-1 items-center justify-center h-8 w-full">
                   <h5 className="font-medium text-[#979797] text-sm">

@@ -49,7 +49,7 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
 
   const handleDateChangeForDependent = (index: number, field: "dob" | "date") =>
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      let input = e.target.value.replace(/\D/g, ""); // remove non-digits
+      let input = e.target.value.replace(/\D/g, "");
       if (input.length > 8) input = input.slice(0, 8);
 
       let formatted = "";

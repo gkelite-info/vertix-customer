@@ -324,7 +324,7 @@ export default function Page() {
                       className="font-medium text-sm text-black underline cursor-pointer"
                       onClick={handlelogin}
                     >
-                      Login
+                      Signin
                     </p>
                   </div>
                 </div>

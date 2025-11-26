@@ -13,6 +13,8 @@ export default function Page() {
     message: "",
   });
   const [loading, setLoading] = useState(false);
+  const [mapLoaded, setMapLoaded] = useState(false);
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -67,15 +69,18 @@ export default function Page() {
 
       <section id="contact" className="py-0 bg-white pb-5 lg:pb-10">
         <div className="mx-auto px-6 gap-5 grid grid-cols-1 lg:grid-cols-2">
-          <div className="">
+          <div className="relative">
+            {!mapLoaded && (
+              <div className="w-full h-[400px] rounded-lg shadow-md bg-gray-200 animate-pulse absolute top-0 left-0" />
+            )}
             <iframe
-              className="w-full h-[400px] rounded-lg shadow-md"
+              className={`w-full h-[400px] rounded-lg shadow-md transition-opacity duration-500 ${mapLoaded ? "opacity-100" : "opacity-0"}`}
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3093.7976065252356!2d-75.52672902483106!3d39.15658477166975!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c764aa7c225e51%3A0x923f74929919960!2s8%20The%20Green%2C%20Dover%2C%20DE%2019901%2C%20USA!5e0!3m2!1sen!2sin!4v1763123821465!5m2!1sen!2sin"
               allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-            >
-            </iframe>
+              onLoad={() => setMapLoaded(true)}
+            />
           </div>
 
           <div className="h-[400px]">
