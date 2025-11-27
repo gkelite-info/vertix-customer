@@ -39,7 +39,7 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
       "/unreimbursed_expenses",
       "/state_refund",
       "/contact",
-      "/taxfiling"
+      // "/taxfiling"
     ];
 
     if (!token) {
