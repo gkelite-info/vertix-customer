@@ -38,7 +38,8 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
       "/reit",
       "/unreimbursed_expenses",
       "/state_refund",
-      "/contact"
+      "/contact",
+      "/taxfiling"
     ];
 
     if (!token) {
