@@ -3,6 +3,8 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { getCustomer } from "../SupabaseAPI/customer/customerApi";
 import { getFilingYearIdForCustomerAndYear } from "../SupabaseAPI/customer/filingYearAPI";
+import { supabase } from "../../../../utils/supabase/client";
+import { useAuth } from "@/components/AuthContext";
 
 interface YearContextType {
   selectedYear: string;
@@ -14,9 +16,37 @@ interface YearContextType {
 const YearContext = createContext<YearContextType | undefined>(undefined);
 
 export const YearProvider = ({ children }: { children: React.ReactNode }) => {
+  const { forceLogout } = useAuth();
   const [selectedYear, setSelectedYear] = useState<string>("");
   const [filingYearId, setFilingYearId] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [sessionReady, setSessionReady] = useState(false);
+
+  useEffect(() => {
+    const restoreSession = async () => {
+      const access = localStorage.getItem("access_token");
+      const refresh = localStorage.getItem("refresh_token");
+
+      if (!access || !refresh) {
+        setSessionReady(true);
+        return;
+      }
+
+      try {
+        await supabase.auth.setSession({
+          access_token: access,
+          refresh_token: refresh,
+        });
+        console.log("Supabase session restored");
+      } catch (err) {
+        console.error("Failed to restore Supabase session:", err);
+      }
+
+      setSessionReady(true);
+    };
+
+    restoreSession();
+  }, []);
 
   useEffect(() => {
     const storedYear = localStorage.getItem("selectedYear");
@@ -24,6 +54,8 @@ export const YearProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   useEffect(() => {
+    if (!sessionReady) return;
+
     const fetchFilingYear = async () => {
       if (!selectedYear) {
         setFilingYearId(null);
@@ -33,7 +65,11 @@ export const YearProvider = ({ children }: { children: React.ReactNode }) => {
       setIsLoading(true);
       try {
         const customer = await getCustomer();
-        if (!customer?.customerId) throw new Error("Customer not found");
+
+        if (!customer?.customerId) {
+          await forceLogout("Customer not found. Please login again.");
+          return;
+        }
 
         let filingId = await getFilingYearIdForCustomerAndYear(
           customer.customerId,
@@ -50,7 +86,7 @@ export const YearProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     fetchFilingYear();
-  }, [selectedYear]);
+  }, [selectedYear, sessionReady]);
 
   useEffect(() => {
     if (selectedYear) localStorage.setItem("selectedYear", selectedYear);
