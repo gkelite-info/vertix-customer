@@ -10,7 +10,7 @@ import { useSearchParams } from "next/navigation";
 function PaymentGatewayContent() {
   const searchParams = useSearchParams();
   const summaryId = searchParams.get("SummaryId");
-  const { filingYearId } = useYear(); 
+  const { filingYearId } = useYear();
 
   const [totals, setTotals] = useState({
     totalFee: 0,
@@ -75,20 +75,27 @@ function PaymentGatewayContent() {
 
   if (!filingYearId) {
     return (
-      <p className="p-4 text-[#1D2B48] bg-white">
-        Select a filing year to view payment details.
-      </p>
+      <div className="p-4 text-[#1D2B48] bg-white flex flex-col items-center justify-center h-[100vh]">
+        <p className="p-4 text-[#1D2B48] bg-white">
+          Select a filing year to view payment details.
+        </p>
+      </div>
     );
   }
 
   if (loading) {
-    return <p className="p-4 text-[#1D2B48] bg-white">Loading payment details...</p>;
+    return (
+      <div className="p-4 text-[#1D2B48] bg-white flex flex-col items-center justify-center h-[100vh]">
+        <p className="text-[#1D2B48] bg-white">Loading payment details...</p>
+      </div>
+    )
   }
 
   if (noRecord) {
     return (
-      <div className="p-4 text-[#1D2B48] bg-white">
-        <p>No payment records found for this year.</p>
+      <div className="p-4 text-[#1D2B48] bg-white flex flex-col items-center justify-center h-[100vh]">
+        <p className="text-black font-semibold mb-1">Oops.. 😕</p>
+        <p>No records found for this year.</p>
       </div>
     );
   }
@@ -110,6 +117,7 @@ function PaymentGatewayContent() {
             onTotalsChange={setTotals}
             width="w-[100%]"
             readOnly
+            showCodeRow={false}
           />
 
           <div className="mt-6 flex gap-3">

@@ -39,7 +39,7 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
       "/unreimbursed_expenses",
       "/state_refund",
       "/contact",
-      "/taxfiling"
+      "/taxfiling",
     ];
 
     if (!token) {
@@ -73,7 +73,7 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
 
   if (isAllowed === null) {
     return (
-      <div className="flex justify-center items-center h-screen w-screen">
+      <div className="flex justify-center items-center h-screen w-screen bg-white">
         <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
