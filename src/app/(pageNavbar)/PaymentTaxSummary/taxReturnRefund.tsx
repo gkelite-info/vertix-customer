@@ -11,7 +11,7 @@ import CommentModal from "@/components/modals/commentModal";
 import { useHandleMagicLinkAuth } from "../../../../utils/useHandleMagicLinkAuth";
 import DateForDue from "../BankingInformation/dateForDue";
 import { motion, AnimatePresence } from "framer-motion";
-import PaymentGateway from "../../(screens)/paymentGateway/page";
+import PaymentGateway from "../../(screens)/payment-gateway/page";
 import { useRouter } from "next/navigation";
 
 export default function TaxReturnRefund() {
@@ -22,7 +22,7 @@ export default function TaxReturnRefund() {
       toast.error("No valid summary selected!");
       return;
     }
-    router.push(`/paymentGateway?summaryId=${selectedRecord.summaryId}`);
+    router.push(`/payment-gateway?summaryId=${selectedRecord.summaryId}`);
   };
 
   const { filingYearId } = useYear();

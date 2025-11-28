@@ -73,7 +73,7 @@ export default function FeeSummaryTable({
       </table>
 
       <FeeSummaryTotals
-        total={initialTotals?.totalFee ?? 0}
+        total={total}
         discount={initialTotals?.discount ?? 0}
         referral={initialTotals?.referral ?? 0}
         feePaid={initialTotals?.feePaid ?? 0}
@@ -81,6 +81,7 @@ export default function FeeSummaryTable({
         netFee={initialTotals?.netFee ?? 0}
         dueAmount={initialTotals?.dueAmount ?? 0}
         onTotalsChange={onTotalsChange}
+        showCodeRow={true}
       />
 
     </div>

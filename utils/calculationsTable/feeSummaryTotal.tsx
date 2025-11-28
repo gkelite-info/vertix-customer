@@ -21,7 +21,24 @@ type FeeSummaryTotalsProps = {
     netFee: number;
   }) => void;
   readOnly?: boolean;
+  showCodeRow?: boolean;
 };
+
+type NumberRow = {
+  type: "number";
+  label: string;
+  value: number;
+  onChange?: (val: number) => void;
+};
+
+type TextRow = {
+  type: "text";
+  label: string;
+  value: string;
+  onChange: (val: string) => void;
+};
+
+type Row = NumberRow | TextRow;
 
 export default function FeeSummaryTotals({
   total,
@@ -34,6 +51,7 @@ export default function FeeSummaryTotals({
   width,
   onTotalsChange,
   readOnly = false,
+  showCodeRow = true,
 }: FeeSummaryTotalsProps) {
   const [discount, setDiscount] = useState(initialDiscount);
   const [referral, setReferral] = useState(initialReferral);
@@ -45,21 +63,13 @@ export default function FeeSummaryTotals({
   const [loadedFromDB, setLoadedFromDB] = useState(false);
 
   useEffect(() => {
-    if (
-      initialDiscount !== undefined ||
-      initialReferral !== undefined ||
-      initialFeePaid !== undefined ||
-      initialNetFee !== undefined ||
-      initialDueAmount !== undefined
-    ) {
-      setDiscount(initialDiscount ?? 0);
-      setReferral(initialReferral ?? 0);
-      setFeePaid(initialFeePaid ?? 0);
-      setCode(initialCode ?? "");
-      setNetFee(initialNetFee ?? 0);
-      setDueAmount(initialDueAmount ?? 0);
-      setLoadedFromDB(true);
-    }
+    setDiscount(initialDiscount ?? 0);
+    setReferral(initialReferral ?? 0);
+    setFeePaid(initialFeePaid ?? 0);
+    setCode(initialCode ?? "");
+    setNetFee(initialNetFee ?? 0);
+    setDueAmount(initialDueAmount ?? 0);
+    setLoadedFromDB(true);
   }, [
     initialDiscount,
     initialReferral,
@@ -95,15 +105,23 @@ export default function FeeSummaryTotals({
     return () => clearTimeout(timeout);
   }, [discount, referral, feePaid, dueAmount, code, netFee, total]);
 
-  const rows = [
-    { label: "Total", value: total.toFixed(2), isInput: false },
-    { label: "Discount", value: discount, onChange: setDiscount },
-    { label: "Referral", value: referral, onChange: setReferral },
-    { label: "Net Fee", value: netFee.toFixed(2), isInput: false },
-    { label: "Fee Paid", value: feePaid, onChange: setFeePaid },
-    { label: "Due Amount", value: dueAmount.toFixed(2), isInput: false },
-    { label: "Code", value: code, onChange: setCode, inputType: "text" },
+  const rows: Row[] = [
+    { type: "number", label: "Total", value: total },
+    { type: "number", label: "Discount", value: discount, onChange: setDiscount },
+    { type: "number", label: "Referral", value: referral, onChange: setReferral },
+    { type: "number", label: "Net Fee", value: netFee },
+    { type: "number", label: "Fee Paid", value: feePaid, onChange: setFeePaid },
+    { type: "number", label: "Due Amount", value: dueAmount },
   ];
+
+  if (showCodeRow) {
+    rows.push({
+      type: "text",
+      label: "Code",
+      value: code,
+      onChange: setCode,
+    });
+  }
 
   return (
     <div className={`flex justify-start mt-4 ${width || ""}`}>
@@ -114,20 +132,22 @@ export default function FeeSummaryTotals({
               <td className="border border-gray-300 text-xs font-medium px-4 py-2 w-[50%]">
                 {row.label}
               </td>
+
               <td className="border border-gray-300 text-xs px-4 py-2 text-center">
-                {readOnly || row.isInput === false ? (
+                {readOnly || !row.onChange ? (
                   <span>{row.value}</span>
+                ) : row.type === "text" ? (
+                  <input
+                    type="text"
+                    value={row.value}
+                    onChange={(e) => row.onChange!(e.target.value)}
+                    className="border border-gray-400 rounded px-2 py-1 text-sm text-center w-24 focus:outline-none"
+                  />
                 ) : (
                   <input
-                    type={row.inputType || "number"}
+                    type="number"
                     value={row.value}
-                    onChange={(e) =>
-                      (row.onChange as (val: any) => void)(
-                        row.inputType === "text"
-                          ? e.target.value
-                          : Number(e.target.value)
-                      )
-                    }
+                    onChange={(e) => row.onChange!(Number(e.target.value))}
                     className="border border-gray-400 rounded px-2 py-1 text-sm text-center w-24 focus:outline-none"
                   />
                 )}

@@ -75,7 +75,7 @@ export const upsertFeeSummary = async (summary: FeeSummaryInput) => {
 
     const { data, error } = await supabase
       .from("fee_summary")
-      .upsert([payload], { onConflict: "customerId,filingYearId" })
+      .upsert([payload], { onConflict: "filingYearId" })
       .select("summaryId")
       .single()
 
