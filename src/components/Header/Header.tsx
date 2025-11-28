@@ -16,7 +16,7 @@ function Header() {
   const router = useRouter()
   const { isTemporary } = useHandleMagicLinkAuth()
   const pathname = usePathname()
-  const { isAuthenticated, logout } = useAuth()
+  const { isAuthenticated, logout, setIsAuthenticated } = useAuth()
 
   const [showLogoutModal, setShowLogoutModal] = useState(false)
   const [mobileNavOpen, setMobileNavOpen] = useState(false)
@@ -63,6 +63,7 @@ function Header() {
       localStorage.removeItem("temporary_access_expiry")
       localStorage.removeItem("selectedYear")
       localStorage.removeItem("token")
+      setIsAuthenticated(false)
       toast.success("Logged out successfully")
     } else {
       logout()
