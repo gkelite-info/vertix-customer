@@ -1,17 +1,22 @@
 'use client'
-import { useState } from "react";
 import ToggleSwitch from "../../../../../../utils/toggleSwitch";
+import { Tab } from "../page";
 
 
-export default function IncomeDetails({ incomeDetails, setIncomeDetails, handleToggleChange, }: {
+type IncomeDetailsProps = {
     incomeDetails: any[];
     setIncomeDetails: (data: any[]) => void;
     handleToggleChange: (index: number, field: string, value: boolean) => void;
-}) {
+    setActiveTab: (tab: Tab) => void;
+};
 
+export default function IncomeDetails({
+    incomeDetails,
+    setIncomeDetails,
+    handleToggleChange,
+    setActiveTab,
+}: IncomeDetailsProps) {
     const index = 0;
-    const [taxPayerHasW2, setTaxPayerHasW2] = useState(false);
-    const [spouseHasW2, setSpouseHasW2] = useState(false);
 
     return (
         <>
