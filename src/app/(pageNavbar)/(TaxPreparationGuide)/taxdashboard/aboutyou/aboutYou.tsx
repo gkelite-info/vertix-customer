@@ -11,7 +11,7 @@ import { getSpouse, upsertSpouse } from "@/app/api/SupabaseAPI/customer/spousesA
 
 const VISA_OPTIONS = ["L1", "L2", "L3"];
 
-type Tab =
+export type Tab =
     | "About You"
     | "Dependents"
     | "Residency Details"

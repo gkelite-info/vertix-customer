@@ -6,11 +6,7 @@ import TaxPayerInfo from "./taxPayerInfo";
 import { upsertIncomeDetails } from "@/app/api/SupabaseAPI/customer/incomeDetails";
 import toast from "react-hot-toast";
 import { useYear } from "@/app/api/context/yearContext";
-
-type Tab =
-    | "Residency Details"
-    | "Income Details"
-    | "Deduction Details"
+import { Tab } from "../aboutyou/aboutYou";
 
 type IncomeProps = {
     setActiveTab: (tab: Tab) => void;
@@ -65,6 +61,7 @@ export default function SubIncomeDetails({ setActiveTab }: IncomeProps) {
                         incomeDetails={incomeDetails}
                         setIncomeDetails={setIncomeDetails}
                         handleToggleChange={handleToggleChange}
+                        setActiveTab={setActiveTab}
                     />
 
                     <TaxPayerInfo
