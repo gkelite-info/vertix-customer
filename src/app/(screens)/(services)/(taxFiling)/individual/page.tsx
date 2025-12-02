@@ -13,7 +13,7 @@ export default function Page() {
   return (
     <>
       <div className="flex flex-col items-center bg-[#FFFEFE] overflow-y-auto px-3 gap-4 pb-6 lg:px-4 lg:gap-2 lg:pb-10">
-        
+
         <div className="mt-6 lg:h-[20%] lg:w-[45%] flex flex-col items-center lg:mt-10">
           <h1 className="border border-b-4 border-l-0 border-t-0 border-r-0 text-[#1D2B48] text-xl font-bold w-fit">
             Individual
@@ -126,14 +126,14 @@ export default function Page() {
             <img
               src="individual_tax.jpg"
               alt="individual_tax.jpg"
-              className="h-[200px] w-[90%] rounded-lg object-cover lg:h-[100%] lg:w-[74%]"
+              className="h-auto w-[90%] rounded-lg object-cover lg:h-[100%] lg:w-[74%]"
             />
           </div>
         </div>
 
         <div className="w-full lg:w-[90%]">
 
-          <h1 id="individuals" className="text-[#1C2A46] font-semibold mt-6 lg:scroll-mt-30">
+          <h1 id="individuals" className="text-[#1C2A46] font-semibold mt-6 scroll-mt-18 md:scroll-mt-20 lg:scroll-mt-30">
             INDIVIDUALS:
           </h1>
           <p className="text-[#1C2A46] text-sm mt-2 lg:text-sm">
@@ -169,7 +169,7 @@ export default function Page() {
             <li className="text-sm text-[#1C2A46]">And More!</li>
           </ol>
 
-          <h1 id="entrepreneurs" className="text-[#1C2A46] font-semibold mt-8 lg:scroll-mt-25">
+          <h1 id="entrepreneurs" className="text-[#1C2A46] font-semibold mt-8 scroll-mt-18 md:scroll-mt-20 lg:scroll-mt-30">
             SMALL BUSINESS OWNERS:
           </h1>
           <p className="mt-2 text-[#1C2A46] text-sm lg:text-sm">
@@ -178,7 +178,7 @@ export default function Page() {
             returns. We work with bookkeepers if you need bookkeeping services.
           </p>
 
-          <h1 id="visaworkers" className="text-[#1C2A46] font-semibold mt-8">
+          <h1 id="visaworkers" className="text-[#1C2A46] font-semibold mt-8 scroll-mt-18 md:scroll-mt-20 lg:scroll-mt-30">
             U.S. VISA WORKERS:
           </h1>
           <p className="mt-2 text-[#1C2A46] text-sm lg:text-sm">
@@ -204,7 +204,7 @@ export default function Page() {
               NAFTA workers with TN/TD visas
             </li>
             <li className="text-sm text-[#1C2A46]">
-              O visa for a person of extraordinary ability in science, art,
+              O visa for a person of extraordinary ability in science, art, s
               business, athletics or education
             </li>
             <li className="text-sm text-[#1C2A46]">
@@ -214,7 +214,7 @@ export default function Page() {
             <li className="text-sm text-[#1C2A46]">Any other visa type.</li>
           </ol>
 
-          <h1 id="permanentresidants" className="text-[#1C2A46] font-semibold mt-8 lg:scroll-mt-25">
+          <h1 id="permanentresidants" className="text-[#1C2A46] font-semibold mt-8 scroll-mt-18 md:scroll-mt-20 lg:scroll-mt-30">
             PERMANENT RESIDENTS:
           </h1>
           <p className="mt-3 text-[#1C2A46] text-sm lg:text-sm">
@@ -226,7 +226,7 @@ export default function Page() {
             status. We can help with the tax return issues.
           </p>
 
-          <h1 id="taxpayers" className="text-[#1C2A46] font-semibold mt-8 lg:scroll-mt-20">
+          <h1 id="taxpayers" className="text-[#1C2A46] font-semibold mt-8 scroll-mt-18 md:scroll-mt-20 lg:scroll-mt-30">
             U.S. TAXPAYERS LIVING ABROAD:
           </h1>
           <p className="mt-3 text-[#1C2A46] text-sm lg:text-sm">
@@ -239,7 +239,7 @@ export default function Page() {
             compound your risk.
           </p>
 
-          <h1 id="irregularworkers" className="text-[#1C2A46] font-semibold mt-8">
+          <h1 id="irregularworkers" className="text-[#1C2A46] font-semibold mt-8 scroll-mt-18 md:scroll-mt-10 lg:scroll-mt-30">
             UNDOCUMENTED WORKERS:
           </h1>
           <p className="mt-3 text-[#1C2A46] text-sm lg:text-sm">
@@ -251,7 +251,7 @@ export default function Page() {
             previously filed returns to become totally compliant.
           </p>
 
-          <h1 className="text-[#1C2A46] font-semibold mt-8">
+          <h1 className="text-[#1C2A46] font-semibold mt-8 md:scroll-mt-18 lg:scroll-mt-30">
             TAXPAYERS WITH TAX PROBLEMS:
           </h1>
           <p className="mt-3 text-[#1C2A46] text-sm lg:text-sm">
@@ -263,7 +263,7 @@ export default function Page() {
             the first time the problem arose. Lots of factors.
           </p>
 
-          <h1 className="text-[#1C2A46] font-semibold mt-8">
+          <h1 className="text-[#1C2A46] font-semibold mt-8 md:scroll-mt-18 lg:scroll-mt-30">
             VICTIMS OF TAX IDENTITY THEFT:
           </h1>
           <p className="mt-3 text-[#1C2A46] text-sm lg:text-sm">
