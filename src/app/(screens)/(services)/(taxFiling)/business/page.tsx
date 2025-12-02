@@ -114,8 +114,7 @@ function Page() {
 
           <h1
             id="partnership"
-            className="text-[#1C2A46] font-semibold lg:mt-8 mt-4 lg:scroll-mt-25"
-          >
+            className="text-[#1C2A46] font-semibold lg:mt-8 mt-4 scroll-mt-16 lg:scroll-mt-25">
             Partnership:
           </h1>
           <p className="lg:mt-2 mt-1 text-[#1C2A46] lg:text-sm">
@@ -124,7 +123,7 @@ function Page() {
             returns. We work with bookkeepers if you need bookkeeping services.
           </p>
 
-          <h1 id="s_corporation" className="text-[#1C2A46] font-semibold mt-4 lg:mt-8">
+          <h1 id="s_corporation" className="text-[#1C2A46] font-semibold lg:mt-8 mt-4 scroll-mt-16 lg:scroll-mt-25">
             S Corporation:
           </h1>
           <p className="lg:mt-2 mt-1 text-[#1C2A46] lg:text-sm">
@@ -152,8 +151,7 @@ function Page() {
 
           <h1
             id="c_corporation"
-            className="text-[#1C2A46] font-semibold mt-4 lg:mt-8 lg:scroll-mt-25"
-          >
+            className="text-[#1C2A46] font-semibold lg:mt-8 mt-4 scroll-mt-16 lg:scroll-mt-25">     
             C Corporation:
           </h1>
           <p className="lg:mt-3 mt-1 text-[#1C2A46] lg:text-sm">
