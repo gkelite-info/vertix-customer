@@ -8,7 +8,6 @@ import { AuthProvider } from "@/components/AuthContext"
 import { YearProvider } from "./api/context/yearContext"
 import ProtectedRoute from "../../utils/ProtectedRoute"
 import AuthSessionLoader from "@/components/AuthSessionLoader"
-// import SupabaseSessionProvider from "@/components/SupabaseSessionProvider"
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -48,7 +47,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={poppins.className}>
-      <body>
+      <body className="min-h-screen flex flex-col">
         <AuthSessionLoader>
           <ProtectedRoute>
             <AuthProvider>

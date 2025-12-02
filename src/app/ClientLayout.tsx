@@ -21,7 +21,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   return (
     <>
       {!shouldHideLayout && <Header />}
-      <main className="scrollbar-hide">{children}</main>
+      <main className="flex-1 scrollbar-hide">{children}</main>
       {!shouldHideLayout && <Footer />}
     </>
   )

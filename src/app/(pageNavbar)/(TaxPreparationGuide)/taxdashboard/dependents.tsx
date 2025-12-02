@@ -12,6 +12,7 @@ type Tab =
   | "Dependents"
   | "Residency Details"
 
+
 type DependentsProps = {
   setActiveTab: (tab: Tab) => void;
 };

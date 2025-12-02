@@ -13,7 +13,7 @@ type FbarProps = {
     setActiveTab: (tab: Tab) => void;
 };
 
-export default function FBAR_FATCA({ setActiveTab }: FbarProps) {
+export default function FBARFATCA({ setActiveTab }: FbarProps) {
     const router = useRouter();
     const searchParams = useSearchParams();
 
