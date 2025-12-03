@@ -7,7 +7,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 const key = process.env.STRIPE_SECRET_KEY;
 
 if (!key) {
-    console.log("Your key is missing vamshi");
+    console.log("Your key is missing Vamshi");
 }
 
 export async function POST(req: Request) {
