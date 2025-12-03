@@ -28,7 +28,7 @@ function Page() {
           ">
 
             <a
-              href="#individuals"
+              href="#distinction"
               className="rounded-xl shadow-md hover:shadow-xl cursor-pointer 
               h-auto w-full lg:h-[35%] lg:w-[30%] lg:rounded-2xl lg:shadow-lg"
             >
@@ -43,7 +43,7 @@ function Page() {
             </a>
 
             <a
-              href="#entrepreneurs"
+              href="#overdue"
               className="rounded-xl shadow-md hover:shadow-xl cursor-pointer 
               h-auto w-full lg:h-[35%] lg:w-[30%]"
             >
@@ -57,7 +57,7 @@ function Page() {
             </a>
 
             <a
-              href="#visaworkers"
+              href="#notices"
               className="rounded-xl shadow-md hover:shadow-xl cursor-pointer 
               h-auto w-full lg:h-[35%] lg:w-[30%]"
             >
@@ -71,7 +71,7 @@ function Page() {
             </a>
 
             <a
-              href="#permanentresidants"
+              href="#paymentbalances"
               className="rounded-xl shadow-md hover:shadow-xl cursor-pointer 
               h-auto w-full lg:h-[35%] lg:w-[30%]"
             >
@@ -135,8 +135,8 @@ function Page() {
         <div className="w-full lg:w-[90%]">
 
           <h1
-            id="individuals"
-            className="text-[#1C2A46] font-semibold lg:scroll-mt-30 mt-4 lg:mt-10"
+            id="distinction"
+            className="text-[#1C2A46] font-semibold lg:scroll-mt-30 mt-4 scroll-mt-16 md:scroll-mt-18 lg:mt-10"
           >
             Representation is different than assistance.
           </h1>
@@ -170,8 +170,8 @@ function Page() {
           </p>
 
           <h1
-            id="entrepreneurs"
-            className="text-[#1C2A46] font-semibold lg:mt-8 mt-4 lg:scroll-mt-25"
+            id="overdue"
+            className="text-[#1C2A46] font-semibold lg:mt-8 mt-4 scroll-mt-16 md:scroll-mt-18 lg:scroll-mt-25"
           >
             Late filed tax returns
           </h1>
@@ -191,8 +191,8 @@ function Page() {
           </p>
 
           <h1
-            id="visaworkers"
-            className="text-[#1C2A46] font-semibold mt-4 lg:mt-8 lg:scroll-mt-24"
+            id="notices"
+            className="text-[#1C2A46] font-semibold mt-4 lg:mt-8 scroll-mt-16 md:scroll-mt-18 lg:scroll-mt-24"
           >
             Notices from IRS or States
           </h1>
@@ -231,8 +231,8 @@ function Page() {
           </p>
 
           <h1
-            id="permanentresidants"
-            className="text-[#1C2A46] font-semibold lg:mt-8 mt-4 lg:scroll-mt-25"
+            id="paymentbalances"
+            className="text-[#1C2A46] font-semibold lg:mt-8 mt-4 scroll-mt-16 md:scroll-mt-18 lg:scroll-mt-25"
           >
             Paying balances due
           </h1>
@@ -349,7 +349,7 @@ function Page() {
 
           <h1
             id="litigation"
-            className="text-[#1C2A46] font-semibold lg:mt-8 mt-4 lg:scroll-mt-24"
+            className="text-[#1C2A46] font-semibold lg:mt-8 mt-4 scroll-mt-16 md:scroll-mt-18 lg:scroll-mt-24"
           >
             Tax Court
           </h1>
@@ -406,7 +406,7 @@ function Page() {
             is depleted.
           </p>
 
-          <h1 id="support" className="text-[#1C2A46] font-semibold mt-4 lg:mt-8">
+          <h1 id="support" className="text-[#1C2A46] font-semibold mt-4 lg:mt-8 scroll-mt-16 md:scroll-mt-18 lg:scroll-mt-24">
             Resources
           </h1>
 
