@@ -1,24 +1,20 @@
 import { supabase } from "../../../../../utils/supabase/client";
 
-export const upsertResidencyDetails = async (residencyDetails: {
+export type MigrationRow = {
     fromDate: string;
     toDate: string;
     state: string;
     country: string;
-    notes?: string;
-    residencyType?: string;
-    spouseSameResidency?: boolean;
-    line1?: string;
-    line2?: string | null;
-    city?: string | null;
-    zip?: string | null;
-}) => {
-    try {
-        const {
-            data: { user },
-            error: authError,
-        } = await supabase.auth.getUser();
+};
 
+export type ResidencyPayload = {
+    migrations: MigrationRow[];
+    notes: string;
+};
+
+export const upsertResidencyDetails = async (payload: ResidencyPayload) => {
+    try {
+        const { data: { user }, error: authError } = await supabase.auth.getUser();
         if (authError || !user) throw new Error("Not authenticated");
 
         const { data: customer, error: customerError } = await supabase
@@ -28,37 +24,53 @@ export const upsertResidencyDetails = async (residencyDetails: {
             .single();
 
         if (customerError || !customer) throw new Error("Customer not found");
+
         const customerId = customer.customerId;
 
-        const now = new Date();
+        const now = new Date().toISOString();
 
-        const dbResidencyDetails = {
-            customerId,
-            residencyType: residencyDetails.residencyType || "home",
-            fromDate: residencyDetails.fromDate ? new Date(residencyDetails.fromDate).toISOString().split("T")[0] : null,
-            toDate: residencyDetails.toDate ? new Date(residencyDetails.toDate).toISOString().split("T")[0] : null,
-            state: residencyDetails.state,
-            country: residencyDetails.country,
-            notes: residencyDetails.notes || null,
-            spouse_same_residency: residencyDetails.spouseSameResidency || false,
-            line1: residencyDetails.line1 || "",
-            line2: residencyDetails.line2 || null,
-            city: residencyDetails.city || null,
-            zip: residencyDetails.zip || null,
-            createdAt: now.toISOString(),
-            updatedAt: now.toISOString(),
-            deletedAt: null,
-        };
-
-        const { data, error } = await supabase
+        const { data: residencyRow, error: residencyError } = await supabase
             .from("residencydetails")
-            .upsert([dbResidencyDetails])
-            .select();
+            .upsert([
+                {
+                    customerId,
+                    notes: payload.notes || null,
+                    updatedAt: now,
+                    createdAt: now,
+                    deletedAt: null,
+                }
+            ])
+            .select()
+            .single();
 
-        if (error) throw error;
-        return data || [];
+        if (residencyError) throw residencyError;
+
+        const residencyId = residencyRow.residencyId;
+
+        await supabase
+            .from("residencymigrations")
+            .delete()
+            .eq("residencyId", residencyId);
+
+        const rowsToInsert = payload.migrations.map((m) => ({
+            residencyId,
+            fromDate: m.fromDate,
+            toDate: m.toDate,
+            state: m.state,
+            country: m.country,
+            createdAt: now,
+            updatedAt: now,
+        }));
+
+        const { error: migrationError } = await supabase
+            .from("residencymigrations")
+            .insert(rowsToInsert);
+
+        if (migrationError) throw migrationError;
+
+        return { success: true };
     } catch (error: any) {
-        console.error("Error upserting residency details:", error.message);
+        console.error("Error in residency save:", error.message);
         throw error;
     }
 };

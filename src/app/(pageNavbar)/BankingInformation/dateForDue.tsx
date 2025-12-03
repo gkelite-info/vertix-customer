@@ -15,6 +15,7 @@ type Prop = {
 export default function DateForDue({ style = "", readonly = false }: Prop) {
   const [usStates, setUsStates] = useState<{ name: string; isoCode: string }[]>([]);
   const { filingYearId } = useYear();
+  const [loading, setLoading] = useState(false);
 
   const [selectedDate, setSelectedDate] = useState<string>("");
   const [federal, setFederal] = useState<"Paid" | "Unpaid" | "">("");
@@ -64,6 +65,8 @@ export default function DateForDue({ style = "", readonly = false }: Prop) {
     if (!state1) return toast.error("State 1 is mandatory.");
 
     try {
+      setLoading(true);
+
       const payload = {
         filingYearId,
         date: selectedDate,
@@ -78,9 +81,13 @@ export default function DateForDue({ style = "", readonly = false }: Prop) {
 
       await upsertDateForDue(payload);
       toast.success("Date for Due saved successfully!");
+      setLoading(false);
     } catch (err: any) {
       console.error(err);
       toast.error(err.message || "Failed to save Date for Due.");
+    }
+    finally {
+      setLoading(false);
     }
   };
 
@@ -169,8 +176,9 @@ export default function DateForDue({ style = "", readonly = false }: Prop) {
           <button
             type="submit"
             className="bg-[#1D2B48] shadow-md cursor-pointer text-white font-medium py-2 px-6 rounded-md text-sm transition-all"
+            disabled={loading}
           >
-            Submit
+            {loading ? "Submitting..." : "Submit"}
           </button>
         </div>
       )}

@@ -69,7 +69,6 @@ function PaymentGatewayContent() {
   }, [filingYearId]);
 
   const handleProceed = () => {
-    console.log("Proceeding with totals:", totals);
     setShowPayment(true);
   };
 
@@ -99,6 +98,29 @@ function PaymentGatewayContent() {
       </div>
     );
   }
+
+  const handleStripe = async () => {
+    try {
+      const res = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          priceId: "price_1SKkE6GcecwN5NVe1CGPUSeg",
+        }),
+      });
+
+      const data = await res.json();
+
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        alert("Something went wrong starting payment");
+      }
+    } catch (error) {
+      console.error("Stripe payment error:", error);
+    }
+  };
+
 
   return (
     <div className="bg-white px-4 py-4">
@@ -135,7 +157,7 @@ function PaymentGatewayContent() {
             <p className="text-[#1D2B48] text-sm font-semibold">Choose your payment</p>
           )}
           {showPayment && (
-            <div className="flex items-center justify-between bg-red-00 h-[30%] w-[70%] mt-5">
+            <div className="flex items-center justify-center gap-5 bg-red-00 h-[30%] w-[70%] mt-5">
               <div
                 className="flex flex-col items-center justify-between bg-pink-00 w-[30%] h-[70%]"
                 onClick={() => setIsUpiModalOpen(true)}
@@ -143,11 +165,12 @@ function PaymentGatewayContent() {
                 <img src="upi.png" alt="upi" className="w-10 h-10 cursor-pointer" />
                 <span className="text-[#1D2B48] font-bold text-xs mt-1">UPI</span>
               </div>
-              <div className="flex flex-col items-center justify-between bg-green-00 pt-1 w-[30%] h-[70%]">
+              {/* <div className="flex flex-col items-center justify-between bg-green-00 pt-1 w-[30%] h-[70%]">
                 <img src="paypal.png" alt="paypal" className="w-8 h-8 cursor-pointer" />
                 <span className="text-[#1D2B48] font-bold text-xs mt-1">PayPal</span>
-              </div>
-              <div className="flex flex-col items-center justify-between bg-yellow-00 w-[30%] h-[70%]">
+              </div> */}
+              <p className="text-black font-semibold">OR</p>
+              <div className="flex flex-col items-center justify-between bg-yellow-00 w-[30%] h-[70%]" onClick={handleStripe}>
                 <img src="stripe.png" alt="stripe" className="w-10 h-10 cursor-pointer" />
                 <span className="text-[#1D2B48] font-bold text-xs mt-1">Stripe</span>
               </div>
