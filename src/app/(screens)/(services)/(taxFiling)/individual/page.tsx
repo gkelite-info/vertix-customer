@@ -73,7 +73,7 @@ export default function Page() {
             </a>
 
             <a
-              href="#permanentresidants"
+              href="#permanentresidents"
               className="rounded-xl shadow-md hover:shadow-xl cursor-pointer 
               h-auto w-full 
               lg:h-[35%] lg:w-[30%]"
@@ -214,7 +214,7 @@ export default function Page() {
             <li className="text-sm text-[#1C2A46]">Any other visa type.</li>
           </ol>
 
-          <h1 id="permanentresidants" className="text-[#1C2A46] font-semibold mt-8 scroll-mt-18 md:scroll-mt-20 lg:scroll-mt-30">
+          <h1 id="permanentresidents" className="text-[#1C2A46] font-semibold mt-8 scroll-mt-18 md:scroll-mt-20 lg:scroll-mt-30">
             PERMANENT RESIDENTS:
           </h1>
           <p className="mt-3 text-[#1C2A46] text-sm lg:text-sm">
