@@ -2,7 +2,13 @@ import Stripe from "stripe";
 import { NextResponse } from "next/server";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
-console.log("Here is Stripe Secret key", process.env.STRIPE_SECRET_KEY)
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+
+const key = process.env.STRIPE_SECRET_KEY;
+
+if (!key) {
+    console.log("Your key is missing vamshi");
+}
 
 export async function POST(req: Request) {
     try {
@@ -17,8 +23,8 @@ export async function POST(req: Request) {
                     quantity: 1,
                 },
             ],
-            success_url: "http://localhost:3000/success?session_id={CHECKOUT_SESSION_ID}",
-            cancel_url: "http://localhost:3000/cancel",
+            success_url: `${BASE_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
+            cancel_url: `${BASE_URL}/taxfiling?tab=summary`,
         });
 
         return NextResponse.json({ url: session.url });

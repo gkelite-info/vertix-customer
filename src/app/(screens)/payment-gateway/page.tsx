@@ -69,7 +69,6 @@ function PaymentGatewayContent() {
   }, [filingYearId]);
 
   const handleProceed = () => {
-    console.log("Proceeding with totals:", totals);
     setShowPayment(true);
   };
 
