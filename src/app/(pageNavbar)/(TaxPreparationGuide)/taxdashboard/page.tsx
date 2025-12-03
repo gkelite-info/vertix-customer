@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import YearSelect from "../../../../../utils/yearSelect";
 import Dependents from "./dependents";
-import ResidencyDetails from "./resendencyDetails";
+import ResidencyDetails from "./resedencydetails/resendencyDetails";
 import IncomeDetails from "./incomeDetails/IncomePage";
 import DeductionDetails from "./deductionDetails/deductionsdetails";
 import FBAR_FATCA from "./fbar_fatca";

@@ -151,7 +151,7 @@ export default function BankingInformationPage() {
   if (fetching) {
     return (
       <div className="flex justify-center items-center text-[#1D2B48] h-[100vh]">
-        Loading bank data...
+        <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
