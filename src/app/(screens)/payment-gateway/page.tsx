@@ -105,21 +105,22 @@ function PaymentGatewayContent() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          priceId: "price_1SKkE6GcecwN5NVe1CGPUSeg",
+          totalFee: totals.totalFee,
+          discount: totals.discount,
+          referral: totals.referral,
+          feePaid: totals.feePaid,
+          netFee: totals.netFee,
+          summaryId,
         }),
       });
 
       const data = await res.json();
-
-      if (data.url) {
-        window.location.href = data.url;
-      } else {
-        alert("Something went wrong starting payment");
-      }
+      if (data.url) window.location.href = data.url;
     } catch (error) {
       console.error("Stripe payment error:", error);
     }
   };
+
 
 
   return (
