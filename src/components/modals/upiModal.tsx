@@ -10,8 +10,6 @@ type UPIModalProps = {
 };
 
 export default function UPIModal({ isOpen, onConfirm, onCancel }: UPIModalProps) {
-  const [upiId, setUpiId] = useState("");
-  const [transactionId, setTransactionId] = useState("");
 
   const handleBackgroundClick = (e: MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
@@ -37,35 +35,19 @@ export default function UPIModal({ isOpen, onConfirm, onCancel }: UPIModalProps)
             transition={{ duration: 0.25 }}
           >
             <h2 className="font-semibold text-lg text-gray-800 mb-4">
-              UPI Payment
+              UPI ID
             </h2>
 
             <div className="flex flex-col gap-4 text-left">
               <div>
                 <label className="text-gray-700 text-sm font-medium">
-                  UPI ID
+                  Pay to
                 </label>
-                <input
-                  type="text"
-                  placeholder="Enter UPI ID"
-                  value={upiId}
-                  onChange={(e) => setUpiId(e.target.value)}
-                  className="w-full mt-1 px-3 py-2 border text-[#1D2B48] text-sm border-gray-300 rounded-lg focus:outline-none"
-                />
+                <div className="w-full mt-1 px-3 py-2 border text-[#1D2B48] text-sm border-gray-300 rounded-lg focus:outline-none">
+                  <span className="font-semibold">vertixtax@ybl</span>
+                </div>
               </div>
-
               <div>
-                <label className="text-gray-700 text-sm font-medium">
-                  Transaction ID
-                </label>
-                <input
-                  type="text"
-                  placeholder="Enter transaction ID"
-                  value={transactionId}
-                  onChange={(e) => setTransactionId(e.target.value)}
-                  className="w-full mt-1 px-3 py-2 text-[#1D2B48] text-sm border border-gray-300 rounded-lg focus:outline-none"
-                />
-
                 <p
                   style={{
                     fontSize: "12px",
@@ -76,21 +58,6 @@ export default function UPIModal({ isOpen, onConfirm, onCancel }: UPIModalProps)
                   Note: Share your payment receipt to WhatsApp or Email.
                 </p>
               </div>
-            </div>
-
-            <div className="flex justify-center gap-4 mt-6">
-              <button
-                onClick={() => onConfirm(upiId, transactionId)}
-                className="bg-[#1D2B48] cursor-pointer text-sm text-white font-medium px-6 py-2 rounded-md transition duration-200"
-              >
-                Submit
-              </button>
-              <button
-                onClick={onCancel}
-                className="bg-gray-300 cursor-pointer hover:bg-gray-400 text-sm text-gray-800 font-medium px-6 py-2 rounded-md transition duration-200"
-              >
-                Cancel
-              </button>
             </div>
           </motion.div>
         </motion.div>
