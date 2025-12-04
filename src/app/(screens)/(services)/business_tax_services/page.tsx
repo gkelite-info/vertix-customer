@@ -11,8 +11,8 @@ function Page() {
         </div>
 
         <div className="w-full mt-6 flex flex-col lg:flex-row lg:w-[90%] lg:mt-10">
-          <div className="w-full lg:w-[60%] lg:pt-5 lg:pr-7">
-            <h1 className="text-[#1C2A46] font-semibold mt-4 lg:mt-8">
+          <div className="w-full lg:w-[60%] lg:pt-0 lg:pr-7">
+            <h1 className="text-[#1C2A46] font-semibold mt-0 lg:mt-0">
               Sole Proprietors and Single Member LLC’s
             </h1>
 
@@ -42,6 +42,20 @@ function Page() {
               any is due, is part of the personal tax due.
             </p>
 
+          <h1 className="text-[#1C2A46] font-semibold mt-4 lg:mt-4">
+            Multiple Member LLC’s, Partnerships, S-Corps
+          </h1>
+          <p className="text-[#1C2A46] mt-1 text-sm lg:mt-3">
+            The default tax status of this type of LLC is that of a partnership.
+            The LLC members can file proper paperwork with the IRS to elect a
+            different tax status, usually that of an S-corporation.
+          </p>
+          <p className="text-[#1C2A46] text-sm lg:mt-2">
+            The business is required to file it’s tax return first and then
+            issue a tax form, K-1, reporting each partner’s or shareholder’s
+            share of income, deductions and credits that has to be reported on
+            the partner’s personal tax return.
+          </p>
           </div>
 
           <div className="w-full mt-6 flex justify-center lg:mt-0 lg:w-[40%]">
@@ -49,7 +63,7 @@ function Page() {
               src="/small_business.jpg"
               alt="small_business.jpg"
               className="
-                h-[200px] w-[90%] rounded-lg object-cover
+                h-fit w-[90%] rounded-lg object-cover
                 md:h-auto md:w-[60%]
                 lg:h-[100%] lg:w-[74%] lg:rounded-lg
               "
@@ -58,27 +72,8 @@ function Page() {
 
         </div>
 
-        <div className="w-full lg:w-[90%]">
-
-          <h1 className="text-[#1C2A46] font-semibold mt-4 lg:mt-8">
-            Multiple Member LLC’s, Partnerships, S-Corps
-          </h1>
-
-          <p className="text-[#1C2A46] mt-1 text-sm lg:mt-3">
-            The default tax status of this type of LLC is that of a partnership.
-            The LLC members can file proper paperwork with the IRS to elect a
-            different tax status, usually that of an S-corporation.
-          </p>
-
-          <p className="text-[#1C2A46] text-sm lg:mt-3">
-            The business is required to file it’s tax return first and then
-            issue a tax form, K-1, reporting each partner’s or shareholder’s
-            share of income, deductions and credits that has to be reported on
-            the partner’s personal tax return.
-          </p>
-
+        <div className="w-full lg:w-[90%]">    
         </div>
-
       </div>
     </>
   )

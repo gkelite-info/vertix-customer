@@ -11,8 +11,8 @@ function Page() {
         </div>
 
         <div className="w-full mt-6 flex flex-col lg:flex-row lg:w-[90%] lg:mt-10">
-          <div className="w-full lg:w-[60%] lg:pt-5 lg:pr-7">
-            <h1 className="text-[#1C2A46] font-semibold lg:mt-8">
+          <div className="w-full lg:w-[60%] lg:pt-0 lg:pr-7">
+            <h1 className="text-[#1C2A46] font-semibold lg:mt-0">
               How Do You Know if You are Nonresident or Resident for Tax Purposes?
             </h1>
 
@@ -52,9 +52,22 @@ function Page() {
               never been to the United States.
             </p>
 
+            <p className="text-[#1C2A46] text-sm lg:mt-3">
+            6. Whether you have left the United States and are filing your final
+            U.S. tax return or if you plan to return in the following year.
+          </p>
+
+          <p className="text-[#1C2A46] text-sm lg:mt-3">
+            7. Your country of citizenship or resident status. Sometimes you may
+            be a citizen of one country, but come to the U.S. from a different
+            country where you have been living for a period of time. The tax
+            treaty of the country of your most recent residency may apply
+            instead of the tax treaty of your country of
+          </p>
+
           </div>
 
-          <div className="w-full mt-6 flex justify-center lg:mt-0 lg:w-[40%]">
+          <div className="w-full mt-5 flex justify-center lg:mt-0 lg:w-[40%]">
             <img
               src="/non_resident.jpg"
               alt="non_resident.jpg"
@@ -68,20 +81,7 @@ function Page() {
         </div>
 
         <div className="w-full lg:w-[90%]">
-          <p className="text-[#1C2A46] text-sm lg:mt-3">
-            6. Whether you have left the United States and are filing your final
-            U.S. tax return or if you plan to return in the following year.
-          </p>
-
-          <p className="text-[#1C2A46] text-sm lg:mt-3">
-            7. Your country of citizenship or resident status. Sometimes you may
-            be a citizen of one country, but come to the U.S. from a different
-            country where you have been living for a period of time. The tax
-            treaty of the country of your most recent residency may apply
-            instead of the tax treaty of your country of
-          </p>
-
-          <p className="text-[#1C2A46] text-sm lg:mt-3">
+          <p className="text-[#1C2A46] text-sm lg:mt-0">
             8. There are more factors to be considered depending upon your
             particular situation. U.S. taxes for noncitizens can be quite
             complicated. You may have choices that could allow you to take
@@ -90,7 +90,7 @@ function Page() {
             Substantial Presence Test
           </p>
 
-          <h1 className="text-[#1C2A46] font-medium lg:mt-8">
+          <h1 className="text-[#1C2A46] font-medium mt-4 lg:mt-8">
             The substantial presence test determines
           </h1>
 

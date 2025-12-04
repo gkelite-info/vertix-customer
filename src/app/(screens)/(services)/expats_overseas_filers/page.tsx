@@ -11,8 +11,8 @@ function Page() {
         </div>
 
         <div className="w-full mt-6 flex flex-col lg:flex-row lg:w-[90%] lg:mt-10">
-          <div className="w-full lg:w-[60%] lg:pt-5 lg:pr-7">
-            <p className="text-[#1C2A46] text-sm lg:mt-3">
+          <div className="w-full lg:w-[60%] lg:pt-0 lg:pr-7">
+            <p className="text-[#1C2A46] text-sm lg:mt-0">
               The IRS has been focusing on U. S. taxpayers living overseas, who
               are often called expats or expatriates, for the last few years.
               The agency has been quite successful in collecting additional
@@ -59,7 +59,7 @@ function Page() {
         </div>
 
         <div className="w-full lg:w-[90%]">
-          <h1 className="text-[#1C2A46] font-semibold mt-4 lg:mt-8">
+          <h1 className="text-[#1C2A46] font-semibold mt-0 lg:mt-0">
             Worldwide Income
           </h1>
 
@@ -83,7 +83,7 @@ function Page() {
             duplicative.
           </p>
 
-          <h1 className="text-[#1C2A46] font-semibold mt-4 lg:mt-8">
+          <h1 className="text-[#1C2A46] font-semibold mt-3 md:mt-4 lg:mt-5">
             How to Comply with U.S. Tax Laws
           </h1>
 

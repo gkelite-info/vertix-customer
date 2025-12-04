@@ -14,8 +14,8 @@ export default function Page() {
         <div className="w-full mt-4 flex flex-col gap-4 
                         lg:w-[90%] lg:mt-10 lg:flex-row">
 
-          <div className="w-full lg:w-[60%] lg:pt-5 lg:pr-7">
-            <p className="text-[#1C2A46] text-sm mt-3">
+          <div className="w-full lg:w-[60%] lg:pt-0 lg:pr-7">
+            <p className="text-[#1C2A46] text-sm mt-0">
               The term “tax home” generally means the location of a taxpayer’s
               regular or principal place of business. Temporary presence or the
               maintenance of a dwelling in the United States does not
@@ -46,6 +46,22 @@ export default function Page() {
               place of business but does have a &ldquo;regular place of abode in
               a real and substantial sense.&ldquo;
             </p>
+
+             <p className="text-[#1C2A46] text-sm mt-3">
+            The Service will recognize that a taxpayer has a &ldquo;home&ldquo;
+            for traveling expense deduction purposes if he claims an abode and,
+            under bona fide circumstances, satisfies all three objective factors
+            set forth in the preceding paragraph. If a tax-payer is not
+            recognized as having a &ldquo;home&ldquo; by virtue of the above,
+            but does, under bona fide circumstances, satisfy two of the three
+            objective factors set forth in the preceding paragraph, then all the
+            facts and circumstances of his case will be subjected to close
+            scrutiny to determine whether he has a &ldquo;home&ldquo; for
+            traveling expense deduction purposes in the form of a regular place
+            of abode in a real and substantial sense, or whether he is an
+            itinerant.
+          </p>
+
           </div>
 
           <div className="w-full flex justify-center 
@@ -60,21 +76,7 @@ export default function Page() {
         </div>
 
         <div className="w-full lg:w-[90%]">
-          <p className="text-[#1C2A46] text-sm mt-3">
-            The Service will recognize that a taxpayer has a &ldquo;home&ldquo;
-            for traveling expense deduction purposes if he claims an abode and,
-            under bona fide circumstances, satisfies all three objective factors
-            set forth in the preceding paragraph. If a tax-payer is not
-            recognized as having a &ldquo;home&ldquo; by virtue of the above,
-            but does, under bona fide circumstances, satisfy two of the three
-            objective factors set forth in the preceding paragraph, then all the
-            facts and circumstances of his case will be subjected to close
-            scrutiny to determine whether he has a &ldquo;home&ldquo; for
-            traveling expense deduction purposes in the form of a regular place
-            of abode in a real and substantial sense, or whether he is an
-            itinerant.
-          </p>
-          <p className="text-[#1C2A46] text-sm mt-3">
+          <p className="text-[#1C2A46] text-sm mt-0">
             Not all foreign nationals who accept a U.S. assignment establish a
             tax home in the U.S. In those cases where a U.S. tax home is not
             established, the individual is treated for tax purposes as being on

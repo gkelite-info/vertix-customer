@@ -9,7 +9,7 @@ function Page() {
             Foreign Account Reporting (FBAR)
           </h1>
         </div>
-        <div className="w-full mt-6 flex flex-col lg:flex-row lg:w-[90%] lg:mt-10">
+        <div className="w-full mt-4 flex flex-col lg:flex-row lg:w-[90%] lg:mt-10">
           <div className="w-full lg:w-[60%] lg:pt-5 lg:pr-7">
             <p className="text-[#1C2A46] text-sm lg:mt-3">
               U.S. taxpayers, whether a resident for tax purposes, a permanent
@@ -38,36 +38,32 @@ function Page() {
               year following the year you are reporting. For example, the 2015
               FinCEN 114 will be due on June 30, 2016.
             </p>
+            <p className="text-[#1C2A46] text-sm lg:mt-3 mt-1">
+              The FinCEN instructions for filing the FinCEN 114
+              <span className="break-all">
+              (https://www.fincen.gov/forms/files/FBAR%20Line%20Item%20Filing%20Instructions.pdf)
+              </span>
+              explains the rules and regulations for who has to file, how it is
+              filed, what has to be reported and when it is due.
+            </p>
+            <p className="text-[#1C2A46] text-sm lg:mt-3">
+              Judy Coker, EA, CAA has been assisting taxpayers with FBAR and
+              FinCEN 114 filings for several years using the Bank Secrecy Act
+              Filing (BSAF) efile system. Please let us know if you need our help.
+            </p>
           </div>
 
-          <div className="w-full mt-6 flex justify-center lg:mt-0 lg:w-[40%]">
+          <div className="w-full mt-4 flex justify-center lg:mt-0 lg:w-[40%] lg:pl-10">
             <img
               src="/outside_accounts.jpg"
               alt="outside_accounts.jpg"
-              className="
-                h-auto w-[90%] rounded-lg object-cover
-                md:h-auto md:w-[60%]
-                lg:h-[100%] lg:w-[74%] lg:rounded-lg
-              "
+              className="h-auto w-[90%] rounded-lg object-cover lg:w-[80%]"
             />
           </div>
         </div>
 
-        <div className="w-full lg:w-[90%]">
-          <p className="text-[#1C2A46] text-sm lg:mt-3">
-            The FinCEN instructions for filing the FinCEN 114
-            (https://www.fincen.gov/forms/files/FBAR%20Line%20Item%20Filing%20Instructions.pdf)
-            explains the rules and regulations for who has to file, how it is
-            filed, what has to be reported and when it is due.
-          </p>
-
-          <p className="text-[#1C2A46] text-sm lg:mt-3">
-            Judy Coker, EA, CAA has been assisting taxpayers with FBAR and
-            FinCEN 114 filings for several years using the Bank Secrecy Act
-            Filing (BSAF) efile system. Please let us know if you need our help.
-          </p>
-
-          <h1 className="text-[#1C2A46] font-semibold mt-4 lg:mt-8">
+        <div className="w-full lg:w-[90%] mt-4">
+          <h1 className="text-[#1C2A46] font-semibold mt-0">
             Form 8938, the FATCA Form
           </h1>
 
@@ -100,7 +96,7 @@ function Page() {
             Foreign Currency Exchange
           </h1>
 
-          <p className="text-[#1C2A46] text-sm lg:mt-3 mt-1">
+          <p className="text-[#1C2A46] text-sm lg:mt-3 mt-2">
             The way that foreign currency amounts are converted to US dollars is
             often confusing as Form 8939 and FinCEN 114 require that you use the
             US Treasury rate of exchange for the last day of the tax year. The
@@ -108,7 +104,9 @@ function Page() {
           </p>
 
           <p className="text-[#1C2A46] text-sm lg:mt-3">
+             <span className="break-all">
             (https://www.fiscal.treasury.gov/fsreports/rpt/treasRptRateExch/treasRptRateExch_home.htm)
+            </span>
           </p>
 
           <p className="text-[#1C2A46] text-sm lg:mt-3">
@@ -123,7 +121,7 @@ function Page() {
             rates, use the rate that applies to your specific facts and
             circumstances. Use the exchange rate prevailing when you receive,
             pay, or accrue the item. If there is more than one exchange rate,
-            use the one that most properly reflects your income.” 
+            use the one that most properly reflects your income.”
           </p>
 
           <p className="text-[#1C2A46] text-sm lg:mt-3">

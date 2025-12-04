@@ -10,8 +10,8 @@ function Page() {
           </h1>
         </div>
         <div className="w-full mt-6 flex flex-col lg:flex-row lg:w-[90%] lg:mt-10">
-          <div className="w-full lg:w-[60%] lg:pt-5 lg:pr-7">
-            <h1 className="text-[#1C2A46] font-semibold lg:mt-8 mt-4">
+          <div className="w-full lg:w-[60%] lg:pt-0 lg:pr-7">
+            <h1 className="text-[#1C2A46] font-semibold lg:mt-0 mt-0">
               How a Person Applies
             </h1>
 
@@ -40,6 +40,22 @@ function Page() {
               The IRS is also authorized to establish procedures to accept
               overseas applications via mail.
             </p>
+
+            <h1 className="text-[#1C2A46] font-semibold lg:mt-4">
+            Expiration of an ITIN
+          </h1>
+
+          <p className="text-[#1C2A46] text-sm lg:mt-3 mt-1">
+            ITINs issued before 2013 will expire, unless they are timely
+            renewed, according to a staggered schedule between 2017 and 2020.
+          </p>
+
+          <p className="text-[#1C2A46] text-sm lg:mt-3">
+            If the ITIN was issued before 2008, it is no longer valid as of
+            January 1, 2017. An application for a new ITIN will need to be
+            submitted with the 2016 tax return.
+          </p>
+          
           </div>
 
           <div className="w-full mt-6 flex justify-center lg:mt-0 lg:w-[40%]">
@@ -58,22 +74,7 @@ function Page() {
 
         <div className="w-full lg:w-[90%]">
 
-          <h1 className="text-[#1C2A46] font-semibold mt-4 lg:mt-8">
-            Expiration of an ITIN
-          </h1>
-
-          <p className="text-[#1C2A46] text-sm lg:mt-3 mt-1">
-            ITINs issued before 2013 will expire, unless they are timely
-            renewed, according to a staggered schedule between 2017 and 2020.
-          </p>
-
-          <p className="text-[#1C2A46] text-sm lg:mt-3">
-            If the ITIN was issued before 2008, it is no longer valid as of
-            January 1, 2017. An application for a new ITIN will need to be
-            submitted with the 2016 tax return.
-          </p>
-
-          <p className="text-[#1C2A46] text-sm lg:mt-3">
+          <p className="text-[#1C2A46] text-sm lg:mt-0">
             Any tax returns filed with an invalid ITIN will be automatically
             adjusted by the IRS using its Math Error Notice powers. This will
             likely cause delays in the processing of returns prior to a refund

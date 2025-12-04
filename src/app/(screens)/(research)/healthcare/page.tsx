@@ -9,10 +9,10 @@ export default function Page() {
           </h1>
         </div>
 
-        <div className="w-full flex flex-col gap-6 lg:w-[90%] lg:mt-10 lg:flex-row">
+        <div className="w-full flex flex-col gap-6 lg:w-[90%] lg:mt-0 lg:flex-row">
 
-          <div className="w-full lg:w-[60%] lg:pt-5 lg:pr-7">
-            <p className="text-[#1C2A46] text-sm mt-3 lg:mt-3">
+          <div className="w-full lg:w-[60%] lg:pt-0 lg:pr-7">
+            <p className="text-[#1C2A46] text-sm mt-0 lg:mt-0">
               The individual shared responsibility provision of the Health Care
               Law requires you and each member of your family to have qualifying
               health insurance (called minimum essential coverage), have an
@@ -60,7 +60,7 @@ export default function Page() {
 
         <div className="w-full lg:w-[90%]">
 
-          <h1 className="text-[#1C2A46] font-medium mt-8 lg:mt-8">
+          <h1 className="text-[#1C2A46] font-medium mt-0 lg:mt-0">
             Will I have to make a payment?
           </h1>
 
