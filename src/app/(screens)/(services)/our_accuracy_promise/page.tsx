@@ -33,7 +33,7 @@ function Page() {
                   <Warning size={30} weight="fill" className="text-[#1D2B48]" />
                 </div>
                 <div className="lg:h-[30%] lg:w-full flex justify-center items-center">
-                  <h3 className="text-[#1D2B48] font-semibold">Notices</h3>
+                  <h3 className="text-[#1D2B48] font-semibold mt-4">Notices</h3>
                 </div>
               </div>
             </a>
@@ -43,7 +43,7 @@ function Page() {
               className="rounded-xl shadow-md hover:shadow-xl cursor-pointer h-auto w-full
               lg:h-[45%] lg:w-[40%]"
             >
-              <div className="bg-red-00 flex flex-col items-center justify-around p-4 rounded-xl shadow-md hover:shadow-xl 
+              <div className="h-full flex flex-col items-center justify-around p-4 rounded-xl shadow-md hover:shadow-xl 
               lg:h-[100%] lg:w-[100%] lg:p-5 lg:rounded-2xl lg:shadow-lg">
                 <div className="bg-blue-200 p-2 h-[60px] w-[60px] rounded-full flex justify-center items-center
                 lg:h-[49%] lg:w-[29%]">
@@ -60,7 +60,7 @@ function Page() {
               className="rounded-xl shadow-md hover:shadow-xl cursor-pointer h-auto w-full
               lg:h-[45%] lg:w-[40%]"
             >
-              <div className="bg-red-00 flex flex-col items-center justify-around p-4 rounded-xl shadow-md hover:shadow-xl
+              <div className="bg-red-00 h-full flex flex-col items-center justify-around p-4 rounded-xl shadow-md hover:shadow-xl
               lg:h-[100%] lg:w-[100%] lg:p-5 lg:rounded-2xl lg:shadow-lg">
                 <div className="bg-blue-200 p-2 h-[60px] w-[60px] rounded-full flex justify-center items-center
                 lg:h-[49%] lg:w-[29%]">
@@ -108,12 +108,12 @@ function Page() {
 
           <h1
             id="notices"
-            className="text-[#1C2A46] font-medium lg:mt-8 lg:scroll-mt-24"
+            className="text-[#1C2A46] font-medium lg:mt-8 mt-4 scroll-mt-18 lg:scroll-mt-24"
           >
             If You Receive a Notice
           </h1>
 
-          <p className="text-[#1C2A46] text-sm lg:mt-3">
+          <p className="text-[#1C2A46] text-sm scroll-md-4 lg:mt-3">
             If you receive a notice from the IRS or a state tax department,
             please get it to us within 45 days of the date on the notice. We
             will review the notice, explain it to you and advise you of what
@@ -160,7 +160,7 @@ function Page() {
 
           <h1
             id="accuracy"
-            className="text-[#1C2A46] font-medium lg:mt-8 lg:scroll-mt-24"
+            className="text-[#1C2A46] font-medium lg:mt-8 mt-4 scroll-mt-18 md:scroll-mt-18 lg:scroll-mt-24"
           >
             If We Didn’t Make a Mistake:
           </h1>
@@ -188,7 +188,7 @@ function Page() {
 
           <h1
             id="taxpayment"
-            className="text-[#1C2A46] font-medium lg:mt-8 lg:scroll-mt-24"
+            className="text-[#1C2A46] font-medium lg:mt-8 mt-4 scroll-mt-18 md:scroll-mt-18 lg:scroll-mt-24"
           >
             Income Tax Due:
           </h1>

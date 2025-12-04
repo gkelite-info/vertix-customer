@@ -11,9 +11,9 @@ function Page() {
           </h1>
         </div>
 
-        <div className="w-full mt-6 flex flex-col lg:flex-row lg:w-[90%] lg:mt-10">
-          <div className="w-full lg:w-[60%] lg:pt-5 lg:pr-7">
-            <p className="text-[#1C2A46] lg:text-sm lg:mt-2">
+        <div className="w-full mt-6 flex flex-col lg:flex-row lg:w-[90%] lg:mt-8">
+          <div className="w-full lg:w-[60%] lg:pt-0 lg:pr-7">
+            <p className="text-[#1C2A46] lg:text-sm lg:mt-0">
               “I owe back taxes and need help because I don’t have the money to
               pay it all.” Could you have said that? Has the IRS or state tax
               department sent you bills and notices demanding payment? If so,
@@ -21,7 +21,7 @@ function Page() {
               liens.
             </p>
 
-            <h1 className="text-[#1C2A46] font-semibold lg:mt-8">
+            <h1 className="text-[#1C2A46] font-semibold mt-4 lg:mt-6">
               What is a tax lien?
             </h1>
 
@@ -37,7 +37,7 @@ function Page() {
               ability to borrow money.
             </p>
 
-            <h1 className="text-[#1C2A46] font-semibold lg:mt-8">
+            <h1 className="text-[#1C2A46] font-semibold mt-4 lg:mt-6">
               Who can file a tax lien against me?
             </h1>
 
@@ -49,6 +49,17 @@ function Page() {
               process and notice are met before the lien is placed on your
               property.
             </p>
+
+            <h1 className="text-[#1C2A46] font-semibold mt-4 lg:mt-6">
+            When is a tax lien effective?
+          </h1>
+
+           <p className="lg:mt-2 text-[#1C2A46] lg:text-sm">
+            A lien is effective ten days after the date of a bill for assessed
+            tax is sent to you by the IRS. The IRS can file a tax lien at any
+            time after that time. State laws have different time frames that are
+            established by each state’s regulations and procedures.
+          </p>
 
           </div>
 
@@ -67,18 +78,7 @@ function Page() {
         </div>
 
         <div className="w-full lg:w-[90%]">
-          <h1 className="text-[#1C2A46] font-semibold lg:mt-8">
-            When is a tax lien effective?
-          </h1>
-
-          <p className="lg:mt-2 text-[#1C2A46] lg:text-sm">
-            A lien is effective ten days after the date of a bill for assessed
-            tax is sent to you by the IRS. The IRS can file a tax lien at any
-            time after that time. State laws have different time frames that are
-            established by each state’s regulations and procedures.
-          </p>
-
-          <p className="lg:mt-2 text-[#1C2A46] lg:text-sm">
+          <p className="lg:mt-0 text-[#1C2A46] lg:text-sm mt-0">
             A tax lien can be filed with the county recorder at any time after a
             tax is deemed unpaid or delinquent. There are costs associated with
             the lien filing. These costs are always added to the tax bill. The
@@ -87,7 +87,7 @@ function Page() {
             sometimes without following due process and notice requirements.
           </p>
 
-          <h1 className="text-[#1C2A46] font-semibold lg:mt-8">
+          <h1 className="text-[#1C2A46] font-semibold mt-4 lg:mt-6">
             Where are tax liens filed?
           </h1>
 
@@ -98,7 +98,7 @@ function Page() {
             people can review the tax lien — it is open to the public.
           </p>
 
-          <h1 className="text-[#1C2A46] font-semibold lg:mt-8">
+          <h1 className="text-[#1C2A46] font-semibold mt-4 lg:mt-6">
             Why has a tax lien been filed against me?
           </h1>
 
@@ -108,7 +108,7 @@ function Page() {
             tools in the governments “tool box” to get money owed by taxpayers.
           </p>
 
-          <h1 className="text-[#1C2A46] font-semibold lg:mt-8">
+          <h1 className="text-[#1C2A46] font-semibold mt-4 lg:mt-6">
             What can I do if I don’t believe I owe the tax debt?
           </h1>
 
@@ -121,7 +121,7 @@ function Page() {
             Collection Appeals Program does not.
           </p>
 
-          <h1 className="text-[#1C2A46] font-semibold lg:mt-8">
+          <h1 className="text-[#1C2A46] font-semibold mt-4 lg:mt-6">
             What can I do if I can’t pay the tax debt?
           </h1>
 
@@ -158,7 +158,7 @@ function Page() {
             <li className="text-[#1C2A46] text-sm">Economic hardship</li>
           </ol>
 
-          <h1 className="text-[#1C2A46] font-semibold lg:mt-8">
+          <h1 className="text-[#1C2A46] font-semibold mt-4 lg:mt-6">
             How do I get a lien withdrawn?
           </h1>
 
@@ -204,7 +204,7 @@ function Page() {
             appeal must be filed timely to be accepted.
           </p>
 
-          <h1 className="text-[#1C2A46] font-semibold lg:mt-8">
+          <h1 className="text-[#1C2A46] font-semibold mt-4 lg:mt-6">
             Conclusion
           </h1>
 

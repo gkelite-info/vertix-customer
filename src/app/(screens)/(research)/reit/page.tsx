@@ -10,8 +10,8 @@ export default function Page() {
 
         <div className="w-full flex flex-col gap-6 lg:w-[90%] lg:mt-10 lg:flex-row">
 
-          <div className="w-full lg:w-[60%] lg:pt-5 lg:pr-7">
-            <p className="text-[#1C2A46] text-sm mt-3">
+          <div className="w-full lg:w-[60%] lg:pt-0 lg:pr-7">
+            <p className="text-[#1C2A46] text-sm mt-0">
               A real estate investment trust (REIT) is a company that owns, and
               in most cases, operates income-producing real estate. REITs own
               many types of commercial real estate, ranging from office and
@@ -41,20 +41,8 @@ export default function Page() {
               2014, finance minister Arun Jaitley has introduced a law for
               setting up of REITs.
             </p>
-          </div>
 
-          <div className="w-full flex justify-center lg:w-[40%]">
-            <img
-              src="/reit.jpg"
-              alt="reit"
-              className="h-auto w-[90%] rounded-lg lg:h-[100%] lg:w-[74%]"
-            />
-          </div>
-
-        </div>
-
-        <div className="w-full lg:w-[90%]">
-          <p className="text-[#1C2A46] text-sm mt-3">
+            <p className="text-[#1C2A46] text-sm mt-3">
             REIT’s in US Under U.S. Federal income tax law, a REIT is “any
             corporation, trust or association that acts as an investment agent
             specializing in real estate and real estate mortgages“ under
@@ -72,7 +60,20 @@ export default function Page() {
             their taxable income into the hands of investors.
           </p>
 
-          <p className="text-[#1C2A46] text-sm mt-3">
+          </div>
+
+          <div className="w-full flex justify-center lg:w-[40%]">
+            <img
+              src="/reit.jpg"
+              alt="reit"
+              className="h-auto w-[90%] rounded-lg lg:h-[100%] lg:w-[74%]"
+            />
+          </div>
+
+        </div>
+
+        <div className="w-full lg:w-[90%]">
+          <p className="text-[#1C2A46] text-sm mt-0">
             Because of their access to corporate-level debt and equity that
             typical real estate owners cannot access, REITs have a favourable
             capital structure. They are able to use this capital to finance

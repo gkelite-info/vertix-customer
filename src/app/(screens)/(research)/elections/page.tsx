@@ -11,8 +11,8 @@ export default function Page() {
 
         <div className="w-full mt-6 lg:mt-10 flex flex-col lg:flex-row lg:w-[90%]">
 
-          <div className="w-full lg:w-[60%] lg:pt-5 lg:pr-7">
-            <p className="text-[#1C2A46] text-sm mt-3">
+          <div className="w-full lg:w-[60%] lg:pt-0 lg:pr-7">
+            <p className="text-[#1C2A46] text-sm mt-0">
               First Year Election If an individual does not meet either the
               green card test or substantial presence test for 2004, he may
               elect to be treated as a U.S. resident for part of the year.
@@ -68,7 +68,7 @@ export default function Page() {
 
         <div className="w-full lg:w-[90%] mt-6 lg:mt-0 mb-5 lg:mb-0">
 
-          <p className="text-[#1C2A46] text-sm mt-3">
+          <p className="text-[#1C2A46] text-sm mt-2">
             iv)The date or dates of the individual&apos;s 31-day period of
             presence and period of continuous presence in the U.S. during the
             current year; and

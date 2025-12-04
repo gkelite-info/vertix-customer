@@ -20,7 +20,7 @@ export default function Page() {
               source country where the income is accrued or received.
             </p>
 
-            <h1 className="text-[#1C2A46] font-medium mt-6 lg:mt-8">
+            <h1 className="text-[#1C2A46] font-medium mt-6 md:mt-4 lg:mt-5">
               For Indian Students in US:
             </h1>
 
@@ -39,20 +39,8 @@ export default function Page() {
               may choose to claim the standard deduction, instead of itemizing
               deductions*.
             </p>
-          </div>
 
-          <div className="w-full mt-5 lg:mt-0 lg:w-[40%] flex justify-center">
-            <img
-              src="/tax_treaties.jpg"
-              alt="tax_treaties.jpg"
-              className="w-full h-auto max-w-[350px] lg:max-w-none lg:h-[100%] lg:w-[74%] lg:rounded-lg"
-            />
-          </div>
-        </div>
-
-        <div className="w-full lg:w-[90%] mt-6 lg:mt-0 mb-5 lg:mb-0">
-
-          <h1 className="text-[#1C2A46] font-medium mt-6 lg:mt-8">
+            <h1 className="text-[#1C2A46] font-medium mt-6 lg:mt-8">
             In addition, F-1 and J-1 students may claim an exemption for each
             spouse or dependent child who meets the following criteria:
           </h1>
@@ -74,11 +62,23 @@ export default function Page() {
             spouse who meets criteria a-c may be claimed as a dependent)
           </p>
 
-          <p className="text-[#1C2A46] text-sm mt-3">
+          </div>
+
+          <div className="w-full mt-5 lg:mt-0 lg:w-[40%] flex justify-center">
+            <img
+              src="/tax_treaties.jpg"
+              alt="tax_treaties.jpg"
+              className="w-full h-fit max-w-[350px] lg:max-w-none lg:h-fit lg:w-[74%] lg:rounded-lg"
+            />
+          </div>
+        </div>
+
+        <div className="w-full lg:w-[90%] mt-6 lg:mt-0 mb-5 lg:mb-0">
+          <p className="text-[#1C2A46] text-sm mt-2">
             e) a U.S. citizen child.
           </p>
 
-          <p className="text-[#1C2A46] text-sm mt-3">
+          <p className="text-[#1C2A46] text-sm mt-0">
             * In most cases, claiming the standard deduction will result in
             lower taxes than itemizing deductions.)
           </p>
