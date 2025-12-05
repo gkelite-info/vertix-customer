@@ -3,8 +3,7 @@
 import { useEffect, useState } from "react";
 import { useYear } from "@/app/api/context/yearContext";
 import { useAuth } from "@/components/AuthContext";
-import { getPaymentTaxSummary } from "@/app/api/SupabaseAPI/customer/paymentTaxSummaryAPI";
-import { updatePaymentStatus } from "@/app/api/SupabaseAPI/customer/documentUploadAPI";
+import { getPaymentTaxSummary, updatePaymentStatus } from "@/app/api/SupabaseAPI/customer/paymentTaxSummaryAPI";
 import TableComponent from "../../../../utils/table/page";
 import toast from "react-hot-toast";
 import CommentModal from "@/components/modals/commentModal";
@@ -13,17 +12,27 @@ import DateForDue from "../BankingInformation/dateForDue";
 import { motion, AnimatePresence } from "framer-motion";
 import PaymentGateway from "../../(screens)/payment-gateway/page";
 import { useRouter } from "next/navigation";
+import { getFeeSummary } from "@/app/api/SupabaseAPI/customer/feeSummaryAPI";
+
+
+interface FeeSummary {
+  summaryId: number;
+  customerId: number;
+  filingYearId: number;
+  totalAmount: number;
+  discount: number;
+  referral: number;
+  netFee: number;
+  feePaid: number;
+  dueAmount: number;
+  code: string | null;
+  fee_summary_items?: any[];
+  fee_payments?: any[];
+}
+
 
 export default function TaxReturnRefund() {
   const router = useRouter();
-
-  const handleGateway = () => {
-    if (!selectedRecord?.summaryId) {
-      toast.error("No valid summary selected!");
-      return;
-    }
-    router.push(`/payment-gateway?summaryId=${selectedRecord.summaryId}`);
-  };
 
   const { filingYearId } = useYear();
   const { user } = useAuth();
@@ -32,10 +41,16 @@ export default function TaxReturnRefund() {
   const [fetchingData, setFetchingData] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState<Record<string, any> | null>(null);
+  const [selectedTaxRecord, setSelectedTaxRecord] = useState(null);
+  const [selectedFeeSummary, setSelectedFeeSummary] = useState<FeeSummary | null>(null);
+
   const { isTemporary, isSessionReady } = useHandleMagicLinkAuth();
 
   const [showPayNow, setShowPayNow] = useState(false);
   const [showPaymentGateway, setShowPaymentGateway] = useState(false);
+  const [loadingFee, setLoadingFee] = useState(true);
+  const [feeSummaries, setFeeSummaries] = useState<any[]>([]);
+
 
   useEffect(() => {
     if (!isSessionReady) return;
@@ -60,20 +75,68 @@ export default function TaxReturnRefund() {
     }
   };
 
-  const handleRejectClick = (record: Record<string, any>) => {
+  useEffect(() => {
+    if (!user || !filingYearId) return;
+
+    const fetchFeeSummaries = async () => {
+      setLoadingFee(true);
+      try {
+        const data = await getFeeSummary(filingYearId);
+        setFeeSummaries(data || []);
+        console.log("Fee summaries:", data);
+      } catch (err) {
+        console.error("Error fetching fee summaries:", err);
+        setFeeSummaries([]);
+      } finally {
+        setLoadingFee(false);
+      }
+    };
+
+    fetchFeeSummaries();
+  }, [user, filingYearId]);
+
+
+  const handleAcceptClick = (record: any) => {
+    setSelectedTaxRecord(record);
+
+    const matchedFee = feeSummaries.find(
+      (f) => f.filingYearId === record.filingYearId
+    );
+
+    if (!matchedFee) {
+      toast.error("No fee summary found for this filing year!");
+      return;
+    }
+    setSelectedFeeSummary(matchedFee);
+    setShowPayNow(true);
+  };
+
+
+  const handleRejectClick = (record: any) => {
     setSelectedRecord(record);
     setIsModalOpen(true);
   };
 
+  const handleGateway = () => {
+    if (!selectedFeeSummary?.summaryId) {
+      toast.error("Fee summary not found!");
+      return;
+    }
+    router.push(`/payment-gateway?summaryId=${selectedFeeSummary.summaryId}`);
+  };
+
+  console.log("Debug record", selectedRecord);
+  
+
   const handleSaveComment = async (comment: string) => {
     try {
       if (!selectedRecord) return;
-      const summaryId = selectedRecord.summaryId;
-      if (!summaryId) {
+      const taxsummaryId = selectedRecord.taxsummaryId;
+      if (!taxsummaryId) {
         toast.error("Missing summaryId for record");
         return;
       }
-      await updatePaymentStatus(summaryId, "Rejected", comment);
+      await updatePaymentStatus(taxsummaryId, "Rejected", comment);
       toast.success("Comment saved and status set to Rejected!");
       setIsModalOpen(false);
       await fetchData();
@@ -82,16 +145,6 @@ export default function TaxReturnRefund() {
       toast.error("Failed to save comment");
     }
   };
-
-  const handleAcceptClick = (record: Record<string, any>) => {
-    if (summaries.length > 0) {
-      setSelectedRecord(summaries[0]);
-      setShowPayNow(true);
-    } else {
-      toast.error("No summary found to proceed with payment.");
-    }
-  };
-
 
   const baseColumns = [
     "TAX Type",

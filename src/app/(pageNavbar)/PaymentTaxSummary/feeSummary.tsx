@@ -207,7 +207,7 @@ export default function FeeSummary({ onTotalsChange }: { onTotalsChange: (values
 
     if (isLoading || isLoadingSummary) {
         return (
-            <div className="flex justify-center items-center h-40">
+            <div className="flex justify-center items-center h-screen">
                 <p className="text-[#1D2B48] font-medium">Loading Fee Summary...</p>
             </div>
         );

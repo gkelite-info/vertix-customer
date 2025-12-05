@@ -35,18 +35,3 @@ export const upsertFeeSummaryItem = async (item: FeeSummaryItemInput) => {
     throw error
   }
 }
-
-export const deleteFeeSummaryItem = async (itemId: number) => {
-  try {
-    const { error } = await supabase
-      .from("fee_summary_items")
-      .delete()
-      .eq("id", itemId)
-
-    if (error) throw error
-    return true
-  } catch (error: any) {
-    console.error("Error deleting fee summary item:", error.message)
-    throw error
-  }
-}

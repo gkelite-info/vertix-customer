@@ -9,7 +9,7 @@ import { useSearchParams } from "next/navigation";
 
 function PaymentGatewayContent() {
   const searchParams = useSearchParams();
-  const summaryId = searchParams.get("SummaryId");
+  const summaryId = searchParams.get("summaryId");
   const { filingYearId } = useYear();
 
   const [totals, setTotals] = useState({
@@ -111,6 +111,7 @@ function PaymentGatewayContent() {
           feePaid: totals.feePaid,
           netFee: totals.netFee,
           summaryId,
+          filingYearId
         }),
       });
 
