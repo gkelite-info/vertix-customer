@@ -30,7 +30,7 @@ export default function SuccessPage() {
 
                 await acceptPaymentSummary(Number(summaryId));
             } catch (err) {
-                console.error("Error loading summary:", err); 
+                console.error("Error loading summary:", err);
             } finally {
                 setLoading(false);
             }
@@ -82,12 +82,12 @@ export default function SuccessPage() {
                 </h1>
             </div>
 
-            <div className="mt-6 text-center">
+            <div className="mt-7 text-center">
                 <a
-                    href="/"
-                    className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                    href="/taxfiling?tab=uploaded-by-vertix"
+                    className="px-4 py-2 bg-[#1D2B48] text-white lg:text-sm rounded"
                 >
-                    Go Home
+                    Continue Filing
                 </a>
             </div>
         </div>
