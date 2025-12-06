@@ -1,7 +1,8 @@
 import Stripe from "stripe";
 import { NextResponse } from "next/server";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY_TEST!);
+// console.log("Black sheep test", process.env.STRIPE_SECRET_KEY_TEST)
 
 const BASE_URL =
     process.env.NODE_ENV === "production"
@@ -16,12 +17,13 @@ export async function POST(req: Request) {
             referral,
             feePaid,
             netFee,
-            summaryId
+            summaryId,
+            filingYearId
         } = await req.json();
 
-        // console.log("Stripe Checkout:", { totalFee, discount, referral, feePaid, netFee, summaryId });
+        // console.log("Stripe Checkout:", { totalFee, discount, referral, feePaid, netFee, summaryId, filingYearId });
 
-        if (!netFee || netFee <= 0) {
+        if (process.env.NODE_ENV === "production" && (!netFee || netFee <= 0)) {
             throw new Error("Invalid net fee amount. Must be > 0.");
         }
 
@@ -47,10 +49,9 @@ Net Amount: ₹${netFee}
                     }
                 }
             ],
-            success_url: `${BASE_URL}/success?summary_id=${summaryId}`,
+            success_url: `${BASE_URL}/success?summaryId=${summaryId}&filing_year=${filingYearId}`,
             cancel_url: `${BASE_URL}/payment-gateway?cancel=true`
         });
-
 
         return NextResponse.json({ url: session.url });
     } catch (err: any) {
@@ -58,3 +59,4 @@ Net Amount: ₹${netFee}
         return NextResponse.json({ error: err.message }, { status: 500 });
     }
 }
+

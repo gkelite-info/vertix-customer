@@ -24,19 +24,59 @@ export const getFeeSummary = async (filingYearId: number) => {
       .select("customerId")
       .eq("auth_id", user.id)
       .single()
-    if (customerError || !customer) throw new Error("Customer not found")
+
+    if (customerError || !customer)
+      throw new Error("Customer not found")
 
     const { data, error } = await supabase
       .from("fee_summary")
-      .select("*, fee_summary_items(*), fee_payments(*)")
+      .select(`*,fee_summary_items(*),fee_payments(*)`)
       .eq("customerId", customer.customerId)
       .eq("filingYearId", filingYearId)
-      .order("createdAt", { ascending: false })
+      .order("createdAt", { ascending: false });
+
 
     if (error) throw error
     return data || []
   } catch (error: any) {
     console.error("Error fetching fee summary:", error.message)
+    throw error
+  }
+}
+
+export const getFeeSummaryById = async (feesummaryId: number) => {
+  try {
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser()
+
+    if (authError || !user) throw new Error("Not authenticated")
+
+    const { data: customer, error: customerError } = await supabase
+      .from("vertixcustomers")
+      .select("customerId")
+      .eq("auth_id", user.id)
+      .single()
+
+    if (customerError || !customer)
+      throw new Error("Customer not found")
+
+    const { data, error } = await supabase
+      .from("fee_summary")
+      .select(`
+        *,
+        fee_summary_items:fee_summary_items!summaryId(*),
+        fee_payments:fee_payments!summaryId(*)
+      `)
+      .eq("customerId", customer.customerId)
+      .eq("summaryId", feesummaryId)
+      .single()
+
+    if (error) throw error
+    return data
+  } catch (error: any) {
+    console.error("Error fetching summary by ID:", error.message)
     throw error
   }
 }
@@ -54,7 +94,9 @@ export const upsertFeeSummary = async (summary: FeeSummaryInput) => {
       .select("customerId")
       .eq("auth_id", user.id)
       .single()
-    if (customerError || !customer) throw new Error("Customer not found")
+
+    if (customerError || !customer)
+      throw new Error("Customer not found")
 
     const customerId = customer.customerId
     const now = new Date().toISOString()
@@ -75,7 +117,9 @@ export const upsertFeeSummary = async (summary: FeeSummaryInput) => {
 
     const { data, error } = await supabase
       .from("fee_summary")
-      .upsert([payload], { onConflict: "filingYearId" })
+      .upsert([payload], {
+        onConflict: "customerId,filingYearId",
+      })
       .select("summaryId")
       .single()
 
