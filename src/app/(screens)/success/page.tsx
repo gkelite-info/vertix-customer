@@ -30,7 +30,7 @@ export default function SuccessPage() {
 
                 await acceptPaymentSummary(Number(summaryId));
             } catch (err) {
-                console.error("Error loading summary:", err);
+                console.error("Error loading summary:", err); 
             } finally {
                 setLoading(false);
             }
