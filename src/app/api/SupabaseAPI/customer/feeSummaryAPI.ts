@@ -30,7 +30,12 @@ export const getFeeSummary = async (filingYearId: number) => {
 
     const { data, error } = await supabase
       .from("fee_summary")
-      .select(`*,fee_summary_items(*),fee_payments(*)`)
+      // .select(`*,fee_summary_items(*),fee_payments(*)`)
+      .select(`
+  *,
+  fee_summary_items:fee_summary_items!fee_summary_items_summaryId_fkey(*),
+  fee_payments:fee_payments!fee_payments_summaryid_fkey(*)
+`)
       .eq("customerId", customer.customerId)
       .eq("filingYearId", filingYearId)
       .order("createdAt", { ascending: false });
@@ -64,11 +69,16 @@ export const getFeeSummaryById = async (feesummaryId: number) => {
 
     const { data, error } = await supabase
       .from("fee_summary")
+      // .select(`
+      //   *,
+      //   fee_summary_items:fee_summary_items!summaryId(*),
+      //   fee_payments:fee_payments!summaryId(*)
+      // `)
       .select(`
-        *,
-        fee_summary_items:fee_summary_items!summaryId(*),
-        fee_payments:fee_payments!summaryId(*)
-      `)
+    *,
+    fee_summary_items:fee_summary_items!fee_summary_items_summaryId_fkey(*),
+    fee_payments:fee_payments!fee_payments_summaryid_fkey(*)
+  `)
       .eq("customerId", customer.customerId)
       .eq("summaryId", feesummaryId)
       .single()

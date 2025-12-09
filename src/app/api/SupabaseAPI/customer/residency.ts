@@ -9,8 +9,13 @@ export type MigrationRow = {
 
 export type ResidencyPayload = {
     migrations: MigrationRow[];
+    spouseMigrations?: MigrationRow[];
+    spouseId?: number;
     notes: string;
+    spouseResidency: boolean;
+    filingYearId: number
 };
+
 
 export const upsertResidencyDetails = async (payload: ResidencyPayload) => {
     try {
@@ -29,17 +34,38 @@ export const upsertResidencyDetails = async (payload: ResidencyPayload) => {
 
         const now = new Date().toISOString();
 
+        const { data: spouse, error: spouseError } = await supabase
+            .from("spouses")
+            .select("spouseId")
+            .eq("customerId", customerId)
+            .single();
+
+        if (spouseError && spouseError.code !== 'PGRST116') {
+            console.warn("Spouse fetch error:", spouseError.message);
+        }
+
+        const spouseId = spouse?.spouseId ?? null;
+
+        const first = payload.migrations[0];
         const { data: residencyRow, error: residencyError } = await supabase
             .from("residencydetails")
             .upsert([
                 {
                     customerId,
+                    filingYearId: payload.filingYearId,
+                    fromDate: first.fromDate,
+                    toDate: first.toDate,
+                    state: first.state,
+                    country: first.country,
                     notes: payload.notes || null,
+                    spouseResidency: payload.spouseResidency,
                     updatedAt: now,
                     createdAt: now,
                     deletedAt: null,
                 }
-            ])
+            ], {
+                onConflict: "customerId,filingYearId"
+            })
             .select()
             .single();
 
@@ -54,12 +80,15 @@ export const upsertResidencyDetails = async (payload: ResidencyPayload) => {
 
         const rowsToInsert = payload.migrations.map((m) => ({
             residencyId,
+            filingYearId: payload.filingYearId,
             fromDate: m.fromDate,
             toDate: m.toDate,
             state: m.state,
             country: m.country,
             createdAt: now,
             updatedAt: now,
+            isSpouse: false,
+            spouseId: null
         }));
 
         const { error: migrationError } = await supabase
@@ -67,6 +96,27 @@ export const upsertResidencyDetails = async (payload: ResidencyPayload) => {
             .insert(rowsToInsert);
 
         if (migrationError) throw migrationError;
+
+        if (!payload.spouseResidency && payload.spouseMigrations?.length) {
+            const spouseRows = payload.spouseMigrations.map(m => ({
+                residencyId,
+                filingYearId: payload.filingYearId,
+                fromDate: m.fromDate,
+                toDate: m.toDate,
+                state: m.state,
+                country: m.country,
+                createdAt: now,
+                updatedAt: now,
+                isSpouse: true,
+                spouseId: payload.spouseId ?? spouseId ?? null,
+            }));
+
+            const { error: spouseError } = await supabase
+                .from("residencymigrations")
+                .insert(spouseRows);
+
+            if (spouseError) throw spouseError;
+        }
 
         return { success: true };
     } catch (error: any) {

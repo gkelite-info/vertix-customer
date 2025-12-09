@@ -84,6 +84,28 @@ export default function BankingInformationPage() {
       return;
     }
 
+    if (
+      !formValues.belongsTo ||
+      !formValues.holderName.trim() ||
+      !formValues.bankName.trim() ||
+      !formValues.accountNumber.trim() ||
+      !formValues.routingNumber.trim() ||
+      !formValues.accountType
+    ) {
+      toast.error("Please fill all fields before submitting");
+      return;
+    }
+
+    if (formValues.accountNumber.length < 6) {
+      toast.error("Account number looks too short");
+      return;
+    }
+
+    if (!/^\d{9}$/.test(formValues.routingNumber)) {
+      toast.error("Routing number must be exactly 9 digits");
+      return;
+    }
+
     setLoading(true);
     try {
       const payload = {
@@ -91,7 +113,9 @@ export default function BankingInformationPage() {
         filingYearId,
         accountType: formValues.accountType as "checking" | "savings" | "others",
       };
+
       const res = await upsertBankInformation(payload);
+      
       if (res) {
         toast.success("Bank information saved successfully");
         setBankRecords([res]);
@@ -211,7 +235,7 @@ export default function BankingInformationPage() {
             label: "Routing Number",
             name: "routingNumber",
             type: "text",
-            placeholder: "Enter Routing Number (optional)",
+            placeholder: "Enter Routing Number",
           },
           {
             label: "Type of Account",

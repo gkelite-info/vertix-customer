@@ -75,9 +75,9 @@ export default function MigrationCard({
 
     return (
         <>
-            <div className="h-[80%] bg-yellow-00 gap-3 flex flex-col justify-end items-between rounded-b-lg text-start">
+            <div className="h-[80%] bg-yellow-00 gap-3 flex flex-col justify-end items-between text-start">
                 <div className="flex items-end justify-between bg-red-00">
-                    <div className="flex items-end bg-red-00">
+                    <div className="flex items-end bg-red-00 gap-2">
                         <div className="flex flex-col justify-between bg-pink-00 w-[20%] h-[75%] rounded-md p-1">
                             <p className="text-[#2F3F5F] font-medium text-sm">From Date</p>
                             <div className="bg-green-00 flex items-center shadow-lg rounded-md p-1">

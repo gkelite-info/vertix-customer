@@ -111,7 +111,6 @@ export default function TaxReturnRefund() {
     setShowPayNow(true);
   };
 
-
   const handleRejectClick = (record: any) => {
     setSelectedRecord(record);
     setIsModalOpen(true);
@@ -124,9 +123,6 @@ export default function TaxReturnRefund() {
     }
     router.push(`/payment-gateway?summaryId=${selectedFeeSummary.summaryId}`);
   };
-
-  console.log("Debug record", selectedRecord);
-  
 
   const handleSaveComment = async (comment: string) => {
     try {

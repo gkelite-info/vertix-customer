@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import YearSelect from "../../../../../utils/yearSelect";
 import Dependents from "./dependents";
 import ResidencyDetails from "./resedencydetails/resendencyDetails";
@@ -22,8 +22,9 @@ export type Tab =
 export default function Page() {
   const router = useRouter();
 
-  const [activeTab, setActiveTab] = useState<Tab | null>(null)
   const [hasDependents, setHasDependents] = useState<boolean>(false);
+  const [activeTab, setActiveTab] = useState<Tab | null>(null);
+  const isFirstRender = useRef(true);
 
   const tabs: Tab[] = [
     "About You",
@@ -36,18 +37,24 @@ export default function Page() {
 
   useEffect(() => {
     const saved = localStorage.getItem("activeTab") as Tab | null;
-    if (saved) setActiveTab(saved);
+    const firstVisit = sessionStorage.getItem("firstVisit");
+
+    if (!firstVisit) {
+      sessionStorage.setItem("firstVisit", "done");
+      setActiveTab("About You");
+    } else {
+      if (saved) setActiveTab(saved);
+    }
   }, []);
 
   useEffect(() => {
-    if (activeTab) localStorage.setItem("activeTab", activeTab)
-  }, [activeTab])
-
-  useEffect(() => {
     if (activeTab) {
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      localStorage.setItem("activeTab", activeTab);
     }
   }, [activeTab]);
+
+  if (!activeTab) return null;
+
 
   const handleBack = () => router.back();
 
