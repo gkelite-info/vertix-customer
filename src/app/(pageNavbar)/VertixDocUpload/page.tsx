@@ -3,10 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 import YearSelect from "../../../../utils/yearSelect";
 import toast from "react-hot-toast";
-import { deleteUserDocument, getDocumentDownloadUrl, getUserDocuments, uploadUserDocument } from "@/app/api/SupabaseAPI/customer/documentUploadAPI";
+import { getDocumentDownloadUrl, getUserDocuments, uploadUserDocument } from "@/app/api/SupabaseAPI/customer/documentUploadAPI";
 import { useAuth } from "@/components/AuthContext";
 import TableComponent from "../../../../utils/table/page";
-import DeleteModal from "@/components/modals/deleteModal";
 import { useYear } from "@/app/api/context/yearContext";
 import { DownloadSimple, Trash } from "phosphor-react";
 
@@ -216,7 +215,7 @@ export default function VertixTaxPage() {
                 >
                   <DownloadSimple size={20} />
                 </button>
-                
+
               </>
             )}
             onUpdateClick={() => console.log("Not used here")}

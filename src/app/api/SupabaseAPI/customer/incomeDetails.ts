@@ -1,10 +1,12 @@
 import { supabase } from "../../../../../utils/supabase/client";
 
 interface IncomeDetailsInput {
+  createdAt: Date;
+  filingYearId: number;
   hasWagesSalaryTipsTaxpayer: boolean;
-  taxpayerEmployer?: string | null;
+  taxpayerEmployer?: string[] | null;
   hasWagesSalaryTipsSpouse: boolean;
-  spouseEmployer?: string | null;
+  spouseEmployer?: string[] | null;
   hasBusinessIncome: boolean;
   hasSelfEmploymentIncome: boolean;
   hasRentalIncome: boolean;
@@ -34,7 +36,7 @@ export const getIncomeDetails = async () => {
     const customerId = customer.customerId;
 
     const { data, error } = await supabase
-      .from("income_details")
+      .from("incomedetails")
       .select("*")
       .eq("customerId", customerId);
 
@@ -72,10 +74,11 @@ export const upsertIncomeDetails = async (
 
     const dbIncomeDetails = incomeDetailsArray.map((income) => ({
       customerId,
+      filingYearId: income.filingYearId,
       hasWagesSalaryTipsTaxpayer: income.hasWagesSalaryTipsTaxpayer,
-      taxpayerEmployer: income.taxpayerEmployer ?? null,
+      taxpayerEmployer: income.taxpayerEmployer ?? [],
       hasWagesSalaryTipsSpouse: income.hasWagesSalaryTipsSpouse,
-      spouseEmployer: income.spouseEmployer ?? null,
+      spouseEmployer: income.spouseEmployer ?? [],
       hasBusinessIncome: income.hasBusinessIncome,
       hasSelfEmploymentIncome: income.hasSelfEmploymentIncome,
       hasRentalIncome: income.hasRentalIncome,
@@ -83,13 +86,15 @@ export const upsertIncomeDetails = async (
       hasDividendIncome: income.hasDividendIncome,
       hasStateTaxRefund: income.hasStateTaxRefund,
       w2UploadPath: income.w2UploadPath ?? null,
-      createdAt: now,
+      createdAt: income.createdAt ?? new Date(),
       updatedAt: now,
     }));
 
     const { data, error } = await supabase
       .from("incomedetails")
-      .upsert(dbIncomeDetails)
+      .upsert(dbIncomeDetails, {
+        onConflict: "filingYearId"
+      })
       .select();
 
     if (error) throw error;
