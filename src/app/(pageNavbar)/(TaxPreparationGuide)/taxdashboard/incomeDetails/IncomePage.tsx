@@ -16,25 +16,35 @@ export default function SubIncomeDetails({ setActiveTab }: IncomeProps) {
 
     const [incomeDetails, setIncomeDetails] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [taxpayerEmployer, setTaxpayerEmployer] = useState("");
-    const [spouseEmployer, setSpouseEmployer] = useState("");
-    const { selectedYear } = useYear();
+    const [taxpayerEmployer, setTaxpayerEmployer] = useState<string[]>([]);
+    const [spouseEmployer, setSpouseEmployer] = useState<string[]>([]);
+    const [taxpayerCount, setTaxpayerCount] = useState(1);
+    const [spouseCount, setSpouseCount] = useState(1);
+
+    const { selectedYear, filingYearId } = useYear();
 
     const handleSave = async () => {
+        setIsLoading(true);
         try {
             const updatedIncomeDetails = [...incomeDetails];
             if (updatedIncomeDetails.length === 0) updatedIncomeDetails[0] = {};
             updatedIncomeDetails[0] = {
                 ...updatedIncomeDetails[0],
+                filingYearId,
                 taxpayerEmployer,
                 spouseEmployer,
             };
+            console.log("Ramu", updatedIncomeDetails);
 
             await upsertIncomeDetails(updatedIncomeDetails);
             toast.success("Income details saved successfully.");
         } catch (error) {
             toast.error("Failed to save income details.");
             console.error(error);
+        }
+        finally {
+            setIsLoading(false);
+            return
         }
     };
 
@@ -62,6 +72,8 @@ export default function SubIncomeDetails({ setActiveTab }: IncomeProps) {
                         setIncomeDetails={setIncomeDetails}
                         handleToggleChange={handleToggleChange}
                         setActiveTab={setActiveTab}
+                        setTaxpayerCount={setTaxpayerCount}
+                        setSpouseCount={setSpouseCount}
                     />
 
                     <TaxPayerInfo
@@ -69,7 +81,10 @@ export default function SubIncomeDetails({ setActiveTab }: IncomeProps) {
                         setTaxpayerEmployer={setTaxpayerEmployer}
                         spouseEmployer={spouseEmployer}
                         setSpouseEmployer={setSpouseEmployer}
+                        taxpayerCount={taxpayerCount}
+                        spouseCount={spouseCount}
                     />
+
                     <Rest
                         incomeDetails={incomeDetails}
                         handleToggleChange={handleToggleChange}
@@ -82,18 +97,22 @@ export default function SubIncomeDetails({ setActiveTab }: IncomeProps) {
                         </button>
                         <button
                             onClick={handleSave}
+                            className="py-2 w-[13%] cursor-pointer bg-[#1D2A46] text-white rounded-md text-sm font-medium hover:bg-opacity-90"
                             disabled={isLoading}
-                            className="py-2 w-[13%] cursor-pointer bg-[#1D2A46] text-white rounded-md text-sm font-medium hover:bg-opacity-90">
-                            {isLoading ? "Saving" : "Save"}
+                        >
+                            {isLoading ? "Saving..." : "Save"}
                         </button>
                         <button
-                            onClick={() => setActiveTab("Deduction Details")}
+                            onClick={() => {
+                                handleSave()
+                                setActiveTab("Deduction Details")
+                            }}
                             className="py-2 w-[13%] cursor-pointer bg-[#1D2A46] text-white rounded-md text-sm font-medium hover:bg-opacity-90">
                             Next
                         </button>
                     </div>
                 </div>
-            </div>
+            </div >
         </>
     )
 }

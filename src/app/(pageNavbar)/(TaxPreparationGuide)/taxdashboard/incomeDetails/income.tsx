@@ -8,6 +8,8 @@ type IncomeDetailsProps = {
     setIncomeDetails: (data: any[]) => void;
     handleToggleChange: (index: number, field: string, value: boolean) => void;
     setActiveTab: (tab: Tab) => void;
+    setTaxpayerCount: (count: number) => void;
+    setSpouseCount: (count: number) => void;
 };
 
 export default function IncomeDetails({
@@ -15,6 +17,8 @@ export default function IncomeDetails({
     setIncomeDetails,
     handleToggleChange,
     setActiveTab,
+    setTaxpayerCount,
+    setSpouseCount
 }: IncomeDetailsProps) {
     const index = 0;
 
@@ -37,17 +41,35 @@ export default function IncomeDetails({
                         <h4 className="text-[#585E68] text-xs text-start ml-1">Wages, Salary, Tips</h4>
                         <p style={{ fontSize: 10, color: "#1D2B48", fontWeight: '500' }}>Note : Please Upload W2 Form(S) in the Portal</p>
                     </div>
-                    <div className="bg-indigo-00 w-[33%] flex items-center justify-center">
+                    <div className="bg-indigo-00 w-[33%] flex flex-col items-center justify-center gap-2 lg:pt-3">
                         <ToggleSwitch labelLeft="No" labelRight="Yes"
                             value={incomeDetails[index]?.hasWagesSalaryTipsTaxpayer || false}
                             onToggle={(val) => handleToggleChange(index, "hasWagesSalaryTipsTaxpayer", val)}
                         />
+                        <select
+                            className="text-xs text-[#1D2B48] focus:outline-none"
+                            onChange={(e) => setTaxpayerCount(Number(e.target.value))}
+                        >
+                            <option value="">Choose</option>
+                            {Array.from({ length: 10 }, (_, i) => i + 1).map(num => (
+                                <option key={num} value={num}>{num}</option>
+                            ))}
+                        </select>
                     </div>
-                    <div className="bg-indigo-00 w-[33%] flex items-center justify-center">
+                    <div className="bg-indigo-00 w-[33%] flex flex-col items-center justify-center gap-2 lg:pt-3">
                         <ToggleSwitch labelLeft="No" labelRight="Yes"
                             value={incomeDetails[index]?.hasWagesSalaryTipsSpouse || false}
                             onToggle={(val) => handleToggleChange(index, "hasWagesSalaryTipsSpouse", val)}
                         />
+                        <select
+                            className="text-xs text-[#1D2B48] focus:outline-none"
+                            onChange={(e)=> setSpouseCount(Number(e.target.value))}
+                        >
+                            <option value="">Choose</option>
+                            {Array.from({ length: 10 }, (_, i) => i + 1).map(num => (
+                                <option key={num} value={num}>{num}</option>
+                            ))}
+                        </select>
                     </div>
                 </div>
             </div>
