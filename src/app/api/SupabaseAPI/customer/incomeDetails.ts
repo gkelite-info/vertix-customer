@@ -7,12 +7,17 @@ interface IncomeDetailsInput {
   taxpayerEmployer?: string[] | null;
   hasWagesSalaryTipsSpouse: boolean;
   spouseEmployer?: string[] | null;
-  hasBusinessIncome: boolean;
-  hasSelfEmploymentIncome: boolean;
-  hasRentalIncome: boolean;
-  hasHsaDistribution: boolean;
-  hasDividendIncome: boolean;
-  hasStateTaxRefund: boolean;
+  earnedWagesOrSalary: boolean;
+  receivedBusinessEntityIncome: boolean;
+  receivedContractOrGigIncome: boolean;
+  hadRentalPropertyIncomeOrLoss: boolean;
+  receivedHsaOrMsaDistribution: boolean;
+  receivedIraDistribution: boolean;
+  soldInvestments?: boolean;
+  receivedInterestIncome?: boolean;
+  receivedDividendIncome?: boolean;
+  receivedPriorYearStateRefund?: boolean;
+  additionalIncome?: string | null;
   w2UploadPath?: string | null;
 }
 
@@ -79,12 +84,17 @@ export const upsertIncomeDetails = async (
       taxpayerEmployer: income.taxpayerEmployer ?? [],
       hasWagesSalaryTipsSpouse: income.hasWagesSalaryTipsSpouse,
       spouseEmployer: income.spouseEmployer ?? [],
-      hasBusinessIncome: income.hasBusinessIncome,
-      hasSelfEmploymentIncome: income.hasSelfEmploymentIncome,
-      hasRentalIncome: income.hasRentalIncome,
-      hasHsaDistribution: income.hasHsaDistribution,
-      hasDividendIncome: income.hasDividendIncome,
-      hasStateTaxRefund: income.hasStateTaxRefund,
+      earnedWagesOrSalary: income.earnedWagesOrSalary,
+      receivedBusinessEntityIncome: income.receivedBusinessEntityIncome,
+      receivedContractOrGigIncome: income.receivedContractOrGigIncome,
+      hadRentalPropertyIncomeOrLoss: income.hadRentalPropertyIncomeOrLoss,
+      receivedHsaOrMsaDistribution: income.receivedHsaOrMsaDistribution,
+      receivedIraDistribution: income.receivedIraDistribution,
+      soldInvestments: income.soldInvestments ?? false,
+      receivedInterestIncome: income.receivedInterestIncome ?? false,
+      receivedDividendIncome: income.receivedDividendIncome ?? false,
+      receivedPriorYearStateRefund: income.receivedPriorYearStateRefund ?? false,
+      additionalIncome: income.additionalIncome ?? null,
       w2UploadPath: income.w2UploadPath ?? null,
       createdAt: income.createdAt ?? new Date(),
       updatedAt: now,

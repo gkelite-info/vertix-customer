@@ -1,5 +1,5 @@
 'use client'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import IncomeDetails from "./income";
 import Rest from "./rest";
 import TaxPayerInfo from "./taxPayerInfo";
@@ -7,6 +7,19 @@ import { upsertIncomeDetails } from "@/app/api/SupabaseAPI/customer/incomeDetail
 import toast from "react-hot-toast";
 import { useYear } from "@/app/api/context/yearContext";
 import { Tab } from "../aboutyou/aboutYou";
+
+const defaultIncomeObject = {
+    earnedWagesOrSalary: false,
+    receivedBusinessEntityIncome: false,
+    receivedContractOrGigIncome: false,
+    hadRentalPropertyIncomeOrLoss: false,
+    receivedHsaOrMsaDistribution: false,
+    receivedIraDistribution: false,
+    soldInvestments: false,
+    receivedInterestIncome: false,
+    receivedDividendIncome: false,
+    receivedPriorYearStateRefund: false,
+};
 
 type IncomeProps = {
     setActiveTab: (tab: Tab) => void;
@@ -20,21 +33,36 @@ export default function SubIncomeDetails({ setActiveTab }: IncomeProps) {
     const [spouseEmployer, setSpouseEmployer] = useState<string[]>([]);
     const [taxpayerCount, setTaxpayerCount] = useState(1);
     const [spouseCount, setSpouseCount] = useState(1);
+    const [additionalIncome, setAdditionalIncome] = useState('')
 
     const { selectedYear, filingYearId } = useYear();
+
+    useEffect(() => {
+        if (incomeDetails.length === 0) {
+            setIncomeDetails([defaultIncomeObject]);
+        }
+    }, []);
 
     const handleSave = async () => {
         setIsLoading(true);
         try {
             const updatedIncomeDetails = [...incomeDetails];
-            if (updatedIncomeDetails.length === 0) updatedIncomeDetails[0] = {};
+             if (!updatedIncomeDetails[0]) {
+                updatedIncomeDetails[0] = { ...defaultIncomeObject };
+            } else {
+                updatedIncomeDetails[0] = {
+                    ...defaultIncomeObject,
+                    ...updatedIncomeDetails[0],
+                };
+            }
+            // if (updatedIncomeDetails.length === 0) updatedIncomeDetails[0] = {};
             updatedIncomeDetails[0] = {
                 ...updatedIncomeDetails[0],
                 filingYearId,
                 taxpayerEmployer,
                 spouseEmployer,
+                additionalIncome
             };
-            console.log("Ramu", updatedIncomeDetails);
 
             await upsertIncomeDetails(updatedIncomeDetails);
             toast.success("Income details saved successfully.");
@@ -54,7 +82,7 @@ export default function SubIncomeDetails({ setActiveTab }: IncomeProps) {
         value: boolean
     ) => {
         const updated = [...incomeDetails];
-        if (!updated[index]) updated[index] = {};
+        if (!updated[index]) updated[index] = { ...defaultIncomeObject };
         updated[index] = { ...updated[index], [field]: value };
         setIncomeDetails(updated);
     };
@@ -88,6 +116,8 @@ export default function SubIncomeDetails({ setActiveTab }: IncomeProps) {
                     <Rest
                         incomeDetails={incomeDetails}
                         handleToggleChange={handleToggleChange}
+                        additionalIncome={additionalIncome}
+                        setAdditionalIncome={setAdditionalIncome}
                     />
                     <div className="flex justify-center w-[100%] gap-3 mt-6">
                         <button
