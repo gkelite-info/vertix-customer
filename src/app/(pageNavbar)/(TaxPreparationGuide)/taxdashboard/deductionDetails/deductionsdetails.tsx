@@ -6,6 +6,7 @@ import DeductionAndRent from "./deduction";
 import MedicalExpenses from "./medicalExpenses";
 import { upsertDeductionDetails } from "@/app/api/SupabaseAPI/customer/deductions";
 import toast from "react-hot-toast";
+import { useYear } from "@/app/api/context/yearContext";
 
 type Tab = "Income Details" | "Deduction Details" | "FBAR/FATCA";
 
@@ -17,70 +18,82 @@ export interface DeductionsInput {
     hasHealthCoverage: boolean;
     paidRent: boolean;
     rentState?: string | null;
-    rentAmount?: number | null;
-    incurredMedicalExpenses: boolean;
+    rentAmount?: string | null;
+
     ownHomeUSA: boolean;
     ownHomeAbroad: boolean;
+    familyInsurance: boolean;
+    medicalExpenses: boolean;
     paidPropertyTax: boolean;
     propertyTaxName?: string | null;
     propertyTaxDescription?: string | null;
-    propertyTaxAmount?: number | null;
-    paidCashCharity: boolean;
-    paidNonCashCharity: boolean;
+    propertyTaxAmount?: string | null;
+    cashCharity: boolean;
+
     contributedIRA: boolean;
     contributedHSA: boolean;
     paidTuition: boolean;
     paidPriorStateTaxes: boolean;
     haveBadDebts: boolean;
     additionalExpenses?: string | null;
+    studentLoanUS: boolean;
+    filingYearId: number | null;
+
 }
 
 export default function DeductionDetails({ setActiveTab }: DeductionProps) {
     const [loading, setLoading] = useState(false);
+    const { filingYearId } = useYear();
 
     const [hasHealthCoverage, setHasHealthCoverage] = useState<boolean>(false);
     const [paidRent, setPaidRent] = useState(false);
     const [rentState, setRentState] = useState("");
     const [rentAmount, setRentAmount] = useState<string>("");
 
-    const [incurredMedicalExpenses, setIncurredMedicalExpenses] = useState(false);
     const [ownHomeUSA, setOwnHomeUSA] = useState(false);
     const [ownHomeAbroad, setOwnHomeAbroad] = useState(false);
+    const [familyInsurance, setFamilyInsurance] = useState(false);
+    const [medicalExpenses, setMedicalExpenses] = useState(false);
     const [paidPropertyTax, setPaidPropertyTax] = useState(false);
     const [propertyTaxName, setPropertyTaxName] = useState("");
     const [propertyTaxDescription, setPropertyTaxDescription] = useState("");
     const [propertyTaxAmount, setPropertyTaxAmount] = useState<string>("");
 
-    const [paidCashCharity, setPaidCashCharity] = useState(false);
-    const [paidNonCashCharity, setPaidNonCashCharity] = useState(false);
+    const [cashCharity, setCashCharity] = useState(false);
     const [contributedIRA, setContributedIRA] = useState(false);
     const [contributedHSA, setContributedHSA] = useState(false);
     const [paidTuition, setPaidTuition] = useState(false);
     const [paidPriorStateTaxes, setPaidPriorStateTaxes] = useState(false);
     const [haveBadDebts, setHaveBadDebts] = useState(false);
     const [additionalExpenses, setAdditionalExpenses] = useState("");
+    const [studentLoanUS, setStudentLoanUS] = useState(false);
 
     const handleSave = async () => {
         const dataToSave: DeductionsInput = {
             hasHealthCoverage,
             paidRent,
             rentState: rentState || null,
-            rentAmount: rentAmount === "" ? null : Number(rentAmount),
-            incurredMedicalExpenses,
+            rentAmount: rentAmount || null,
+
             ownHomeUSA,
             ownHomeAbroad,
+            familyInsurance,
+            medicalExpenses,
             paidPropertyTax,
             propertyTaxName: propertyTaxName || null,
             propertyTaxDescription: propertyTaxDescription || null,
-            propertyTaxAmount: propertyTaxAmount === "" ? null : Number(propertyTaxAmount),
-            paidCashCharity,
-            paidNonCashCharity,
+            propertyTaxAmount: propertyTaxAmount || null,
+
             contributedIRA,
             contributedHSA,
+            cashCharity,
+            studentLoanUS,
             paidTuition,
             paidPriorStateTaxes,
             haveBadDebts,
             additionalExpenses: additionalExpenses || null,
+            filingYearId: filingYearId
+
         };
         setLoading(true);
         try {
@@ -107,12 +120,14 @@ export default function DeductionDetails({ setActiveTab }: DeductionProps) {
                 setRentAmount={setRentAmount}
             />
             <MedicalExpenses
-                incurredMedicalExpenses={incurredMedicalExpenses}
-                setIncurredMedicalExpenses={setIncurredMedicalExpenses}
                 ownHomeUSA={ownHomeUSA}
                 setOwnHomeUSA={setOwnHomeUSA}
                 ownHomeAbroad={ownHomeAbroad}
                 setOwnHomeAbroad={setOwnHomeAbroad}
+                familyInsurance={familyInsurance}
+                setFamilyInsurance={setFamilyInsurance}
+                medicalExpenses={medicalExpenses}
+                setMedicalExpenses={setMedicalExpenses}
                 paidPropertyTax={paidPropertyTax}
                 setPaidPropertyTax={setPaidPropertyTax}
                 propertyTaxName={propertyTaxName}
@@ -123,14 +138,14 @@ export default function DeductionDetails({ setActiveTab }: DeductionProps) {
                 setPropertyTaxAmount={setPropertyTaxAmount}
             />
             <Contributions
-                cashCharity={paidCashCharity}
-                setCashCharity={setPaidCashCharity}
-                nonCashCharity={paidNonCashCharity}
-                setNonCashCharity={setPaidNonCashCharity}
                 contributedIRA={contributedIRA}
                 setContributedIRA={setContributedIRA}
                 contributedHSA={contributedHSA}
                 setContributedHSA={setContributedHSA}
+                cashCharity={cashCharity}
+                setCashCharity={setCashCharity}
+                studentLoanUS={studentLoanUS}
+                setStudentLoanUS={setStudentLoanUS}
                 paidTuition={paidTuition}
                 setPaidTuition={setPaidTuition}
                 paidPriorStateTaxes={paidPriorStateTaxes}
@@ -139,6 +154,7 @@ export default function DeductionDetails({ setActiveTab }: DeductionProps) {
                 setHaveBadDebts={setHaveBadDebts}
                 additionalExpenses={additionalExpenses}
                 setAdditionalExpenses={setAdditionalExpenses}
+
             />
 
             <div className="flex justify-center w-full gap-3 mt-6">

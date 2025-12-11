@@ -4,18 +4,24 @@ interface DeductionsInput {
     hasHealthCoverage: boolean;
     paidRent: boolean;
     rentState?: string | null;
-    rentAmount?: number | null;
-    incurredMedicalExpenses: boolean;
+    rentAmount?: string | null;
+    filingYearId: number | null;
+
     ownHomeUSA: boolean;
     ownHomeAbroad: boolean;
+    familyInsurance: boolean;
+    medicalExpenses: boolean;
+
     paidPropertyTax: boolean;
     propertyTaxName?: string | null;
     propertyTaxDescription?: string | null;
-    propertyTaxAmount?: number | null;
-    paidCashCharity: boolean;
-    paidNonCashCharity: boolean;
+    propertyTaxAmount?: string | null;
+
     contributedIRA: boolean;
     contributedHSA: boolean;
+    cashCharity: boolean;
+    studentLoanUS: boolean;
+
     paidTuition: boolean;
     paidPriorStateTaxes: boolean;
     haveBadDebts: boolean;
@@ -65,19 +71,23 @@ export const upsertDeductionDetails = async (
 
         const dbDeductionDetails = deductionDetailsArray.map((detail) => ({
             customerId,
+            filingYearId: detail.filingYearId,
             hasHealthCoverage: detail.hasHealthCoverage,
             paidRent: detail.paidRent,
             rentState: detail.rentState ?? null,
             rentAmount: detail.rentAmount ?? null,
-            incurredMedicalExpenses: detail.incurredMedicalExpenses,
             ownHomeUSA: detail.ownHomeUSA,
             ownHomeAbroad: detail.ownHomeAbroad,
+            familyInsurance: detail.familyInsurance,
+            medicalExpenses: detail.medicalExpenses,
+
             paidPropertyTax: detail.paidPropertyTax,
             propertyTaxName: detail.propertyTaxName ?? null,
             propertyTaxDescription: detail.propertyTaxDescription ?? null,
             propertyTaxAmount: detail.propertyTaxAmount ?? null,
-            paidCashCharity: detail.paidCashCharity,
-            paidNonCashCharity: detail.paidNonCashCharity,
+            cashCharity: detail.cashCharity,
+            studentLoanUS: detail.studentLoanUS,
+
             contributedIRA: detail.contributedIRA,
             contributedHSA: detail.contributedHSA,
             paidTuition: detail.paidTuition,
@@ -90,7 +100,9 @@ export const upsertDeductionDetails = async (
 
         const { data, error } = await supabase
             .from("deductiondetails")
-            .upsert(dbDeductionDetails)
+            .upsert(dbDeductionDetails, {
+                onConflict:"filingYearId"
+            })
             .select();
 
         if (error) throw error;
