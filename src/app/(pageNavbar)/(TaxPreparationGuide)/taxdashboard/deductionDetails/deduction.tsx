@@ -35,9 +35,9 @@ export default function DeductionAndRent({
     }
 
     const handleRentAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const val = e.target.value
-        if (/^\d*$/.test(val)) {
-            setRentAmount(val)
+        let val = e.target.value.replace("$", "");
+        if (/^\d*\.?\d*$/.test(val)) {
+            setRentAmount("$" + val);
         }
     }
 
@@ -93,7 +93,8 @@ export default function DeductionAndRent({
                                         type="text"
                                         value={rentAmount}
                                         onChange={handleRentAmountChange}
-                                        placeholder="RENT PAID"
+                                        placeholder="$USD"
+                                        inputMode="decimal"
                                         className="focus:outline-none text-[#2F3F5F] text-sm w-[100%]"
                                     />
                                 </div>

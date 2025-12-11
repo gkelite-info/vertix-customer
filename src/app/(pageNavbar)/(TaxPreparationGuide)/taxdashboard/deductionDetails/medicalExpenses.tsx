@@ -3,12 +3,14 @@ import { useYear } from "@/app/api/context/yearContext";
 import ToggleSwitch from "../../../../../../utils/toggleSwitch";
 
 type MedicalExpensesProps = {
-    incurredMedicalExpenses: boolean;
-    setIncurredMedicalExpenses: (val: boolean) => void;
     ownHomeUSA: boolean;
     setOwnHomeUSA: (val: boolean) => void;
     ownHomeAbroad: boolean;
     setOwnHomeAbroad: (val: boolean) => void;
+    familyInsurance: boolean;
+    setFamilyInsurance: (val: boolean) => void;
+    medicalExpenses: boolean;
+    setMedicalExpenses: (val: boolean) => void;
     paidPropertyTax: boolean;
     setPaidPropertyTax: (val: boolean) => void;
     propertyTaxName: string;
@@ -24,6 +26,10 @@ export default function MedicalExpenses({
     setOwnHomeUSA,
     ownHomeAbroad,
     setOwnHomeAbroad,
+    familyInsurance,
+    setFamilyInsurance,
+    medicalExpenses,
+    setMedicalExpenses,
     paidPropertyTax,
     setPaidPropertyTax,
     propertyTaxName,
@@ -39,21 +45,58 @@ export default function MedicalExpenses({
     return (
         <>
             <div className="bg-pink-00 w-[100%] mt-5">
-                <h3 className="text-[#3E3E3E] font-medium text-sm text-start">Did you incur medical expenses for the {selectedYear}?</h3>
+                <h3 className="text-[#3E3E3E] font-medium text-sm text-start">Did you incur medical expenses for the {Number(selectedYear) - 1}?</h3>
                 <div className="flex items-center justify-between py-1 mt-2">
-                    <h5 className="text-[#616161] font-medium text-sm">Did you own  a home in USA which is used as personal residence</h5>
+                    <div className="flex flex-col justify-center">
+                        <h5 className="text-[#616161] font-medium text-sm">Do you own a home in the U.S. that you use as your personal residence?</h5>
+                        {ownHomeUSA && (
+                            <p className="text-red-500 text-xs mt-0.5">Please upload Form 1098 (Mortgage Interest Statement).</p>
+                        )}
+                    </div>
                     <ToggleSwitch labelLeft="No" labelRight="Yes"
                         value={ownHomeUSA} onToggle={setOwnHomeUSA}
                     />
                 </div>
                 <div className="flex items-center justify-between py-1 mt-2">
-                    <h5 className="text-[#616161] font-medium text-sm">Did you own  a home in India or any other country which is used as personal residency?</h5>
+                    <div className="flex flex-col justify-center">
+                        <h5 className="text-[#616161] font-medium text-sm">Do you own a home in India or any other country used as your personal residence?</h5>
+                        {ownHomeAbroad && (
+                            <p className="text-red-500 text-xs mt-0.5">Please upload property tax receipts or ownership proof.</p>
+                        )}
+                    </div>
                     <ToggleSwitch labelLeft="No" labelRight="Yes"
                         value={ownHomeAbroad} onToggle={setOwnHomeAbroad}
                     />
                 </div>
                 <div className="flex items-center justify-between py-1 mt-2">
-                    <h5 className="text-[#616161] font-medium text-sm">Personal property tax (EX: car annual resignation fee in {selectedYear}?</h5>
+                    <div className="flex flex-col justify-center">
+                        <h5 className="text-[#616161] font-medium text-sm">Did you and your family have health insurance coverage for the entire year {Number(selectedYear) - 1}?</h5>
+                        {familyInsurance && (
+                            <p className="text-red-500 text-xs mt-0.5">Please upload Form 1095-A / 1095-B if available.</p>
+                        )}
+                    </div>
+                    <ToggleSwitch labelLeft="No" labelRight="Yes"
+                        value={familyInsurance} onToggle={setFamilyInsurance}
+                    />
+                </div>
+                <div className="flex items-center justify-between py-1 mt-2">
+                    <div className="flex flex-col justify-center">
+                        <h5 className="text-[#616161] font-medium text-sm">Did you have any qualified medical expenses during {Number(selectedYear) - 1}?</h5>
+                        {medicalExpenses && (
+                            <p className="text-red-500 text-xs mt-0.5">Please upload medical bills or payment receipts.</p>
+                        )}
+                    </div>
+                    <ToggleSwitch labelLeft="No" labelRight="Yes"
+                        value={medicalExpenses} onToggle={setMedicalExpenses}
+                    />
+                </div>
+                <div className="flex items-center justify-between py-1 mt-2">
+                    <div className="flex flex-col justify-center">
+                        <h5 className="text-[#616161] font-medium text-sm">Did you pay personal property tax (e.g., annual car registration) in {Number(selectedYear) - 1}?</h5>
+                        {paidPropertyTax && (
+                            <p className="text-red-500 text-xs mt-0.5">Please upload receipts or renewal statements.</p>
+                        )}
+                    </div>
                     <ToggleSwitch labelLeft="No" labelRight="Yes"
                         value={paidPropertyTax} onToggle={setPaidPropertyTax}
                     />
@@ -110,18 +153,18 @@ export default function MedicalExpenses({
                                 <input
                                     type="text"
                                     className="focus:outline-none text-[#2F3F5F] text-sm w-[100%]"
-                                    placeholder="0"
+                                    placeholder="$USD"
                                     value={propertyTaxAmount}
                                     onChange={(e) => {
-                                        const val = e.target.value;
-                                        if (/^\d*$/.test(val)) {
-                                            setPropertyTaxAmount(val);
+                                        let val = e.target.value.replace("$", "");
+                                        if (/^\d*\.?\d*$/.test(val)) {
+                                            setPropertyTaxAmount("$" + val);
                                         }
                                     }}
-                                    inputMode="numeric"
+
+                                    inputMode="decimal"
                                     pattern="\d*"
                                 />
-
                             </div>
                         </div>
                     </div>
