@@ -41,6 +41,8 @@ export interface DeductionsInput {
 
 }
 
+type Buttontype = "Save" | "Next";
+
 export default function DeductionDetails({ setActiveTab }: DeductionProps) {
     const [loading, setLoading] = useState(false);
     const { filingYearId } = useYear();
@@ -68,7 +70,7 @@ export default function DeductionDetails({ setActiveTab }: DeductionProps) {
     const [additionalExpenses, setAdditionalExpenses] = useState("");
     const [studentLoanUS, setStudentLoanUS] = useState(false);
 
-    const handleSave = async () => {
+    const handleSave = async (button: Buttontype) => {
         const dataToSave: DeductionsInput = {
             hasHealthCoverage,
             paidRent,
@@ -97,8 +99,17 @@ export default function DeductionDetails({ setActiveTab }: DeductionProps) {
         };
         setLoading(true);
         try {
-            await upsertDeductionDetails([dataToSave]);
+            const res = await upsertDeductionDetails([dataToSave]);
+
+            if (res?.alreadyExists) {
+                toast.error("Data already exists");
+                return;
+            }
+
             toast.success("Deduction details saved successfully!");
+            if (button === "Next") {
+                setActiveTab("FBAR/FATCA");
+            }
         } catch (err) {
             toast.error("Failed to save deduction details.");
             console.error(err);
@@ -165,14 +176,16 @@ export default function DeductionDetails({ setActiveTab }: DeductionProps) {
                     Previous
                 </button>
                 <button
-                    onClick={handleSave}
+                    onClick={() => handleSave("Save")}
                     className="py-2 w-[13%] cursor-pointer bg-[#1D2A46] text-white rounded-md text-sm font-medium hover:bg-opacity-90"
                     disabled={loading}
                 >
                     {loading ? "Saving..." : "Save"}
                 </button>
                 <button
-                    onClick={() => setActiveTab("FBAR/FATCA")}
+                    onClick={() =>
+                        handleSave("Next")
+                    }
                     className="py-2 w-[13%] cursor-pointer bg-[#1D2A46] text-white rounded-md text-sm font-medium hover:bg-opacity-90"
                 >
                     Next

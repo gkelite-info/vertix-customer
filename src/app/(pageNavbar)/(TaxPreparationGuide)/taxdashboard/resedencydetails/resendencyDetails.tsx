@@ -10,11 +10,11 @@ type Tab = "Dependents" | "Residency Details" | "Income Details";
 
 type MigrationField = "fromDate" | "toDate" | "state" | "country";
 
+type ButtonType = "Save" | "Next";
+
 export default function ResidencyDetails({ setActiveTab }: { setActiveTab: (tab: Tab) => void }) {
 
     const { filingYearId, selectedYear } = useYear();
-    console.log("No 4", filingYearId);
-
 
     const [spouseResidency, setSpouseResidency] = useState(true);
     const [notes, setNotes] = useState("");
@@ -65,16 +65,23 @@ export default function ResidencyDetails({ setActiveTab }: { setActiveTab: (tab:
         ]);
     };
 
-    const handleSave = async () => {
+    const handleSave = async (button: ButtonType) => {
         if (!filingYearId) {
             toast.error("Please select a filing year first!")
             return;
         }
-
         setLoading(true);
-
         try {
-            await upsertResidencyDetails({
+            const isValidMigration = migrationList.every(m =>
+                m.fromDate && m.toDate && m.state && m.country
+            );
+
+            if (!isValidMigration) {
+                toast.error("Please fill all residency details");
+                return;
+            }
+
+            const res = await upsertResidencyDetails({
                 migrations: migrationList,
                 spouseMigrations: spouseResidency ? [] : spouseMigrationList,
                 notes,
@@ -82,15 +89,20 @@ export default function ResidencyDetails({ setActiveTab }: { setActiveTab: (tab:
                 filingYearId
 
             });
-            console.log("Vam", filingYearId);
-
+            if (res?.alreadyExists) {
+                toast.error("Data already exists");
+                return;
+            }
             toast.success("Residency details saved successfully!");
-        } catch (error) {
-            console.error(error);
-            toast.error("Failed to save residency details");
+            if (button === "Next") {
+                setActiveTab("Income Details")
+            }
+        } catch (error: any) {
+            toast.error(error.message || "Failed to save residency details");
         }
         finally {
             setLoading(false);
+            return
         }
     };
 
@@ -185,14 +197,16 @@ export default function ResidencyDetails({ setActiveTab }: { setActiveTab: (tab:
                             Previous
                         </button>
                         <button
-                            onClick={handleSave}
+                            onClick={() => handleSave("Save")}
                             className="bg-[#1D2B48] rounded-md px-4 py-2 w-[15%] text-[#FFFEFE] cursor-pointer font-medium text-sm"
                             disabled={loading}
                         >
                             {loading ? "Saving..." : "Save"}
                         </button>
                         <button
-                            onClick={() => setActiveTab("Income Details")}
+                            onClick={() => {
+                                handleSave("Next");
+                            }}
                             className="bg-[#1D2B48] rounded-md px-4 py-2 w-[15%] text-[#FFFEFE] cursor-pointer font-medium text-sm">
                             Next
                         </button>

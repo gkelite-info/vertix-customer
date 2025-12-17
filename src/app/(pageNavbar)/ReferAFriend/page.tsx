@@ -73,9 +73,8 @@ export default function ReferAFriend() {
 
       setActiveSection("registeredReferrals");
       fetchReferrals();
-    } catch (error) {
-      console.error(error);
-      toast.error("Failed to submit referral");
+    } catch (error: any) {
+      toast.error(error.message || "Failed to submit referral");
     } finally {
       setLoading(false);
     }
@@ -109,7 +108,7 @@ export default function ReferAFriend() {
     "Phone",
     "Amount Eligible"
   ];
-  
+
   const columnKeys = [
     "serial",
     "firstName",

@@ -100,13 +100,19 @@ export const upsertDeductionDetails = async (
 
         const { data, error } = await supabase
             .from("deductiondetails")
-            .upsert(dbDeductionDetails, {
-                onConflict:"filingYearId"
-            })
+            .insert(dbDeductionDetails)
             .select();
 
-        if (error) throw error;
-        return data || [];
+        if (error) {
+            if (error.code === "23505") {
+                return { alreadyExists: true };
+            }
+            throw error;
+        }
+
+        // if (error) throw error;
+        // return data || [];
+        return { success: true, data };
     } catch (error: any) {
         console.error("Error upserting deduction details:", error.message);
         throw error;

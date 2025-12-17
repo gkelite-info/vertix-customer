@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ThreeOptionToggle from "../../../../../../utils/threeOptionToggle";
 import { getCustomer } from "@/app/api/SupabaseAPI/customer/customerApi";
 import toast from "react-hot-toast";
@@ -24,6 +24,7 @@ type AboutYouProps = {
     setHasDependents: (val: boolean) => void;
 };
 
+type Buttontype = "Save" | "Next";
 
 
 export default function AboutYou({ setActiveTab, setHasDependents }: AboutYouProps): React.ReactElement {
@@ -61,19 +62,19 @@ export default function AboutYou({ setActiveTab, setHasDependents }: AboutYouPro
     const [spouseVisaDec, setSpouseVisaDec] = useState("");
     const [spouseFirstEntryDate, setSpouseFirstEntryDate] = useState("");
     const [spouseMonthsInUS, setSpouseMonthsInUS] = useState("");
+    const [isReadOnly, setIsReadOnly] = useState(false);
+
 
     const handleDateChange = (setter: (val: string) => void) =>
         (e: React.ChangeEvent<HTMLInputElement>) => {
             let input = e.target.value.replace(/\D/g, "");
 
-            // Limit to MMDDYYYY (8 digits)
             if (input.length > 8) input = input.slice(0, 8);
 
             let mm = input.slice(0, 2);
             let dd = input.slice(2, 4);
             let yyyy = input.slice(4, 8);
 
-            // --- Month validation (1–12) ---
             if (mm.length === 2) {
                 let m = parseInt(mm, 10);
                 if (m < 1) m = 1;
@@ -81,7 +82,6 @@ export default function AboutYou({ setActiveTab, setHasDependents }: AboutYouPro
                 mm = m.toString().padStart(2, "0");
             }
 
-            // --- Day validation (1–31) ---
             if (dd.length === 2) {
                 let d = parseInt(dd, 10);
                 if (d < 1) d = 1;
@@ -89,7 +89,6 @@ export default function AboutYou({ setActiveTab, setHasDependents }: AboutYouPro
                 dd = d.toString().padStart(2, "0");
             }
 
-            // --- Build formatted string ---
             let formatted = "";
 
             if (mm) {
@@ -112,12 +111,7 @@ export default function AboutYou({ setActiveTab, setHasDependents }: AboutYouPro
         if (!firstName || !lastName) return "First and Last Name are required";
         if (!dob) return "Date of Birth is required";
         if (!occupation) return "Occupation is required";
-
-        if (!yourSSN) return "SSN / ITIN type is required";
         if (!yourSSNValue) return "SSN / ITIN value is required";
-
-        if (!visaJan || !visaDec) return "Visa type selections are required";
-
         if (!firstEntryDate) return "First entry date is required";
         if (!monthsInUS || isNaN(Number(monthsInUS))) return "Months in US must be a number";
 
@@ -144,7 +138,8 @@ export default function AboutYou({ setActiveTab, setHasDependents }: AboutYouPro
         return parseDateToISOString(dateStr);
     };
 
-    const handleSave = async () => {
+
+    const handleSave = async (button: Buttontype) => {
         const validationError = validateBeforeSubmit();
         if (validationError) {
             toast.error(validationError);
@@ -209,6 +204,10 @@ export default function AboutYou({ setActiveTab, setHasDependents }: AboutYouPro
                 spouseId: isMarried ? spouseId : null,
 
                 isMarried,
+                dob: safeToISOString(dob),
+                occupation: occupation || null,
+                isCitizen: citizen,
+                greenCardConditional,
 
                 firstName: firstName?.trim() || (() => { throw new Error("firstName is required"); })(),
                 middleName: middleName?.trim() || null,
@@ -229,10 +228,13 @@ export default function AboutYou({ setActiveTab, setHasDependents }: AboutYouPro
                 updatedAt: new Date().toISOString(),
             };
 
-            await upsertAboutYou(aboutPayload);
+            const res = await upsertAboutYou(aboutPayload);
 
+            if ("alreadyExists" in res) {
+                toast.error("Data already exists");
+                return;
+            }
             toast.success("Details saved successfully!");
-
         } catch (error) {
             console.error("Error saving data:", error);
             toast.error("Failed to save details.");
@@ -323,7 +325,7 @@ export default function AboutYou({ setActiveTab, setHasDependents }: AboutYouPro
                         />
                     </div>
                     <div className="bg-red-00 flex items-center justify-start w-[90%] mt-4 gap-7.5">
-                        <h4 className="text-[#3E3E3E] font-medium text-sm">US Citizen / Green Card Holder <span className="text-red-500">*</span></h4>
+                        <h4 className="text-[#3E3E3E] font-medium text-sm">US Citizen / Green Card Holder</h4>
                         <div className="flex items-center bg-blue-00 gap-2">
                             <span className={`text-sm font-semibold ${!citizen ? 'text-[#2F3F5F]' : 'text-[#2F3F5F]'}`}>
                                 No
@@ -356,6 +358,7 @@ export default function AboutYou({ setActiveTab, setHasDependents }: AboutYouPro
                                     onChange={(value) => setYourSSN(value)}
                                     style="w-[100%]"
                                 />
+
                             </div>
                         </div>
                     )}
@@ -649,7 +652,7 @@ export default function AboutYou({ setActiveTab, setHasDependents }: AboutYouPro
                     </div>
 
                     <div className="bg-pink-00 flex items-end justify-center gap-5 mt-2">
-                        <button onClick={handleSave}
+                        <button onClick={() => handleSave("Save")}
                             disabled={loading}
                             className="mt-5 w-[15%] bg-[#1D2A46] text-white font-medium text-sm cursor-pointer py-2 rounded">
                             {loading ? "Saving..." : "Save"}
@@ -657,7 +660,7 @@ export default function AboutYou({ setActiveTab, setHasDependents }: AboutYouPro
 
                         <button
                             onClick={async () => {
-                                const ok = await handleSave();
+                                const ok = await handleSave("Next");
                                 if (ok) {
                                     setActiveTab("Dependents");
                                 }

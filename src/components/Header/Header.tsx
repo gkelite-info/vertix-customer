@@ -11,6 +11,7 @@ import { useHandleMagicLinkAuth } from "../../../utils/useHandleMagicLinkAuth"
 import toast from "react-hot-toast"
 import { HiOutlineMenu, HiX } from "react-icons/hi"
 import MobileNav from "./mobileNav"
+import { FaUserLarge } from "react-icons/fa6";
 
 function Header() {
   const router = useRouter()
@@ -92,8 +93,8 @@ function Header() {
     <>
       <div className="hidden lg:flex justify-center items-center bg-white sticky z-100 top-0 lg:h-25">
         <header className="bg-[#1D2B48] sticky top-0 z-50 shadow-lg lg:mt-0 lg:h-15 lg:w-[95%] rounded-full flex justify-between items-center px-7 lg:gap-5">
-          <div className="h-[100%] flex items-center justify-center cursor-pointer" onClick={() => router.push("/")}>   
-            <img src="/logo.png" alt="logo.png" className="h-10 w-30"/>
+          <div className="h-[100%] flex items-center justify-center cursor-pointer" onClick={() => router.push("/")}>
+            <img src="/logo.png" alt="logo.png" className="h-10 w-30" />
           </div>
 
           <div className="lg:h-[100%] lg:w-[60%] flex justify-center items-center lg:gap-8">
@@ -208,7 +209,8 @@ function Header() {
             </Link>
           </div>
 
-          <div className="lg:h-[100%] flex justify-end items-center lg:w-[10%]">
+          <div className="lg:h-[100%] bg-red-00 gap-7 flex justify-end items-center lg:w-auto">
+            <FaUserLarge size={23} className="cursor-pointer" />
             {isAuthenticated ? (
               <button
                 onClick={handleLogout}
@@ -229,7 +231,7 @@ function Header() {
       </div>
 
       <div className="lg:hidden bg-[#1D2B48] w-full sticky top-0 z-50 shadow-md px-4 py-2 flex justify-between items-center h-14">
-        <img src="/logo.png" alt="logo" className="h-8 cursor-pointer"  onClick={() => router.push("/")} />
+        <img src="/logo.png" alt="logo" className="h-8 cursor-pointer" onClick={() => router.push("/")} />
 
         {!mobileNavOpen ? (
           <HiOutlineMenu
