@@ -102,14 +102,18 @@ export const upsertIncomeDetails = async (
 
     const { data, error } = await supabase
       .from("incomedetails")
-      .upsert(dbIncomeDetails, {
-        onConflict: "filingYearId"
-      })
+      .insert(dbIncomeDetails,)
       .select();
 
-    if (error) throw error;
+    if (error) {
+      if (error.code === "23505") {
+        return { alreadyExists: true };
+      }
+      throw error;
+    }
 
-    return data || [];
+    return { success: true, data };
+    // return data || [];
   } catch (error: any) {
     console.error("Error upserting income details:", error.message);
     throw error;

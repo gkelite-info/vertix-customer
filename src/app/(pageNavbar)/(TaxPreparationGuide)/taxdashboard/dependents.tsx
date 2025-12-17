@@ -30,7 +30,12 @@ interface Dependent {
   hasChildcare: boolean;
 }
 
+type Buttontype = "Save" | "Next"
+
 export default function Dependents({ setActiveTab }: DependentsProps) {
+
+  const [loading, setLoading] = useState(false);
+
   const [dependents, setDependents] = useState<Dependent[]>([
     {
       firstName: "",
@@ -48,28 +53,52 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
 
   const { selectedYear } = useYear();
 
-  const handleDateChangeForDependent = (index: number, field: "dob" | "date") =>
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      let input = e.target.value.replace(/\D/g, "");
-      if (input.length > 8) input = input.slice(0, 8);
+  const handleDateChangeForDependent =
+    (index: number, field: "dob" | "date") =>
+      (e: React.ChangeEvent<HTMLInputElement>) => {
+        let input = e.target.value.replace(/\D/g, "");
 
-      let formatted = "";
-      if (input.length <= 2) {
-        formatted = input;
-        if (input.length === 2) formatted += "/";
-      } else if (input.length <= 4) {
-        formatted = input.slice(0, 2) + "/" + input.slice(2);
-        if (input.length === 4) formatted += "/";
-      } else {
-        formatted = input.slice(0, 2) + "/" + input.slice(2, 4) + "/" + input.slice(4);
-      }
+        if (input.length > 8) input = input.slice(0, 8);
 
-      setDependents((prev) =>
-        prev.map((dep, i) =>
-          i === index ? { ...dep, [field]: formatted } : dep
-        )
-      );
-    };
+        let mm = input.slice(0, 2);
+        let dd = input.slice(2, 4);
+        let yyyy = input.slice(4, 8);
+
+        if (mm.length === 2) {
+          let m = parseInt(mm, 10);
+          if (m < 1) m = 1;
+          if (m > 12) m = 12;
+          mm = m.toString().padStart(2, "0");
+        }
+
+        if (dd.length === 2) {
+          let d = parseInt(dd, 10);
+          if (d < 1) d = 1;
+          if (d > 31) d = 31;
+          dd = d.toString().padStart(2, "0");
+        }
+
+        let formatted = "";
+
+        if (mm) {
+          formatted = mm.length === 2 ? mm + "/" : mm;
+        }
+
+        if (dd) {
+          formatted += dd.length === 2 ? dd + "/" : dd;
+        }
+
+        if (yyyy) {
+          formatted += yyyy;
+        }
+
+        setDependents((prev) =>
+          prev.map((dep, i) =>
+            i === index ? { ...dep, [field]: formatted } : dep
+          )
+        );
+      };
+
 
 
   const handleNameChange = (value: string, index: number, field: keyof Dependent) => {
@@ -141,13 +170,54 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
     ]);
   };
 
-  const handleSave = async () => {
+  const handleSave = async (button: Buttontype) => {
+    const errors = dependents
+      .map((dep, index) => {
+        const label = `Dependent ${index + 1}`;
+
+        if (!dep.firstName.trim())
+          return `${label}: First Name is required`;
+
+        if (!dep.lastName.trim())
+          return `${label}: Last Name is required`;
+
+        if (!dep.dob.trim())
+          return `${label}: Date of Birth is required`;
+
+        if (!dep.months.trim())
+          return `${label}: Months stayed in US is required`;
+
+        if (isNaN(Number(dep.months)))
+          return `${label}: Months must be a number`;
+
+        if (dep.idType !== "NEED TO APPLY" && !dep.depOneSSN.trim())
+          return `${label}: SSN / ITIN number is required`;
+
+        if (!dep.date.trim())
+          return `${label}: First date of entry in US is required`;
+
+        return null;
+      })
+      .find(Boolean);
+
+    if (errors) {
+      toast.error(errors);
+      return;
+    }
+
     try {
+      setLoading(true);
       await upsertDependents(dependents);
       toast.success("Dependents saved successfully!");
+      if (button === "Next") {
+        setActiveTab("Residency Details");
+      }
     } catch (error) {
       console.error("Failed to save dependents:", error);
       toast.error("Failed to save dependents. Please try again.");
+    }
+    finally {
+      setLoading(false);
     }
   };
 
@@ -222,7 +292,7 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
               </label>
               <input
                 type="text"
-                placeholder="DD/MM/YYYY"
+                placeholder="MM/DD/YYYY"
                 className="w-1/2 mt-1 border text-[#616161] border-gray-300 rounded-md px-3 py-2 text-sm outline-0"
                 value={dep.dob}
                 onChange={handleDateChangeForDependent(index, "dob")}
@@ -239,7 +309,7 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
               />
             </div>
             <div className="flex items-center justify-between">
-              <label className="text-sm text-[#1D2B48] font-medium">Childcare Expenses <span className="text-red-500">*</span></label>
+              <label className="text-sm text-[#1D2B48] font-medium">Childcare Expenses</label>
               <div className="flex gap-2 w-1/2">
                 <ToggleSwitch
                   value={dep.hasChildcare}
@@ -274,7 +344,7 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
             </div>
 
             <div className="flex items-center justify-between">
-              <label className="text-sm text-[#1D2B48] font-medium">US Citizen / Green Card Holder <span className="text-red-500">*</span></label>
+              <label className="text-sm text-[#1D2B48] font-medium">US Citizen / Green Card Holder</label>
               <div className="flex gap-2 w-1/2">
                 <ToggleSwitch
                   value={dep.isUSCitizen}
@@ -289,7 +359,7 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
               <label className="text-sm text-[#1D2B48] font-medium w-1/2">First Date of Entry in US <span className="text-red-500">*</span></label>
               <input
                 type="text"
-                placeholder="DD/MM/YYYY"
+                placeholder="MM/DD/YYYY"
                 className="w-1/2 mt-1 border text-[#616161] border-gray-300 rounded-md px-3 py-2 text-sm outline-0"
                 value={dep.date}
                 onChange={handleDateChangeForDependent(index, "date")}
@@ -318,13 +388,19 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
           Previous
         </button>
         <button
-          onClick={handleSave}
-          className="py-2 w-[13%] cursor-pointer bg-[#1D2A46] text-white rounded-md text-sm font-medium hover:bg-opacity-90">
-          Save
+          onClick={() => handleSave("Save")}
+          className="py-2 w-[13%] cursor-pointer bg-[#1D2A46] text-white rounded-md text-sm font-medium hover:bg-opacity-90"
+          disabled={loading}
+        >
+          {loading ? "Saving..." : "Save"}
         </button>
         <button
-          onClick={() => setActiveTab("Residency Details")}
-          className="py-2 w-[13%] cursor-pointer bg-[#1D2A46] text-white rounded-md text-sm font-medium hover:bg-opacity-90">
+          onClick={() =>
+            handleSave("Next")
+          }
+          className="py-2 w-[13%] cursor-pointer bg-[#1D2A46] text-white rounded-md text-sm font-medium hover:bg-opacity-90"
+          disabled={loading}
+        >
           Next
         </button>
       </div>

@@ -25,6 +25,8 @@ type IncomeProps = {
     setActiveTab: (tab: Tab) => void;
 };
 
+type Buttontype = "Save" | "Next";
+
 export default function SubIncomeDetails({ setActiveTab }: IncomeProps) {
 
     const [incomeDetails, setIncomeDetails] = useState<any[]>([]);
@@ -43,11 +45,11 @@ export default function SubIncomeDetails({ setActiveTab }: IncomeProps) {
         }
     }, []);
 
-    const handleSave = async () => {
+    const handleSave = async (button: Buttontype) => {
         setIsLoading(true);
         try {
             const updatedIncomeDetails = [...incomeDetails];
-             if (!updatedIncomeDetails[0]) {
+            if (!updatedIncomeDetails[0]) {
                 updatedIncomeDetails[0] = { ...defaultIncomeObject };
             } else {
                 updatedIncomeDetails[0] = {
@@ -64,8 +66,17 @@ export default function SubIncomeDetails({ setActiveTab }: IncomeProps) {
                 additionalIncome
             };
 
-            await upsertIncomeDetails(updatedIncomeDetails);
+            const res = await upsertIncomeDetails(updatedIncomeDetails);
+
+            if (res?.alreadyExists) {
+                toast.error("Data already exists");
+                return;
+            }
+
             toast.success("Income details saved successfully.");
+            if (button === "Next") {
+                setActiveTab("Deduction Details");
+            }
         } catch (error) {
             toast.error("Failed to save income details.");
             console.error(error);
@@ -126,7 +137,7 @@ export default function SubIncomeDetails({ setActiveTab }: IncomeProps) {
                             Previous
                         </button>
                         <button
-                            onClick={handleSave}
+                            onClick={() => handleSave("Save")}
                             className="py-2 w-[13%] cursor-pointer bg-[#1D2A46] text-white rounded-md text-sm font-medium hover:bg-opacity-90"
                             disabled={isLoading}
                         >
@@ -134,8 +145,7 @@ export default function SubIncomeDetails({ setActiveTab }: IncomeProps) {
                         </button>
                         <button
                             onClick={() => {
-                                handleSave()
-                                setActiveTab("Deduction Details")
+                                handleSave("Next")
                             }}
                             className="py-2 w-[13%] cursor-pointer bg-[#1D2A46] text-white rounded-md text-sm font-medium hover:bg-opacity-90">
                             Next

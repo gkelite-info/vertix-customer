@@ -14,7 +14,7 @@ export default function FileProgressTracker() {
     { icon: Wrench, label: "PREPARATION", statusKey: "Preparation Pending" },
     { icon: Eye, label: "REVIEW", statusKey: "Review Pending" },
     { icon: CurrencyCircleDollar, label: "PAYMENT", statusKey: "Payment Pending" },
-    { icon: Confetti, label: "POST PAYMENT", statusKey: "Post Payments" },
+    { icon: Confetti, label: "POST PAYMENT", statusKey: ["E-File Pending", "E-File Done", "Process Completed", "Federal E-Filing Pending", "State E-File Pending", "Final Document Pending", "Final Document Uploaded"] },
   ];
 
   const [filingStatus, setFilingStatus] = useState<string | null>(null);
@@ -34,7 +34,10 @@ export default function FileProgressTracker() {
     fetchStatus();
   }, [filingYearId]);
 
-  const activeIndex = steps.findIndex((s) => s.statusKey === filingStatus);
+  // const activeIndex = steps.findIndex((s) => s.statusKey === filingStatus);
+  const activeIndex = steps.findIndex(step =>
+    step.statusKey.includes(filingStatus ?? "")
+  );
 
   return (
     <div className="bg-white lg:h-[100vh]">
@@ -52,12 +55,24 @@ export default function FileProgressTracker() {
             let statusText = "Pending";
             let color = "text-gray-400";
 
+            console.log("index checking", index)
+            console.log("active index check", activeIndex)
+
             if (index < activeIndex) {
               statusText = "Completed";
               color = "text-green-600";
             }
             else if (index === activeIndex) {
-              if (filingStatus === "Post Payments") {
+              // if (filingStatus === "E-File Done") {
+              //   statusText = "Completed";
+              //   color = "text-green-600";
+              // } else {
+              //   statusText = "In Progress";
+              //   color = "text-blue-600";
+              // }
+              const isFinalStep = step.label === "POST PAYMENT";
+
+              if (isFinalStep && filingStatus === "E-File Done" || filingStatus === "Process Completed") {
                 statusText = "Completed";
                 color = "text-green-600";
               } else {

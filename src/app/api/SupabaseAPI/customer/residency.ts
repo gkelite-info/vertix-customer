@@ -47,9 +47,12 @@ export const upsertResidencyDetails = async (payload: ResidencyPayload) => {
         const spouseId = spouse?.spouseId ?? null;
 
         const first = payload.migrations[0];
+        // if (!first.fromDate || !first.toDate) {
+        //     throw new Error("Residency dates are required");
+        // }
         const { data: residencyRow, error: residencyError } = await supabase
             .from("residencydetails")
-            .upsert([
+            .insert([
                 {
                     customerId,
                     filingYearId: payload.filingYearId,
@@ -63,16 +66,20 @@ export const upsertResidencyDetails = async (payload: ResidencyPayload) => {
                     createdAt: now,
                     deletedAt: null,
                 }
-            ], {
-                onConflict: "customerId,filingYearId"
-            })
+            ])
             .select()
             .single();
+        if (residencyError) {
+            if (residencyError.code === "23505") {
+                return { alreadyExists: true };
+            }
+            throw residencyError;
+        }
 
-        if (residencyError) throw residencyError;
+        // return { success: true, residencyId: residencyRow.residencyId };
+        // if (residencyError) throw residencyError;
 
         const residencyId = residencyRow.residencyId;
-
         await supabase
             .from("residencymigrations")
             .delete()

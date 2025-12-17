@@ -14,6 +14,7 @@ export default function SuccessPage() {
 
     const hasRun = useRef(false);
 
+
     useEffect(() => {
         const loadSummary = async () => {
             if (hasRun.current) return;

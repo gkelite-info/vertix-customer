@@ -26,6 +26,18 @@ export const upsertReferral = async (referral: ReferralInput) => {
 
     if (customerError || !customer) throw new Error("Customer not found");
 
+    const { data: existingCustomer, error: emailCheckError } = await supabase
+      .from("vertixcustomers")
+      .select("customerId")
+      .eq("email", referral.email)
+      .maybeSingle();
+
+    if (emailCheckError) throw emailCheckError;
+
+    if (existingCustomer) {
+      throw new Error("User already exists with this email");
+    }
+
     const customerId = customer.customerId;
     const now = new Date();
 

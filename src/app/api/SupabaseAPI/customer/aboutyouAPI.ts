@@ -1,5 +1,9 @@
 import { supabase } from "../../../../../utils/supabase/client";
 
+type UpsertResult =
+  | { success: true; data: AboutYouPayload }
+  | { alreadyExists: true };
+
 export interface AboutYouPayload {
   customerId: number;
   spouseId?: number | null;
@@ -57,7 +61,7 @@ export const getAboutYou = async (customerId: any): Promise<AboutYouPayload | nu
 
 export const upsertAboutYou = async (
   payload: AboutYouPayload
-): Promise<AboutYouPayload | null> => {
+): Promise<UpsertResult> => {
   try {
     const { data, error } = await supabase
       .from("aboutyou")
@@ -65,9 +69,16 @@ export const upsertAboutYou = async (
       .select()
       .single();
 
-    if (error) throw error;
+    // if (error) throw error;
+    if (error) {
+      if (error.code === "23505") {
+        return { alreadyExists: true };
+      }
+      throw error;
+    }
 
-    return data;
+    // return data;
+    return { success: true, data };
   } catch (error: any) {
     console.error("Error saving about you:", error.message);
     throw error;
