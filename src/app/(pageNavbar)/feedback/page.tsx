@@ -1,16 +1,22 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import YearSelect from "../../../../utils/yearSelect";
 import { upsertFeedback } from "@/app/api/SupabaseAPI/customer/feedbackAPI";
 import { useYear } from "@/app/api/context/yearContext";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
+import { supabase } from "../../../../utils/supabase/client";
 
 export default function Feedback() {
   const [serviceType, setServiceType] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const { filingYearId } = useYear();
+  const { selectedYear } = useYear()
+  const [checkingConsent, setCheckingConsent] = useState(true)
+  const hasRedirectedRef = useRef(false)
+  const router = useRouter()
 
   const handleSubmit = async () => {
     if (!serviceType || !message.trim()) {
@@ -37,6 +43,48 @@ export default function Feedback() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const checkConsent = async () => {
+      try {
+        if (!selectedYear) return
+
+        const { data: auth } = await supabase.auth.getUser()
+        if (!auth?.user) return
+
+        const { data: customer } = await supabase
+          .from("vertixcustomers")
+          .select("customerId")
+          .eq("auth_id", auth.user.id)
+          .single()
+
+        if (!customer) return
+
+        const { data: consent } = await supabase
+          .from("consents")
+          .select("consentId")
+          .eq("customerId", customer.customerId)
+          .eq("filing_year", Number(selectedYear))
+          .maybeSingle()
+
+        if (!consent && !hasRedirectedRef.current) {
+          hasRedirectedRef.current = true
+          toast.error("Consent required for selected year")
+          router.replace("/taxfiling?tab=consent")
+          return
+        }
+      } finally {
+        setCheckingConsent(false)
+      }
+    }
+
+    checkConsent()
+  }, [selectedYear, router])
+
+
+  if (checkingConsent) return <div className="flex justify-center items-center text-[#1D2B48] h-[100vh]">
+    <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+  </div>
 
   return (
     <div className="bg-white lg:h-[100vh]">

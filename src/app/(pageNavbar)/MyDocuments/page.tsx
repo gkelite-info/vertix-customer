@@ -10,6 +10,7 @@ import DeleteModal from "@/components/modals/deleteModal";
 import { useYear } from "@/app/api/context/yearContext";
 import { DownloadSimple, Trash } from "phosphor-react";
 import { useRouter } from "next/navigation";
+import { supabase } from "../../../../utils/supabase/client";
 
 export default function MyDocuments() {
   const { filingYearId } = useYear();
@@ -27,6 +28,10 @@ export default function MyDocuments() {
   const [fileToDelete, setFileToDelete] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [loadingDownload, setLoadingDownload] = useState<number | null>(null);
+
+  const { selectedYear } = useYear()
+  const [checkingConsent, setCheckingConsent] = useState(true)
+  const hasRedirectedRef = useRef(false)
 
   const handleDownload = async (filePath: string, index: number) => {
     try {
@@ -66,6 +71,48 @@ export default function MyDocuments() {
 
     fetchDocs();
   }, [user, filingYearId]);
+
+  useEffect(() => {
+    const checkConsent = async () => {
+      try {
+        if (!selectedYear) return
+
+        const { data: auth } = await supabase.auth.getUser()
+        if (!auth?.user) return
+
+        const { data: customer } = await supabase
+          .from("vertixcustomers")
+          .select("customerId")
+          .eq("auth_id", auth.user.id)
+          .single()
+
+        if (!customer) return
+
+        const { data: consent } = await supabase
+          .from("consents")
+          .select("consentId")
+          .eq("customerId", customer.customerId)
+          .eq("filing_year", Number(selectedYear))
+          .maybeSingle()
+
+        if (!consent && !hasRedirectedRef.current) {
+          hasRedirectedRef.current = true
+          toast.error("Consent required for selected year")
+          router.replace("/taxfiling?tab=consent")
+          return
+        }
+      } finally {
+        setCheckingConsent(false)
+      }
+    }
+
+    checkConsent()
+  }, [selectedYear, router])
+
+
+  if (checkingConsent) return <div className="flex justify-center items-center text-[#1D2B48] h-[100vh]">
+    <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+  </div>
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {

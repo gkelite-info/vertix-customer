@@ -1,16 +1,24 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import YearSelect from "../../../../utils/yearSelect";
 import FeeSummary from "./feeSummary";
 import { useHandleMagicLinkAuth } from "../../../../utils/useHandleMagicLinkAuth";
 import TaxRefund from "./taxRefund";
 import TaxReturnRefund from "./taxReturnRefund";
+import { useYear } from "@/app/api/context/yearContext";
+import { supabase } from "../../../../utils/supabase/client";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 export default function PaymentTaxSummary() {
   const [activeTab, setActiveTab] = useState<"tax" | "fee">("tax");
   const [isMounted, setIsMounted] = useState(false);
   const { isTemporary } = useHandleMagicLinkAuth();
+  const { selectedYear } = useYear()
+  const [checkingConsent, setCheckingConsent] = useState(true)
+  const hasRedirectedRef = useRef(false)
+  const router = useRouter()
 
   const handleTotalsChange = useCallback((values: any) => {
     console.log("Received totals:", values);
@@ -27,6 +35,48 @@ export default function PaymentTaxSummary() {
   useEffect(() => {
     if (isMounted) localStorage.setItem("activePaymentTab", activeTab);
   }, [activeTab, isMounted]);
+
+  useEffect(() => {
+    const checkConsent = async () => {
+      try {
+        if (!selectedYear) return
+
+        const { data: auth } = await supabase.auth.getUser()
+        if (!auth?.user) return
+
+        const { data: customer } = await supabase
+          .from("vertixcustomers")
+          .select("customerId")
+          .eq("auth_id", auth.user.id)
+          .single()
+
+        if (!customer) return
+
+        const { data: consent } = await supabase
+          .from("consents")
+          .select("consentId")
+          .eq("customerId", customer.customerId)
+          .eq("filing_year", Number(selectedYear))
+          .maybeSingle()
+
+        if (!consent && !hasRedirectedRef.current) {
+          hasRedirectedRef.current = true
+          toast.error("Consent required for selected year")
+          router.replace("/taxfiling?tab=consent")
+          return
+        }
+      } finally {
+        setCheckingConsent(false)
+      }
+    }
+
+    checkConsent()
+  }, [selectedYear, router])
+
+
+  if (checkingConsent) return <div className="flex justify-center items-center text-[#1D2B48] h-[100vh]">
+    <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+  </div>
 
   if (!isMounted) return null;
 

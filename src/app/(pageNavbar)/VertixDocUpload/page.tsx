@@ -8,6 +8,8 @@ import { useAuth } from "@/components/AuthContext";
 import TableComponent from "../../../../utils/table/page";
 import { useYear } from "@/app/api/context/yearContext";
 import { DownloadSimple, Trash } from "phosphor-react";
+import { useRouter } from "next/navigation";
+import { supabase } from "../../../../utils/supabase/client";
 
 export default function VertixTaxPage() {
   const { selectedYear, filingYearId } = useYear();
@@ -23,6 +25,9 @@ export default function VertixTaxPage() {
   const [fileToDelete, setFileToDelete] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [loadingDownload, setLoadingDownload] = useState<number | null>(null);
+  const [checkingConsent, setCheckingConsent] = useState(true)
+  const hasRedirectedRef = useRef(false)
+  const router = useRouter()
 
   const handleDownload = async (filePath: string, index: number) => {
     try {
@@ -141,6 +146,48 @@ export default function VertixTaxPage() {
 
   const columns = ["Document Type", "File", "Description"]
   const columnKeys = ["doc_type", "public_url", "description"]
+
+  useEffect(() => {
+      const checkConsent = async () => {
+        try {
+          if (!selectedYear) return
+  
+          const { data: auth } = await supabase.auth.getUser()
+          if (!auth?.user) return
+  
+          const { data: customer } = await supabase
+            .from("vertixcustomers")
+            .select("customerId")
+            .eq("auth_id", auth.user.id)
+            .single()
+  
+          if (!customer) return
+  
+          const { data: consent } = await supabase
+            .from("consents")
+            .select("consentId")
+            .eq("customerId", customer.customerId)
+            .eq("filing_year", Number(selectedYear))
+            .maybeSingle()
+  
+          if (!consent && !hasRedirectedRef.current) {
+            hasRedirectedRef.current = true
+            toast.error("Consent required for selected year")
+            router.replace("/taxfiling?tab=consent")
+            return
+          }
+        } finally {
+          setCheckingConsent(false)
+        }
+      }
+  
+      checkConsent()
+    }, [selectedYear, router])
+  
+  
+    if (checkingConsent) return <div className="flex justify-center items-center text-[#1D2B48] h-[100vh]">
+      <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+    </div>
 
   return (
     <div className="bg-white lg:h-[100vh] overflow-y-auto overflow-x-hidden pb-7">
