@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ThreeOptionToggle from "../../../../../../utils/threeOptionToggle";
 import { getCustomer } from "@/app/api/SupabaseAPI/customer/customerApi";
 import toast from "react-hot-toast";
@@ -8,6 +8,7 @@ import { useYear } from "@/app/api/context/yearContext";
 import AddressAboutYou from "./address";
 import { getAboutYou, upsertAboutYou } from "@/app/api/SupabaseAPI/customer/aboutyouAPI";
 import { getSpouse, upsertSpouse } from "@/app/api/SupabaseAPI/customer/spousesAPI";
+import { upsertAddress } from "@/app/api/SupabaseAPI/customer/address";
 
 const VISA_OPTIONS = ["L1", "L2", "L3"];
 
@@ -64,6 +65,13 @@ export default function AboutYou({ setActiveTab, setHasDependents }: AboutYouPro
     const [spouseMonthsInUS, setSpouseMonthsInUS] = useState("");
     const [isReadOnly, setIsReadOnly] = useState(false);
 
+    const [street, setStreet] = useState("");
+    const [city, setCity] = useState("");
+    const [state, setState] = useState("");
+    const [zipcode, setZipcode] = useState("");
+    const [note, setNote] = useState("");
+
+
 
     const handleDateChange = (setter: (val: string) => void) =>
         (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -118,7 +126,6 @@ export default function AboutYou({ setActiveTab, setHasDependents }: AboutYouPro
         if (isMarried) {
             if (!spouseFirstName || !spouseLastName) return "Spouse First and Last Name are required";
             if (!spouseDOB) return "Spouse Date of Birth is required";
-            if (!spouseSSN) return "Spouse SSN / ITIN type is required";
         }
         return null;
     };
@@ -143,7 +150,7 @@ export default function AboutYou({ setActiveTab, setHasDependents }: AboutYouPro
         const validationError = validateBeforeSubmit();
         if (validationError) {
             toast.error(validationError);
-            return;
+            return false;
         }
 
         setLoading(true);
@@ -158,7 +165,7 @@ export default function AboutYou({ setActiveTab, setHasDependents }: AboutYouPro
 
             if (existingAbout) {
                 toast.error("Your personal details already exist. You cannot submit again.");
-                return;
+                return false;
             }
 
             if (isMarried) {
@@ -207,7 +214,6 @@ export default function AboutYou({ setActiveTab, setHasDependents }: AboutYouPro
                 dob: safeToISOString(dob),
                 occupation: occupation || null,
                 isCitizen: citizen,
-                greenCardConditional,
 
                 firstName: firstName?.trim() || (() => { throw new Error("firstName is required"); })(),
                 middleName: middleName?.trim() || null,
@@ -228,13 +234,33 @@ export default function AboutYou({ setActiveTab, setHasDependents }: AboutYouPro
                 updatedAt: new Date().toISOString(),
             };
 
+            if (!street || !city || !state || !zipcode) {
+                toast.error("Please complete address details");
+                return;
+            }
+
             const res = await upsertAboutYou(aboutPayload);
 
             if ("alreadyExists" in res) {
                 toast.error("Data already exists");
                 return;
             }
+
+            if (street || city || state || zipcode || note) {
+                await upsertAddress({
+                    customerId,
+                    street: street.trim(),
+                    city: city.trim(),
+                    state: state.trim(),
+                    zipcode: zipcode.trim(),
+                    note: note || null,
+                    createdAt: new Date().toISOString(),
+                    updatedAt: new Date().toISOString(),
+                });
+            }
+
             toast.success("Details saved successfully!");
+            return true;
         } catch (error) {
             console.error("Error saving data:", error);
             toast.error("Failed to save details.");
@@ -648,7 +674,19 @@ export default function AboutYou({ setActiveTab, setHasDependents }: AboutYouPro
                     <div className="bg-red-00 mt-7 flex flex-col gap-2 text-start">
                         <h3 className="text-[#1D2B48] font-semibold ">Address Details</h3>
                         <p className="text-xs text-[#1D2B48] font-medium">Please input address to be reported on tax returns. This is used for communication purpose, so request you to input your current address.</p>
-                        <AddressAboutYou setHasDependents={setHasDependents} />
+                        <AddressAboutYou
+                            setHasDependents={setHasDependents}
+                            street={street}
+                            setStreet={setStreet}
+                            city={city}
+                            setCity={setCity}
+                            state={state}
+                            setState={setState}
+                            zipcode={zipcode}
+                            setZipcode={setZipcode}
+                            note={note}
+                            setNote={setNote}
+                        />
                     </div>
 
                     <div className="bg-pink-00 flex items-end justify-center gap-5 mt-2">

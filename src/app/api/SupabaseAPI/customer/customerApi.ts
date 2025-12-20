@@ -1,5 +1,15 @@
 import { supabase } from "../../../../../utils/supabase/client"
 
+export type UpsertCustomerPayload = {
+  firstname?: string;
+  middlename?: string | null;
+  lastname?: string;
+  phone?: string;
+  email?: string;
+  dob?: string | null;
+  timezone?: string | null;
+};
+
 export const getCustomer = async () => {
   try {
     const {
@@ -59,3 +69,34 @@ export const insertCustomer = async (customerData: {
     throw error
   }
 }
+
+
+export const updateCustomer = async (
+  authId: string,
+  payload: {
+    firstname?: string;
+    middlename?: string | null;
+    lastname?: string;
+    phone?: string;
+    dob?: string | null;
+  }
+) => {
+  try {
+    const { data, error } = await supabase
+      .from("vertixcustomers")
+      .update({
+        ...payload,
+        updatedAt: new Date(),
+      })
+      .eq("auth_id", authId)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  } catch (error: any) {
+    console.error("Error updating customer:", error.message);
+    throw error;
+  }
+};
+
