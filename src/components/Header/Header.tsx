@@ -12,6 +12,7 @@ import toast from "react-hot-toast"
 import { HiOutlineMenu, HiX } from "react-icons/hi"
 import MobileNav from "./mobileNav"
 import { FaUserLarge } from "react-icons/fa6";
+import EditDetailsModal from "../modals/profileModal"
 
 function Header() {
   const router = useRouter()
@@ -21,6 +22,7 @@ function Header() {
 
   const [showLogoutModal, setShowLogoutModal] = useState(false)
   const [mobileNavOpen, setMobileNavOpen] = useState(false)
+  const [showEditModal, setShowEditModal] = useState(false);
 
   const toggleMobileNav = () => setMobileNavOpen((prev) => !prev)
 
@@ -210,7 +212,13 @@ function Header() {
           </div>
 
           <div className="lg:h-[100%] bg-red-00 gap-7 flex justify-end items-center lg:w-auto">
-            <FaUserLarge size={23} className="cursor-pointer" />
+            {isAuthenticated && (
+              <FaUserLarge
+                size={23}
+                className="cursor-pointer"
+                onClick={() => setShowEditModal(true)}
+              />
+            )}
             {isAuthenticated ? (
               <button
                 onClick={handleLogout}
@@ -259,6 +267,10 @@ function Header() {
         isOpen={showLogoutModal}
         onConfirm={confirmLogout}
         onCancel={cancelLogout}
+      />
+      <EditDetailsModal
+        isOpen={showEditModal}
+        onClose={() => setShowEditModal(false)}
       />
     </>
   )

@@ -2,18 +2,40 @@
 import { useState } from "react";
 
 type Props = {
-    setHasDependents?: (val: boolean) => void
+    street: string;
+    setStreet: (v: string) => void;
+
+    city: string;
+    setCity: (v: string) => void;
+
+    state: string;
+    setState: (v: string) => void;
+
+    zipcode: string;
+    setZipcode: (v: string) => void;
+
+    note: string;
+    setNote: (v: string) => void;
+
+    setHasDependents?: (val: boolean) => void;
     setActiveTab?: (tab: string) => void
 }
 
-export default function AddressAboutYou({ setHasDependents, setActiveTab }: Props) {
+export default function AddressAboutYou({ street,
+    setStreet,
+    city,
+    setCity,
+    state,
+    setState,
+    zipcode,
+    setZipcode,
+    note,
+    setNote,
+    setHasDependents,
+    setActiveTab, }: Props) {
 
-    const [street, setStreet] = useState("");
-    const [city, setCity] = useState("");
-    const [state, setState] = useState("");
-    const [zipcode, setZipcode] = useState("");
-    const [note, setNote] = useState("");
     const [dependent, setDependent] = useState(false);
+
 
     const handleOnlyLetters = (setter: (v: string) => void) =>
         (e: React.ChangeEvent<HTMLInputElement>) => {
