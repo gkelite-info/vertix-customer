@@ -5,16 +5,12 @@ import YearSelect from "../../../../utils/yearSelect";
 import { useEffect, useRef, useState } from "react";
 import { useYear } from "@/app/api/context/yearContext";
 import { getFilingYearStatus } from "@/app/api/SupabaseAPI/customer/trackerAPI";
-import { supabase } from "../../../../utils/supabase/client";
 import { useRouter } from "next/navigation";
+import { supabase } from "../../../../utils/supabase/client";
 import toast from "react-hot-toast";
 
 export default function FileProgressTracker() {
   const { filingYearId } = useYear();
-  const { selectedYear } = useYear()
-  const [checkingConsent, setCheckingConsent] = useState(true)
-  const hasRedirectedRef = useRef(false)
-  const router = useRouter()
 
   const steps = [
     { icon: File, label: "DOCUMENT", statusKey: "Documents Pending" },
@@ -25,6 +21,10 @@ export default function FileProgressTracker() {
   ];
 
   const [filingStatus, setFilingStatus] = useState<string | null>(null);
+  const { selectedYear } = useYear()
+  const [checkingConsent, setCheckingConsent] = useState(true)
+  const hasRedirectedRef = useRef(false)
+  const router = useRouter()
 
   useEffect(() => {
     if (!filingYearId) return;
@@ -41,12 +41,11 @@ export default function FileProgressTracker() {
     fetchStatus();
   }, [filingYearId]);
 
-<<<<<<< Updated upstream
   // const activeIndex = steps.findIndex((s) => s.statusKey === filingStatus);
   const activeIndex = steps.findIndex(step =>
     step.statusKey.includes(filingStatus ?? "")
   );
-=======
+
   useEffect(() => {
     const checkConsent = async () => {
       try {
@@ -88,9 +87,6 @@ export default function FileProgressTracker() {
   if (checkingConsent) return <div className="flex justify-center items-center text-[#1D2B48] h-[100vh]">
     <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
   </div>
-
-  const activeIndex = steps.findIndex((s) => s.statusKey === filingStatus);
->>>>>>> Stashed changes
 
   return (
     <div className="bg-white lg:h-[100vh]">
