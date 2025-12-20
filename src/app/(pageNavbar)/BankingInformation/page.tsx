@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useAuth } from "@/components/AuthContext";
 import { useYear } from "@/app/api/context/yearContext";
 import TableComponent from "../../../../utils/table/page";
@@ -16,6 +16,8 @@ import DeleteModal from "@/components/modals/deleteModal";
 import YearSelect from "../../../../utils/yearSelect";
 import { useHandleMagicLinkAuth } from "../../../../utils/useHandleMagicLinkAuth";
 import DateForDue from "./dateForDue";
+import { supabase } from "../../../../utils/supabase/client";
+import { useRouter } from "next/navigation";
 
 export default function BankingInformationPage() {
   const { user } = useAuth();
@@ -36,6 +38,10 @@ export default function BankingInformationPage() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const { isTemporary } = useHandleMagicLinkAuth();
+  const { selectedYear } = useYear()
+  const [checkingConsent, setCheckingConsent] = useState(true)
+  const hasRedirectedRef = useRef(false)
+  const router = useRouter()
 
   useEffect(() => {
     if (!user || !filingYearId) return;
@@ -59,6 +65,48 @@ export default function BankingInformationPage() {
 
     fetchBankData();
   }, [user, filingYearId]);
+
+  useEffect(() => {
+    const checkConsent = async () => {
+      try {
+        if (!selectedYear) return
+
+        const { data: auth } = await supabase.auth.getUser()
+        if (!auth?.user) return
+
+        const { data: customer } = await supabase
+          .from("vertixcustomers")
+          .select("customerId")
+          .eq("auth_id", auth.user.id)
+          .single()
+
+        if (!customer) return
+
+        const { data: consent } = await supabase
+          .from("consents")
+          .select("consentId")
+          .eq("customerId", customer.customerId)
+          .eq("filing_year", Number(selectedYear))
+          .maybeSingle()
+
+        if (!consent && !hasRedirectedRef.current) {
+          hasRedirectedRef.current = true
+          toast.error("Consent required for selected year")
+          router.replace("/taxfiling?tab=consent")
+          return
+        }
+      } finally {
+        setCheckingConsent(false)
+      }
+    }
+
+    checkConsent()
+  }, [selectedYear, router])
+
+
+  if (checkingConsent) return <div className="flex justify-center items-center text-[#1D2B48] h-[100vh]">
+    <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+  </div>
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -115,7 +163,7 @@ export default function BankingInformationPage() {
       };
 
       const res = await upsertBankInformation(payload);
-      
+
       if (res) {
         toast.success("Bank information saved successfully");
         setBankRecords([res]);
