@@ -214,17 +214,13 @@ function Header() {
           }
 
           <div className="lg:h-[100%] bg-red-00 gap-7 flex justify-end items-center lg:w-auto">
-<<<<<<< Updated upstream
             {isAuthenticated && (
               <FaUserLarge
                 size={23}
-                className="cursor-pointer"
+                className="cursor-pointer text-white"
                 onClick={() => setShowEditModal(true)}
               />
             )}
-=======
-            <FaUserLarge size={23} className="cursor-pointer text-white" />
->>>>>>> Stashed changes
             {isAuthenticated ? (
               <button
                 onClick={handleLogout}
