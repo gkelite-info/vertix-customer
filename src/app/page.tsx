@@ -19,14 +19,13 @@ import {
   UsersThree,
   Wrench
 } from 'phosphor-react';
+import { useRouter } from "next/navigation";
 
 export default function Page() {
-
+  const router = useRouter();
   const cards = [
-    { icon: Users, title: "REFER A FRIEND" },
-    { icon: Handshake, title: "CONTENTIMENT" },
-    { icon: CheckCircle, title: "ADVISORY & COMPLIANCE" },
-    { icon: ThumbsUp, title: "SUPPORT" },
+    { icon: Users, title: "REFER A FRIEND", route: "/refer-friend" },
+    { icon: ThumbsUp, title: "SUPPORT", route: "/contact" },
   ];
 
   const serviceData = [
@@ -341,25 +340,19 @@ export default function Page() {
                 reporting forms if you have dependents, itemized deductions, tax benefits, investments, <br className="hidden sm:inline" />
                 accounts or property outside the United States.
               </p>
-
-              <p className="text-white text-base sm:text-lg md:text-xl lg:text-md 
-                         border-b-2 lg:border-b-1 border-white 
-                         pb-1 w-fit 
-                         hover:text-gray-200 transition-colors">
-                READ MORE
-              </p>
             </div>
           </div>
         </div>
 
-        <div className="w-full bg-indigo-00 max-w-7xl mx-auto sm:px-6 lg:px-8 mt-10">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 bg-yellow-00 justify-items-center">
+        <div className="w-full bg-indigo-00 max-w-2xl mx-auto sm:px-6 lg:px-8 mt-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 lg:gap-8 bg-yellow-00 justify-items-center">
             {cards.map((card, index) => {
               const Icon = card.icon;
               return (
                 <div
                   key={index}
-                  className="bg-[#F7F7F7] rounded-xl shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 h-48 w-[80%] sm:h-38 sm:w-[100%] lg:h-32 lg:w-[85%] flex flex-col items-center justify-center gap-4 px-6"
+                  onClick={() => router.push(card.route)}
+                  className="bg-[#F7F7F7] cursor-pointer rounded-xl shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 h-48 w-[80%] sm:h-38 sm:w-[100%] lg:h-32 lg:w-[85%] flex flex-col items-center justify-center gap-4 px-6"
                 >
                   <div className="bg-[#E1E2E5] lg:p-2 p-4 rounded-full">
                     <Icon size={32} weight="fill" className="text-[#1D2B48]" />

@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation"
 import YearSelect from "../../../../utils/yearSelect"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import toast from "react-hot-toast"
 import { supabase } from "../../../../utils/supabase/client"
 import { useYear } from "@/app/api/context/yearContext"
@@ -111,6 +111,38 @@ export default function AuthorizationConsent() {
       setLoading(false)
     }
   }
+
+  const getTodayDateMMDDYYYY = () => {
+    const today = new Date()
+    const mm = String(today.getMonth() + 1).padStart(2, "0")
+    const dd = String(today.getDate()).padStart(2, "0")
+    const yyyy = today.getFullYear()
+    return `${mm}/${dd}/${yyyy}`
+  }
+
+  useEffect(() => {
+    const preloadUserData = async () => {
+      const { data: auth, error } = await supabase.auth.getUser()
+
+      if (error || !auth?.user) return
+
+      const { data: customer } = await supabase
+        .from("vertixcustomers")
+        .select("first_name, last_name")
+        .eq("auth_id", auth.user.id)
+        .single()
+
+      if (customer) {
+        const fullName = `${customer.first_name ?? ""} ${customer.last_name ?? ""}`.trim()
+
+        setTaxpayerName(fullName)
+      }
+      setDate1(getTodayDateMMDDYYYY())
+    }
+    preloadUserData()
+  }, [])
+
+
   return (
     <>
       <div className="bg-white pb-7">
@@ -226,13 +258,13 @@ export default function AuthorizationConsent() {
               permission, you may contact the Treasury Inspector General for Tax
               Administration (TIGTA) byl
             </p>
-          <button
-            onClick={handleAccept}
-            disabled={loading}
-            className="bg-[#1D2B48] self-center w-[20%] rounded-lg px-5 py-2 mt-10 cursor-pointer text-white"
-          >
-            {loading ? "Submitting..." : "Submit Consent"}
-          </button>
+            <button
+              onClick={handleAccept}
+              disabled={loading}
+              className="bg-[#1D2B48] self-center w-[20%] rounded-lg px-5 py-2 mt-10 cursor-pointer text-white"
+            >
+              {loading ? "Submitting..." : "Submit Consent"}
+            </button>
           </div>
         </div>
       </div>

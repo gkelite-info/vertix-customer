@@ -40,6 +40,7 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
       "/state_refund",
       "/contact",
       "/taxfiling",
+      "/refer-friend"
     ];
 
     if (!token) {
