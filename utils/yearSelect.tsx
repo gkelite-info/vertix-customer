@@ -25,7 +25,7 @@ export default function YearSelect({ style = "" }: YearSelectProps) {
   );
 
   useEffect(() => {
-    const token = localStorage.getItem("sb-wieinzdarxemefrzitog-auth-token");
+    const token = localStorage.getItem("sb-wieinzdarxemefrzitog-auth-token") ?? localStorage.getItem("token");
     if (!token) return;
     const fetchCustomer = async () => {
       await supabase.auth.setSession({

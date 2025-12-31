@@ -66,6 +66,7 @@ function Header() {
       localStorage.removeItem("temporary_access_expiry")
       localStorage.removeItem("selectedYear")
       localStorage.removeItem("token")
+      localStorage.removeItem("sb-wieinzdarxemefrzitog-auth-token")
       setIsAuthenticated(false)
       toast.success("Logged out successfully")
     } else {

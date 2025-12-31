@@ -92,7 +92,7 @@ export default function AuthorizationConsent() {
         .eq("customerId", customer.customerId)
         .eq("filing_year", Number(selectedYear))
         .is("deletedAt", null)
-        .limit(1)
+        .maybeSingle();
 
       if (checkError) {
         toast.error("Unable to verify existing consent.")

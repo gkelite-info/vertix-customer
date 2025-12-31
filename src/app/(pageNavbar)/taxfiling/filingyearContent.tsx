@@ -91,6 +91,7 @@ export default function TaxfilingContent() {
           localStorage.removeItem("temporary_access_expiry")
           localStorage.removeItem("selectedYear")
           localStorage.removeItem("token")
+          localStorage.removeItem("sb-wieinzdarxemefrzitog-auth-token")
           const { data } = await supabase.auth.getSession()
           if (data?.session) {
             console.log("Normal customer still logged in, no redirect.")
