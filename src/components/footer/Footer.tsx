@@ -23,7 +23,7 @@ const Footer = () => {
               Vertix Tax
             </Link>
             <div className="mt-4 space-y-2 text-sm">
-              <p className="text-[#D1D5DC]">8 The Green Ste RDover, DE 19901, USA</p>
+              <p className="text-[#D1D5DC]">8 The Green Ste R Dover, DE 19901, USA</p>
 
               <div className="flex">
                 <strong className="text-white flex-shrink-0">Phone :</strong>

@@ -185,7 +185,7 @@ export default function Page() {
                 )}
               </div>
               <div className="flex justify-between items-center mt-6 mb-8">
-                <div className="flex space-x-2 sm:space-x-3 items-center">
+                {/* <div className="flex space-x-2 sm:space-x-3 items-center">
                   <input
                     id="remember"
                     type="checkbox"
@@ -199,7 +199,7 @@ export default function Page() {
                   >
                     Remember Password
                   </label>
-                </div>
+                </div> */}
                 {/* <p
                   className="font-medium text-xs sm:text-sm underline text-[#3A4969] cursor-pointer"
                   onClick={() => router.push("/forgot_password")}
