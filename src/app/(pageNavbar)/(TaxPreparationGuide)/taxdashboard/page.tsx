@@ -111,9 +111,9 @@ export default function Page() {
   return (
     <div className="bg-white w-full fixed left-0 right-0 top-[85px] bottom-0 overflow-hidden">
       <YearSelect style="justify-end" />
-      <div className="flex justify-center gap-5 mt-3 h-[calc(100vh-120px)] overflow-hidden">
-        <div className="bg-[#FFFEFE] w-[28%] h-fit sticky top-0 rounded-lg shadow-md p-2 pt-4 pb-4 rounded-lg text-center flex flex-col items-center shadow-md">
-          <div className="flex items-center h-10 gap-6 w-[90%] mb-2">
+      <div className="flex justify-start px-4 gap-5 mt-3 h-[calc(100vh-120px)] overflow-hidden">
+        <div className="bg-red-00 bg-[#FFFEFE] w-[20%] h-fit sticky top-0 rounded-lg shadow-md p-2 pt-4 pb-4 rounded-lg text-center flex flex-col items-center shadow-md">
+          <div className="flex items-center h-10 gap-3 w-[90%] mb-2">
             <ArrowBendUpLeft
               size={22}
               weight="fill"
@@ -122,7 +122,7 @@ export default function Page() {
               onClick={handleBack}
             />
             <h3 className="text-[#1D2B48] font-semibold">
-              Tax Organizer Dashboard
+              Dashboard
             </h3>
           </div>
 
@@ -140,7 +140,7 @@ export default function Page() {
           ))}
         </div>
 
-        <div className="shadow-md lg:w-[60%] lg:h-[calc(100vh-230px)] rounded-lg p-4 overflow-y-auto scrollbar-hide">
+        <div className="shadow-md lg:w-[80%] lg:h-[calc(100vh-230px)] rounded-lg p-4 overflow-y-auto scrollbar-hide">
           {activeTab === "About You" && (
             <AboutYou
               setActiveTab={setActiveTab}

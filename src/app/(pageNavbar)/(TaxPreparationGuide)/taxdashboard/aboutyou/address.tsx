@@ -1,5 +1,6 @@
 'use client'
 import { useState } from "react";
+import { State } from "country-state-city";
 
 type Props = {
     street: string;
@@ -36,6 +37,7 @@ export default function AddressAboutYou({ street,
 
     const [dependent, setDependent] = useState(false);
 
+    const US_STATES = State.getStatesOfCountry("US");
 
     const handleOnlyLetters = (setter: (v: string) => void) =>
         (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -65,7 +67,7 @@ export default function AddressAboutYou({ street,
                     <h4 className="text-[#1D2B48] font-medium text-sm">Street/Apartment</h4>
                     <input
                         value={street}
-                        onChange={handleOnlyLetters(setStreet)}
+                        onChange={(e) => setStreet(e.target.value)}
                         className="border rounded-md text-[#616161] border-[#B5B5B5] w-[45%] h-[100%] px-3 text-sm focus:outline-none"
                         placeholder="Enter street/apartment"
                     />
@@ -81,12 +83,25 @@ export default function AddressAboutYou({ street,
                 </div>
                 <div className="flex bg-green-00 w-[100%] mt-5 h-10 items-center justify-start gap-7">
                     <h4 className="text-[#1D2B48] font-medium text-sm">State</h4>
-                    <input
+                    {/* <input
                         value={state}
                         onChange={handleOnlyLetters(setState)}
                         className="border rounded-md text-[#616161] border-[#B5B5B5] w-[45%] h-[100%] px-3 text-sm focus:outline-none"
                         placeholder="Enter state"
-                    />
+                    /> */}
+                    <select
+                        value={state}
+                        onChange={(e) => setState(e.target.value)}
+                        className="border rounded-md text-[#616161] border-[#B5B5B5] w-[45%] h-[100%] px-3 text-sm focus:outline-none"
+                    >
+                        <option value="">Select state</option>
+                        {US_STATES.map((s) => (
+                            <option key={s.isoCode} value={s.name}>
+                                {s.name}
+                            </option>
+                        ))}
+                    </select>
+
                 </div>
                 <div className="flex bg-green-00 w-[100%] mt-5 h-10 items-center justify-start gap-7">
                     <h4 className="text-[#1D2B48] font-medium text-sm">Zipcode</h4>

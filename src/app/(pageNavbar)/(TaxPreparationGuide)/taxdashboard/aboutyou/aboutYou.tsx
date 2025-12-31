@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import ThreeOptionToggle from "../../../../../../utils/threeOptionToggle";
 import { getCustomer } from "@/app/api/SupabaseAPI/customer/customerApi";
 import toast from "react-hot-toast";
@@ -70,49 +70,89 @@ export default function AboutYou({ setActiveTab, setHasDependents }: AboutYouPro
     const [state, setState] = useState("");
     const [zipcode, setZipcode] = useState("");
     const [note, setNote] = useState("");
+    const prevValueRef = useRef("");
 
+    const handleDateChange =
+        (setter: (val: string) => void) =>
+            (e: React.ChangeEvent<HTMLInputElement>) => {
+                const raw = e.target.value;
+                const prev = prevValueRef.current;
 
+                const isDeleting = raw.length < prev.length;
 
-    const handleDateChange = (setter: (val: string) => void) =>
-        (e: React.ChangeEvent<HTMLInputElement>) => {
-            let input = e.target.value.replace(/\D/g, "");
+                if (isDeleting) {
+                    prevValueRef.current = raw;
+                    setter(raw);
+                    return;
+                }
 
-            if (input.length > 8) input = input.slice(0, 8);
+                let input = raw.replace(/\D/g, "");
+                if (input.length > 8) input = input.slice(0, 8);
 
-            let mm = input.slice(0, 2);
-            let dd = input.slice(2, 4);
-            let yyyy = input.slice(4, 8);
+                let mm = input.slice(0, 2);
+                let dd = input.slice(2, 4);
+                let yyyy = input.slice(4, 8);
 
-            if (mm.length === 2) {
-                let m = parseInt(mm, 10);
-                if (m < 1) m = 1;
-                if (m > 12) m = 12;
-                mm = m.toString().padStart(2, "0");
-            }
+                if (mm.length === 2) {
+                    let m = parseInt(mm, 10);
+                    mm = Math.min(Math.max(m, 1), 12).toString().padStart(2, "0");
+                }
 
-            if (dd.length === 2) {
-                let d = parseInt(dd, 10);
-                if (d < 1) d = 1;
-                if (d > 31) d = 31;
-                dd = d.toString().padStart(2, "0");
-            }
+                if (dd.length === 2) {
+                    let d = parseInt(dd, 10);
+                    dd = Math.min(Math.max(d, 1), 31).toString().padStart(2, "0");
+                }
 
-            let formatted = "";
+                let formatted = mm;
+                if (mm.length === 2) formatted += "/";
+                if (dd) formatted += dd;
+                if (dd.length === 2) formatted += "/";
+                if (yyyy) formatted += yyyy;
 
-            if (mm) {
-                formatted = mm.length === 2 ? mm + "/" : mm;
-            }
+                prevValueRef.current = formatted;
+                setter(formatted);
+            };
 
-            if (dd) {
-                formatted += dd.length === 2 ? dd + "/" : dd;
-            }
+    // const handleDateChange = (setter: (val: string) => void) =>
+    //     (e: React.ChangeEvent<HTMLInputElement>) => {
+    //         let input = e.target.value.replace(/\D/g, "");
 
-            if (yyyy) {
-                formatted += yyyy;
-            }
+    //         if (input.length > 8) input = input.slice(0, 8);
 
-            setter(formatted);
-        };
+    //         let mm = input.slice(0, 2);
+    //         let dd = input.slice(2, 4);
+    //         let yyyy = input.slice(4, 8);
+
+    //         if (mm.length === 2) {
+    //             let m = parseInt(mm, 10);
+    //             if (m < 1) m = 1;
+    //             if (m > 12) m = 12;
+    //             mm = m.toString().padStart(2, "0");
+    //         }
+
+    //         if (dd.length === 2) {
+    //             let d = parseInt(dd, 10);
+    //             if (d < 1) d = 1;
+    //             if (d > 31) d = 31;
+    //             dd = d.toString().padStart(2, "0");
+    //         }
+
+    //         let formatted = "";
+
+    //         if (mm) {
+    //             formatted = mm.length === 2 ? mm + "/" : mm;
+    //         }
+
+    //         if (dd) {
+    //             formatted += dd.length === 2 ? dd + "/" : dd;
+    //         }
+
+    //         if (yyyy) {
+    //             formatted += yyyy;
+    //         }
+
+    //         setter(formatted);
+    //     };
 
     const validateBeforeSubmit = () => {
 
@@ -301,7 +341,7 @@ export default function AboutYou({ setActiveTab, setHasDependents }: AboutYouPro
                 <h2 className="text-[#1D2B48] font-semibold text-xl">About You</h2>
                 <div className="flex flex-col bg-red-00 w-[95%] items-start">
                     <div className="flex bg-green-00 w-[90%] mt-5 h-10 items-center justify-start gap-9">
-                        <h4 className="text-[#1D2B48] font-medium text-sm">First Name <span className="text-red-500">*</span></h4>
+                        <h4 className="text-[#1D2B48] font-medium text-sm">First Name</h4>
                         <input
                             type="text"
                             value={firstName}
@@ -321,7 +361,7 @@ export default function AboutYou({ setActiveTab, setHasDependents }: AboutYouPro
                     </div>
 
                     <div className="flex bg-green-00 w-[90%] mt-5 h-10 items-center justify-start gap-9.5">
-                        <h4 className="text-[#1D2B48] font-medium text-sm">Last Name <span className="text-red-500">*</span></h4>
+                        <h4 className="text-[#1D2B48] font-medium text-sm">Last Name</h4>
                         <input
                             type="text"
                             value={lastName}
@@ -331,7 +371,7 @@ export default function AboutYou({ setActiveTab, setHasDependents }: AboutYouPro
                         />
                     </div>
                     <div className="flex bg-green-00 w-[90%] mt-5 h-10 items-center justify-start gap-6.5">
-                        <h4 className="text-[#1D2B48] font-medium text-sm">Date of Birth <span className="text-red-500">*</span></h4>
+                        <h4 className="text-[#1D2B48] font-medium text-sm">Date of Birth</h4>
                         <input
                             type="text"
                             value={dob}
@@ -342,7 +382,7 @@ export default function AboutYou({ setActiveTab, setHasDependents }: AboutYouPro
                     </div>
 
                     <div className="flex bg-green-00 w-[90%] mt-5 h-10 items-center justify-start gap-7.5">
-                        <h4 className="text-[#1D2B48] font-medium text-sm">Occupation <span className="text-red-500">*</span></h4>
+                        <h4 className="text-[#1D2B48] font-medium text-sm">Occupation</h4>
                         <input type="text"
                             value={occupation}
                             onChange={handleTextOnly(setOccupation)}
@@ -376,7 +416,7 @@ export default function AboutYou({ setActiveTab, setHasDependents }: AboutYouPro
 
                     {!citizen && (
                         <div className="bg-red-00 w-[90%] h-8 flex justify-start gap-7 items-center mt-5">
-                            <h3 className="text-[#1D2B48] font-medium text-sm">Do you have <span className="text-red-500">*</span></h3>
+                            <h3 className="text-[#1D2B48] font-medium text-sm">Do you have</h3>
                             <div className="flex w-[50%] h-[100%] bg-blue-00 rounded-md">
                                 <ThreeOptionToggle
                                     options={["SSN", "ITIN", "NEED TO APPLY"]}
@@ -446,15 +486,17 @@ export default function AboutYou({ setActiveTab, setHasDependents }: AboutYouPro
 
                         </div>
                     )}
-                    <div className="flex bg-green-00 w-[90%] mt-5 h-10 items-center justify-start gap-7">
-                        <h4 className="text-[#1D2B48] font-medium text-sm">First Date of entry in US</h4>
-                        <input type="text"
-                            value={firstEntryDate}
-                            onChange={handleDateChange(setFirstEntryDate)}
-                            placeholder="MM/DD/YYYY"
-                            className="border bg-red-00 rounded-md text-[#3E3E3E] border-[#B5B5B5] w-[45%] h-[100%] px-3 text-sm focus:outline-none"
-                        />
-                    </div>
+                    {!citizen && (
+                        <div className="flex bg-green-00 w-[90%] mt-5 h-10 items-center justify-start gap-7">
+                            <h4 className="text-[#1D2B48] font-medium text-sm">First Date of entry in US</h4>
+                            <input type="text"
+                                value={firstEntryDate}
+                                onChange={handleDateChange(setFirstEntryDate)}
+                                placeholder="MM/DD/YYYY"
+                                className="border bg-red-00 rounded-md text-[#3E3E3E] border-[#B5B5B5] w-[45%] h-[100%] px-3 text-sm focus:outline-none"
+                            />
+                        </div>
+                    )}
                     <div className="flex bg-green-00 w-[90%] mt-5 h-10 items-center justify-start gap-7">
                         <h4 className="text-[#1D2B48] font-medium text-sm">No. of months stayed in US in {selectedYear}</h4>
                         <input
@@ -508,7 +550,7 @@ export default function AboutYou({ setActiveTab, setHasDependents }: AboutYouPro
                                     <h3 className="text-[#1D2B48] font-semibold text-start">Spouse Details</h3>
                                 </div>
                                 <div className="flex bg-green-00 w-[100%] mt-3 h-10 items-center justify-start gap-9">
-                                    <h4 className="text-[#1D2B48] font-medium text-sm">First Name <span className="text-red-500">*</span></h4>
+                                    <h4 className="text-[#1D2B48] font-medium text-sm">First Name</h4>
                                     <input type="text"
                                         value={spouseFirstName}
                                         onChange={handleNameInput(setSpouseFirstName)}
@@ -526,7 +568,7 @@ export default function AboutYou({ setActiveTab, setHasDependents }: AboutYouPro
                                     />
                                 </div>
                                 <div className="flex bg-green-00 w-[100%] mt-5 h-10 items-center justify-start gap-9">
-                                    <h4 className="text-[#1D2B48] font-medium text-sm">Last Name <span className="text-red-500">*</span></h4>
+                                    <h4 className="text-[#1D2B48] font-medium text-sm">Last Name</h4>
                                     <input type="text"
                                         value={spouseLastName}
                                         onChange={handleNameInput(setSpouseLastName)}
@@ -535,7 +577,7 @@ export default function AboutYou({ setActiveTab, setHasDependents }: AboutYouPro
                                     />
                                 </div>
                                 <div className="flex bg-green-00 w-[100%] mt-5 h-10 items-center justify-start gap-6">
-                                    <h4 className="text-[#1D2B48] font-medium text-sm">Date of Birth <span className="text-red-500">*</span></h4>
+                                    <h4 className="text-[#1D2B48] font-medium text-sm">Date of Birth</h4>
                                     <input type="text"
                                         value={spouseDOB}
                                         onChange={handleDateChange(setSpouseDOB)}
@@ -578,7 +620,7 @@ export default function AboutYou({ setActiveTab, setHasDependents }: AboutYouPro
 
                                 {!spouseCitizen && (
                                     <div className="bg-red-00 w-[100%] h-8 flex justify-start gap-7 items-center mt-5">
-                                        <h3 className="text-[#1D2B48] font-medium text-sm">Do your Spouse have <span className="text-red-500">*</span></h3>
+                                        <h3 className="text-[#1D2B48] font-medium text-sm">Do your Spouse have</h3>
                                         <div className="flex w-[50%] h-[100%] bg-blue-400 rounded-md">
                                             <ThreeOptionToggle
                                                 options={["SSN", "ITIN", "NEED TO APPLY"]}
@@ -646,17 +688,18 @@ export default function AboutYou({ setActiveTab, setHasDependents }: AboutYouPro
                                     </div>
                                 )}
 
-                                <div className="flex bg-green-00 w-[100%] mt-5 h-10 items-center justify-start gap-7">
-                                    <h4 className="text-[#1D2B48] font-medium text-sm">First Date of entry in US</h4>
-                                    <input
-                                        type="text"
-                                        value={spouseFirstEntryDate}
-                                        onChange={handleDateChange(setSpouseFirstEntryDate)}
-                                        placeholder="MM/DD/YYYY"
-                                        className="border bg-red-00 rounded-md text-[#3E3E3E] border-[#B5B5B5] w-[45%] h-[100%] px-3 text-sm focus:outline-none"
-                                    />
-
-                                </div>
+                                {!spouseCitizen && (
+                                    <div className="flex bg-green-00 w-[100%] mt-5 h-10 items-center justify-start gap-7">
+                                        <h4 className="text-[#1D2B48] font-medium text-sm">First Date of entry in US</h4>
+                                        <input
+                                            type="text"
+                                            value={spouseFirstEntryDate}
+                                            onChange={handleDateChange(setSpouseFirstEntryDate)}
+                                            placeholder="MM/DD/YYYY"
+                                            className="border bg-red-00 rounded-md text-[#3E3E3E] border-[#B5B5B5] w-[45%] h-[100%] px-3 text-sm focus:outline-none"
+                                        />
+                                    </div>
+                                )}
                                 <div className="flex bg-green-00 w-[100%] mt-5 h-10 items-center justify-start gap-7">
                                     <h4 className="text-[#1D2B48] font-medium text-sm">No. of months stayed in US in {selectedYear}</h4>
                                     <input

@@ -7,6 +7,7 @@ import { Icon } from "@iconify/react"
 import { supabase } from "../../../../utils/supabase/client"
 import { insertCustomer } from "@/app/api/SupabaseAPI/customer/customerApi"
 import TimezoneSelect from "../../../../utils/timezone"
+import RegistrationSuccessModal from "@/components/modals/registrationModal"
 
 
 export default function Page() {
@@ -23,13 +24,14 @@ export default function Page() {
   })
   const [, setEmail] = useState("")
   const [, setEmailError] = useState("")
-  const [remember, setRemember] = useState(false)
+  // const [remember, setRemember] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [phoneCode, setPhoneCode] = useState("+1");
   //const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
   const [passwordError, setPasswordError] = useState("");
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
 
   // const handlePhoneCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -173,9 +175,7 @@ export default function Page() {
           timezone: formData.timezone,
         });
       }
-
-      toast.success("Registration successful! Please check your email to confirm.");
-      router.push("/login");
+      setShowSuccessModal(true);
     } catch (err: any) {
       console.error(err);
       toast.error(err.message);
@@ -302,7 +302,7 @@ export default function Page() {
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   />
                 </div>
-                <div className="flex items-center space-x-3">
+                {/* <div className="flex items-center space-x-3">
                   <input
                     id="remember"
                     type="checkbox"
@@ -313,7 +313,7 @@ export default function Page() {
                   <label htmlFor="remember" className="text-sm text-[#3A4969]">
                     Remember Password
                   </label>
-                </div>
+                </div> */}
                 <div className="bg-green-00 lg:h-[20%] flex flex-col lg:gap-2 lg:mt-2 items-center">
                   {!passwordError && (
                     <button
@@ -342,6 +342,14 @@ export default function Page() {
             </div>
           </div>
         </div>
+        {showSuccessModal && (
+          <RegistrationSuccessModal
+            onLogin={() => {
+              setShowSuccessModal(false);
+              router.push('/login');
+            }}
+          />
+        )}
       </div>
     </>
   )

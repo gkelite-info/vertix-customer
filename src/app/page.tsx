@@ -105,7 +105,7 @@ export default function Page() {
           <div className="relative z-10 flex flex-col text-center items-center justify-center gap-4 max-w-4xl">
 
             <h1 className="text-white font-bold text-2xl px-2 lg:w-[90%] md:w-[65%] md:text-4xl lg:text-4xl">
-              Welcome to Vertix TAX Solutions your trusted partner in taxes.
+              Welcome to Vertix Tax Solutions your trusted partner in taxes.
             </h1>
 
             <p className="text-[#AEAEAE] lg:text-sm text-xs px-4 w-[90%] md:w-[65%] lg:w-[100%] max-w-2xl lg:text-base">
