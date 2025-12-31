@@ -37,7 +37,6 @@ export const YearProvider = ({ children }: { children: React.ReactNode }) => {
           access_token: access,
           refresh_token: refresh,
         });
-        console.log("Supabase session restored");
       } catch (err) {
         console.error("Failed to restore Supabase session:", err);
       }

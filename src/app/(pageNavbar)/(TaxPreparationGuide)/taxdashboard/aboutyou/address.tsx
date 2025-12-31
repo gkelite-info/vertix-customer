@@ -60,6 +60,16 @@ export default function AddressAboutYou({ street,
         if (setHasDependents) setHasDependents(newVal);
     };
 
+    const formatZipcode = (value: string) => {
+        const digits = value.replace(/\D/g, "").slice(0, 9);
+
+        if (digits.length > 5) {
+            return `${digits.slice(0, 5)}-${digits.slice(5)}`;
+        }
+
+        return digits;
+    };
+
     return (
         <>
             <div className="bg-red-00 flex flex-col h-fit w-[95%]">
@@ -107,7 +117,9 @@ export default function AddressAboutYou({ street,
                     <h4 className="text-[#1D2B48] font-medium text-sm">Zipcode</h4>
                     <input
                         value={zipcode}
-                        onChange={allowOnlyNumbers(setZipcode)}
+                        maxLength={10}
+                        //onChange={allowOnlyNumbers(setZipcode)}
+                        onChange={(e) => setZipcode(formatZipcode(e.target.value))}
                         className="border rounded-md text-[#616161] border-[#B5B5B5] w-[45%] h-[100%] px-3 text-sm focus:outline-none"
                         placeholder="Enter zipcode"
                     />

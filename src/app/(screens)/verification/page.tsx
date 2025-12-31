@@ -57,7 +57,6 @@ export default function VerificationPage() {
   const handleResend = () => {
     try {
       toast.success("Resend OTP success")
-      console.log("Resend code triggered")
     } catch (error) {
       console.log("Resend otp failed:", error)
       toast.error("Resend OTP failed")
@@ -77,7 +76,6 @@ export default function VerificationPage() {
       setTimeout(() => {
         toast.success("OTP verified successfully")
       }, 1000)
-      console.log("Code sent:", code)
     } catch (error) {
       console.log("verification failed.", error)
     }

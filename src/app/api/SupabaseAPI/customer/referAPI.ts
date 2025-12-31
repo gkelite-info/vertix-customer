@@ -98,3 +98,38 @@ export const getReferrals = async (filingYearId: number) => {
     throw error;
   }
 };
+
+export const createReferral = async (payload: {
+  customerId: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  alternatePhone?: string | null;
+  timezone: string;
+}) => {
+
+  const { data: client, error: clientError } = await supabase
+    .from("vertixcustomers")
+    .select("customerId")
+    .eq("customerId", payload.customerId)
+    .single();
+
+  if (clientError || !client) {
+    throw new Error("Client not found. Please check the Client ID.");
+  }
+
+  const { error } = await supabase.from("referrals").insert({
+    customerId: payload.customerId,
+    firstName: payload.firstName,
+    lastName: payload.lastName,
+    email: payload.email,
+    phone: payload.phone,
+    alternatePhone: payload.alternatePhone ?? null,
+    timezone: payload.timezone,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  });
+
+  if (error) throw error;
+};

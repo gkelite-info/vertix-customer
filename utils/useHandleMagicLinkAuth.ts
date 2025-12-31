@@ -116,8 +116,6 @@ export function useHandleMagicLinkAuth() {
             localStorage.setItem("temporary_access_flag", "true")
             localStorage.setItem("temporary_access_expiry", expiry.toString())
             localStorage.setItem("token", access_token)
-
-            console.log("✅ Magic link detected - isTemporary set to TRUE") // ✅ ADDED: Debug log
           }
 
           window.history.replaceState(
@@ -144,12 +142,10 @@ export function useHandleMagicLinkAuth() {
           setSession(tempData.session)
           setIsTemporary(true) // ✅ CHANGED: Set temporary flag
           setIsSessionReady(true)
-          console.log("✅ Restored temporary session - isTemporary set to TRUE") // ✅ ADDED: Debug log
           return
         }
       } else if (tempFlag && isExpired) {
         // ✅ ADDED: Clean up expired session
-        console.log("⚠️ Temporary session expired - cleaning up")
         localStorage.removeItem("temporary_access_flag")
         localStorage.removeItem("temporary_access_expiry")
         localStorage.removeItem("token")
@@ -163,7 +159,6 @@ export function useHandleMagicLinkAuth() {
         if (data.session) {
           setSession(data.session)
           setIsTemporary(false) // ✅ CHANGED: Explicitly set to false
-          console.log("✅ Restored normal session - isTemporary set to FALSE") // ✅ ADDED: Debug log
         }
         setIsSessionReady(true)
       }
@@ -171,11 +166,6 @@ export function useHandleMagicLinkAuth() {
 
     restoreSession()
   }, [])
-
-  // ✅ ADDED: Log when isTemporary changes
-  useEffect(() => {
-    console.log("🔄 isTemporary state updated:", isTemporary)
-  }, [isTemporary])
 
   return {
     isSessionReady,

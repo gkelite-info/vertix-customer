@@ -26,7 +26,6 @@ export default function Chats() {
     try {
       setLoading(true);
       const res = await upsertMessage(content, filingYearId, "sent");
-      console.log("Message sent:", res);
       toast.success("Message sent successfully!");
       setContent("");
     } catch (error) {

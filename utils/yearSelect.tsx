@@ -11,7 +11,6 @@ interface YearSelectProps {
 }
 
 export default function YearSelect({ style = "" }: YearSelectProps) {
-  console.log("YearSelect rendered");
 
   const [name, setName] = useState("");
   const [customerId, setCustomerId] = useState<string | number>("");
