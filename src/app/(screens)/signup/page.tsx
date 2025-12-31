@@ -26,26 +26,30 @@ export default function Page() {
   const [remember, setRemember] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [phoneCode, setPhoneCode] = useState("");
-  const [phone, setPhone] = useState("");
+  const [phoneCode, setPhoneCode] = useState("+1");
+  //const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
   const [passwordError, setPasswordError] = useState("");
 
 
+  // const handlePhoneCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   let val = e.target.value;
+
+  //   if (!val.startsWith("+")) {
+  //     val = "+" + val.replace(/\D/g, "");
+  //   }
+
+  //   val = "+" + val.substring(1).replace(/\D/g, "");
+
+  //   setPhoneCode(val);
+
+  //   setFormData((prev) => ({ ...prev, phone: val + phone }));
+  // };
+
   const handlePhoneCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let val = e.target.value;
-
-    if (!val.startsWith("+")) {
-      val = "+" + val.replace(/\D/g, "");
-    }
-
-    val = "+" + val.substring(1).replace(/\D/g, "");
-
-    setPhoneCode(val);
-
-    setFormData((prev) => ({ ...prev, phone: val + phone }));
+    let val = e.target.value.replace(/\D/g, "");
+    setPhoneCode("+" + val);
   };
-
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -89,14 +93,19 @@ export default function Page() {
     }
   }
 
-  const handlePhoneChange = (e: { target: { value: string } }) => {
-    let value = e.target.value.replace(/[^0-9-()+ ]/g, "")
-    if (value.length > 10 || value.length < 10) {
-      value = value.substring(0, 10)
-    }
-    setPhone(value)
-    setFormData((prev) => ({ ...prev, phone: value }))
-  }
+  // const handlePhoneChange = (e: { target: { value: string } }) => {
+  //   let value = e.target.value.replace(/[^0-9-()+ ]/g, "")
+  //   if (value.length > 10 || value.length < 10) {
+  //     value = value.substring(0, 10)
+  //   }
+  //   setPhone(value)
+  //   setFormData((prev) => ({ ...prev, phone: value }))
+  // }
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value.replace(/\D/g, "").slice(0, 10);
+    setFormData((prev) => ({ ...prev, phone: value }));
+  };
 
   const handleSignup = async () => {
 
@@ -158,7 +167,8 @@ export default function Page() {
           auth_id: userId,
           firstname: formData.firstname,
           lastname: formData.lastname,
-          phone: phoneCode + formData.phone,
+          //phone: phoneCode + formData.phone,
+          phone : `${phoneCode}${formData.phone}`,
           email: formData.email,
           timezone: formData.timezone,
         });

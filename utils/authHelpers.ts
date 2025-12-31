@@ -8,7 +8,9 @@ interface TokenPayload {
 }
 
 export const getUserFromToken = (): TokenPayload | null => {
-  const token = localStorage.getItem("token");
+  const token = typeof window !== "undefined" ? localStorage.getItem("sb-wieinzdarxemefrzitog-auth-token") ??
+    localStorage.getItem("token")
+    : "";
   if (!token) return null;
 
   try {

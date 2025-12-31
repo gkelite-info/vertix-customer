@@ -9,7 +9,9 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
   const [isAllowed, setIsAllowed] = useState<boolean | null>(null);
 
   const checkAuth = () => {
-    const token = localStorage.getItem("token");
+    const token = typeof window !== "undefined" ? localStorage.getItem("sb-wieinzdarxemefrzitog-auth-token") ??
+      localStorage.getItem("token")
+      : "";
     const publicRoutes = [
       "/",
       "/login",

@@ -9,7 +9,9 @@ interface RegisterData {
 
 export const getCustomer = async () => {
     try {
-        const token = localStorage.getItem("token");
+        const token = typeof window !== "undefined" ? localStorage.getItem("sb-wieinzdarxemefrzitog-auth-token") ??
+            localStorage.getItem("token")
+            : "";
         if (!token) {
             throw new Error("No token found. Please log in again.");
         }

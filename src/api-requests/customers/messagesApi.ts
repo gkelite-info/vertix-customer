@@ -4,7 +4,9 @@ import { origin } from "../config";
 
 export const postMessages = async (data: { content: string; year?: number }) => {
     try {
-        const token = localStorage.getItem("token");
+        const token = typeof window !== "undefined" ? localStorage.getItem("sb-wieinzdarxemefrzitog-auth-token") ??
+            localStorage.getItem("token")
+            : "";
         if (!token) {
             console.log("No token available here")
             return
