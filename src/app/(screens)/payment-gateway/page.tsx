@@ -6,6 +6,7 @@ import { getFeeSummary } from "@/app/api/SupabaseAPI/customer/feeSummaryAPI";
 import FeeSummaryTotals from "../../../../utils/calculationsTable/feeSummaryTotal";
 import UPIModal from "@/components/modals/upiModal";
 import { useSearchParams } from "next/navigation";
+import toast from "react-hot-toast";
 
 function PaymentGatewayContent() {
   const searchParams = useSearchParams();
@@ -28,10 +29,8 @@ function PaymentGatewayContent() {
   const [isUpiModalOpen, setIsUpiModalOpen] = useState(false);
 
   const handleUPIConfirm = (upiId: string, transactionId: string) => {
-    console.log("UPI ID:", upiId);
-    console.log("Transaction ID:", transactionId);
     setIsUpiModalOpen(false);
-    alert(`Payment successful with ${upiId} (${transactionId})`);
+    toast.success(`Payment successful with ${upiId} (${transactionId})`);
   };
 
   const handleUPICancel = () => setIsUpiModalOpen(false);

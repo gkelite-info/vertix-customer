@@ -334,6 +334,17 @@ export default function AboutYou({ setActiveTab, setHasDependents }: AboutYouPro
         };
 
 
+    const formatSSN = (value: string) => {
+        const digits = value.replace(/\D/g, "").slice(0, 9);
+
+        const part1 = digits.slice(0, 3);
+        const part2 = digits.slice(3, 5);
+        const part3 = digits.slice(5, 9);
+
+        if (digits.length > 5) return `${part1}-${part2}-${part3}`;
+        if (digits.length > 3) return `${part1}-${part2}`;
+        return part1;
+    };
 
     return (
         <>
@@ -433,15 +444,17 @@ export default function AboutYou({ setActiveTab, setHasDependents }: AboutYouPro
                         <input
                             type="text"
                             value={yourSSNValue}
-                            onChange={(e) => {
-                                const newValue = e.target.value;
-                                let filteredValue = newValue.replace(/[^0-9-]/g, '');
-                                filteredValue = filteredValue.slice(0, 11);
-                                setYourSSNValue(filteredValue);
-                            }}
+                            // onChange={(e) => {
+                            //     const newValue = e.target.value;
+                            //     let filteredValue = newValue.replace(/[^0-9-]/g, '');
+                            //     filteredValue = filteredValue.slice(0, 11);
+                            //     setYourSSNValue(filteredValue);
+                            // }}
+                            onChange={(e) => setYourSSNValue(formatSSN(e.target.value))}
                             placeholder="XXX-XX-XXXX"
                             className="border bg-red-00 rounded-md text-[#616161] border-[#B5B5B5] w-[45%] h-[100%] px-3 text-sm focus:outline-none"
                             inputMode="numeric"
+                            maxLength={11}
                         />
 
                     </div>
@@ -637,15 +650,17 @@ export default function AboutYou({ setActiveTab, setHasDependents }: AboutYouPro
                                     <input
                                         type="text"
                                         value={spouseSSNValue}
-                                        onChange={(e) => {
-                                            const newValue = e.target.value;
-                                            let filteredValue = newValue.replace(/[^0-9-]/g, '');
-                                            filteredValue = filteredValue.slice(0, 11);
-                                            setSpouseSSNValue(filteredValue);
-                                        }}
+                                        // onChange={(e) => {
+                                        //     const newValue = e.target.value;
+                                        //     let filteredValue = newValue.replace(/[^0-9-]/g, '');
+                                        //     filteredValue = filteredValue.slice(0, 11);
+                                        //     setSpouseSSNValue(filteredValue);
+                                        // }}
+                                        onChange={(e) => setSpouseSSNValue(formatSSN(e.target.value))}
                                         placeholder="XXX-XX-XXXX"
                                         className="border bg-red-00 rounded-md text-[#616161] border-[#B5B5B5] w-[45%] h-[100%] px-3 text-sm focus:outline-none"
                                         inputMode="numeric"
+                                        maxLength={11}
                                     />
 
                                 </div>

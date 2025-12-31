@@ -83,7 +83,6 @@ export default function TaxReturnRefund() {
       try {
         const data = await getFeeSummary(filingYearId);
         setFeeSummaries(data || []);
-        console.log("Fee summaries:", data);
       } catch (err) {
         console.error("Error fetching fee summaries:", err);
         setFeeSummaries([]);

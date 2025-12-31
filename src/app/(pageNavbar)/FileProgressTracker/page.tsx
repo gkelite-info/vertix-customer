@@ -104,9 +104,6 @@ export default function FileProgressTracker() {
             let statusText = "Pending";
             let color = "text-gray-400";
 
-            console.log("index checking", index)
-            console.log("active index check", activeIndex)
-
             if (index < activeIndex) {
               statusText = "Completed";
               color = "text-green-600";

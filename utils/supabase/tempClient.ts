@@ -65,7 +65,6 @@ export const supabaseTemp = createBrowserClient(
     // 3️⃣ Override signOut to ensure no event leaks
     const originalSignOut = auth.signOut.bind(auth)
     auth.signOut = async (...args: any[]) => {
-      console.log("🧱 Isolated signOut for TEMP session")
       try {
         return await originalSignOut(...args)
       } catch (e) {
@@ -73,7 +72,6 @@ export const supabaseTemp = createBrowserClient(
       }
     }
 
-    console.log("✅ Temporary Supabase client FULLY isolated from main session")
   } catch (err) {
     console.warn("Temp client isolation skipped:", err)
   }

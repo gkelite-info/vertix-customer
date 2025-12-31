@@ -23,7 +23,6 @@ import ProtectedRoute from "../../../../utils/ProtectedRoute"
 export default function TaxfilingContent() {
   const { isSessionReady, session, isTemporary, supabaseTemp } =
     useHandleMagicLinkAuth()
-  console.log("checking is temparary", isTemporary)
   const { setIsAuthenticated } = useAuth()
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -44,7 +43,6 @@ export default function TaxfilingContent() {
         if (error) {
           console.error("Failed to set Supabase session:", error)
         } else {
-          console.log("Customer logged in successfully")
           url.searchParams.delete("access_token")
           url.searchParams.delete("refresh_token")
           window.history.replaceState({}, "", url.toString())
@@ -66,7 +64,6 @@ export default function TaxfilingContent() {
       const expiry = Date.now() + 60 * 60 * 1000
       localStorage.setItem("temporary_access_flag", "true")
       localStorage.setItem("temporary_access_expiry", expiry.toString())
-      console.log("Temporary access initialized")
     }
 
     const shouldReload =
@@ -74,7 +71,6 @@ export default function TaxfilingContent() {
       !sessionStorage.getItem("tempHardRefreshed")
 
     if (shouldReload) {
-      console.log("Performing hard refresh for temp access")
       sessionStorage.setItem("tempHardRefreshed", "true")
       setTimeout(() => window.location.reload(), 300)
     }
@@ -85,7 +81,6 @@ export default function TaxfilingContent() {
       if (isTemp && expiryTime && Date.now() > Number(expiryTime)) {
         if (isLoggingOut.current) return
         isLoggingOut.current = true
-        console.log("Temporary access expired — logging out...")
         try {
           localStorage.removeItem("temporary_access_flag")
           localStorage.removeItem("temporary_access_expiry")
@@ -94,7 +89,6 @@ export default function TaxfilingContent() {
           localStorage.removeItem("sb-wieinzdarxemefrzitog-auth-token")
           const { data } = await supabase.auth.getSession()
           if (data?.session) {
-            console.log("Normal customer still logged in, no redirect.")
             toast.success("Temporary access expired.")
             return
           }
