@@ -25,7 +25,7 @@ export default function YearSelect({ style = "" }: YearSelectProps) {
   );
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("sb-wieinzdarxemefrzitog-auth-token");
     if (!token) return;
     const fetchCustomer = async () => {
       await supabase.auth.setSession({
@@ -50,7 +50,7 @@ export default function YearSelect({ style = "" }: YearSelectProps) {
           const yearString = latestRecord.year.toString();
           setSelectedYear(yearString);
           localStorage.setItem("selectedYear", yearString);
-          console.log("Auto-selected latest year:", yearString);
+          //console.log("Auto-selected latest year:", yearString);
         }
       } catch (error) {
         console.error("Error fetching latest filing year:", error);
@@ -63,7 +63,7 @@ export default function YearSelect({ style = "" }: YearSelectProps) {
     const year = e.target.value;
     setSelectedYear(year);
     localStorage.setItem("selectedYear", year);
-    console.log("Year manually selected:", year);
+    //console.log("Year manually selected:", year);
   };
 
   return (

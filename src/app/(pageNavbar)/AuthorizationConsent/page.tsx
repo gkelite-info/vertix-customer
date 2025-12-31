@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation"
 import YearSelect from "../../../../utils/yearSelect"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import toast from "react-hot-toast"
 import { supabase } from "../../../../utils/supabase/client"
 import { useYear } from "@/app/api/context/yearContext"
@@ -11,12 +11,13 @@ export default function AuthorizationConsent() {
   const router = useRouter()
 
   const [loading, setLoading] = useState(false)
-  const [date1, setDate1] = useState("")
-  const [date2, setDate2] = useState("")
+  const [date, setDate] = useState("")
+  // const [date2, setDate2] = useState("")
   const [taxPayerName, setTaxpayerName] = useState("")
   const [taxPayerSignature, setTaxPayerSignature] = useState("")
-  const [jointTaxpayerName, setJointTaxpayerName] = useState("")
-  const [jointTaxpayerSignature, setJointTaxpayerSignature] = useState("")
+  // const [jointTaxpayerName, setJointTaxpayerName] = useState("")
+  // const [jointTaxpayerSignature, setJointTaxpayerSignature] = useState("")
+  const prevValueRef = useRef("");
 
   const { selectedYear } = useYear()
 
@@ -32,8 +33,12 @@ export default function AuthorizationConsent() {
     setter(value)
   }
 
-  const isValidDateFormat = (value: string) =>
-    /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/.test(value)
+  const isValidDateFormat = (value: string) => {
+    const dateRegex = /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d{4}$/;
+    return dateRegex.test(value);
+  };
+
+
 
 
   const handleAccept = async () => {
@@ -45,22 +50,22 @@ export default function AuthorizationConsent() {
       return
     }
 
-    if (!isValidDateFormat(date1)) {
-      toast.error("Please enter valid date (DD/MM/YYYY).")
-      setLoading(false)
-      return
-    }
+    // if (jointTaxpayerName || jointTaxpayerSignature || date2) {
+    //   if (
+    //     !jointTaxpayerName.trim() ||
+    //     !jointTaxpayerSignature.trim() ||
+    //     !isValidDateFormat(date2)
+    //   ) {
+    //     toast.error("Please complete joint taxpayer fields.")
+    //     setLoading(false)
+    //     return
+    //   }
+    // }
 
-    if (jointTaxpayerName || jointTaxpayerSignature || date2) {
-      if (
-        !jointTaxpayerName.trim() ||
-        !jointTaxpayerSignature.trim() ||
-        !isValidDateFormat(date2)
-      ) {
-        toast.error("Please complete joint taxpayer fields.")
-        setLoading(false)
-        return
-      }
+    if (!isValidDateFormat(date)) {
+      toast.error("Please enter a valid date (MM/DD/YYYY).");
+      setLoading(false);
+      return;
     }
 
     try {
@@ -80,6 +85,28 @@ export default function AuthorizationConsent() {
         .single()
 
       if (customerError || !customer) throw customerError
+
+      const { data: existingConsent, error: checkError } = await supabase
+        .from("consents")
+        .select("consentId")
+        .eq("customerId", customer.customerId)
+        .eq("filing_year", Number(selectedYear))
+        .is("deletedAt", null)
+        .limit(1)
+
+      if (checkError) {
+        toast.error("Unable to verify existing consent.")
+        setLoading(false)
+        return
+      }
+
+      if (existingConsent) {
+        toast.error(`Selected year (${selectedYear}) consent already submitted.`)
+        setLoading(false)
+        router.push("/taxfiling?tab=preparationguide")
+        return
+      }
+
       const now = new Date().toISOString()
 
       const { error: consentError } = await supabase
@@ -90,13 +117,13 @@ export default function AuthorizationConsent() {
           taxpayer_name: taxPayerName,
           taxpayer_signature: taxPayerSignature,
           taxpayer_signed_at: new Date(
-            date1.split("/").reverse().join("-")
+            `${date.split("/")[2]}-${date.split("/")[0]}-${date.split("/")[1]}`
           ),
-          joint_taxpayer_name: jointTaxpayerName || null,
-          joint_taxpayer_signature: jointTaxpayerSignature || null,
-          joint_taxpayer_signed_at: date2
-            ? new Date(date2.split("/").reverse().join("-"))
-            : null,
+          // joint_taxpayer_name: jointTaxpayerName || null,
+          // joint_taxpayer_signature: jointTaxpayerSignature || null,
+          // joint_taxpayer_signed_at: date2
+          //   ? new Date(date2.split("/").reverse().join("-"))
+          //   : null,
           createdAt: now,
           updatedAt: now,
         })
@@ -128,21 +155,61 @@ export default function AuthorizationConsent() {
 
       const { data: customer } = await supabase
         .from("vertixcustomers")
-        .select("first_name, last_name")
+        .select("firstname, lastname")
         .eq("auth_id", auth.user.id)
         .single()
 
       if (customer) {
-        const fullName = `${customer.first_name ?? ""} ${customer.last_name ?? ""}`.trim()
+        const fullName = `${customer.firstname ?? ""} ${customer.lastname ?? ""}`.trim()
 
         setTaxpayerName(fullName)
+        setTaxPayerSignature(fullName)
       }
-      setDate1(getTodayDateMMDDYYYY())
+      setDate(getTodayDateMMDDYYYY())
     }
     preloadUserData()
   }, [])
 
+  const handleDateChange =
+    (setter: (val: string) => void) =>
+      (e: React.ChangeEvent<HTMLInputElement>) => {
+        const raw = e.target.value;
+        const prev = prevValueRef.current;
 
+        const isDeleting = raw.length < prev.length;
+
+        if (isDeleting) {
+          prevValueRef.current = raw;
+          setter(raw);
+          return;
+        }
+
+        let input = raw.replace(/\D/g, "");
+        if (input.length > 8) input = input.slice(0, 8);
+
+        let mm = input.slice(0, 2);
+        let dd = input.slice(2, 4);
+        let yyyy = input.slice(4, 8);
+
+        if (mm.length === 2) {
+          let m = parseInt(mm, 10);
+          mm = Math.min(Math.max(m, 1), 12).toString().padStart(2, "0");
+        }
+
+        if (dd.length === 2) {
+          let d = parseInt(dd, 10);
+          dd = Math.min(Math.max(d, 1), 31).toString().padStart(2, "0");
+        }
+
+        let formatted = mm;
+        if (mm.length === 2) formatted += "/";
+        if (dd) formatted += dd;
+        if (dd.length === 2) formatted += "/";
+        if (yyyy) formatted += yyyy;
+
+        prevValueRef.current = formatted;
+        setter(formatted);
+      };
   return (
     <>
       <div className="bg-white pb-7">
@@ -206,16 +273,24 @@ export default function AuthorizationConsent() {
               <p className="text-start text-xs mt-2 text-[#616161] ml-3">
                 Date :{" "}
               </p>
-              <input
+              {/* <input
                 type="text"
                 value={date1}
                 onChange={(e) =>
                   handleDateInput(e.target.value, setDate1)
                 }
                 className="text-[#1D2B48] w-[19%] text-xs border border-b-1 border-l-0 border-r-0 border-t-0 focus:outline-none ml-2"
+              /> */}
+              <input
+                type="text"
+                value={date}
+                placeholder="MM/DD/YYYY"
+                className="text-[#1D2B48] w-[19%] text-xs border border-b-1 border-l-0 border-r-0 border-t-0 focus:outline-none ml-2"
+                maxLength={10}
+                onChange={handleDateChange(setDate)}
               />
             </div>
-            <div className="flex mt-3">
+            {/* <div className="flex mt-3">
               <p className="text-start text-xs mt-2 text-[#616161]">
                 Name of Joint taxpayer :{" "}
               </p>
@@ -251,7 +326,7 @@ export default function AuthorizationConsent() {
                 }
                 className="text-[#1D2B48] w-[19%] text-xs border border-b-1 border-l-0 border-r-0 border-t-0 focus:outline-none ml-2"
               />
-            </div>
+            </div> */}
             <p className="text-start text-xs mt-5 text-[#616161]">
               If you believe your tax return information has been disclosed or
               used improperty in a manner unauthorized by law or without your

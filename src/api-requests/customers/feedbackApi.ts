@@ -3,7 +3,9 @@ import { origin } from "../config";
 
 export const postFeedback = async (data: any) => {
     try {
-        const token = localStorage.getItem("token");
+        const token = typeof window !== "undefined" ? localStorage.getItem("sb-wieinzdarxemefrzitog-auth-token") ??
+            localStorage.getItem("token")
+            : "";
         if (!token) {
             console.log("No token available here");
             return;
@@ -14,7 +16,6 @@ export const postFeedback = async (data: any) => {
                 Authorization: `Bearer ${token}`,
             },
         });
-
         return res.data;
     } catch (error) {
         console.error("Failed to post feedback");
