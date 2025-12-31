@@ -153,6 +153,7 @@ export function useHandleMagicLinkAuth() {
         localStorage.removeItem("temporary_access_flag")
         localStorage.removeItem("temporary_access_expiry")
         localStorage.removeItem("token")
+        localStorage.removeItem("sb-wieinzdarxemefrzitog-auth-token")
       }
 
       // 3️⃣ Normal customer session restore only if not temp

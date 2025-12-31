@@ -105,6 +105,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
 
       localStorage.removeItem("token")
+      localStorage.removeItem("sb-wieinzdarxemefrzitog-auth-token")
       localStorage.removeItem("customerId")
       localStorage.removeItem("temporary_access_flag")
       localStorage.removeItem("temporary_access_expiry")

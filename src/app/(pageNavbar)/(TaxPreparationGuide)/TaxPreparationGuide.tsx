@@ -10,6 +10,8 @@ export default function TaxPreparationGuide() {
 
     const handlebutton = () => {
         router.push('/taxdashboard')
+        const currentActiveTab = localStorage.getItem("activeTab");
+        localStorage.setItem("activeTab", currentActiveTab || "About You");
     }
 
     return (
