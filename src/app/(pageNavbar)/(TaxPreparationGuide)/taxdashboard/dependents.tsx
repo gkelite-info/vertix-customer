@@ -26,6 +26,7 @@ interface Dependent {
   depOneSSN: string;
   date: string;
   isUSCitizen: boolean;
+  notes: string;
   idType: "SSN" | "ITIN" | "NEED TO APPLY";
   hasChildcare: boolean;
 }
@@ -35,6 +36,7 @@ type Buttontype = "Save" | "Next"
 export default function Dependents({ setActiveTab }: DependentsProps) {
 
   const [loading, setLoading] = useState(false);
+  const [notes, setNotes] = useState("");
 
   const [dependents, setDependents] = useState<Dependent[]>([
     {
@@ -46,6 +48,7 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
       depOneSSN: "",
       date: "",
       isUSCitizen: false,
+      notes: "",
       idType: "SSN",
       hasChildcare: false,
     },
@@ -164,6 +167,7 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
         depOneSSN: "",
         date: "",
         isUSCitizen: false,
+        notes: "",
         idType: "SSN",
         hasChildcare: false,
       },
@@ -207,8 +211,11 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
 
     try {
       setLoading(true);
-      await upsertDependents(dependents);
+      await upsertDependents(
+        dependents.map((d) => ({ ...d, notes }))
+      );
       toast.success("Dependents saved successfully!");
+      setNotes("");
       if (button === "Next") {
         setActiveTab("Residency Details");
       }
@@ -254,7 +261,7 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
           <div className="flex flex-col gap-4">
             <div className="flex justify-center items-center">
               <label className="text-sm text-[#1D2B48] font-medium w-1/2">
-                First Name <span className="text-red-500">*</span>
+                First Name
               </label>
               <input
                 type="text"
@@ -276,7 +283,7 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
             </div>
             <div className="flex justify-center items-center">
               <label className="text-sm text-[#1D2B48] font-medium w-1/2">
-                Last Name <span className="text-red-500">*</span>
+                Last Name
               </label>
               <input
                 type="text"
@@ -288,7 +295,7 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
             </div>
             <div className="flex justify-center items-center">
               <label className="text-sm text-[#1D2B48] font-medium w-1/2">
-                Date of Birth <span className="text-red-500">*</span>
+                Date of Birth
               </label>
               <input
                 type="text"
@@ -299,7 +306,7 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
               />
             </div>
             <div className="flex justify-center items-center">
-              <label className="text-sm text-[#1D2B48] font-medium w-1/2">Months Stayed in US in {selectedYear} <span className="text-red-500">*</span></label>
+              <label className="text-sm text-[#1D2B48] font-medium w-1/2">Months Stayed in US in {selectedYear}</label>
               <input
                 type="text"
                 placeholder="Enter months"
@@ -321,7 +328,7 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
             </div>
             <div className="flex justify-center items-center">
               <label className="text-sm text-[#1D2B48] font-medium w-1/2">
-                Does your dependent have <span className="text-red-500">*</span>
+                Does your dependent have
               </label>
               <div className="flex gap-2 mt-2 w-1/2">
                 <ThreeOptionToggle
@@ -336,7 +343,7 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
               <label className="text-sm text-[#1D2B48] font-medium w-1/2">SSN / ITIN Number</label>
               <input
                 type="text"
-                placeholder="XXX-XXX-XXXX"
+                placeholder="XXX-XX-XXXX"
                 className="w-1/2 mt-1 border text-[#616161] border-gray-300 rounded-md px-3 py-2 text-sm outline-0"
                 value={dep.depOneSSN}
                 onChange={(e) => handleInputChange(e.target.value, index, "depOneSSN", /[^0-9-]/g, 11)}
@@ -356,7 +363,7 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
             </div>
 
             <div className="flex justify-center items-center">
-              <label className="text-sm text-[#1D2B48] font-medium w-1/2">First Date of Entry in US <span className="text-red-500">*</span></label>
+              <label className="text-sm text-[#1D2B48] font-medium w-1/2">First Date of Entry in US</label>
               <input
                 type="text"
                 placeholder="MM/DD/YYYY"
@@ -378,9 +385,12 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
         <label className="text-sm text-[#1D2B48] font-medium">Notes</label>
         <textarea
           rows={4}
+          value={notes}
+          onChange={(e) => setNotes(e.target.value)}
           className="w-full text-[#616161] mt-1 border border-gray-300 rounded-md px-3 py-2 text-sm outline-0"
         />
       </div>
+
       <div className="flex justify-center gap-3 mt-6">
         <button
           onClick={() => setActiveTab("About You")}

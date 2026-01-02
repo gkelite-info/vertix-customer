@@ -25,15 +25,54 @@ export default function ReferAFriend() {
 
   const { filingYearId } = useYear();
 
-  const handlePhoneCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = e.target.value;
-    if (/^[+0-9]*$/.test(val)) setPhoneCode(val);
+  const handlePhoneCodeChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    let val = e.target.value;
+    val = val.replace(/[^+0-9]/g, "");
+    if (val.startsWith("0")) return;
+    if (!val.startsWith("+") && /^[1-9]/.test(val)) {
+      val = "+" + val;
+    }
+
+    setPhoneCode(val);
   };
 
-  const handleAlternateCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = e.target.value;
-    if (/^[+0-9]*$/.test(val)) setAlternateCode(val);
+  const handleAlternateCodeChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    let val = e.target.value;
+    val = val.replace(/[^+0-9]/g, "");
+    if (val.startsWith("0")) return;
+    if (!val.startsWith("+") && /^[1-9]/.test(val)) {
+      val = "+" + val;
+    }
+
+    setAlternateCode(val);
   };
+
+
+  const handleTextOnly = (setter: (v: string) => void) =>
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value;
+      const filtered = value.replace(/[^a-zA-Z\s]/g, "");
+      const capitalized = filtered.replace(/\b\w/g, (char) =>
+        char.toUpperCase()
+      );
+      setter(capitalized);
+    };
+
+  const handlePhoneInput =
+    (setter: (v: string) => void, maxLength = 10) =>
+      (e: React.ChangeEvent<HTMLInputElement>) => {
+        let value = e.target.value.replace(/\D/g, "");
+        if (value.startsWith("0")) return;
+        if (value.length > maxLength) {
+          value = value.slice(0, maxLength);
+        }
+        setter(value);
+      };
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -130,7 +169,6 @@ export default function ReferAFriend() {
   return (
     <div className="bg-white lg:h-[100vh]">
       <YearSelect />
-
       <div className="flex flex-col justify-start items-center lg:h-[80%] lg:pt-5 overflow-y-auto">
         <div className="flex w-[90%] h-[10%] justify-center gap-5">
           <button
@@ -165,10 +203,10 @@ export default function ReferAFriend() {
                 </label>
                 <input
                   type="text"
-                  className="w-full border border-gray-300 rounded text-[#1D2B48] px-3 py-2 focus:outline-none focus:border-blue-500"
+                  className="w-full border border-gray-300 rounded text-[#1D2B48] px-3 py-2 focus:outline-none"
                   placeholder="Enter firstname"
                   value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
+                  onChange={handleTextOnly(setFirstName)}
                   required
                 />
               </div>
@@ -179,10 +217,10 @@ export default function ReferAFriend() {
                 </label>
                 <input
                   type="text"
-                  className="w-full border border-gray-300 rounded text-[#1D2B48] px-3 py-2 focus:outline-none focus:border-blue-500"
+                  className="w-full border border-gray-300 rounded text-[#1D2B48] px-3 py-2 focus:outline-none"
                   placeholder="Enter lastname"
                   value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
+                  onChange={handleTextOnly(setLastName)}
                   required
                 />
               </div>
@@ -193,7 +231,7 @@ export default function ReferAFriend() {
                 </label>
                 <input
                   type="email"
-                  className="w-full border border-gray-300 rounded text-[#1D2B48] px-3 py-2 focus:outline-none focus:border-blue-500"
+                  className="w-full border border-gray-300 rounded text-[#1D2B48] px-3 py-2 focus:outline-none"
                   placeholder="Enter email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -210,17 +248,18 @@ export default function ReferAFriend() {
                   placeholder="+1"
                   value={phoneCode}
                   onChange={handlePhoneCodeChange}
-                  className="border border-gray-300 rounded text-[#1D2B48] px-2 py-2 w-[20%] focus:outline-none focus:border-blue-500"
+                  className="border border-gray-300 rounded text-[#1D2B48] px-2 py-2 w-[20%] focus:outline-none"
                   maxLength={4}
                   required
                 />
                 <input
                   type="number"
-                  className="w-[74.5%] border border-gray-300 rounded text-[#1D2B48] px-3 py-2 focus:outline-none focus:border-blue-500"
+                  className="w-[74.5%] border border-gray-300 rounded text-[#1D2B48] px-3 py-2 focus:outline-none"
                   placeholder="Enter phone"
                   value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
+                  onChange={handlePhoneInput(setPhone)}
                   required
+                  maxLength={10}
                 />
               </div>
 
@@ -233,15 +272,15 @@ export default function ReferAFriend() {
                   placeholder="+1"
                   value={alternateCode}
                   onChange={handleAlternateCodeChange}
-                  className="border border-gray-300 rounded text-[#1D2B48] px-2 py-2 w-[20%] focus:outline-none focus:border-blue-500"
+                  className="border border-gray-300 rounded text-[#1D2B48] px-2 py-2 w-[20%] focus:outline-none"
                   maxLength={4}
                 />
                 <input
                   type="number"
-                  className="w-[74.5%] border border-gray-300 rounded text-[#1D2B48] px-3 py-2 focus:outline-none focus:border-blue-500"
+                  className="w-[74.5%] border border-gray-300 rounded text-[#1D2B48] px-3 py-2 focus:outline-none"
                   placeholder="Alternate number"
                   value={alternatePhone}
-                  onChange={(e) => setAlternatePhone(e.target.value)}
+                  onChange={handlePhoneInput(setAlternatePhone)}
                 />
               </div>
 

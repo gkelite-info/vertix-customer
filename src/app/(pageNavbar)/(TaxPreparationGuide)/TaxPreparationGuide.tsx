@@ -9,7 +9,7 @@ export default function TaxPreparationGuide() {
     const [showMessage, setShowMessage] = useState(false);
 
     const handlebutton = () => {
-        router.push('/taxdashboard')
+        router.push('/taxdashboard');
         const currentActiveTab = localStorage.getItem("activeTab");
         localStorage.setItem("activeTab", currentActiveTab || "About You");
     }
