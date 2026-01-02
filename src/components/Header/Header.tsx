@@ -142,20 +142,22 @@ function Header() {
                     </li>
 
                     <li className="relative group/submenu">
-                      <div className="flex items-center justify-between hover:bg-gray-100 px-4 py-2">
-                        <span className="lg:text-sm">Expert Tax Advice</span>
-                        <IoMdArrowDropright className="text-black text-lg" />
+                      <div
+                        onClick={() => router.push("/amendement_tax_returns")}
+                        className="flex items-center justify-between hover:bg-gray-100 px-4 py-2 cursor-pointer"
+                      >
+                        <span className="lg:text-sm">Amedement of Tax Returns</span>
+                        {/* <IoMdArrowDropright className="text-black text-lg" /> */}
                       </div>
-
                       <div className="absolute top-0 left-full hidden group-hover/submenu:block bg-white shadow-md rounded w-50 z-50">
-                        <ul className="flex flex-col text-black">
-                          <li><Link href="/incorporation_business" className="block px-4 py-2 text-sm hover:bg-gray-100">Incorporation Business</Link></li>
-                          <li><Link href="/amendement_tax_returns" className="block px-4 py-2 text-sm hover:bg-gray-100">Amendement of Tax Returns</Link></li>
-                        </ul>
+                        {/* <ul className="flex flex-col text-black"> */}
+                          {/* <li><Link href="/incorporation_business" className="block px-4 py-2 text-sm hover:bg-gray-100">Incorporation Business</Link></li> */}
+                          {/* <li><Link href="/amendement_tax_returns" className="block px-4 py-2 text-sm hover:bg-gray-100">Amendement of Tax Returns</Link></li> */}
+                        {/* </ul> */}
                       </div>
                     </li>
 
-                    <li><Link href="/our_accuracy_promise" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Our Accuracy Promise</Link></li>
+                    <li><Link href="/our_accuracy_promise" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Accuracy & Support</Link></li>
                     <li><Link href="/data_protection_privacy" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Data Protection & Privacy</Link></li>
                     <li><Link href="/smart_tax_strategy" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Smart Tax Strategy</Link></li>
 
@@ -175,10 +177,10 @@ function Header() {
                     </li>
 
                     <li><Link href="/business_tax_services" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Business Tax Services</Link></li>
-                    <li><Link href="/expats_overseas_filers" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Expats & Overseas Filers</Link></li>
+                    {/* <li><Link href="/expats_overseas_filers" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Expats & Overseas Filers</Link></li> */}
                     <li><Link href="/non_citizen_tax_guidance" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Non-Citizen Tax Guidance</Link></li>
                     <li><Link href="/itin_application_help" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">ITIN Application Help</Link></li>
-                    <li><Link href="/foreign_account_reporting" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Foreign Account Reporting (FBAR)</Link></li>
+                    <li><Link href="/foreign_account_reporting" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">FBAR & FATCA</Link></li>
                   </ul>
                 </div>
               </div>
@@ -195,6 +197,7 @@ function Header() {
 
                 <div className="absolute top-full left-0 hidden group-hover:block bg-white shadow-md rounded mt-0 w-55 z-50">
                   <ul className="flex flex-col text-black">
+                    <li><Link href="/hsa_ira" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">HSA & IRA</Link></li>
                     <li><Link href="/tax_treaties" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Tax Treaties</Link></li>
                     <li><Link href="/elections" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Elections</Link></li>
                     <li><Link href="/healthcare" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Health Care</Link></li>

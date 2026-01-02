@@ -331,15 +331,23 @@ export default function Page() {
                         text-center">
 
               <h3 className="text-white text-xl sm:text-2xl md:text-3xl lg:text-lg">
-                WHO WE HELP
+                People We Serve
               </h3>
+              <div className="flex flex-col items-center">
+                <p className="text-white text-sm sm:text-base md:text-lg lg:text-sm leading-relaxed max-w-3xl">
+                  At Vertix Tax Solutions, we prepare comprehensive U.S. individual tax returns (Form 1040)
+                  <br className="hidden sm:inline" />
+                  employment income, rental income, or investment gains, our team ensures accurate and optimized filing.
+                  <br className="hidden sm:inline" />
+                </p>
 
-              <p className="text-white text-sm sm:text-base md:text-lg lg:text-sm leading-relaxed max-w-3xl">
-                We prepare personal tax returns for people from all walks of life. The base forms are Forms <br className="hidden sm:inline" />
-                1040 with all types of income, deductions and credits. This includes any supporting tax and <br className="hidden sm:inline" />
-                reporting forms if you have dependents, itemized deductions, tax benefits, investments, <br className="hidden sm:inline" />
-                accounts or property outside the United States.
-              </p>
+                <button
+                 onClick={() => router.push("/individual")}
+                  className="mt-2 text-yellow-300 underline hover:text-yellow-400 text-sm sm:text-base cursor-pointer transition"
+                >
+                  Read More →
+                </button>
+              </div>
             </div>
           </div>
         </div>
