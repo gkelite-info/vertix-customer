@@ -28,7 +28,7 @@ function Page() {
               K-1.
             </p>
 
-            <h1 className="text-[#1C2A46] font-semibold mt-0 lg:mt-0">
+            <h1 className="text-[#1C2A46] font-semibold mt-0 lg:mt-4">
               Simplifying S Corporation Tax Benefits
             </h1>
             <p className="text-[#1C2A46] text-sm lg:mt-3">

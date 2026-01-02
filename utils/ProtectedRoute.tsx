@@ -13,14 +13,13 @@ export default function ProtectedRoute({
   const [isAllowed, setIsAllowed] = useState<boolean | null>(null);
 
   const checkAuth = () => {
-<<<<<<< Updated upstream
-    const token = typeof window !== "undefined" ? localStorage.getItem("sb-wieinzdarxemefrzitog-auth-token") ??
-      localStorage.getItem("token")
-      : "";
-=======
-    const token = localStorage.getItem("token");
+    const token =
+      typeof window !== "undefined"
+        ? localStorage.getItem("sb-wieinzdarxemefrzitog-auth-token") ??
+          localStorage.getItem("token")
+        : "";
+
     const normalizedPath = (pathname || "/").replace(/\/+$/g, "") || "/";
->>>>>>> Stashed changes
     const publicRoutes = [
       "/",
       "/login",
@@ -44,6 +43,7 @@ export default function ProtectedRoute({
       "/itin_application_help",
       "/foreign_account_reporting",
       "/tax_treaties",
+      "/hsa_ira",
       "/elections",
       "/healthcare",
       "/bankaccount_reporting",

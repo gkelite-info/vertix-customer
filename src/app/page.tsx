@@ -393,21 +393,21 @@ export default function Page() {
               </h3>
               <div className="flex flex-col items-center">
                 <p className="text-white text-sm sm:text-base md:text-lg lg:text-sm leading-relaxed max-w-3xl">
-                  At Vertix Tax Solutions, we prepare comprehensive U.S. individual tax returns (Form 1040)
+                  At Vertix Tax Solutions, we prepare comprehensive U.S.
+                  individual tax returns (Form 1040)
                   <br className="hidden sm:inline" />
-                  employment income, rental income, or investment gains, our team ensures accurate and optimized filing.
+                  employment income, rental income, or investment gains, our
+                  team ensures accurate and optimized filing.
                   <br className="hidden sm:inline" />
                 </p>
 
-<<<<<<< Updated upstream
                 <button
-                 onClick={() => router.push("/individual")}
+                  onClick={() => router.push("/individual")}
                   className="mt-2 text-yellow-300 underline hover:text-yellow-400 text-sm sm:text-base cursor-pointer transition"
                 >
                   Read More →
                 </button>
               </div>
-=======
               <p className="text-white text-sm sm:text-base md:text-lg lg:text-sm leading-relaxed max-w-3xl">
                 We prepare personal tax returns for people from all walks of
                 life. The base forms are Forms
@@ -419,7 +419,6 @@ export default function Page() {
                 benefits, investments, <br className="hidden sm:inline" />
                 accounts or property outside the United States.
               </p>
->>>>>>> Stashed changes
             </div>
           </div>
         </div>

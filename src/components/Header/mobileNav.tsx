@@ -37,6 +37,7 @@ export default function MobileNav({
   const isResearchPath = () => {
     return [
       "/tax_treaties",
+      "/hsa_ira",
       "/foreign_earned_income_exclusion",
       "/elections",
       "/healthcare",
@@ -163,6 +164,7 @@ export default function MobileNav({
             <div className="ml-3 flex flex-col items-start text-white">
               {[
                 ["/tax_treaties", "Tax Treaties"],
+                ["/hsa_ira", "HSA IRA"],
                 ["/elections", "Elections"],
                 ["/healthcare", "Health Care"],
                 ["/bankaccount_reporting", "Bank Account Reporting"],

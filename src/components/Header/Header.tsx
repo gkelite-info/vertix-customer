@@ -51,7 +51,8 @@ function Header() {
     pathname.startsWith("/bankaccount_reporting") ||
     pathname.startsWith("/reit") ||
     pathname.startsWith("/foreign_earned_income_exclusion") ||
-    pathname.startsWith("/unreimbursed_expenses");
+    pathname.startsWith("/unreimbursed_expenses") ||
+    pathname.startsWith("/hsa_ira");
 
   const linkClass = (active: boolean) =>
     `relative text-black font-medium
@@ -64,22 +65,13 @@ function Header() {
 
   const confirmLogout = () => {
     if (isTemporary) {
-<<<<<<< Updated upstream
-      localStorage.removeItem("temporary_access_flag")
-      localStorage.removeItem("temporary_access_expiry")
-      localStorage.removeItem("selectedYear")
-      localStorage.removeItem("token")
-      localStorage.removeItem("sb-wieinzdarxemefrzitog-auth-token")
-      setIsAuthenticated(false)
-      toast.success("Logged out successfully")
-=======
       localStorage.removeItem("temporary_access_flag");
       localStorage.removeItem("temporary_access_expiry");
       localStorage.removeItem("selectedYear");
       localStorage.removeItem("token");
+      localStorage.removeItem("sb-wieinzdarxemefrzitog-auth-token");
       setIsAuthenticated(false);
       toast.success("Logged out successfully");
->>>>>>> Stashed changes
     } else {
       logout();
     }
@@ -190,43 +182,11 @@ function Header() {
                         onClick={() => router.push("/amendement_tax_returns")}
                         className="flex items-center justify-between hover:bg-gray-100 px-4 py-2 cursor-pointer"
                       >
-                        <span className="lg:text-sm">Amedement of Tax Returns</span>
-                        {/* <IoMdArrowDropright className="text-black text-lg" /> */}
+                        <span className="lg:text-sm">
+                          Amedement of Tax Returns
+                        </span>
                       </div>
                       <div className="absolute top-0 left-full hidden group-hover/submenu:block bg-white shadow-md rounded w-50 z-50">
-<<<<<<< Updated upstream
-                        {/* <ul className="flex flex-col text-black"> */}
-                          {/* <li><Link href="/incorporation_business" className="block px-4 py-2 text-sm hover:bg-gray-100">Incorporation Business</Link></li> */}
-                          {/* <li><Link href="/amendement_tax_returns" className="block px-4 py-2 text-sm hover:bg-gray-100">Amendement of Tax Returns</Link></li> */}
-                        {/* </ul> */}
-                      </div>
-                    </li>
-
-                    <li><Link href="/our_accuracy_promise" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Accuracy & Support</Link></li>
-                    <li><Link href="/data_protection_privacy" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Data Protection & Privacy</Link></li>
-                    <li><Link href="/smart_tax_strategy" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Smart Tax Strategy</Link></li>
-
-                    <li className="relative group/submenu">
-                      <div className="flex items-center justify-between hover:bg-gray-100 px-4 py-2">
-                        <span className="lg:text-sm">IRS Issue Resolution</span>
-                        <IoMdArrowDropright className="text-black text-lg" />
-                      </div>
-
-                      <div className="absolute top-0 left-full hidden group-hover/submenu:block bg-white shadow-md rounded w-45 z-50">
-                        <ul className="flex flex-col text-black">
-                          <li><Link href="/irs_statelevy" className="block px-4 py-2 text-sm hover:bg-gray-100">IRS or State Levy</Link></li>
-                          <li><Link href="/tax_problem_solving" className="block px-4 py-2 text-sm hover:bg-gray-100">Tax Problem Solving</Link></li>
-                          <li><Link href="/the_five" className="block px-4 py-2 text-sm hover:bg-gray-100">The Five W’s & H of Liens</Link></li>
-                        </ul>
-                      </div>
-                    </li>
-
-                    <li><Link href="/business_tax_services" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Business Tax Services</Link></li>
-                    {/* <li><Link href="/expats_overseas_filers" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Expats & Overseas Filers</Link></li> */}
-                    <li><Link href="/non_citizen_tax_guidance" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Non-Citizen Tax Guidance</Link></li>
-                    <li><Link href="/itin_application_help" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">ITIN Application Help</Link></li>
-                    <li><Link href="/foreign_account_reporting" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">FBAR & FATCA</Link></li>
-=======
                         <ul className="flex flex-col text-black">
                           <li>
                             <Link
@@ -313,7 +273,6 @@ function Header() {
                         Foreign Account Reporting (FBAR)
                       </Link>
                     </li>
->>>>>>> Stashed changes
                   </ul>
                 </div>
               </div>
@@ -332,15 +291,14 @@ function Header() {
 
                 <div className="absolute top-full left-0 hidden group-hover:block bg-white shadow-md rounded mt-0 w-55 z-50">
                   <ul className="flex flex-col text-black">
-<<<<<<< Updated upstream
-                    <li><Link href="/hsa_ira" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">HSA & IRA</Link></li>
-                    <li><Link href="/tax_treaties" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Tax Treaties</Link></li>
-                    <li><Link href="/elections" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Elections</Link></li>
-                    <li><Link href="/healthcare" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Health Care</Link></li>
-                    <li><Link href="/bankaccount_reporting" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Bank Account Reporting</Link></li>
-                    <li><Link href="/reit" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">REIT</Link></li>
-                    <li><Link href="/unreimbursed_expenses" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Unreimbursed Expenses</Link></li>
-=======
+                    <li>
+                      <Link
+                        href="/hsa_ira"
+                        className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
+                      >
+                        HSA & IRA
+                      </Link>
+                    </li>
                     <li>
                       <Link
                         href="/tax_treaties"
@@ -355,14 +313,6 @@ function Header() {
                         className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
                       >
                         Elections
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        href="/foreign_earned_income_exclusion"
-                        className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
-                      >
-                        Foreign Earned Income Exclusion
                       </Link>
                     </li>
                     <li>
@@ -397,7 +347,15 @@ function Header() {
                         Unreimbursed Expenses
                       </Link>
                     </li>
->>>>>>> Stashed changes
+
+                    <li>
+                      <Link
+                        href="/foreign_earned_income_exclusion"
+                        className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
+                      >
+                        Foreign Earned Income Exclusion
+                      </Link>
+                    </li>
                   </ul>
                 </div>
               </div>
