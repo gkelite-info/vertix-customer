@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 function Page() {
   return (
@@ -6,56 +6,83 @@ function Page() {
       <div className="flex flex-col items-center bg-[#FFFEFE] overflow-y-auto px-3 gap-4 pb-6 lg:px-4 lg:gap-2 lg:pb-10">
         <div className="mt-6 lg:h-[20%] lg:w-[45%] flex flex-col items-center lg:mt-10">
           <h1 className="border border-b-4 border-l-0 border-t-0 border-r-0 text-[#1D2B48] text-xl font-bold w-fit">
-            ITIN Application Help
+            ITIN Application
           </h1>
         </div>
         <div className="w-full mt-6 flex flex-col lg:flex-row lg:w-[90%] lg:mt-10">
           <div className="w-full lg:w-[60%] lg:pt-0 lg:pr-7">
             <h1 className="text-[#1C2A46] font-semibold lg:mt-0 mt-0">
-              How a Person Applies
+              ITIN Services Made Simple
             </h1>
 
             <p className="text-[#1C2A46] text-sm lg:mt-3 mt-1">
-              A person applies for an ITIN using Form W-7. The documentation
-              requirements are essentially the same as before. The submission of
-              the application is a bit different. The applications have to be
-              submitted either in person or through the mail. In-person
-              applications may be submitted to either an employee of the IRS
-              authorized to review and accept applications or a community-based
-              certified acceptance agent approved by the IRS. The procedure for
-              mailed in applications appears, at this time, to be unchanged.
-            </p>
-
-            <p className="text-[#1C2A46] text-sm lg:mt-3">
-              There are going to be customer service issues for those who go to
-              an IRS office in person. There are reduced service levels and
-              reduced staff at nearly all of the IRS Taxpayer Assistance Centers
-              due to budget cuts.
-            </p>
-
-            <p className="text-[#1C2A46] text-sm lg:mt-3">
-              If the person lives outside the United States, in-person
-              applications may be submitted to an authorized employee of the IRS
-              or a designee of the IRS at a diplomatic mission or consular post.
-              The IRS is also authorized to establish procedures to accept
-              overseas applications via mail.
+              Helping non-U.S. citizens and residents comply with U.S. tax laws
+              At <span className="font-bold">Vertix Tax Solutions</span>, we
+              guide clients through every step of obtaining, renewing, and using
+              an ITIN correctly — making the process smooth, secure, and fully
+              compliant with IRS requirements.
             </p>
 
             <h1 className="text-[#1C2A46] font-semibold lg:mt-4">
-            Expiration of an ITIN
-          </h1>
+              1. Applying for an ITIN
+            </h1>
+            <p className="text-[#1C2A46] text-sm lg:mt-3">
+              Applying for an ITIN requires submitting{" "}
+              <span className="font-bold">Form W-7</span> along with supporting
+              documentation. You can submit your application:
+            </p>
+            <ol className="list-disc lg:mt-2 lg:ml-8 ml-4">
+              <li className="text-[#1C2A46] text-sm">
+                <span className="font-bold">In person</span> at an IRS office
+                (TAC) or through a certified acceptance agent
+              </li>
+              <li className="text-[#1C2A46] text-sm">
+                <span className="font-bold">By mail</span> to the IRS
+              </li>
+            </ol>
 
-          <p className="text-[#1C2A46] text-sm lg:mt-3 mt-1">
-            ITINs issued before 2013 will expire, unless they are timely
-            renewed, according to a staggered schedule between 2017 and 2020.
-          </p>
+            <p className="text-[#1C2A46] text-sm lg:mt-3">
+              <span className="font-bold">Why Vertix:</span> We help you prepare
+              and review all documents accurately, guide you through in-person
+              or mail submission, and ensure your application meets all IRS
+              standards — minimizing delays or errors.
+            </p>
 
-          <p className="text-[#1C2A46] text-sm lg:mt-3">
-            If the ITIN was issued before 2008, it is no longer valid as of
-            January 1, 2017. An application for a new ITIN will need to be
-            submitted with the 2016 tax return.
-          </p>
-          
+            <h1 className="text-[#1C2A46] font-semibold lg:mt-4">
+              2. Renewing an ITIN
+            </h1>
+
+            <p className="text-[#1C2A46] text-sm lg:mt-3">
+              ITINs have expiration rules depending on the year of issuance.
+              Using an expired ITIN can result in:
+            </p>
+            <ol className="list-disc lg:mt-2 lg:ml-8 ml-4">
+              <li className="text-[#1C2A46] text-sm">
+                Rejected or delayed tax returns
+              </li>
+              <li className="text-[#1C2A46] text-sm">Adjusted refunds</li>
+              <li className="text-[#1C2A46] text-sm">Possible penalties</li>
+            </ol>
+
+            <p className="text-[#1C2A46] text-sm lg:mt-3">
+              <span className="font-bold">Our Approach:</span> We track
+              expiration timelines, submit renewals on your behalf, and ensure
+              your ITIN remains valid for tax filing — so you never risk delayed
+              refunds or compliance issues.
+            </p>
+
+            <p className="text-[#1C2A46] text-sm lg:mt-3">
+              <span className="font-bold">Important:</span> Certain credits,
+              like the Earned Income Tax Credit, cannot be claimed with an ITIN.
+              Using an expired or invalid ITIN can trigger IRS math error
+              notices.
+            </p>
+
+            <p className="text-[#1C2A46] text-sm lg:mt-3">
+              <span className="font-bold">Why Vertix:</span> We ensure your ITIN
+              is properly applied, renewed, and used to maximize compliance and
+              avoid errors — protecting your refunds and tax standing.
+            </p>
           </div>
 
           <div className="w-full mt-6 flex justify-center lg:mt-0 lg:w-[40%]">
@@ -69,92 +96,10 @@ function Page() {
               "
             />
           </div>
-
-        </div>
-
-        <div className="w-full lg:w-[90%]">
-
-          <p className="text-[#1C2A46] text-sm lg:mt-0">
-            Any tax returns filed with an invalid ITIN will be automatically
-            adjusted by the IRS using its Math Error Notice powers. This will
-            likely cause delays in the processing of returns prior to a refund
-            being issued and the refunds being reduced. The taxpayer has a very
-            short window to disagree with the Math Error Notice and should
-            carefully and timely follow the instructions in the Notice or seek
-            the services of an Enrolled Agent for assistance or representation.
-            You have 30 days from the date of the Notice to disagree.
-          </p>
-
-          <ol className="list-disc lg:mt-2 ml-4 lg:ml-8">
-            <li className="text-[#1C2A46] text-sm">
-              If the ITIN was issued in 2008, it expires on January 1, 2018.
-            </li>
-            <li className="text-[#1C2A46] text-sm">
-              If the ITIN was issued in 2009 or 2010, it expires on January 1,
-              2019.
-            </li>
-            <li className="text-[#1C2A46] text-sm">
-              If the ITIN was issued in 2011 or 2012, it expires on January 1,
-              2020.
-            </li>
-          </ol>
-
-          <p className="text-[#1C2A46] text-sm lg:mt-3">
-            If an ITIN was issued in 2013 or later years, the ITIN will expire
-            if not used on a Federal income tax return for a period of three
-            consecutive taxable years. The expiration date would be December 31
-            of the third consecutive year. (The previous law was that an ITIN
-            would be deactivated only if the ITIN was not used during any tax
-            year for a period of five consecutive years.)
-          </p>
-
-          <p className="text-[#1C2A46] text-sm lg:mt-3">
-            Child Tax Credit and the American Opportunity Credit
-          </p>
-
-          <p className="text-[#1C2A46] text-sm lg:mt-3">
-            Prior to the enactment of the PATH Act, a taxpayer could use an ITIN
-            issued in the current year to claim the child tax credit or the
-            American Opportunity credit on a prior year amended tax return or a
-            late-filed original tax return. That is no longer allowed as of
-            December 18, 2015. A timely filed current year tax return with an
-            ITIN application still allows the child tax credit and the American
-            Opportunity Credit for the 2015 tax period going forward.
-          </p>
-
-          <h1 className="text-[#1C2A46] font-semibold mt-4 lg:mt-8">
-            Earned Income Tax Credit
-          </h1>
-
-          <p className="text-[#1C2A46] text-sm lg:mt-3 mt-1">
-            Taxpayers that have an ITIN for any person on the tax return have
-            never been able to claimed Earned Income Tax Credit (EITC). However,
-            if the person with the ITIN became eligible for a Social Security
-            Number and obtained one, amended returns could be filed to claim the
-            EITC. That is no longer allowed.
-          </p>
-
-          <p className="text-[#1C2A46] text-sm lg:mt-3">
-            Penalties for Improper Claims of Refundable Credits There have
-            always been penalties to the taxpayer who had been convicted of
-            fraud or who had been found to have recklessly or intentionally
-            disregarded the rules for claiming the Earned Income Tax Credit.
-            This has been expanded to include the Child Tax Credit and the
-            American Opportunity Tax Credit. This expansion starts with the 2016
-            tax year.
-          </p>
-
-          <p className="text-[#1C2A46] text-sm lg:mt-3">
-            An accuracy related penalty of 20% of the understatement of income
-            tax due on a tax return will, beginning with 2016 tax returns, apply
-            in cases of erroneous claims for these tax credits. The exception to
-            the penalty for erroneous refunds has been eliminated. Reasonable
-            cause relief is still applicable.
-          </p>
         </div>
       </div>
     </>
-  )
+  );
 }
 
-export default Page
+export default Page;

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 function Page() {
   return (
@@ -13,49 +13,47 @@ function Page() {
         <div className="w-full mt-6 flex flex-col lg:flex-row lg:w-[90%] lg:mt-10">
           <div className="w-full lg:w-[60%] lg:pt-0 lg:pr-7">
             <h1 className="text-[#1C2A46] font-semibold mt-0 lg:mt-0">
-              Sole Proprietors and Single Member LLC’s
+              Helping You Navigate Partnership Taxes
             </h1>
 
             <p className="text-[#1C2A46] text-sm lg:mt-3 mt-1">
-              Are you self-employed and operate your business as a sole
-              proprietorship or a single member LLC? Your income and expenses
-              from this type of operation are reported to the IRS using Schedule
-              C, along with supporting tax forms as needed. The net profit is
-              used to calculate the amount of self-employment tax and income
-              tax. The net profit, self employment tax and income tax are
-              reported on your personal tax return, Form 1040. There is one
-              exception.
+              If you’re starting or part of a partnership in the U.S., it’s
+              crucial to have an experienced tax advisor. Partnerships involve
+              two or more people working together to run a business, sharing
+              profits and losses. The partnership agreement guides this
+              relationship and can be adjusted with everyone’s consent.
+              Partnerships file Form 1065 to report income and expenses, but the
+              business itself doesn’t pay taxes — instead, profits or losses
+              pass through to each partner’s personal tax return via Schedule
+              K-1.
             </p>
 
+            <h1 className="text-[#1C2A46] font-semibold mt-0 lg:mt-4">
+              Simplifying S Corporation Tax Benefits
+            </h1>
             <p className="text-[#1C2A46] text-sm lg:mt-3">
-              A single member LLC has the option to file proper paperwork with
-              the IRS to elect taxation as a corporation, typically one known as
-              an S-corporation. If so, the corporation has to file a tax return
-              separate from your personal tax return. The due date for the
-              corporate tax return is about a month before your personal return
-              is due. It is vital to accurate tax reporting to always have your
-              corporate return completed before your personal return as there is
-              financial data that flows from the corporate return onto your
-              personal return. Your S-corporation does not pay income tax on the
-              corporate return. The corporation’s income, some deductions and
-              some credits are reported on the personal return and the tax, if
-              any is due, is part of the personal tax due.
+              An S Corporation (S Corp) lets eligible businesses avoid double
+              taxation by passing income, losses, and credits directly to
+              shareholders. This special status is available to domestic
+              corporations and requires making a formal election with the IRS.
+              We help you decide if an S Corp is right for your business, assist
+              with setup, and manage filing requirements like Form 1120S and
+              Schedule K-1 for shareholders.
             </p>
 
-          <h1 className="text-[#1C2A46] font-semibold mt-4 lg:mt-4">
-            Multiple Member LLC’s, Partnerships, S-Corps
-          </h1>
-          <p className="text-[#1C2A46] mt-1 text-sm lg:mt-3">
-            The default tax status of this type of LLC is that of a partnership.
-            The LLC members can file proper paperwork with the IRS to elect a
-            different tax status, usually that of an S-corporation.
-          </p>
-          <p className="text-[#1C2A46] text-sm lg:mt-2">
-            The business is required to file it’s tax return first and then
-            issue a tax form, K-1, reporting each partner’s or shareholder’s
-            share of income, deductions and credits that has to be reported on
-            the partner’s personal tax return.
-          </p>
+            <h1 className="text-[#1C2A46] font-semibold mt-4 lg:mt-4">
+              Managing C Corporation Tax Responsibilities
+            </h1>
+            <p className="text-[#1C2A46] mt-1 text-sm lg:mt-3">
+              C Corporations are taxed separately from their owners and pay
+              taxes on their profits. When profits are distributed to
+              shareholders, those payments are treated as dividends for tax
+              purposes. Corporations are formed under state law, with each state
+              setting its own rules and fees. Tax rates for C Corporations range
+              from 15% to 35%. We support C Corps with tax compliance, filing
+              Form 1120, preparing financial statements, and issuing necessary
+              documents like Schedule K-1.
+            </p>
           </div>
 
           <div className="w-full mt-6 flex justify-center lg:mt-0 lg:w-[40%]">
@@ -69,14 +67,12 @@ function Page() {
               "
             />
           </div>
-
         </div>
 
-        <div className="w-full lg:w-[90%]">    
-        </div>
+        <div className="w-full lg:w-[90%]"></div>
       </div>
     </>
-  )
+  );
 }
 
-export default Page
+export default Page;
