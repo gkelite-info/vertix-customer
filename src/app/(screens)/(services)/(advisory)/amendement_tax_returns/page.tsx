@@ -10,7 +10,6 @@ function Page() {
         </div>
 
         <div className="w-full mt-6 flex flex-col lg:flex-row lg:w-[90%] lg:mt-10">
-
           <div className="w-full lg:w-[60%] lg:pt-5 lg:pr-7">
             <p className="text-[#1C2A46] text-sm mt-2 lg:text-sm">
               Even with your best efforts, mistakes can happen. Perhaps a deduction was missed,
