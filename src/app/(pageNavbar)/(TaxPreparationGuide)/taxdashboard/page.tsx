@@ -145,6 +145,7 @@ export default function Page() {
             <AboutYou
               setActiveTab={setActiveTab}
               setHasDependents={setHasDependents}
+              dependent
             />
           )}
 

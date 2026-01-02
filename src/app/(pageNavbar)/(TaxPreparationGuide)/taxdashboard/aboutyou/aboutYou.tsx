@@ -23,7 +23,7 @@ export type Tab =
 type AboutYouProps = {
     setActiveTab: (tab: Tab) => void;
     setHasDependents: (val: boolean) => void;
-    dependent: boolean
+    dependent: boolean;
 };
 
 type Buttontype = "Save" | "Next";
