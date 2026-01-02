@@ -5,13 +5,9 @@ import { useYear } from "@/app/api/context/yearContext";
 import { getFeeSummary } from "@/app/api/SupabaseAPI/customer/feeSummaryAPI";
 import FeeSummaryTotals from "../../../../utils/calculationsTable/feeSummaryTotal";
 import UPIModal from "@/components/modals/upiModal";
-<<<<<<< Updated upstream
-import { useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
-=======
 import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowBendUpLeft } from "@phosphor-icons/react";
->>>>>>> Stashed changes
 
 function PaymentGatewayContent() {
   const router = useRouter();
