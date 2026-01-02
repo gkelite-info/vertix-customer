@@ -3,15 +3,24 @@
 import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export default function ProtectedRoute({ children }: { children: React.ReactNode }) {
+export default function ProtectedRoute({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const router = useRouter();
   const pathname = usePathname();
   const [isAllowed, setIsAllowed] = useState<boolean | null>(null);
 
   const checkAuth = () => {
+<<<<<<< Updated upstream
     const token = typeof window !== "undefined" ? localStorage.getItem("sb-wieinzdarxemefrzitog-auth-token") ??
       localStorage.getItem("token")
       : "";
+=======
+    const token = localStorage.getItem("token");
+    const normalizedPath = (pathname || "/").replace(/\/+$/g, "") || "/";
+>>>>>>> Stashed changes
     const publicRoutes = [
       "/",
       "/login",
@@ -31,6 +40,7 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
       "/business_tax_services",
       "/expats_overseas_filers",
       "/non_citizen_tax_guidance",
+      "/assistants_free",
       "/itin_application_help",
       "/foreign_account_reporting",
       "/tax_treaties",
@@ -42,11 +52,12 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
       "/state_refund",
       "/contact",
       "/taxfiling",
-      "/refer-friend"
+      "/refer-friend",
+      "/foreign_earned_income_exclusion",
     ];
 
     if (!token) {
-      if (!publicRoutes.includes(pathname)) {
+      if (!publicRoutes.includes(normalizedPath)) {
         router.replace("/");
         setIsAllowed(false);
         return;
@@ -55,7 +66,7 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
       return;
     }
 
-    if (pathname === "/login") {
+    if (normalizedPath === "/login") {
       router.replace("/");
       setIsAllowed(false);
       return;
