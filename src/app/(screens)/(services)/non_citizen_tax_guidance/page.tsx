@@ -13,57 +13,105 @@ function Page() {
         <div className="w-full mt-6 flex flex-col lg:flex-row lg:w-[90%] lg:mt-10">
           <div className="w-full lg:w-[60%] lg:pt-0 lg:pr-7">
             <h1 className="text-[#1C2A46] font-semibold lg:mt-0">
-              How Do You Know if You are Nonresident or Resident for Tax Purposes?
+              Are You a Resident or Nonresident for U.S. Taxes?
             </h1>
-
             <p className="text-[#1C2A46] text-sm lg:mt-3 mt-1">
-              The type of tax return filed by noncitizens is determined by a
-              variety of factors:
+              How Residency is Determined
+            </p>
+            <p className="text-[#1C2A46] text-sm lg:mt-3">
+              Your tax residency status depends on several factors:
+            </p>
+            <p className="text-[#1C2A46] text-sm lg:mt-3">
+              1. Substantial Presence Test: The number of days you were physically present in the U.S. over
+              the last three years.
+            </p>
+            <p className="text-[#1C2A46] text-sm lg:mt-3">
+              2. Previous Travel History: Whether you left the U.S. in prior years and returned.
+            </p>
+            <p className="text-[#1C2A46] text-sm lg:mt-3">
+              3. Visa Type: Commonly affects students (F-1), teachers/professors (J), and other work visas.
+            </p>
+            <p className="text-[#1C2A46] text-sm lg:mt-3">
+              4. Tax Treaty Elections: If you waived benefits available for your visa type.
+            </p>
+            <p className="text-[#1C2A46] text-sm lg:mt-3">
+              5. Marital Status: Married at any time during the year and still married on December 31.
+            </p>
+            <p className="text-[#1C2A46] text-sm lg:mt-3">
+              6. Leaving the U.S.: Filing a final tax return or planning to return the following year.
+            </p>
+            <p className="text-[#1C2A46] text-sm lg:mt-3">
+              7. Citizenship & Prior Residency: Tax treaties may depend on your country of prior residence.
+            </p>
+            <p className="text-[#1C2A46] text-sm lg:mt-3">
+              8. Other Factors: Each situation is unique — additional considerations may apply.
+            </p>
+
+            <p className="text-[#1C2A46] font-semibold lg:mt-3">
+              Substantial Presence Test (SPT)
             </p>
 
             <p className="text-[#1C2A46] text-sm lg:mt-3">
-              1. Number of days you were present in the United States over the
-              most recent three year period. This is called the substantial
-              presence test. A formula is used to determine whether your
-              residency status for income tax purposes is that of nonresident,
-              dual status (part-year resident) or a full-year resident.
+              Residency outcomes:
             </p>
 
             <p className="text-[#1C2A46] text-sm lg:mt-3">
-              2. Whether you left the country in a prior year and then returned
-              during the current tax year.
+              • 183+ days: Generally considered a part-year (dual status) resident, if present in the last 31
+              days of the year.
+            </p>
+            <p className="text-[#1C2A46] text-sm lg:mt-3">
+              • Less than 183 days: Default to nonresident.
             </p>
 
             <p className="text-[#1C2A46] text-sm lg:mt-3">
-              3. Your visa type and perhaps the number of years you have been in
-              the United States, usually F and J visa types.
+              Special elections may apply if married on December 31 — even if married on the last day of the
+              year, your filing status could still be “married” for the entire year.
             </p>
 
             <p className="text-[#1C2A46] text-sm lg:mt-3">
-              4. Whether you have waived, either intentionally or
-              unintentionally, tax treaty benefits available for your visa type.
-              This usually applies to students with an F-1 visa.
+              Why Residency Matters
             </p>
 
             <p className="text-[#1C2A46] text-sm lg:mt-3">
-              5. Whether you were married at any time during the tax year and
-              remained married on December 31 of the applicable tax year. This
-              applies even if your spouse is still in your home country and has
-              never been to the United States.
+              Your residency status determines:
             </p>
 
             <p className="text-[#1C2A46] text-sm lg:mt-3">
-            6. Whether you have left the United States and are filing your final
-            U.S. tax return or if you plan to return in the following year.
-          </p>
+              • Which tax forms to use
+            </p>
 
-          <p className="text-[#1C2A46] text-sm lg:mt-3">
-            7. Your country of citizenship or resident status. Sometimes you may
-            be a citizen of one country, but come to the U.S. from a different
-            country where you have been living for a period of time. The tax
-            treaty of the country of your most recent residency may apply
-            instead of the tax treaty of your country of
-          </p>
+            <p className="text-[#1C2A46] text-sm lg:mt-3">
+              • What income and deductions to report
+            </p>
+
+            <p className="text-[#1C2A46] text-sm lg:mt-3">
+              • Eligibility for tax benefits for spouses or dependents
+            </p>
+
+            <p className="text-[#1C2A46] text-sm lg:mt-3">
+              • Protect yourself from audits and high interest charges
+            </p>
+
+            <p className="text-[#1C2A46] text-sm lg:mt-3">
+              • Avoid excessive IRS penalties
+            </p>
+
+            <p className="text-[#1C2A46] text-sm lg:mt-3">
+              • Special elections and opportunities to optimize your tax situation
+            </p>
+
+            <p className="text-[#1C2A46] text-sm lg:mt-3">
+              At Vertix Tax Solutions, we ensure that your residency status is accurately determined, and your
+              return is filed correctly — giving you peace of mind and compliance with U.S. tax laws.
+              </p>
+
+            {/* <p className="text-[#1C2A46] text-sm lg:mt-3"> */}
+            {/* 7. Your country of citizenship or resident status. Sometimes you may */}
+            {/* be a citizen of one country, but come to the U.S. from a different */}
+            {/* country where you have been living for a period of time. The tax */}
+            {/* treaty of the country of your most recent residency may apply */}
+            {/* instead of the tax treaty of your country of */}
+            {/* </p> */}
 
           </div>
 
@@ -78,79 +126,6 @@ function Page() {
               "
             />
           </div>
-        </div>
-
-        <div className="w-full lg:w-[90%]">
-          <p className="text-[#1C2A46] text-sm lg:mt-0">
-            8. There are more factors to be considered depending upon your
-            particular situation. U.S. taxes for noncitizens can be quite
-            complicated. You may have choices that could allow you to take
-            advantage of tax benefits in the U.S., but affect your tax return
-            filing in the country where you previously lived and worked.
-            Substantial Presence Test
-          </p>
-
-          <h1 className="text-[#1C2A46] font-medium mt-4 lg:mt-8">
-            The substantial presence test determines
-          </h1>
-
-          <ol className="list-disc lg:mt-2 ml-4 lg:ml-8">
-            <li className="text-[#1C2A46] text-sm">The forms you use when filing your return</li>
-            <li className="text-[#1C2A46] text-sm">The type and sources of income you must report to the IRS</li>
-            <li className="text-[#1C2A46] text-sm">Whether you can claim tax benefits for a spouse or dependent</li>
-            <li className="text-[#1C2A46] text-sm">Whether you qualify for special elections to claim tax benefits</li>
-          </ol>
-
-          <p className="text-[#1C2A46] text-sm lg:mt-3">
-            The test is a mathematical formula applied to the number of days you
-            were physically present in the United States. Here it is, generally:
-          </p>
-
-          <p className="text-[#1C2A46] text-sm lg:mt-3">
-            All of the days in the current tax year, even if you were in the
-            country on a visitor visa + 1/3 of the days in the immediately
-            preceding year + 1/6 of the days in the year before the immediately
-            preceding year. If the total is 183 days or more, but less than the
-            entire current tax year, you will generally default to being taxed
-            as a dual status taxpayer, what I call part-year resident. That’s
-            provided you were in the U.S. for the last 31 days of the year.
-          </p>
-
-          <p className="text-[#1C2A46] text-sm lg:mt-3">
-            If the total is less than 183 days, your tax status will default to
-            nonresident.
-          </p>
-
-          <p className="text-[#1C2A46] text-sm lg:mt-3">
-            There are special elections that could be considered if you are
-            married on December 31 of the current tax year. For example, if you
-            were married at any time during 2016, and you were still married on
-            December 31, 2016, your marital status for tax purposes is married.
-            You could even get married on December 31 and your tax filing status
-            would still be married for the entire 2016 tax year.
-          </p>
-
-          <p className="text-[#1C2A46] text-sm lg:mt-3">
-            Tax Laws for Nonresidents, Dual Status and Full Year Residents
-          </p>
-
-          <p className="text-[#1C2A46] text-sm lg:mt-3">
-            Just as there are specific forms for each tax filing status
-            (nonresident, dual status or resident) there are specific laws and
-            restrictions that apply for each status. Noncitizens often don’t
-            understand this and inadvertently file their tax returns using the
-            wrong form and the incorrect set of laws. Correcting Inaccurate
-            Returns
-          </p>
-
-          <p className="text-[#1C2A46] text-sm lg:mt-3">
-            Taxpayers who have filed incorrect tax returns should correct them
-            as soon as they learn that the returns are inaccurate. Failure to do
-            so could result in the IRS assessing penalties and interest in
-            addition to more taxes. The penalties can be quite high if you are
-            audited and the understatement of tax on your return exceeds certain
-            thresholds.
-          </p>
         </div>
       </div>
     </>

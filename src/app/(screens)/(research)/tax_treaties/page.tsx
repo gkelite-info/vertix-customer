@@ -13,11 +13,10 @@ export default function Page() {
 
           <div className="w-full lg:w-[60%] lg:pt-5 lg:pr-7">
             <p className="text-[#1C2A46] text-sm mt-3">
-              India-US Tax Treaty Agreement In order to provide tax relief to
-              avoid double taxation, various countries have entered into Double
-              Taxation Avoidance Agreements (Tax Treaty). One of the ways to
-              avoid double taxation is by way of an exemption from tax in the
-              source country where the income is accrued or received.
+              India-US Tax Treaty: Avoid Double Taxation & Maximize Benefits
+              The India-US Tax Treaty helps Indian residents working, studying, or researching in the U.S.
+              avoid double taxation on the same income. This ensures you pay tax only where required
+              and can claim exemptions or deductions under the treaty.
             </p>
 
             <h1 className="text-[#1C2A46] font-medium mt-6 md:mt-4 lg:mt-5">
@@ -25,42 +24,67 @@ export default function Page() {
             </h1>
 
             <p className="text-[#1C2A46] text-sm mt-3">
-              Article 21 of the treaty stipulates that residents of India who
-              are in the United States to study do not need to pay U.S. income
-              tax on any payments received from India (or other country outside
-              the U.S.) for the purposes of maintenance, education or training.
-              Thus, payments received from U.S. sources (such as a scholarship
-              or assistantship from The University of Tennessee) are taxable. As
-              most international students are considered "nonresidents" for tax
-              purposes, they are already exempt from U.S. income tax from income
-              that comes from outside the U.S. Thus, most Indian students will
-              be required to pay income tax on all U.S. income. However,
-              students (not scholars) from India, unlike other non-residents,
-              may choose to claim the standard deduction, instead of itemizing
-              deductions*.
+              Scholarships & Stipends from India: Payments received from India (or any country outside
+              the U.S.) for education, maintenance, or training are generally exempt from U.S. tax under
+              Article 21.<br className="hidden sm:inline" />
+              U.S. Income: Payments received from U.S. sources, like scholarships or assistantships
+              from a university, are taxable.<br className="hidden sm:inline" />
+              Nonresident Status: Most international students are considered nonresidents for U.S. tax
+              purposes, so foreign-source income is usually tax-free.<br className="hidden sm:inline" />
+              Standard Deduction: Unlike other nonresidents, Indian students may claim the standard
+              deduction instead of itemizing, which often results in lower taxes.<br className="hidden sm:inline" />
             </p>
 
-            <h1 className="text-[#1C2A46] font-medium mt-6 lg:mt-8">
-            In addition, F-1 and J-1 students may claim an exemption for each
-            spouse or dependent child who meets the following criteria:
-          </h1>
+            <p className="text-[#1C2A46] text-sm mt-3">
+              Dependent Exemption:
+            </p>
 
-          <p className="text-[#1C2A46] text-sm mt-3">
-            a) is living with the student in the U.S. during the tax year
-          </p>
+            <p className="text-[#1C2A46] text-sm mt-3">
+              F-1 and J-1 students can claim exemptions for spouses or dependent children if they:
+            </p>
 
-          <p className="text-[#1C2A46] text-sm mt-3">
-            b) is not claimed as dependent by another taxpayer
-          </p>
+            <p className="text-[#1C2A46] text-sm mt-3">
+              Live with the student in the U.S. during the tax year<br className="hidden sm:inline" />
+              Are not claimed as dependents by another taxpayer<br className="hidden sm:inline" />
+              Do not have any U.S. gross income<br className="hidden sm:inline" />
+              Are not on F-2 or J-2 visas (except spouses meeting the above criteria)<br className="hidden sm:inline" />
+              Are U.S. citizen children<br className="hidden sm:inline" />
+            </p>
 
-          <p className="text-[#1C2A46] text-sm mt-3">
-            c) does not have any gross income in the U.S.
-          </p>
+            <p className="text-[#1C2A46] font-semibold text-sm mt-3">
+              Dependent Personal Services (Article 16)
+            </p>
 
-          <p className="text-[#1C2A46] text-sm mt-3">
-            d) if not a spouse, does not hold F-2 or J-2 immigration status (a
-            spouse who meets criteria a-c may be claimed as a dependent)
-          </p>
+            <p className="text-[#1C2A46] text-sm mt-3">
+              Provides treaty exemption for income from work performed in the U.S. if both the employee
+              and employer are residents of the other treaty country.<br className="hidden sm:inline" />
+              Residence is defined by the domestic laws of each country — generally meaning the
+              person is liable to pay tax in that country.<br className="hidden sm:inline" />
+              Important: If a foreign employer’s U.S. branch reimburses or charges back the U.S. income,
+              the exemption may not apply.<br className="hidden sm:inline" />
+            </p>
+
+            <p className="text-[#1C2A46] font-semibold text-sm mt-3">
+              Professors, Teachers & Research Scholars (Article 22)
+            </p>
+
+            <p className="text-[#1C2A46] text-sm mt-3">
+              Exempts remuneration from U.S. tax for teaching or research at a recognized educational
+              institution for up to two years.<br className="hidden sm:inline" />
+              Research income qualifies only if undertaken in the public interest, not primarily for private
+              gain.<br className="hidden sm:inline" />
+            </p>
+
+             <p className="text-[#1C2A46] font-semibold text-sm mt-3">
+              Why This Matters:
+             </p>
+              
+              <p className="text-[#1C2A46] text-sm mt-3">
+                Helps you reduce U.S. taxes legally<br className="hidden sm:inline" />
+                Prevents double taxation on your Indian and U.S. income<br className="hidden sm:inline" />
+                Ensures you claim all exemptions and deductions available under the treaty<br className="hidden sm:inline" />
+                Vertix Tax Solutions guides Indian students, professionals, and researchers in the U.S. to maximize treaty benefits and stay fully compliant with IRS rules.
+              </p>
 
           </div>
 
@@ -71,62 +95,6 @@ export default function Page() {
               className="w-full h-fit max-w-[350px] lg:max-w-none lg:h-fit lg:w-[74%] lg:rounded-lg"
             />
           </div>
-        </div>
-
-        <div className="w-full lg:w-[90%] mt-6 lg:mt-0 mb-5 lg:mb-0">
-          <p className="text-[#1C2A46] text-sm mt-2">
-            e) a U.S. citizen child.
-          </p>
-
-          <p className="text-[#1C2A46] text-sm mt-0">
-            * In most cases, claiming the standard deduction will result in
-            lower taxes than itemizing deductions.)
-          </p>
-
-          <h1 className="text-[#1C2A46] font-medium mt-6 lg:mt-8">
-            Dependent Personal Services:
-          </h1>
-
-          <p className="text-[#1C2A46] text-sm mt-3">
-            Article 16, available to aliens which prerequisites to obtaining
-            U.S. income tax treaty exemption for remuneration with respect to
-            “dependent personal services” performed in the United States if both
-            the alien and the payer (employer) are “residents” of the other
-            country. Many income tax treaties include a definition of
-            “residence,” usually by referencing the domestic laws of each
-            country. To be a resident of a country according to that country’s
-            laws, treaties generally provide that a person must be “liable to”
-            or “subject to” tax in that country. However, a few treaties merely
-            require that the person be a resident for purposes of that country’s
-            domestic laws.
-          </p>
-
-          <p className="text-[#1C2A46] text-sm mt-3">
-            An individual who is paid for a temporary assignment in the U.S. by
-            a foreign employer but whose remuneration is charged to the U.S.
-            branch or subsidiary may not qualify for treaty exemption because
-            the remuneration is charged back to or reimbursed by a U.S. entity.
-            Payments received by Professors, Teachers and Research Scholars:
-          </p>
-
-          <p className="text-[#1C2A46] text-sm mt-3">
-            Article 22, An individual who visits a Contracting State for a
-            period not exceeding two years for the purpose of teaching or
-            engaging in research at a university, college or other recognized
-            educational institution in that State, and who was immediately
-            before that visit a resident of the other Contracting State, shall
-            be exempted from tax by the first-mentioned Contracting State on any
-            remuneration for such teaching or research for a period not
-            exceeding two years from the date he first visits that State for
-            such purpose.
-          </p>
-
-          <p className="text-[#1C2A46] text-sm mt-3">
-            This Article shall apply to income from research only if such
-            research is undertaken by the individual in the public interest and
-            not primarily for the benefit of some other private person or
-            persons.
-          </p>
         </div>
       </div>
     </>
