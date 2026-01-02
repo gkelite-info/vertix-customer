@@ -328,7 +328,7 @@ export default function Page() {
 
                   <div className="flex lg:gap-2 items-end bg-red-00 lg:h-[35%] ">
                     <h5 className="font-medium text-[#979797] text-sm lg:w-[100%]">
-                      Already have an account ?{" "}
+                      Already have an account?{" "}
                     </h5>
                     <p
                       className="font-medium text-sm text-black underline cursor-pointer"

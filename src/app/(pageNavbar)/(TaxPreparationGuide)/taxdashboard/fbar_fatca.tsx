@@ -20,6 +20,10 @@ export default function FBARFATCA({ setActiveTab }: FbarProps) {
     const { selectedYear } = useYear();
     const [hasForeignAccount, setHasForeignAccount] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [exceededLimit, setExceededLimit] = useState<
+        "yes" | "no" | "not_sure" | null
+    >(null);
+
 
     const handleToggle = (newValue: boolean) => {
         setHasForeignAccount(newValue);
@@ -34,7 +38,13 @@ export default function FBARFATCA({ setActiveTab }: FbarProps) {
                 throw new Error("Invalid year selected");
             }
 
-            await updateFilingYearWithDetails(yearNumber, hasForeignAccount);
+            if (!exceededLimit) {
+                toast.error("Please select whether you exceeded the limits.");
+                setIsSubmitting(false);
+                return;
+            }
+
+            await updateFilingYearWithDetails(yearNumber, hasForeignAccount, exceededLimit);
 
             toast.success("FBAR/FATCA details successfully saved");
         } catch (error: any) {
@@ -47,8 +57,8 @@ export default function FBARFATCA({ setActiveTab }: FbarProps) {
     return (
         <>
             <div className="bg-red-00 flex flex-col items-center text-center">
-                <h4 className="text-[#1D2B48] font-semibold text-md">FBAR (Foreign Bank Account Reporting) & FATCA Details</h4>
-                <p className="text-[#585E68] font-medium text-xs w-[85%] mt-2">During the year {selectedYear}, did you or your spouse have financial interest or signature authority in financial account (such as bank account, securities, mutual funds, brokerage account) located in foreign country?</p>
+                <h4 className="text-[#1D2B48] font-semibold text-md">FBAR (Foreign Bank Account Reporting)</h4>
+                <p className="text-[#585E68] font-medium text-xs w-[85%] mt-2 text-left">During the year {selectedYear}, did you or your spouse have financial interest or signature authority in financial account (such as bank account, securities, mutual funds, brokerage account) located in foreign country?</p>
                 <div className="bg-blue-00 w-[100%] flex justify-center mt-5 gap-5">
                     <ToggleSwitch
                         value={hasForeignAccount}
@@ -56,6 +66,56 @@ export default function FBARFATCA({ setActiveTab }: FbarProps) {
                         labelRight="Yes"
                         onToggle={handleToggle}
                     />
+                </div>
+                <div className="bg-red-00 w-full lg:mt-5 flex flex-col items-start text-left">
+                    <h4 className="font-semibold text-[#1D2B48]">FATCA Check (FORM 8938)</h4>
+                    <p className="text-black text-sm lg:mt-2">You may need to file FATCA if your <span className="text-[#1D2B48] font-semibold">foreign financial assets</span> exceeded these limits:</p>
+
+                    <h4 className="font-semibold text-[#1D2B48] lg:mt-4">Living in the U.S.</h4>
+                    <ul className="list-disc lg:mt-2 lg:ml-4 space-y-0">
+                        <li className="text-sm text-black">Single / MFS: <span className="text-[#1D2B48] font-semibold">$50,000</span> (year-end) or <span className="text-[#1D2B48] font-semibold">$75,000</span> (anytime)</li>
+                        <li className="text-sm text-black lg:mt-1">MFJ: <span className="text-[#1D2B48] font-semibold">$100,000</span> (year-end) or <span className="text-[#1D2B48] font-semibold">$150,000</span> (anytime)</li>
+                    </ul>
+
+                    <h4 className="font-semibold text-[#1D2B48] lg:mt-4">Living outside the U.S.</h4>
+                    <ul className="list-disc lg:mt-2 lg:ml-4 space-y-0">
+                        <li className="text-sm text-black">Single / MFS: <span className="text-[#1D2B48] font-semibold">$200,000</span> (year-end) or <span className="text-[#1D2B48] font-semibold">$300,000</span> (anytime)</li>
+                        <li className="text-sm text-black lg:mt-1">MFJ: <span className="text-[#1D2B48] font-semibold">$400,000</span> (year-end) or <span className="text-[#1D2B48] font-semibold">$600,000</span> (anytime)</li>
+                    </ul>
+
+                    <h4 className="font-semibold text-[#1D2B48] lg:mt-4">Did you exceed the limits?</h4>
+                    <div className="flex gap-6 lg:mt-3">
+                        <label className="flex items-center gap-2 cursor-pointer">
+                            <input
+                                type="checkbox"
+                                checked={exceededLimit === "yes"}
+                                onChange={() => setExceededLimit("yes")}
+                                className="accent-[#1D2B48]"
+                            />
+                            <span className="text-sm text-black">Yes</span>
+                        </label>
+
+                        <label className="flex items-center gap-2 cursor-pointer">
+                            <input
+                                type="checkbox"
+                                checked={exceededLimit === "no"}
+                                onChange={() => setExceededLimit("no")}
+                                className="accent-[#1D2B48]"
+                            />
+                            <span className="text-sm text-black">No</span>
+                        </label>
+
+                        <label className="flex items-center gap-2 cursor-pointer">
+                            <input
+                                type="checkbox"
+                                checked={exceededLimit === "not_sure"}
+                                onChange={() => setExceededLimit("not_sure")}
+                                className="accent-[#1D2B48]"
+                            />
+                            <span className="text-sm text-black">Not sure</span>
+                        </label>
+                    </div>
+
                 </div>
                 <div className="flex justify-center w-[100%] gap-3 mt-6">
                     <button

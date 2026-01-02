@@ -1,5 +1,6 @@
 'use client'
 import { MinusCircle, PlusCircle } from "phosphor-react";
+import { useRef } from "react";
 
 export default function MigrationCard({
     fromDate,
@@ -24,44 +25,85 @@ export default function MigrationCard({
     onAddMore?: () => void;
     onDelete?: () => void;
 }) {
+    const prevValueRef = useRef("");
 
+    const handleDateChange =
+        (setter: (val: string) => void) =>
+            (e: React.ChangeEvent<HTMLInputElement>) => {
+                const raw = e.target.value;
+                const prev = prevValueRef.current;
 
-    const handleDateChange = (setter: (val: string) => void) =>
-        (e: React.ChangeEvent<HTMLInputElement>) => {
-            let input = e.target.value.replace(/\D/g, "");
+                const isDeleting = raw.length < prev.length;
 
-            if (input.length > 8) input = input.slice(0, 8);
+                if (isDeleting) {
+                    prevValueRef.current = raw;
+                    setter(raw);
+                    return;
+                }
 
-            let mm = input.slice(0, 2);
-            let dd = input.slice(2, 4);
-            let yyyy = input.slice(4, 8);
+                let input = raw.replace(/\D/g, "");
+                if (input.length > 8) input = input.slice(0, 8);
 
-            if (mm.length === 2) {
-                let m = parseInt(mm, 10);
-                if (m < 1) m = 1;
-                if (m > 12) m = 12;
-                mm = m.toString().padStart(2, "0");
-            }
+                let mm = input.slice(0, 2);
+                let dd = input.slice(2, 4);
+                let yyyy = input.slice(4, 8);
 
-            if (dd.length === 2) {
-                let d = parseInt(dd, 10);
-                if (d < 1) d = 1;
-                if (d > 31) d = 31;
-                dd = d.toString().padStart(2, "0");
-            }
+                if (mm.length === 2) {
+                    let m = parseInt(mm, 10);
+                    mm = Math.min(Math.max(m, 1), 12).toString().padStart(2, "0");
+                }
 
-            let formatted = "";
-            if (mm) {
-                formatted = mm.length === 2 ? mm + "/" : mm;
-            }
-            if (dd) {
-                formatted += dd.length === 2 ? dd + "/" : dd;
-            }
-            if (yyyy) {
-                formatted += yyyy;
-            }
-            setter(formatted);
-        };
+                if (dd.length === 2) {
+                    let d = parseInt(dd, 10);
+                    dd = Math.min(Math.max(d, 1), 31).toString().padStart(2, "0");
+                }
+
+                let formatted = mm;
+                if (mm.length === 2) formatted += "/";
+                if (dd) formatted += dd;
+                if (dd.length === 2) formatted += "/";
+                if (yyyy) formatted += yyyy;
+
+                prevValueRef.current = formatted;
+                setter(formatted);
+            };
+
+    // const handleDateChange = (setter: (val: string) => void) =>
+    //     (e: React.ChangeEvent<HTMLInputElement>) => {
+    //         let input = e.target.value.replace(/\D/g, "");
+
+    //         if (input.length > 8) input = input.slice(0, 8);
+
+    //         let mm = input.slice(0, 2);
+    //         let dd = input.slice(2, 4);
+    //         let yyyy = input.slice(4, 8);
+
+    //         if (mm.length === 2) {
+    //             let m = parseInt(mm, 10);
+    //             if (m < 1) m = 1;
+    //             if (m > 12) m = 12;
+    //             mm = m.toString().padStart(2, "0");
+    //         }
+
+    //         if (dd.length === 2) {
+    //             let d = parseInt(dd, 10);
+    //             if (d < 1) d = 1;
+    //             if (d > 31) d = 31;
+    //             dd = d.toString().padStart(2, "0");
+    //         }
+
+    //         let formatted = "";
+    //         if (mm) {
+    //             formatted = mm.length === 2 ? mm + "/" : mm;
+    //         }
+    //         if (dd) {
+    //             formatted += dd.length === 2 ? dd + "/" : dd;
+    //         }
+    //         if (yyyy) {
+    //             formatted += yyyy;
+    //         }
+    //         setter(formatted);
+    //     };
 
     const handleTextInput = (setter: (v: string) => void) =>
         (e: React.ChangeEvent<HTMLInputElement>) => {
