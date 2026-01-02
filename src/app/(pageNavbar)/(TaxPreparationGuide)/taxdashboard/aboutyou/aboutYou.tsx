@@ -23,12 +23,13 @@ export type Tab =
 type AboutYouProps = {
     setActiveTab: (tab: Tab) => void;
     setHasDependents: (val: boolean) => void;
+    dependent: boolean;
 };
 
 type Buttontype = "Save" | "Next";
 
 
-export default function AboutYou({ setActiveTab, setHasDependents }: AboutYouProps): React.ReactElement {
+export default function AboutYou({ setActiveTab, setHasDependents, dependent }: AboutYouProps): React.ReactElement {
     const { selectedYear } = useYear();
     const [loading, setLoading] = useState(false);
 
@@ -516,6 +517,7 @@ export default function AboutYou({ setActiveTab, setHasDependents }: AboutYouPro
                             type="number"
                             value={monthsInUS}
                             onChange={(e) => setMonthsInUS(e.target.value)}
+                            onWheel={(e) => e.currentTarget.blur()}
                             placeholder="Enter months"
                             className="border bg-red-00 rounded-md text-[#616161] border-[#B5B5B5] w-[45%] h-[100%] px-3 text-sm focus:outline-none"
                         />
@@ -721,6 +723,7 @@ export default function AboutYou({ setActiveTab, setHasDependents }: AboutYouPro
                                         type="number"
                                         value={spouseMonthsInUS}
                                         onChange={(e) => setSpouseMonthsInUS(e.target.value)}
+                                        onWheel={(e) => e.currentTarget.blur()}
                                         placeholder="Enter months"
                                         className="border bg-red-00 rounded-md text-[#616161] border-[#B5B5B5] w-[45%] h-[100%] px-3 text-sm focus:outline-none"
                                     />
@@ -744,6 +747,7 @@ export default function AboutYou({ setActiveTab, setHasDependents }: AboutYouPro
                             setZipcode={setZipcode}
                             note={note}
                             setNote={setNote}
+                            dependent={dependent}
                         />
                     </div>
 
@@ -758,7 +762,8 @@ export default function AboutYou({ setActiveTab, setHasDependents }: AboutYouPro
                             onClick={async () => {
                                 const ok = await handleSave("Next");
                                 if (ok) {
-                                    setActiveTab("Dependents");
+                                    const tabName = dependent ? "Dependents" : "Residency Details"
+                                    setActiveTab(tabName);
                                 }
                             }}
                             className="mt-5 w-[15%] bg-[#1D2A46] text-white py-2 text-sm font-medium cursor-pointer rounded">

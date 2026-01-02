@@ -5,10 +5,12 @@ import { useYear } from "@/app/api/context/yearContext";
 import { getFeeSummary } from "@/app/api/SupabaseAPI/customer/feeSummaryAPI";
 import FeeSummaryTotals from "../../../../utils/calculationsTable/feeSummaryTotal";
 import UPIModal from "@/components/modals/upiModal";
-import { useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
+import { useRouter, useSearchParams } from "next/navigation";
+import { ArrowBendUpLeft } from "@phosphor-icons/react";
 
 function PaymentGatewayContent() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const summaryId = searchParams.get("summaryId");
   const { filingYearId } = useYear();
@@ -125,9 +127,17 @@ function PaymentGatewayContent() {
 
   return (
     <div className="bg-white px-4 py-4">
-      <h2 className="text-xl font-semibold mb-4 text-[#1D2B48]">
-        Payment Gateway
-      </h2>
+      <div className="flex justify-start gap-4 bg-red-00">
+        <ArrowBendUpLeft
+          size={24}
+          weight="fill"
+          className="text-[#1D2B48] cursor-pointer"
+          onClick={router.back}
+        />
+        <h2 className="text-xl font-semibold mb-4 text-[#1D2B48]">
+          Payment Gateway
+        </h2>
+      </div>
 
       <div className="bg-red-00 flex">
         <div className="flex flex-col items-center w-[50%] bg-blue-00">
@@ -159,21 +169,22 @@ function PaymentGatewayContent() {
           )}
           {showPayment && (
             <div className="flex items-center justify-center gap-5 bg-red-00 h-[30%] w-[70%] mt-5">
-              <div
-                className="flex flex-col items-center justify-between bg-pink-00 w-[30%] h-[70%]"
-                onClick={() => setIsUpiModalOpen(true)}
-              >
-                <img src="upi.png" alt="upi" className="w-10 h-10 cursor-pointer" />
-                <span className="text-[#1D2B48] font-bold text-xs mt-1">UPI</span>
+              <div className="flex flex-col items-center justify-between bg-yellow-00 w-[30%] h-[70%]" onClick={handleStripe}>
+                <img src="debitcard.png" alt="stripe" className="w-10 h-10 cursor-pointer" />
+                <span className="text-[#1D2B48] font-bold text-xs mt-1">Card</span>
               </div>
               {/* <div className="flex flex-col items-center justify-between bg-green-00 pt-1 w-[30%] h-[70%]">
                 <img src="paypal.png" alt="paypal" className="w-8 h-8 cursor-pointer" />
                 <span className="text-[#1D2B48] font-bold text-xs mt-1">PayPal</span>
               </div> */}
               <p className="text-black font-semibold">OR</p>
-              <div className="flex flex-col items-center justify-between bg-yellow-00 w-[30%] h-[70%]" onClick={handleStripe}>
-                <img src="stripe.png" alt="stripe" className="w-10 h-10 cursor-pointer" />
-                <span className="text-[#1D2B48] font-bold text-xs mt-1">Stripe</span>
+
+              <div
+                className="flex flex-col items-center justify-between bg-pink-00 w-[30%] h-[70%]"
+                onClick={() => setIsUpiModalOpen(true)}
+              >
+                <img src="upi.png" alt="upi" className="w-10 h-10 cursor-pointer" />
+                <span className="text-[#1D2B48] font-bold text-xs mt-1">UPI</span>
               </div>
             </div>
           )}

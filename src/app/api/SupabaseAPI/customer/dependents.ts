@@ -67,6 +67,7 @@ export const upsertDependents = async (
       isUSCitizen: dep.isUSCitizen,
       idType: dep.idType,
       hasChildcare: dep.hasChildcare,
+      notes: dep.notes,
       createdAt: now,
       updatedAt: now,
     }));

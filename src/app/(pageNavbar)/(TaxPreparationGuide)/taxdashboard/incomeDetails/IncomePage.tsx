@@ -104,7 +104,7 @@ export default function SubIncomeDetails({ setActiveTab }: IncomeProps) {
                 <div className="flex flex-col items-start">
                     <div className="flex flex-col">
                         <h3 className="text-[#1D2B48] font-semibold text-md text-start">Income Details</h3>
-                        <p className="text-[#585E68] text-xs mt-1 text-start">Select the income type that applies to you which was earned during {selectedYear}. you should report worldwide income f you are a US citizen, Green Card holder or a resident alien.</p>
+                        <p className="text-[#585E68] text-xs mt-1 text-start">Select the income type that applies to you which was earned during {selectedYear}. you should report worldwide income if you are a US citizen, Green Card holder or a resident alien.</p>
                     </div>
                     <IncomeDetails
                         incomeDetails={incomeDetails}

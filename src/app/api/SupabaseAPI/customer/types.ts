@@ -7,6 +7,7 @@ export interface Dependent {
   depOneSSN: string;
   date: string;
   isUSCitizen: boolean;
+  notes: string;
   idType: "SSN" | "ITIN" | "NEED TO APPLY";
   hasChildcare: boolean;
 }

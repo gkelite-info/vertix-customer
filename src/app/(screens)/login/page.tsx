@@ -221,7 +221,7 @@ export default function Page() {
                 </button>
                 <div className="flex gap-1 items-center justify-center h-8 w-full">
                   <h5 className="font-medium text-[#979797] text-sm">
-                    Don&apos;t have an account ?{" "}
+                    Don&apos;t have an account?{" "}
                   </h5>
                   <p
                     className="font-medium text-sm text-black underline cursor-pointer hover:text-[#1D2B48] hover:border-[#1D2B48] transition duration-150"

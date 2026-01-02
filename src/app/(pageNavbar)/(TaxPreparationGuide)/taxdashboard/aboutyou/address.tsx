@@ -19,7 +19,9 @@ type Props = {
     setNote: (v: string) => void;
 
     setHasDependents?: (val: boolean) => void;
-    setActiveTab?: (tab: string) => void
+    setActiveTab?: (tab: string) => void;
+
+    dependent: boolean;
 }
 
 export default function AddressAboutYou({ street,
@@ -146,7 +148,6 @@ export default function AddressAboutYou({ street,
                         ${dependent ? 'translate-x-6' : 'translate-x-0'}`}
                         ></div>
                     </button>
-
                     <span className="text-sm font-semibold text-[#2F3F5F]">Yes</span>
                 </div>
             </div>

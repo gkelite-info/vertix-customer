@@ -5,6 +5,7 @@ export interface FbarFatcaData {
     customerId: number;
     year: number;
     hasForeignAccount: boolean;
+    exceededLimit: string;
     createdAt?: string;
     updatedAt?: string;
     deletedAt?: string | null;
@@ -26,7 +27,8 @@ export interface FilingYearData {
 
 export const updateFilingYearWithDetails = async (
     year: number,
-    hasForeignAccount: boolean
+    hasForeignAccount: boolean,
+    exceededLimit: string,
 ): Promise<FilingYearData> => {
     try {
         const {
@@ -54,6 +56,7 @@ export const updateFilingYearWithDetails = async (
                     customerId,
                     year,
                     hasForeignAccount,
+                    exceededLimit,
                     updatedAt: now,
                     createdAt: now,
                 }

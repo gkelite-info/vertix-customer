@@ -46,7 +46,6 @@ export default function TaxReturnRefund() {
 
   const { isTemporary, isSessionReady } = useHandleMagicLinkAuth();
 
-  const [showPayNow, setShowPayNow] = useState(false);
   const [showPaymentGateway, setShowPaymentGateway] = useState(false);
   const [loadingFee, setLoadingFee] = useState(true);
   const [feeSummaries, setFeeSummaries] = useState<any[]>([]);
@@ -95,6 +94,26 @@ export default function TaxReturnRefund() {
   }, [user, filingYearId]);
 
 
+  // const handleAcceptClick = (record: any) => {
+  //   setSelectedTaxRecord(record);
+
+  //   const matchedFee = feeSummaries.find(
+  //     (f) => f.filingYearId === record.filingYearId
+  //   );
+
+  //   if (!selectedFeeSummary?.summaryId) {
+  //     toast.error("Fee summary not found!");
+  //     return;
+  //   }
+
+  //   if (!matchedFee) {
+  //     toast.error("No fee summary found for this filing year!");
+  //     return;
+  //   }
+  //   setSelectedFeeSummary(matchedFee);
+  //   router.push(`/payment-gateway?summaryId=${selectedFeeSummary.summaryId}`);
+  // };
+
   const handleAcceptClick = (record: any) => {
     setSelectedTaxRecord(record);
 
@@ -106,9 +125,12 @@ export default function TaxReturnRefund() {
       toast.error("No fee summary found for this filing year!");
       return;
     }
+
     setSelectedFeeSummary(matchedFee);
-    setShowPayNow(true);
+
+    router.push(`/payment-gateway?summaryId=${matchedFee.summaryId}`);
   };
+
 
   const handleRejectClick = (record: any) => {
     setSelectedRecord(record);
@@ -177,24 +199,6 @@ export default function TaxReturnRefund() {
   return (
     <>
       <div className="bg-red-00 p-4 flex flex-col items-center w-full">
-        <div className="w-full flex justify-end mb-2">
-          <AnimatePresence>
-            {showPayNow && !showPaymentGateway && (
-              <motion.button
-                key="paynow"
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.3 }}
-                className="bg-blue-600 cursor-pointer hover:bg-blue-500 text-white py-1.5 px-4 rounded-md text-sm font-medium shadow-md transition-all duration-200"
-                onClick={handleGateway}
-              >
-                Pay Now
-              </motion.button>
-            )}
-          </AnimatePresence>
-        </div>
-
         {!showPaymentGateway && (
           <h2 className="font-semibold text-[#1D2B48] text-xl">
             Tax Return Refund/Due Summary
