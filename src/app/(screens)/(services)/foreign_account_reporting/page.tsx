@@ -13,12 +13,12 @@ function Page() {
         </div>
         <div className="w-full mt-4 flex flex-col lg:flex-row lg:w-[90%] lg:mt-10">
           <div className="w-full lg:w-[60%] lg:pt-5 lg:pr-7">
-            <p className="text-[#1C2A46] font-semibold text-sm lg:mt-3">
+            <p className="text-[#1C2A46] font-semibold text-md lg:mt-3">
               Understanding U.S. Tax Rules for Foreign Income and Reporting
             </p>
 
             <p className="text-[#1C2A46] text-sm lg:mt-3 mt-1">
-              U.S. Taxpayers with Foreign Income: Stay Compliant, Stress-Free
+              U.S. Taxpayers with Foreign Income:  Stay Compliant, Stress-Free
             </p>
 
             <p className="text-[#1C2A46] text-sm lg:mt-3 mt-1">

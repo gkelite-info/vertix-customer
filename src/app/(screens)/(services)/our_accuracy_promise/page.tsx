@@ -30,7 +30,7 @@ function Page() {
               lg:h-[100%] lg:w-[100%] lg:p-5 lg:rounded-2xl lg:shadow-lg">
                 <div className="bg-blue-200 p-2 h-[60px] w-[60px] rounded-full flex justify-center items-center
                 lg:h-[49%] lg:w-[29%]">
-                  <Warning size={30} weight="fill" className="text-[#1D2B48]" />
+                   <CheckCircle size={30} weight="fill" className="text-[#1D2B48]" />
                 </div>
                 <div className="lg:h-[30%] lg:w-full flex justify-center items-center">
                   <h3 className="text-[#1D2B48] font-semibold mt-4">Accuracy</h3>
@@ -47,7 +47,7 @@ function Page() {
               lg:h-[100%] lg:w-[100%] lg:p-5 lg:rounded-2xl lg:shadow-lg">
                 <div className="bg-blue-200 p-2 h-[60px] w-[60px] rounded-full flex justify-center items-center
                 lg:h-[49%] lg:w-[29%]">
-                  <CheckCircle size={30} weight="fill" className="text-[#1D2B48]" />
+                 <Warning size={30} weight="fill" className="text-[#1D2B48]" />
                 </div>
                 <div className="lg:h-[30%] lg:w-full flex justify-center items-center">
                   <h3 className="text-[#1D2B48] font-semibold">Notices</h3>
@@ -124,41 +124,6 @@ function Page() {
             • Prepare a corrected tax return at a discounted price<br className="hidden sm:inline" />
             • Assist in requesting waivers or reductions for late payment penalties where possible<br className="hidden sm:inline" />
           </p>
-          {/* <p className="text-[#1C2A46] text-sm lg:mt-3"> */}
-          {/* We will review our files and, if we made a mistake, we will tell you */}
-          {/* and reimburse you, subject to our reimbursement policies, for */}
-          {/* initially assessed interest and penalty that you have to pay due to */}
-          {/* our mistake. */}
-          {/* </p> */}
-
-          {/* <p className="text-[#1C2A46] text-sm lg:mt-3"> */}
-          {/* Please don’t assume that the IRS or state is correct! Sometimes */}
-          {/* there are computer glitches, misunderstandings or missing */}
-          {/* information that can clear everything up. Get the notice to us */}
-          {/* within 30 days of the date of the notice! */}
-          {/* </p> */}
-
-          {/* <p className="text-[#1C2A46] text-sm lg:mt-3"> */}
-          {/* Our policy is to reimburse clients for interest initially assessed */}
-          {/* by the IRS or a state tax department due to our error. */}
-          {/* </p> */}
-
-          {/* <p className="text-[#1C2A46] text-sm lg:mt-3"> */}
-          {/* We reimburse clients for late payment penalties initially assessed */}
-          {/* by the IRS or state tax department due to our error. Again there are */}
-          {/* time constraints that apply and you must give us the opportunity to */}
-          {/* dispute the penalty or to ask that it be waived if the law allows. */}
-          {/* </p> */}
-
-          {/* <p className="text-[#1C2A46] text-sm lg:mt-3"> */}
-          {/* Please get any notices to us within 45 days of the date of the */}
-          {/* notice. In fact, get all notices to us no matter how much time has */}
-          {/* passed. We may not reimburse you for all the interest or late */}
-          {/* payment penalty, but we will provide review and assistance services */}
-          {/* free of charge. Representation is also provided if the tax problem */}
-          {/* is a result of legitimate preparer error */}
-          {/* </p> */}
-
           <h1
             id="accuracy"
             className="text-[#1C2A46] font-medium lg:mt-8 mt-4 scroll-mt-18 md:scroll-mt-18 lg:scroll-mt-24"

@@ -44,6 +44,11 @@ export default function MobileNav({
       "/bankaccount_reporting",
       "/reit",
       "/unreimbursed_expenses",
+<<<<<<< Updated upstream
+=======
+      "/hsa",
+      "/ira"
+>>>>>>> Stashed changes
     ].includes(pathname);
   };
 
@@ -174,6 +179,8 @@ export default function MobileNav({
                   "Foreign Earned Income Exclusion",
                 ],
                 ["/unreimbursed_expenses", "Unreimbursed Expenses"],
+                ["/hsa", "HSA"],
+                ["/ira", "IRA"]
               ].map(([href, label]) => (
                 <Link
                   key={href}

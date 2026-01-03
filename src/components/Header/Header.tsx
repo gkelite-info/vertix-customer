@@ -50,9 +50,15 @@ function Header() {
     pathname.startsWith("/healthcare") ||
     pathname.startsWith("/bankaccount_reporting") ||
     pathname.startsWith("/reit") ||
+<<<<<<< Updated upstream
     pathname.startsWith("/foreign_earned_income_exclusion") ||
     pathname.startsWith("/unreimbursed_expenses") ||
     pathname.startsWith("/hsa_ira");
+=======
+    pathname.startsWith("/unreimbursed_expenses") ||
+    pathname.startsWith("/hsa") ||
+    pathname.startsWith("/ira")
+>>>>>>> Stashed changes
 
   const linkClass = (active: boolean) =>
     `relative text-black font-medium
@@ -187,6 +193,27 @@ function Header() {
                         </span>
                       </div>
                       <div className="absolute top-0 left-full hidden group-hover/submenu:block bg-white shadow-md rounded w-50 z-50">
+<<<<<<< Updated upstream
+=======
+                        {/* <ul className="flex flex-col text-black"> */}
+                        {/* <li><Link href="/incorporation_business" className="block px-4 py-2 text-sm hover:bg-gray-100">Incorporation Business</Link></li> */}
+                        {/* <li><Link href="/amendement_tax_returns" className="block px-4 py-2 text-sm hover:bg-gray-100">Amendement of Tax Returns</Link></li> */}
+                        {/* </ul> */}
+                      </div>
+                    </li>
+
+                    <li><Link href="/our_accuracy_promise" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Accuracy & Support</Link></li>
+                    <li><Link href="/data_protection_privacy" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Data Protection & Privacy</Link></li>
+                    <li><Link href="/smart_tax_strategy" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Smart Tax Strategy</Link></li>
+
+                    <li className="relative group/submenu">
+                      <div className="flex items-center justify-between hover:bg-gray-100 px-4 py-2">
+                        <span className="lg:text-sm">IRS Issue Resolution</span>
+                        <IoMdArrowDropright className="text-black text-lg" />
+                      </div>
+
+                      <div className="absolute top-0 left-full hidden group-hover/submenu:block bg-white shadow-md rounded w-45 z-50">
+>>>>>>> Stashed changes
                         <ul className="flex flex-col text-black">
                           <li>
                             <Link
@@ -291,6 +318,7 @@ function Header() {
 
                 <div className="absolute top-full left-0 hidden group-hover:block bg-white shadow-md rounded mt-0 w-55 z-50">
                   <ul className="flex flex-col text-black">
+<<<<<<< Updated upstream
                     <li>
                       <Link
                         href="/hsa_ira"
@@ -348,14 +376,64 @@ function Header() {
                       </Link>
                     </li>
 
+=======
+                    <li className="relative group/submenu">
+                      <div className="flex items-center justify-between hover:bg-gray-100 px-4 py-2 cursor-pointer">
+                        <span className="lg:text-sm">HSA & IRA</span>
+                        <IoMdArrowDropright className="text-black text-lg" />
+                      </div>
+
+                      <div className="absolute top-0 left-full hidden group-hover/submenu:block bg-white shadow-md rounded w-40 z-50">
+                        <ul className="flex flex-col text-black">
+                          <li>
+                            <Link
+                              href="/hsa"
+                              className="block px-4 py-2 text-sm hover:bg-gray-100"
+                            >
+                              HSA
+                            </Link>
+                          </li>
+
+                          <li>
+                            <Link
+                              href="/ira"
+                              className="block px-4 py-2 text-sm hover:bg-gray-100"
+                            >
+                             IRA
+                            </Link>
+                          </li>
+                        </ul>
+                      </div>
+                    </li>
+>>>>>>> Stashed changes
                     <li>
                       <Link
                         href="/foreign_earned_income_exclusion"
                         className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
                       >
+<<<<<<< Updated upstream
                         Foreign Earned Income Exclusion
                       </Link>
                     </li>
+=======
+                        US Experts (FEIE)
+                      </Link>
+                    </li>
+                     <li>
+                      <Link
+                        href="/professionals_and_hnis"
+                        className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
+                      >
+                        Professionals and HNIs
+                      </Link>
+                    </li>
+                     <li><Link href="/healthcare" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Health Care</Link></li>
+                    <li><Link href="/tax_treaties" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Tax Treaties</Link></li>
+                    <li><Link href="/elections" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Elections</Link></li>
+                    <li><Link href="/bankaccount_reporting" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Bank Account Reporting</Link></li>
+                    <li><Link href="/reit" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">REIT</Link></li>
+                    <li><Link href="/unreimbursed_expenses" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Unreimbursed Expenses</Link></li>
+>>>>>>> Stashed changes
                   </ul>
                 </div>
               </div>
