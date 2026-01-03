@@ -228,6 +228,17 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
     }
   };
 
+  const formatSSN = (value: string) => {
+    const digits = value.replace(/\D/g, "").slice(0, 9);
+
+    const part1 = digits.slice(0, 3);
+    const part2 = digits.slice(3, 5);
+    const part3 = digits.slice(5, 9);
+
+    if (digits.length > 5) return `${part1}-${part2}-${part3}`;
+    if (digits.length > 3) return `${part1}-${part2}`;
+    return part1;
+  };
 
   return (
     <div className="bg-white p-6 sm:p-8 w-[100%] max-w-3xl mx-auto">
@@ -346,7 +357,16 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
                 placeholder="XXX-XX-XXXX"
                 className="w-1/2 mt-1 border text-[#616161] border-gray-300 rounded-md px-3 py-2 text-sm outline-0"
                 value={dep.depOneSSN}
-                onChange={(e) => handleInputChange(e.target.value, index, "depOneSSN", /[^0-9-]/g, 11)}
+                //onChange={(e) => handleInputChange(e.target.value, index, "depOneSSN", /[^0-9-]/g, 11)}
+                onChange={(e) => {
+                  const formatted = formatSSN(e.target.value);
+                  setDependents((prev) =>
+                    prev.map((dep, i) =>
+                      i === index ? { ...dep, depOneSSN: formatted } : dep
+                    )
+                  );
+                }}
+                inputMode="numeric"
               />
             </div>
 
