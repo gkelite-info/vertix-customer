@@ -51,6 +51,7 @@ function Header() {
     pathname.startsWith("/bankaccount_reporting") ||
     pathname.startsWith("/reit") ||
     pathname.startsWith("/foreign_earned_income_exclusion") ||
+    pathname.startsWith("/professionals_and_hnis") ||
     pathname.startsWith("/unreimbursed_expenses") ||
     pathname.startsWith("/hsa_ira");
 
@@ -176,7 +177,14 @@ function Header() {
                         Assistants (FREE)
                       </Link>
                     </li>
-
+                    <li>
+                      <Link
+                        href="/itin_application_help"
+                        className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
+                      >
+                        ITIN Application Help
+                      </Link>
+                    </li>
                     <li className="relative group/submenu">
                       <div
                         onClick={() => router.push("/amendement_tax_returns")}
@@ -213,7 +221,7 @@ function Header() {
                         href="/our_accuracy_promise"
                         className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
                       >
-                        Our Accuracy Promise
+                        Accuracy & Support
                       </Link>
                     </li>
                     <li>
@@ -241,14 +249,7 @@ function Header() {
                         Business Tax Services
                       </Link>
                     </li>
-                    <li>
-                      <Link
-                        href="/expats_overseas_filers"
-                        className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
-                      >
-                        Expats & Overseas Filers
-                      </Link>
-                    </li>
+
                     <li>
                       <Link
                         href="/non_citizen_tax_guidance"
@@ -257,20 +258,13 @@ function Header() {
                         Non-Citizen Tax Guidance
                       </Link>
                     </li>
-                    <li>
-                      <Link
-                        href="/itin_application_help"
-                        className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
-                      >
-                        ITIN Application
-                      </Link>
-                    </li>
+
                     <li>
                       <Link
                         href="/foreign_account_reporting"
                         className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
                       >
-                        Foreign Account Reporting (FBAR)
+                        FBAR & FATCA
                       </Link>
                     </li>
                   </ul>
@@ -341,6 +335,14 @@ function Header() {
                     </li>
                     <li>
                       <Link
+                        href="/professionals_and_hnis"
+                        className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
+                      >
+                        Professionals and HNIs
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
                         href="/unreimbursed_expenses"
                         className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
                       >
@@ -353,7 +355,7 @@ function Header() {
                         href="/foreign_earned_income_exclusion"
                         className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
                       >
-                        Foreign Earned Income Exclusion
+                        US Experts (FIEI)
                       </Link>
                     </li>
                   </ul>

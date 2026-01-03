@@ -54,6 +54,7 @@ export default function ProtectedRoute({
       "/taxfiling",
       "/refer-friend",
       "/foreign_earned_income_exclusion",
+      "/professionals_and_hnis",
     ];
 
     if (!token) {
