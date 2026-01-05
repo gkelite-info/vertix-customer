@@ -16,6 +16,63 @@ export type ResidencyPayload = {
     filingYearId: number
 };
 
+export const getResidencyDetails = async (filingYearId: number) => {
+    try {
+        const { data: { user }, error: authError } = await supabase.auth.getUser();
+        if (authError || !user) throw new Error("Not authenticated");
+
+        const { data: customer, error: customerError } = await supabase
+            .from("vertixcustomers")
+            .select("customerId")
+            .eq("auth_id", user.id)
+            .single();
+
+        if (customerError || !customer) throw new Error("Customer not found");
+
+        const customerId = customer.customerId;
+
+        // ✅ Fetch residencydetails
+        const { data: residency, error: residencyError } = await supabase
+            .from("residencydetails")
+            .select("*")
+            .eq("customerId", customerId)
+            .eq("filingYearId", filingYearId)
+            .is("deletedAt", null)
+            .single();
+
+        // ✅ No data yet → safe empty state
+        if (residencyError?.code === "PGRST116") {
+            return null;
+        }
+        if (residencyError) throw residencyError;
+
+        // ✅ Fetch migrations
+        const { data: migrations, error: migrationError } = await supabase
+            .from("residencymigrations")
+            .select("*")
+            .eq("residencyId", residency.residencyId)
+            .order("fromDate", { ascending: true });
+
+        if (migrationError) throw migrationError;
+
+        // ✅ Split taxpayer & spouse migrations
+        const taxpayerMigrations = migrations.filter(m => !m.isSpouse);
+        const spouseMigrations = migrations.filter(m => m.isSpouse);
+
+        return {
+            residencyId: residency.residencyId,
+            notes: residency.notes ?? "",
+            spouseResidency: residency.spouseResidency,
+            migrations: taxpayerMigrations,
+            spouseMigrations,
+        };
+
+    } catch (error: any) {
+        console.error("Error fetching residency details:", error.message);
+        throw error;
+    }
+};
+
 
 export const upsertResidencyDetails = async (payload: ResidencyPayload) => {
     try {

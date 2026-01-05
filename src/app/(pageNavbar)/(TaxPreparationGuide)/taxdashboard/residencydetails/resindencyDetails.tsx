@@ -1,8 +1,8 @@
 'use client';
 
 import { useYear } from "@/app/api/context/yearContext";
-import { upsertResidencyDetails } from "@/app/api/SupabaseAPI/customer/residency";
-import { useState } from "react";
+import { getResidencyDetails, upsertResidencyDetails } from "@/app/api/SupabaseAPI/customer/residency";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import MigrationCard from "./migrationCard";
 
@@ -27,6 +27,8 @@ export default function ResidencyDetails({ setActiveTab }: { setActiveTab: (tab:
     const [spouseMigrationList, setSpouseMigrationList] = useState([
         { fromDate: "", toDate: "", state: "", country: "" }
     ]);
+
+    const [isLoading, setIsLoading] = useState<boolean>(false)
 
 
     const updateField = (index: number, field: MigrationField, value: string) => {
@@ -106,6 +108,61 @@ export default function ResidencyDetails({ setActiveTab }: { setActiveTab: (tab:
         }
     };
 
+    const formatDate = (date: string): string => {
+        const d = new Date(date);
+
+        if (isNaN(d.getTime())) {
+            return "";
+        }
+
+        const month = (d.getMonth() + 1).toString().padStart(2, "0");
+        const day = d.getDate().toString().padStart(2, "0");
+        const year = d.getFullYear();
+
+        return `${month}/${day}/${year}`;
+    };
+
+
+    useEffect(() => {
+        if (!filingYearId) return;
+
+        (async () => {
+            try {
+                setIsLoading(true)
+                const data = await getResidencyDetails(filingYearId);
+
+                if (!data) return;
+
+                setMigrationList(
+                    data.migrations.length
+                        ? data.migrations
+                        : [{ fromDate: "", toDate: "", state: "", country: "" }]
+                );
+
+                setSpouseResidency(data.spouseResidency);
+                setSpouseMigrationList(
+                    data.spouseMigrations.length
+                        ? data.spouseMigrations
+                        : [{ fromDate: "", toDate: "", state: "", country: "" }]
+                );
+
+                setNotes(data.notes);
+            } catch (err) {
+                toast.error("Failed to load residency details");
+            } finally {
+                setIsLoading(false)
+            }
+        })();
+    }, [filingYearId]);
+
+    if (isLoading) {
+        return (
+            <div className="flex justify-center items-center text-[#1D2B48] min-h-[70vh]">
+                <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+            </div>
+        );
+    }
+
     return (
         <>
             <div className="bg-red-00">
@@ -118,8 +175,8 @@ export default function ResidencyDetails({ setActiveTab }: { setActiveTab: (tab:
                         {migrationList.map((item, index) => (
                             <MigrationCard
                                 key={index}
-                                fromDate={item.fromDate}
-                                toDate={item.toDate}
+                                fromDate={formatDate(item.fromDate)}
+                                toDate={formatDate(item.toDate)}
                                 state={item.state}
                                 country={item.country}
                                 setFromDate={(v) => updateField(index, "fromDate", v)}
@@ -165,8 +222,8 @@ export default function ResidencyDetails({ setActiveTab }: { setActiveTab: (tab:
                             {spouseMigrationList.map((item, index) => (
                                 <MigrationCard
                                     key={index}
-                                    fromDate={item.fromDate}
-                                    toDate={item.toDate}
+                                    fromDate={formatDate(item.fromDate)}
+                                    toDate={formatDate(item.toDate)}
                                     state={item.state}
                                     country={item.country}
                                     setFromDate={(v) => updateSpouseField(index, "fromDate", v)}
