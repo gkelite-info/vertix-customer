@@ -56,8 +56,30 @@ export default function ReferAFriend() {
       setCustomerID("")
 
       setActiveSection("registeredReferrals");
-    } catch (error: any) {
-      toast.error(error.message || "Failed to submit referral");
+    } catch (err: any) {
+      console.error("Signup error:", err);
+
+      if (err.code === "23505") {
+        if (err.message.includes("vertixcustomers_email_key")) {
+          toast.error("Email already exists. Please use a different email.");
+          return;
+        }
+
+        if (err.message.includes("vertixcustomers_phone_key")) {
+          toast.error("Mobile number already exists. Please use a different number.");
+          return;
+        }
+
+        toast.error("Account already exists with provided details.");
+        return;
+      }
+
+      if (err.message?.toLowerCase().includes("user already registered")) {
+        toast.error("Email already registered. Please login instead.");
+        return;
+      }
+
+      toast.error("Signup failed. Please try again.");
     } finally {
       setLoading(false);
     }

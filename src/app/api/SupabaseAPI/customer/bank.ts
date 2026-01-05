@@ -6,7 +6,7 @@ export interface BankInformationInput {
   holderName: string;
   bankName: string;
   accountNumber: string;
-  routingNumber?: string;
+  routingNumber: string;
   accountType: "checking" | "savings" | "others";
 }
 
@@ -29,7 +29,6 @@ export const getBankInformation = async (filingYearId: number) => {
       .select("*")
       .eq("customerId", customerId)
       .eq("filingYearId", filingYearId)
-      .single();
 
     if (error && error.code !== "PGRST116") throw error;
     return data || null;
@@ -60,14 +59,15 @@ export const upsertBankInformation = async (bankData: BankInformationInput) => {
       holderName: bankData.holderName,
       bankName: bankData.bankName,
       accountNumber: bankData.accountNumber,
-      routingNumber: bankData.routingNumber ?? null,
+      routingNumber: bankData.routingNumber,
       accountType: bankData.accountType,
+      updatedBy: customerId,
       updatedAt: new Date().toISOString(),
     };
 
     const { data, error } = await supabase
       .from("bank_information")
-      .upsert(payload, { onConflict: "customerId,filingYearId" })
+      .upsert(payload, { onConflict: "customerId,filingYearId,belongsTo" })
       .select()
       .single();
 
@@ -79,7 +79,7 @@ export const upsertBankInformation = async (bankData: BankInformationInput) => {
   }
 };
 
-export const deleteBankInformation = async (filingYearId: number) => {
+export const deleteBankInformation = async (filingYearId: number, belongsTo: string) => {
   try {
     const { data: { user }, error: authError } = await supabase.auth.getUser();
     if (authError || !user) throw new Error("Not authenticated");
@@ -97,7 +97,8 @@ export const deleteBankInformation = async (filingYearId: number) => {
       .from("bank_information")
       .delete()
       .eq("customerId", customerId)
-      .eq("filingYearId", filingYearId);
+      .eq("filingYearId", filingYearId)
+      .eq("belongsTo", belongsTo);
 
     if (error) throw error;
     return { message: "Bank information deleted successfully" };

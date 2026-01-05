@@ -97,6 +97,7 @@ export default function FeeSummaryBody({
                   }
                   className="border border-gray-400 rounded px-2 py-1 text-sm w-25 text-center text-[#2F3F5F] focus:outline-none"
                   placeholder="Enter Fee"
+                  onWheel={(e) => e.currentTarget.blur()}
                 />
               </td>
 
@@ -135,6 +136,7 @@ export default function FeeSummaryBody({
                   }
                   className="border border-gray-400 rounded px-2 py-1 text-sm w-25 text-center text-[#2F3F5F] focus:outline-none"
                   placeholder="Enter Fee"
+                  onWheel={(e) => e.currentTarget.blur()}
                 />
               </td>
 

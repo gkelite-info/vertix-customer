@@ -5,11 +5,7 @@ import { useAuth } from "@/components/AuthContext";
 import { useYear } from "@/app/api/context/yearContext";
 import TableComponent from "../../../../utils/table/page";
 import toast from "react-hot-toast";
-import {
-  getBankInformation,
-  upsertBankInformation,
-  deleteBankInformation,
-} from "@/app/api/SupabaseAPI/customer/bank";
+import { getBankInformation, upsertBankInformation, deleteBankInformation } from "@/app/api/SupabaseAPI/customer/bank";
 import { Trash } from "phosphor-react";
 import { MdEdit } from "react-icons/md";
 import DeleteModal from "@/components/modals/deleteModal";
@@ -41,7 +37,9 @@ export default function BankingInformationPage() {
   const { selectedYear } = useYear()
   const [checkingConsent, setCheckingConsent] = useState(true)
   const hasRedirectedRef = useRef(false)
-  const router = useRouter()
+  const router = useRouter();
+  const [rowToDelete, setRowToDelete] = useState<any | null>(null);
+
 
   useEffect(() => {
     if (!user || !filingYearId) return;
@@ -50,11 +48,7 @@ export default function BankingInformationPage() {
       setFetching(true);
       try {
         const res = await getBankInformation(filingYearId);
-        if (res) {
-          setBankRecords([res]);
-        } else {
-          setBankRecords([]);
-        }
+        setBankRecords(res ?? []);
       } catch (error) {
         console.error(error);
         toast.error("Failed to fetch bank information");
@@ -114,9 +108,25 @@ export default function BankingInformationPage() {
     const { name, value, tagName } = e.target;
 
     if (name === "accountNumber") {
-      const numericValue = value.replace(/\D/g, "");
+      const numericValue = value.replace(/\D/g, "").slice(0, 12);
       setFormValues((prev) => ({ ...prev, [name]: numericValue }));
-    } else if (tagName === "INPUT") {
+      return
+    }
+
+    if (name === "routingNumber") {
+      const numericValue = value.replace(/\D/g, "").slice(0, 9);
+      setFormValues((prev) => ({ ...prev, routingNumber: numericValue }));
+      return;
+    }
+
+    if (name === "bankName") {
+      const textOnly = value.replace(/[^a-zA-Z\s]/g, "");
+      const capitalized = textOnly.charAt(0).toUpperCase() + textOnly.slice(1);
+      setFormValues((prev) => ({ ...prev, bankName: capitalized }));
+      return;
+    }
+
+    else if (tagName === "INPUT") {
       const formattedValue = value.replace(/\b\w/g, (char) =>
         char.toUpperCase()
       );
@@ -194,24 +204,30 @@ export default function BankingInformationPage() {
   };
 
   const confirmDelete = async () => {
-    if (!filingYearId) {
+    if (!filingYearId || !rowToDelete) {
       toast.error("Please select a filing year first");
       return;
     }
 
     try {
-      await deleteBankInformation(filingYearId);
+      await deleteBankInformation(filingYearId, rowToDelete.belongsTo);
       toast.success("Bank information deleted successfully");
 
-      setBankRecords([]);
-      setFormValues({
-        belongsTo: "",
-        holderName: "",
-        bankName: "",
-        accountNumber: "",
-        routingNumber: "",
-        accountType: "",
-      });
+      setBankRecords((prev) =>
+        prev.filter((r) => r.belongsTo !== rowToDelete.belongsTo)
+      );
+
+      if (formValues.belongsTo === rowToDelete.belongsTo) {
+        setFormValues({
+          belongsTo: "",
+          holderName: "",
+          bankName: "",
+          accountNumber: "",
+          routingNumber: "",
+          accountType: "",
+        });
+        setIsEditing(false)
+      }
     } catch (error: any) {
       console.error(error);
       toast.error("Failed to delete bank information");
@@ -246,6 +262,11 @@ export default function BankingInformationPage() {
     "accountType",
   ];
 
+  const recordExistsForSelectedBelongsTo = bankRecords.some(
+    (r) => r.belongsTo === formValues.belongsTo
+  );
+
+
   return (
     <div className="bg-white h-[100vh] overflow-y-auto pb-7">
       <YearSelect />
@@ -259,7 +280,10 @@ export default function BankingInformationPage() {
             label: "Belongs To",
             name: "belongsTo",
             type: "select",
-            options: [{ value: "TaxPayer", label: "Tax Payer" }],
+            options: [
+              { value: "TaxPayer", label: "Tax Payer" },
+              { value: "Spouse", label: "Spouse" }
+            ],
           },
           {
             label: "Holder Name",
@@ -308,7 +332,7 @@ export default function BankingInformationPage() {
             {input.type === "select" ? (
               <select
                 name={input.name}
-                value={formValues[input.name as keyof typeof formValues]}
+                value={formValues[input.name as keyof typeof formValues] || ""}
                 onChange={handleChange}
                 className="border border-gray-300 text-[#616161] font-medium lg:w-[65%] h-[100%] px-2 text-sm focus:outline-none rounded cursor-pointer shadow-sm"
               >
@@ -321,22 +345,35 @@ export default function BankingInformationPage() {
               </select>
             ) : (
               <input
-                type={input.type}
+                type="text"
                 name={input.name}
                 value={formValues[input.name as keyof typeof formValues] || ""}
                 onChange={handleChange}
                 placeholder={input.placeholder}
+                inputMode={
+                  input.name === "accountNumber" || input.name === "routingNumber"
+                    ? "numeric"
+                    : undefined
+                }
+                maxLength={
+                  input.name === "accountNumber"
+                    ? 12
+                    : input.name === "routingNumber"
+                      ? 9
+                      : undefined
+                }
                 className="border border-gray-300 text-[#616161] font-medium lg:w-[65%] h-[100%] px-2 text-sm focus:outline-none rounded cursor-text shadow-sm"
               />
             )}
+
           </div>
         ))}
 
         <div className="mt-4 flex h-[10%] w-[45%] gap-3 rounded-lg">
           <button
             onClick={handleSubmit}
-            disabled={loading || (bankRecords.length > 0 && !isEditing)}
-            className={`font-medium w-[60%] text-sm px-5 py-2 rounded-lg flex gap-2 justify-center items-center ${loading || (bankRecords.length > 0 && !isEditing)
+            disabled={loading || (!isEditing && recordExistsForSelectedBelongsTo)}
+            className={`font-medium w-[60%] text-sm px-5 py-2 rounded-lg flex gap-2 justify-center items-center ${loading || (!isEditing && recordExistsForSelectedBelongsTo)
               ? "bg-gray-400 text-white cursor-not-allowed"
               : "bg-[#1D2B48] text-white cursor-pointer"
               }`}
@@ -360,9 +397,8 @@ export default function BankingInformationPage() {
               });
               setIsEditing(false);
             }}
-            disabled={bankRecords.length > 0 && !isEditing}
-            className={`font-medium w-[60%] text-sm px-5 py-2 rounded-lg flex gap-2 justify-center items-center ${bankRecords.length > 0 && !isEditing
-              ? "bg-gray-300 text-white cursor-not-allowed"
+            disabled={!isEditing && recordExistsForSelectedBelongsTo}
+            className={`font-medium w-[60%] text-sm px-5 py-2 rounded-lg flex gap-2 justify-center items-center ${!isEditing && recordExistsForSelectedBelongsTo ? "bg-gray-300 text-white cursor-not-allowed"
               : "bg-gray-400 text-white hover:bg-gray-500 cursor-pointer"
               }`}
           >
@@ -392,7 +428,10 @@ export default function BankingInformationPage() {
                   <MdEdit size={20} className="text-black" />
                 </button>
                 <button
-                  onClick={() => handleDelete()}
+                  onClick={() => {
+                    setRowToDelete(row);
+                    setIsDeleteModalOpen(true);
+                  }}
                   className="text-red-600 hover:text-red-800 cursor-pointer"
                   title="Delete"
                 >

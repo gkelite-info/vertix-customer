@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ThreeOptionToggle from "../../../../../../utils/threeOptionToggle";
 import { getCustomer } from "@/app/api/SupabaseAPI/customer/customerApi";
 import toast from "react-hot-toast";
@@ -8,7 +8,7 @@ import { useYear } from "@/app/api/context/yearContext";
 import AddressAboutYou from "./address";
 import { getAboutYou, upsertAboutYou } from "@/app/api/SupabaseAPI/customer/aboutyouAPI";
 import { getSpouse, upsertSpouse } from "@/app/api/SupabaseAPI/customer/spousesAPI";
-import { upsertAddress } from "@/app/api/SupabaseAPI/customer/address";
+import { getAddress, upsertAddress } from "@/app/api/SupabaseAPI/customer/addressAPI";
 
 const VISA_OPTIONS = ["L1", "L2", "L3"];
 
@@ -71,7 +71,103 @@ export default function AboutYou({ setActiveTab, setHasDependents, dependent }: 
     const [state, setState] = useState("");
     const [zipcode, setZipcode] = useState("");
     const [note, setNote] = useState("");
+    const [isDependent, setIsDependent] = useState(false);
     const prevValueRef = useRef("");
+    const [isLoading, setIsLoading] = useState(false);
+
+    function formatDateFromISO(iso: string) {
+        const date = new Date(iso);
+        if (isNaN(date.getTime())) return "";
+
+        const mm = String(date.getUTCMonth() + 1).padStart(2, "0");
+        const dd = String(date.getUTCDate()).padStart(2, "0");
+        const yyyy = date.getUTCFullYear();
+
+        return `${mm}/${dd}/${yyyy}`;
+    }
+
+    const loadAboutYou = async () => {
+        try {
+            setIsLoading(true);
+
+            const customer = await getCustomer();
+            if (!customer) return;
+
+            const data = await getAboutYou();
+            if (!data) return;
+
+            setFirstName(data.firstName ?? "");
+            setMiddleName(data.middleName ?? "");
+            setLastName(data.lastName ?? "");
+            setDob(data.dob ? formatDateFromISO(data.dob) : "");
+            setOccupation(data.occupation ?? "");
+            setCitizen(Boolean(data.isCitizen));
+            setIsMarried(Boolean(data.isMarried));
+
+            setYourSSN(data.yourSSNType ?? "");
+            setYourSSNValue(data.yourSSNValue ?? "");
+
+            setVisaJan(data.visaTypeJan ?? "");
+            setVisaDec(data.visaTypeDec ?? "");
+
+            setFirstEntryDate(
+                data.firstEntryDate ? formatDateFromISO(data.firstEntryDate) : ""
+            );
+            setMonthsInUS(data.monthsInUS?.toString() ?? "");
+            setCitizenshipCountry(data.citizenshipCountry ?? "");
+
+            if (data.isMarried) {
+                const spouse = await getSpouse();
+
+                if (spouse) {
+                    setSpouseFirstName(spouse.firstname ?? "");
+                    setSpouseMiddleName(spouse.middlename ?? "");
+                    setSpouseLastName(spouse.lastname ?? "");
+                    setSpouseDOB(
+                        spouse.dob ? formatDateFromISO(spouse.dob) : ""
+                    );
+                    setSpouseOccupation(spouse.occupation ?? "");
+
+                    setSpouseSSN(spouse.yourSSNType ?? "");
+                    setSpouseSSNValue(spouse.yourSSNValue ?? "");
+
+                    setSpouseVisaJan(spouse.visaTypeJan ?? "");
+                    setSpouseVisaDec(spouse.visaTypeDec ?? "");
+
+                    setSpouseFirstEntryDate(
+                        spouse.firstEntryDate
+                            ? formatDateFromISO(spouse.firstEntryDate)
+                            : ""
+                    );
+                    setSpouseMonthsInUS(spouse.monthsInUS?.toString() ?? "");
+                }
+            }
+            const address = await getAddress();
+
+            if (address) {
+                setStreet(address.street ?? "");
+                setCity(address.city ?? "");
+                setState(address.state ?? "");
+                setZipcode(address.zipcode ?? "");
+                setNote(address.note ?? "");
+                const dep = address.isDependent ?? false;
+                setIsDependent(dep);
+                setHasDependents(dep);
+
+            }
+
+            setIsReadOnly(true);
+        } catch (err) {
+            console.error("Failed to load About You data", err);
+        }
+        finally {
+            setIsLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        loadAboutYou();
+    }, []);
 
     const handleDateChange =
         (setter: (val: string) => void) =>
@@ -114,54 +210,12 @@ export default function AboutYou({ setActiveTab, setHasDependents, dependent }: 
                 setter(formatted);
             };
 
-    // const handleDateChange = (setter: (val: string) => void) =>
-    //     (e: React.ChangeEvent<HTMLInputElement>) => {
-    //         let input = e.target.value.replace(/\D/g, "");
-
-    //         if (input.length > 8) input = input.slice(0, 8);
-
-    //         let mm = input.slice(0, 2);
-    //         let dd = input.slice(2, 4);
-    //         let yyyy = input.slice(4, 8);
-
-    //         if (mm.length === 2) {
-    //             let m = parseInt(mm, 10);
-    //             if (m < 1) m = 1;
-    //             if (m > 12) m = 12;
-    //             mm = m.toString().padStart(2, "0");
-    //         }
-
-    //         if (dd.length === 2) {
-    //             let d = parseInt(dd, 10);
-    //             if (d < 1) d = 1;
-    //             if (d > 31) d = 31;
-    //             dd = d.toString().padStart(2, "0");
-    //         }
-
-    //         let formatted = "";
-
-    //         if (mm) {
-    //             formatted = mm.length === 2 ? mm + "/" : mm;
-    //         }
-
-    //         if (dd) {
-    //             formatted += dd.length === 2 ? dd + "/" : dd;
-    //         }
-
-    //         if (yyyy) {
-    //             formatted += yyyy;
-    //         }
-
-    //         setter(formatted);
-    //     };
-
     const validateBeforeSubmit = () => {
 
         if (!firstName || !lastName) return "First and Last Name are required";
         if (!dob) return "Date of Birth is required";
         if (!occupation) return "Occupation is required";
         if (!yourSSNValue) return "SSN / ITIN value is required";
-        if (!firstEntryDate) return "First entry date is required";
         if (!monthsInUS || isNaN(Number(monthsInUS))) return "Months in US must be a number";
 
         if (isMarried) {
@@ -202,30 +256,24 @@ export default function AboutYou({ setActiveTab, setHasDependents, dependent }: 
 
             const customerId = customer.customerId;
 
-            const existingAbout = await getAboutYou(customerId);
+            // if (isMarried) {
+            //     const existingSpouse = await getSpouse(customerId);
 
-            if (existingAbout) {
-                toast.error("Your personal details already exist. You cannot submit again.");
-                return false;
-            }
-
-            if (isMarried) {
-                const existingSpouse = await getSpouse(customerId);
-
-                if (existingSpouse) {
-                    toast.error("Spouse details already exist. You cannot submit again.");
-                    return;
-                }
-            }
+            //     if (existingSpouse) {
+            //         toast.error("Spouse details already exist. You cannot submit again.");
+            //         setLoading(false);
+            //         return;
+            //     }
+            // }
 
             let spouseId: number | null = null;
 
             if (isMarried) {
                 const spousePayload = {
                     customerId,
-                    firstname: spouseFirstName?.trim(),
+                    firstname: spouseFirstName.trim(),
                     middlename: spouseMiddleName?.trim() || null,
-                    lastname: spouseLastName?.trim(),
+                    lastname: spouseLastName.trim(),
 
                     dob: safeToISOString(spouseDOB),
                     occupation: spouseOccupation || null,
@@ -238,10 +286,8 @@ export default function AboutYou({ setActiveTab, setHasDependents, dependent }: 
 
                     firstEntryDate: safeToISOString(spouseFirstEntryDate),
                     monthsInUS: spouseMonthsInUS ? Number(spouseMonthsInUS) : null,
-
-                    createdAt: new Date().toISOString(),
-                    updatedAt: new Date().toISOString(),
                 };
+
 
                 const spouseRes = await upsertSpouse(spousePayload);
                 spouseId = spouseRes?.spouseId ?? null;
@@ -270,22 +316,15 @@ export default function AboutYou({ setActiveTab, setHasDependents, dependent }: 
                 monthsInUS: monthsInUS ? Number(monthsInUS) : null,
 
                 citizenshipCountry: citizenshipCountry || null,
-
-                createdAt: new Date().toISOString(),
-                updatedAt: new Date().toISOString(),
             };
 
             if (!street || !city || !state || !zipcode) {
                 toast.error("Please complete address details");
+                setLoading(false);
                 return;
             }
 
-            const res = await upsertAboutYou(aboutPayload);
-
-            if ("alreadyExists" in res) {
-                toast.error("Data already exists");
-                return;
-            }
+            await upsertAboutYou(aboutPayload);
 
             if (street || city || state || zipcode || note) {
                 await upsertAddress({
@@ -295,12 +334,12 @@ export default function AboutYou({ setActiveTab, setHasDependents, dependent }: 
                     state: state.trim(),
                     zipcode: zipcode.trim(),
                     note: note || null,
-                    createdAt: new Date().toISOString(),
-                    updatedAt: new Date().toISOString(),
+                    isDependent: isDependent
                 });
             }
 
             toast.success("Details saved successfully!");
+            await loadAboutYou();
             return true;
         } catch (error) {
             console.error("Error saving data:", error);
@@ -346,6 +385,10 @@ export default function AboutYou({ setActiveTab, setHasDependents, dependent }: 
         if (digits.length > 3) return `${part1}-${part2}`;
         return part1;
     };
+
+    if (isLoading) return <div className="flex justify-center items-center text-[#1D2B48] h-[100vh]">
+        <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+    </div>
 
     return (
         <>
@@ -445,12 +488,6 @@ export default function AboutYou({ setActiveTab, setHasDependents, dependent }: 
                         <input
                             type="text"
                             value={yourSSNValue}
-                            // onChange={(e) => {
-                            //     const newValue = e.target.value;
-                            //     let filteredValue = newValue.replace(/[^0-9-]/g, '');
-                            //     filteredValue = filteredValue.slice(0, 11);
-                            //     setYourSSNValue(filteredValue);
-                            // }}
                             onChange={(e) => setYourSSNValue(formatSSN(e.target.value))}
                             placeholder="XXX-XX-XXXX"
                             className="border bg-red-00 rounded-md text-[#616161] border-[#B5B5B5] w-[45%] h-[100%] px-3 text-sm focus:outline-none"
@@ -652,12 +689,6 @@ export default function AboutYou({ setActiveTab, setHasDependents, dependent }: 
                                     <input
                                         type="text"
                                         value={spouseSSNValue}
-                                        // onChange={(e) => {
-                                        //     const newValue = e.target.value;
-                                        //     let filteredValue = newValue.replace(/[^0-9-]/g, '');
-                                        //     filteredValue = filteredValue.slice(0, 11);
-                                        //     setSpouseSSNValue(filteredValue);
-                                        // }}
                                         onChange={(e) => setSpouseSSNValue(formatSSN(e.target.value))}
                                         placeholder="XXX-XX-XXXX"
                                         className="border bg-red-00 rounded-md text-[#616161] border-[#B5B5B5] w-[45%] h-[100%] px-3 text-sm focus:outline-none"
@@ -747,7 +778,8 @@ export default function AboutYou({ setActiveTab, setHasDependents, dependent }: 
                             setZipcode={setZipcode}
                             note={note}
                             setNote={setNote}
-                            dependent={dependent}
+                            dependent={isDependent}
+                            setDependent={setIsDependent}
                         />
                     </div>
 
@@ -761,8 +793,10 @@ export default function AboutYou({ setActiveTab, setHasDependents, dependent }: 
                         <button
                             onClick={async () => {
                                 const ok = await handleSave("Next");
+                                console.log("V", dependent);
+
                                 if (ok) {
-                                    const tabName = dependent ? "Dependents" : "Residency Details"
+                                    const tabName = isDependent ? "Dependents" : "Residency Details"
                                     setActiveTab(tabName);
                                 }
                             }}
