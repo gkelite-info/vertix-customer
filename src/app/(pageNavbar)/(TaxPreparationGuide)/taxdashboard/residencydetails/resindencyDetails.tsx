@@ -1,16 +1,25 @@
 'use client';
 
 import { useYear } from "@/app/api/context/yearContext";
-import { getResidencyDetails, upsertResidencyDetails } from "@/app/api/SupabaseAPI/customer/residency";
+import { deleteResidencyMigration, getResidencyDetails, upsertResidencyDetails } from "@/app/api/SupabaseAPI/customer/residency";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import MigrationCard from "./migrationCard";
+import DeleteModal from "@/components/modals/deleteModal";
 
 type Tab = "Dependents" | "Residency Details" | "Income Details";
 
 type MigrationField = "fromDate" | "toDate" | "state" | "country";
 
 type ButtonType = "Save" | "Next";
+
+type MigrationUIRow = {
+    migrationId?: number;
+    fromDate: string;
+    toDate: string;
+    state: string;
+    country: string;
+};
 
 export default function ResidencyDetails({ setActiveTab }: { setActiveTab: (tab: Tab) => void }) {
 
@@ -20,15 +29,18 @@ export default function ResidencyDetails({ setActiveTab }: { setActiveTab: (tab:
     const [notes, setNotes] = useState("");
     const [loading, setLoading] = useState(false);
 
-    const [migrationList, setMigrationList] = useState([
+    const [migrationList, setMigrationList] = useState<MigrationUIRow[]>([
         { fromDate: "", toDate: "", state: "", country: "" }
     ]);
 
-    const [spouseMigrationList, setSpouseMigrationList] = useState([
+    const [spouseMigrationList, setSpouseMigrationList] = useState<MigrationUIRow[]>([
         { fromDate: "", toDate: "", state: "", country: "" }
     ]);
 
     const [isLoading, setIsLoading] = useState<boolean>(false)
+    const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+    const [selectedMigrationId, setSelectedMigrationId] = useState<number | null>(null);
+    const [deleteLoading, setDeleteLoading] = useState(false);
 
 
     const updateField = (index: number, field: MigrationField, value: string) => {
@@ -91,11 +103,12 @@ export default function ResidencyDetails({ setActiveTab }: { setActiveTab: (tab:
                 filingYearId
 
             });
-            if (res?.alreadyExists) {
-                toast.error("Data already exists");
-                return;
-            }
+            // if (res?.alreadyExists) {
+            //     toast.error("Data already exists");
+            //     return;
+            // }
             toast.success("Residency details saved successfully!");
+            await fetchResidencyAndSetUI(filingYearId);
             if (button === "Next") {
                 setActiveTab("Income Details")
             }
@@ -108,52 +121,101 @@ export default function ResidencyDetails({ setActiveTab }: { setActiveTab: (tab:
         }
     };
 
-    const formatDate = (date: string): string => {
+    const normalizeDate = (date: string) => {
         const d = new Date(date);
+        if (isNaN(d.getTime())) return "";
+        const mm = String(d.getMonth() + 1).padStart(2, "0");
+        const dd = String(d.getDate()).padStart(2, "0");
+        const yyyy = d.getFullYear();
+        return `${mm}/${dd}/${yyyy}`;
+    };
 
-        if (isNaN(d.getTime())) {
-            return "";
+    const fetchResidencyAndSetUI = async (yearId: number) => {
+        try {
+            setIsLoading(true);
+
+            const data = await getResidencyDetails(yearId);
+            if (!data) return;
+
+            setMigrationList(
+                data.migrations.length
+                    ? data.migrations.map(m => ({
+                        migrationId: m.migrationId,
+                        fromDate: normalizeDate(m.fromDate),
+                        toDate: normalizeDate(m.toDate),
+                        state: m.state,
+                        country: m.country
+                    }))
+                    : [{ fromDate: "", toDate: "", state: "", country: "" }]
+            );
+
+            setSpouseResidency(data.spouseResidency);
+
+            setSpouseMigrationList(
+                data.spouseMigrations.length
+                    ? data.spouseMigrations.map(m => ({
+                        migrationId: m.migrationId,
+                        fromDate: normalizeDate(m.fromDate),
+                        toDate: normalizeDate(m.toDate),
+                        state: m.state,
+                        country: m.country
+                    }))
+                    : [{ fromDate: "", toDate: "", state: "", country: "" }]
+            );
+
+            setNotes(data.notes);
+        } catch (error: any) {
+            toast.error(error?.message || "Failed to load residency details");
+        } finally {
+            setIsLoading(false);
         }
-
-        const month = (d.getMonth() + 1).toString().padStart(2, "0");
-        const day = d.getDate().toString().padStart(2, "0");
-        const year = d.getFullYear();
-
-        return `${month}/${day}/${year}`;
     };
 
 
     useEffect(() => {
         if (!filingYearId) return;
-
-        (async () => {
-            try {
-                setIsLoading(true)
-                const data = await getResidencyDetails(filingYearId);
-
-                if (!data) return;
-
-                setMigrationList(
-                    data.migrations.length
-                        ? data.migrations
-                        : [{ fromDate: "", toDate: "", state: "", country: "" }]
-                );
-
-                setSpouseResidency(data.spouseResidency);
-                setSpouseMigrationList(
-                    data.spouseMigrations.length
-                        ? data.spouseMigrations
-                        : [{ fromDate: "", toDate: "", state: "", country: "" }]
-                );
-
-                setNotes(data.notes);
-            } catch (err) {
-                toast.error("Failed to load residency details");
-            } finally {
-                setIsLoading(false)
-            }
-        })();
+        fetchResidencyAndSetUI(filingYearId);
     }, [filingYearId]);
+
+    const requestDelete = (
+        row: MigrationUIRow,
+        index: number,
+        isSpouse = false
+    ) => {
+        if (!row.migrationId) {
+            if (isSpouse) {
+                setSpouseMigrationList(prev => prev.filter((_, i) => i !== index));
+            } else {
+                setMigrationList(prev => prev.filter((_, i) => i !== index));
+            }
+            return;
+        }
+
+        setSelectedMigrationId(row.migrationId);
+        setDeleteModalOpen(true);
+    };
+
+
+    const confirmDelete = async () => {
+        if (!selectedMigrationId) return;
+
+        try {
+            setDeleteLoading(true);
+            await deleteResidencyMigration(selectedMigrationId);
+
+            toast.success("Migration deleted successfully");
+            await fetchResidencyAndSetUI(filingYearId!);
+        } catch {
+            toast.error("Failed to delete migration");
+        } finally {
+            setDeleteLoading(false);
+            setDeleteModalOpen(false);
+            setSelectedMigrationId(null);
+        }
+    };
+
+
+
 
     if (isLoading) {
         return (
@@ -175,8 +237,8 @@ export default function ResidencyDetails({ setActiveTab }: { setActiveTab: (tab:
                         {migrationList.map((item, index) => (
                             <MigrationCard
                                 key={index}
-                                fromDate={formatDate(item.fromDate)}
-                                toDate={formatDate(item.toDate)}
+                                fromDate={item.fromDate}
+                                toDate={item.toDate}
                                 state={item.state}
                                 country={item.country}
                                 setFromDate={(v) => updateField(index, "fromDate", v)}
@@ -184,7 +246,7 @@ export default function ResidencyDetails({ setActiveTab }: { setActiveTab: (tab:
                                 setState={(v) => updateField(index, "state", v)}
                                 setCountry={(v) => updateField(index, "country", v)}
                                 onAddMore={index === migrationList.length - 1 ? addMore : undefined}
-                                onDelete={index !== 0 ? () => deleteRow(index) : undefined}
+                                onDelete={() => requestDelete(item, index, false)}
                             />
                         ))}
                     </div>
@@ -222,8 +284,8 @@ export default function ResidencyDetails({ setActiveTab }: { setActiveTab: (tab:
                             {spouseMigrationList.map((item, index) => (
                                 <MigrationCard
                                     key={index}
-                                    fromDate={formatDate(item.fromDate)}
-                                    toDate={formatDate(item.toDate)}
+                                    fromDate={item.fromDate}
+                                    toDate={item.toDate}
                                     state={item.state}
                                     country={item.country}
                                     setFromDate={(v) => updateSpouseField(index, "fromDate", v)}
@@ -231,7 +293,7 @@ export default function ResidencyDetails({ setActiveTab }: { setActiveTab: (tab:
                                     setState={(v) => updateSpouseField(index, "state", v)}
                                     setCountry={(v) => updateSpouseField(index, "country", v)}
                                     onAddMore={index === spouseMigrationList.length - 1 ? addSpouseMore : undefined}
-                                    onDelete={index !== 0 ? () => deleteSpouseRow(index) : undefined}
+                                    onDelete={() => requestDelete(item, index, true)}
                                 />
                             ))}
                         </div>
@@ -269,6 +331,12 @@ export default function ResidencyDetails({ setActiveTab }: { setActiveTab: (tab:
                         </button>
                     </div>
                 </div>
+                <DeleteModal
+                    isOpen={deleteModalOpen}
+                    isLoading={deleteLoading}
+                    onConfirm={confirmDelete}
+                    onCancel={() => setDeleteModalOpen(false)}
+                />
             </div>
         </>
     )
