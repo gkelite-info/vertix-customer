@@ -104,16 +104,6 @@ export default function FBARFATCA({ setActiveTab }: FbarProps) {
                             />
                             <span className="text-sm text-black">No</span>
                         </label>
-
-                        <label className="flex items-center gap-2 cursor-pointer">
-                            <input
-                                type="checkbox"
-                                checked={exceededLimit === "not_sure"}
-                                onChange={() => setExceededLimit("not_sure")}
-                                className="accent-[#1D2B48]"
-                            />
-                            <span className="text-sm text-black">Not sure</span>
-                        </label>
                     </div>
 
                 </div>

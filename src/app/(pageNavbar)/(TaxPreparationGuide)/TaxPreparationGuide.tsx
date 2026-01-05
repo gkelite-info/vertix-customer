@@ -2,13 +2,20 @@
 import { useState } from "react";
 import YearSelect from "../../../../utils/yearSelect";
 import { useRouter } from "next/navigation";
+import { useYear } from "@/app/api/context/yearContext";
+import toast from "react-hot-toast";
 
 export default function TaxPreparationGuide() {
     const router = useRouter();
+    const { selectedYear } = useYear();
 
     const [showMessage, setShowMessage] = useState(false);
 
     const handlebutton = () => {
+        if (!selectedYear) {
+            toast.error("Please select filingYear in Manage Filing Year");
+            return
+        }
         router.push('/taxdashboard');
         const currentActiveTab = localStorage.getItem("activeTab");
         localStorage.setItem("activeTab", currentActiveTab || "About You");

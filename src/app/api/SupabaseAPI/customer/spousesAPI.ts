@@ -23,7 +23,7 @@ export interface SpousePayload {
   updatedAt?: string;
 }
 
-export const getSpouse = async (customerId: any): Promise<any | null> => {
+export const getSpouse = async (): Promise<any | null> => {
   try {
     const {
       data: { user },
@@ -54,13 +54,34 @@ export const getSpouse = async (customerId: any): Promise<any | null> => {
   }
 };
 
+// export const upsertSpouse = async (
+//   payload: SpousePayload
+// ): Promise<any | null> => {
+//   try {
+//     const { data, error } = await supabase
+//       .from("spouses")
+//       .upsert([payload])
+//       .select()
+//       .single();
+
+//     if (error) throw error;
+
+//     return data;
+//   } catch (error: any) {
+//     console.error("Error saving spouse:", error.message);
+//     throw error;
+//   }
+// };
+
 export const upsertSpouse = async (
   payload: SpousePayload
-): Promise<any | null> => {
+): Promise<any> => {
   try {
     const { data, error } = await supabase
       .from("spouses")
-      .upsert([payload])
+      .upsert(payload, {
+        onConflict: "customerId",
+      })
       .select()
       .single();
 

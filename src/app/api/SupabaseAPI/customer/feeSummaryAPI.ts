@@ -140,3 +140,38 @@ export const upsertFeeSummary = async (summary: FeeSummaryInput) => {
     throw error
   }
 }
+
+
+export const markFeeSummaryAsPaid = async (summaryId: number) => {
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser();
+
+  if (authError || !user) throw new Error("Not authenticated");
+
+  const { data: summary, error: fetchError } = await supabase
+    .from("fee_summary")
+    .select("netFee, dueAmount")
+    .eq("summaryId", summaryId)
+    .single();
+
+  if (fetchError || !summary) {
+    throw new Error("Fee summary not found");
+  }
+
+  if (summary.dueAmount === 0) return;
+
+  const { error: updateError } = await supabase
+    .from("fee_summary")
+    .update({
+      feePaid: summary.netFee,
+      dueAmount: 0,
+      updatedAt: new Date().toISOString(),
+    })
+    .eq("summaryId", summaryId);
+
+  if (updateError) throw updateError;
+};
+
+

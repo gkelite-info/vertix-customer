@@ -111,18 +111,22 @@ function PaymentGatewayContent() {
           referral: totals.referral,
           feePaid: totals.feePaid,
           netFee: totals.netFee,
+          dueAmount: totals.dueAmount,
           summaryId,
           filingYearId
         }),
       });
 
       const data = await res.json();
+      if (!res.ok) {
+        toast.error(data.error || "Payment failed");
+        return;
+      }
       if (data.url) window.location.href = data.url;
     } catch (error) {
       console.error("Stripe payment error:", error);
     }
   };
-
 
 
   return (

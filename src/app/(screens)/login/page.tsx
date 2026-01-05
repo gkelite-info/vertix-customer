@@ -150,6 +150,11 @@ export default function Page() {
                     onChange={handleEmailChange}
                     placeholder="Enter your Email Id"
                     className="w-full font-medium p-2 ml-2 border-none focus:outline-none text-black"
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        handleLogin();
+                      }
+                    }}
                   />
                 </div>
                 {emailError && (

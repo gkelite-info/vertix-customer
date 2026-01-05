@@ -1,5 +1,4 @@
 'use client'
-import { useState } from "react";
 import { State } from "country-state-city";
 
 type Props = {
@@ -20,8 +19,8 @@ type Props = {
 
     setHasDependents?: (val: boolean) => void;
     setActiveTab?: (tab: string) => void;
-
     dependent: boolean;
+    setDependent: (val: boolean) => void;
 }
 
 export default function AddressAboutYou({ street,
@@ -35,9 +34,10 @@ export default function AddressAboutYou({ street,
     note,
     setNote,
     setHasDependents,
-    setActiveTab, }: Props) {
-
-    const [dependent, setDependent] = useState(false);
+    setActiveTab,
+    dependent,
+    setDependent
+}: Props) {
 
     const US_STATES = State.getStatesOfCountry("US");
 
@@ -57,10 +57,13 @@ export default function AddressAboutYou({ street,
         };
 
     const handleToggleDependents = () => {
-        const newVal = !dependent;
-        setDependent(newVal);
-        if (setHasDependents) setHasDependents(newVal);
+        setDependent(!dependent);
+        if (setHasDependents) {
+            setHasDependents(!dependent);
+        }
     };
+
+
 
     const formatZipcode = (value: string) => {
         const digits = value.replace(/\D/g, "").slice(0, 9);
