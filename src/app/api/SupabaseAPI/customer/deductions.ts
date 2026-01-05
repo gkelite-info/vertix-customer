@@ -98,15 +98,22 @@ export const upsertDeductionDetails = async (
             updatedAt: now,
         }));
 
+        // const { data, error } = await supabase
+        //     .from("deductiondetails")
+        //     .insert(dbDeductionDetails)
+        //     .select();
+
         const { data, error } = await supabase
             .from("deductiondetails")
-            .insert(dbDeductionDetails)
+            .upsert(dbDeductionDetails, {
+                onConflict: "filingYearId",
+            })
             .select();
 
         if (error) {
-            if (error.code === "23505") {
-                return { alreadyExists: true };
-            }
+            // if (error.code === "23505") {
+            //     return { alreadyExists: true };
+            // }
             throw error;
         }
 
