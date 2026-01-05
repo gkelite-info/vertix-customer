@@ -44,11 +44,6 @@ export default function MobileNav({
       "/bankaccount_reporting",
       "/reit",
       "/unreimbursed_expenses",
-<<<<<<< Updated upstream
-=======
-      "/hsa",
-      "/ira"
->>>>>>> Stashed changes
     ].includes(pathname);
   };
 

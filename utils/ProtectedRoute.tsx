@@ -53,12 +53,9 @@ export default function ProtectedRoute({
       "/contact",
       "/taxfiling",
       "/refer-friend",
-<<<<<<< Updated upstream
       "/foreign_earned_income_exclusion",
-=======
       "/hsa",
       "/ira"
->>>>>>> Stashed changes
     ];
 
     if (!token) {

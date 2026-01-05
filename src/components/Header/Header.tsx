@@ -50,15 +50,13 @@ function Header() {
     pathname.startsWith("/healthcare") ||
     pathname.startsWith("/bankaccount_reporting") ||
     pathname.startsWith("/reit") ||
-<<<<<<< Updated upstream
     pathname.startsWith("/foreign_earned_income_exclusion") ||
+    pathname.startsWith("/professionals_and_hnis") ||
     pathname.startsWith("/unreimbursed_expenses") ||
     pathname.startsWith("/hsa_ira");
-=======
-    pathname.startsWith("/unreimbursed_expenses") ||
-    pathname.startsWith("/hsa") ||
+  pathname.startsWith("/hsa") ||
     pathname.startsWith("/ira")
->>>>>>> Stashed changes
+
 
   const linkClass = (active: boolean) =>
     `relative text-black font-medium
@@ -113,7 +111,7 @@ function Header() {
           </div>
 
           {!isAuthenticated && (
-            <div className="lg:h-[100%] lg:w-[60%] flex justify-center items-center lg:gap-8">
+            <div className="lg:h-[100%] lg:w-[60%] flex justify-center items-center lg:gap-6">
               <Link
                 href="/"
                 className={`${linkClass(
@@ -182,25 +180,24 @@ function Header() {
                         Assistants (FREE)
                       </Link>
                     </li>
-
-                    <li className="relative group/submenu">
-                      <div
-                        onClick={() => router.push("/amendement_tax_returns")}
-                        className="flex items-center justify-between hover:bg-gray-100 px-4 py-2 cursor-pointer"
+                    <li>
+                      <Link
+                        href="/itin_application_help"
+                        className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
                       >
-                        <span className="lg:text-sm">
-                          Amedement of Tax Returns
-                        </span>
-                      </div>
-                      <div className="absolute top-0 left-full hidden group-hover/submenu:block bg-white shadow-md rounded w-50 z-50">
-<<<<<<< Updated upstream
-=======
-                        {/* <ul className="flex flex-col text-black"> */}
-                        {/* <li><Link href="/incorporation_business" className="block px-4 py-2 text-sm hover:bg-gray-100">Incorporation Business</Link></li> */}
-                        {/* <li><Link href="/amendement_tax_returns" className="block px-4 py-2 text-sm hover:bg-gray-100">Amendement of Tax Returns</Link></li> */}
-                        {/* </ul> */}
-                      </div>
+                        ITIN Application Help
+                      </Link>
                     </li>
+
+                    <div
+                      onClick={() => router.push("/amendement_tax_returns")}
+                      className="flex items-center justify-between hover:bg-gray-100 px-4 py-2 cursor-pointer"
+                    >
+                      <span className="lg:text-sm">
+                        Amedement of Tax Returns
+                      </span>
+                    </div>
+
 
                     <li><Link href="/our_accuracy_promise" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Accuracy & Support</Link></li>
                     <li><Link href="/data_protection_privacy" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Data Protection & Privacy</Link></li>
@@ -213,7 +210,6 @@ function Header() {
                       </div>
 
                       <div className="absolute top-0 left-full hidden group-hover/submenu:block bg-white shadow-md rounded w-45 z-50">
->>>>>>> Stashed changes
                         <ul className="flex flex-col text-black">
                           <li>
                             <Link
@@ -235,30 +231,6 @@ function Header() {
                       </div>
                     </li>
 
-                    <li>
-                      <Link
-                        href="/our_accuracy_promise"
-                        className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
-                      >
-                        Our Accuracy Promise
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        href="/data_protection_privacy"
-                        className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
-                      >
-                        Data Protection & Privacy
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        href="/smart_tax_strategy"
-                        className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
-                      >
-                        Smart Tax Strategy
-                      </Link>
-                    </li>
 
                     <li>
                       <Link
@@ -268,14 +240,7 @@ function Header() {
                         Business Tax Services
                       </Link>
                     </li>
-                    <li>
-                      <Link
-                        href="/expats_overseas_filers"
-                        className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
-                      >
-                        Expats & Overseas Filers
-                      </Link>
-                    </li>
+
                     <li>
                       <Link
                         href="/non_citizen_tax_guidance"
@@ -284,20 +249,13 @@ function Header() {
                         Non-Citizen Tax Guidance
                       </Link>
                     </li>
-                    <li>
-                      <Link
-                        href="/itin_application_help"
-                        className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
-                      >
-                        ITIN Application
-                      </Link>
-                    </li>
+
                     <li>
                       <Link
                         href="/foreign_account_reporting"
                         className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
                       >
-                        Foreign Account Reporting (FBAR)
+                        FBAR & FATCA
                       </Link>
                     </li>
                   </ul>
@@ -318,65 +276,6 @@ function Header() {
 
                 <div className="absolute top-full left-0 hidden group-hover:block bg-white shadow-md rounded mt-0 w-55 z-50">
                   <ul className="flex flex-col text-black">
-<<<<<<< Updated upstream
-                    <li>
-                      <Link
-                        href="/hsa_ira"
-                        className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
-                      >
-                        HSA & IRA
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        href="/tax_treaties"
-                        className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
-                      >
-                        Tax Treaties
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        href="/elections"
-                        className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
-                      >
-                        Elections
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        href="/healthcare"
-                        className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
-                      >
-                        Health Care
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        href="/bankaccount_reporting"
-                        className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
-                      >
-                        Bank Account Reporting
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        href="/reit"
-                        className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
-                      >
-                        REIT
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        href="/unreimbursed_expenses"
-                        className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
-                      >
-                        Unreimbursed Expenses
-                      </Link>
-                    </li>
-
-=======
                     <li className="relative group/submenu">
                       <div className="flex items-center justify-between hover:bg-gray-100 px-4 py-2 cursor-pointer">
                         <span className="lg:text-sm">HSA & IRA</span>
@@ -399,27 +298,24 @@ function Header() {
                               href="/ira"
                               className="block px-4 py-2 text-sm hover:bg-gray-100"
                             >
-                             IRA
+                              IRA
                             </Link>
                           </li>
                         </ul>
                       </div>
                     </li>
->>>>>>> Stashed changes
+
                     <li>
                       <Link
                         href="/foreign_earned_income_exclusion"
                         className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
                       >
-<<<<<<< Updated upstream
-                        Foreign Earned Income Exclusion
-                      </Link>
-                    </li>
-=======
                         US Experts (FEIE)
                       </Link>
+
                     </li>
-                     <li>
+
+                    <li>
                       <Link
                         href="/professionals_and_hnis"
                         className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
@@ -427,13 +323,12 @@ function Header() {
                         Professionals and HNIs
                       </Link>
                     </li>
-                     <li><Link href="/healthcare" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Health Care</Link></li>
+                    <li><Link href="/healthcare" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Health Care</Link></li>
                     <li><Link href="/tax_treaties" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Tax Treaties</Link></li>
                     <li><Link href="/elections" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Elections</Link></li>
-                    <li><Link href="/bankaccount_reporting" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Bank Account Reporting</Link></li>
-                    <li><Link href="/reit" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">REIT</Link></li>
-                    <li><Link href="/unreimbursed_expenses" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Unreimbursed Expenses</Link></li>
->>>>>>> Stashed changes
+                    {/* <li><Link href="/bankaccount_reporting" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Bank Account Reporting</Link></li> */}
+                    {/* <li><Link href="/reit" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">REIT</Link></li> */}
+                    {/* <li><Link href="/unreimbursed_expenses" className="block px-4 py-2 hover:bg-gray-100 lg:text-sm">Unreimbursed Expenses</Link></li> */}
                   </ul>
                 </div>
               </div>
@@ -450,6 +345,39 @@ function Header() {
           )}
 
           <div className="lg:h-[100%] bg-red-00 gap-7 flex justify-end items-center lg:w-auto">
+            <button
+              onClick={() => router.push("/refer-friend")}
+              className="
+    bg-[#1D2B48]
+    rounded-full
+    px-1.5
+    py-1
+    hover:bg-[#16203a]
+    transition
+    flex
+    items-center
+  "
+            >
+              <div
+                className="
+      bg-white
+      rounded-full
+      px-4
+      py-1.5
+      flex
+      flex-col
+      items-center
+      leading-tight
+    "
+              >
+                <span className="text-black font-semibold text-xs whitespace-nowrap">
+                  Refer Friend
+                </span>
+                <span className="text-gray-500 text-[10px]">
+                  Earn $10
+                </span>
+              </div>
+            </button>
             {isAuthenticated && (
               <FaUserLarge
                 size={23}
