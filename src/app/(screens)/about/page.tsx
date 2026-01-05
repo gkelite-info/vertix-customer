@@ -10,47 +10,27 @@ export default function About() {
           <h1 className="border-b-4 border-l-0 border-t-0 border-r-0 border-[#1D2B48] text-[#1D2B48] text-xl font-bold w-fit text-center">
             About us
           </h1>
-          <p className="text-[#1C2A46] text-center text-sm mt-3 lg:text-sm lg:mt-3">
-            We focus on clients. We take pride in our ability to provide quality
-            services whether they are an owner-managed business or a large
-            multinational corporation.
-          </p>
         </div>
 
         <div className="w-full flex flex-col lg:flex-row mt-8 lg:w-[90%] lg:mt-10">
           <div className="w-full lg:w-[60%] pt-5 pr-0 lg:pt-5 lg:pr-7">
             <p className="text-black text-sm lg:text-sm">
-              Our team consists of highly skilled and motivated professionals
-              including Chartered Accountants, Management graduates, CPA&apos;s,
-              Enrolled Agent&apos;s and Lawyers who have worked for top
-              consulting firms and Big 4 Audit firms. Over the years, we have
-              gained in-depth experience in providing multitude of services.
+              Welcome to Vertix Tax Solutions LLC, where trust meets expertise in U.S. taxation for NRIs.
+              We know managing taxes from abroad can be stressful — that’s why we’ve built a system
+              that simplifies every step, from document collection to e-filing, with total security and
+              human support at every stage.
             </p>
             <p className="mt-4 text-black text-sm lg:mt-5 lg:text-sm">
-              We have earned enormous confidence of all our clients courtesy our
-              professional approach blended with personal touch. The same is
-              reflected in an enduring business relationship that we enjoy with
-              our clients.
+              Our team of trained professionals understands both Indian and U.S. tax systems, helping
+              you navigate complex tax rules with confidence. Whether you’re a student, salaried
+              employee, entrepreneur, or high-net-worth individual, we customize our services to your
+              unique goals and circumstances.
+
             </p>
             <p className="mt-4 text-black text-sm lg:mt-5 lg:text-sm">
-              We provide advisory and compliance services encompassing the
-              entire gamut of foreign exchange law. A typical client is served by
-              a tax professional with more than a decade of experience and
-              hundreds of hours of training.
-            </p>
-            <p className="mt-4 text-black text-sm lg:mt-5 lg:text-sm">
-              We focus on clients. We take pride in our ability to provide
-              quality services - whether they are an owner-managed business or a
-              large multinational corporation. We are a multi-skilled, multi-
-              disciplined firm, offering clients a wide range of
-              industry-focused business solutions. We recruit the brightest and
-              the best - whatever their specialisation.
-            </p>
-            <p className="mt-4 text-black text-sm lg:mt-5 lg:text-sm">
-              We combine the dynamism and fluid-thinking of the young graduate,
-              with the business knowledge and insight of the seasoned executive.
-              Investing in our people means our clients get world-class
-              expertise to solve their complex business problems.
+              At Vertix, you’re not just a tax client — you’re a long-term partner.
+              Our promise is simple: accurate filing, transparent process, and peace of mind, every
+              single time.
             </p>
           </div>
 

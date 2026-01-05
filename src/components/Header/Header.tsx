@@ -356,6 +356,7 @@ function Header() {
     transition
     flex
     items-center
+    cursor-pointer
   "
             >
               <div
@@ -378,6 +379,7 @@ function Header() {
                 </span>
               </div>
             </button>
+
             {isAuthenticated && (
               <FaUserLarge
                 size={23}
