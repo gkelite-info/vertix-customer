@@ -1,11 +1,12 @@
 'use client'
 
-import { useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import ThreeOptionToggle from "../../../../../utils/threeOptionToggle";
 import ToggleSwitch from "../../../../../utils/toggleSwitch";
-import { upsertDependents } from "@/app/api/SupabaseAPI/customer/dependents";
+import { deleteDependentById, getDependents, upsertDependents } from "@/app/api/SupabaseAPI/customer/dependents";
 import toast from "react-hot-toast";
 import { useYear } from "@/app/api/context/yearContext";
+import DeleteModal from "@/components/modals/deleteModal";
 
 type Tab =
   | "About You"
@@ -18,6 +19,7 @@ type DependentsProps = {
 };
 
 interface Dependent {
+  dependentId?: number;
   firstName: string;
   middleName: string;
   lastName: string;
@@ -37,7 +39,8 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
 
   const [loading, setLoading] = useState(false);
   const [notes, setNotes] = useState("");
-
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [deletedDependentIds, setDeletedDependentIds] = useState<number[]>([]);
   const [dependents, setDependents] = useState<Dependent[]>([
     {
       firstName: "",
@@ -53,8 +56,74 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
       hasChildcare: false,
     },
   ]);
-
+  const dobRefs = useRef<Record<number, string>>({});
+  const entryDateRefs = useRef<Record<number, string>>({});
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [pendingDeleteIndex, setPendingDeleteIndex] = useState<number | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
   const { selectedYear } = useYear();
+
+  const handleDateChange =
+    (
+      setter: (val: string) => void,
+      prevValueRef: React.MutableRefObject<string>
+    ) =>
+      (e: React.ChangeEvent<HTMLInputElement>) => {
+        const raw = e.target.value;
+        const prev = prevValueRef.current;
+
+        const isDeleting = raw.length < prev.length;
+
+        if (isDeleting) {
+          prevValueRef.current = raw;
+          setter(raw);
+          return;
+        }
+
+        let input = raw.replace(/\D/g, "");
+        if (input.length > 8) input = input.slice(0, 8);
+
+        let mm = input.slice(0, 2);
+        let dd = input.slice(2, 4);
+        let yyyy = input.slice(4, 8);
+
+        if (mm.length === 2) {
+          let m = parseInt(mm, 10);
+          mm = Math.min(Math.max(m, 1), 12).toString().padStart(2, "0");
+        }
+
+        if (dd.length === 2) {
+          let d = parseInt(dd, 10);
+          dd = Math.min(Math.max(d, 1), 31).toString().padStart(2, "0");
+        }
+
+        let formatted = mm;
+        if (mm.length === 2) formatted += "/";
+        if (dd) formatted += dd;
+        if (dd.length === 2) formatted += "/";
+        if (yyyy) formatted += yyyy;
+
+        prevValueRef.current = formatted;
+        setter(formatted);
+      };
+
+  const getRowRef = (
+    refStore: React.MutableRefObject<Record<number, string>>,
+    index: number
+  ): React.MutableRefObject<string> => {
+    if (!(index in refStore.current)) {
+      refStore.current[index] = "";
+    }
+
+    return {
+      get current() {
+        return refStore.current[index];
+      },
+      set current(val: string) {
+        refStore.current[index] = val;
+      },
+    } as React.MutableRefObject<string>;
+  };
 
   const handleDateChangeForDependent =
     (index: number, field: "dob" | "date") =>
@@ -150,9 +219,18 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
   };
 
   const removeDependent = (indexToRemove: number) => {
-    setDependents((prevDependents) =>
-      prevDependents.filter((_, i) => i !== indexToRemove)
-    );
+    // setDependents((prevDependents) =>
+    //   prevDependents.filter((_, i) => i !== indexToRemove)
+    // );
+    setDependents((prev) => {
+      const dep = prev[indexToRemove];
+
+      if (dep && typeof dep.dependentId === "number") {
+        setDeletedDependentIds((ids) => [...ids, dep.dependentId!]);
+      }
+
+      return prev.filter((_, i) => i !== indexToRemove);
+    });
   };
 
   const addDependent = () => {
@@ -211,13 +289,29 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
 
     try {
       setLoading(true);
-      await upsertDependents(
-        dependents.map((d) => ({ ...d, notes }))
+      const dependentsWithNotes = dependents.map((d) => ({
+        ...d,
+        notes: notes.trim()
+      }));
+
+      const result = await upsertDependents(
+        dependentsWithNotes,
+        deletedDependentIds
       );
-      toast.success("Dependents saved successfully!");
-      setNotes("");
-      if (button === "Next") {
-        setActiveTab("Residency Details");
+      // toast.success("Dependents saved successfully!");
+      // // setNotes("");
+      // setDeletedDependentIds([]);
+      // await fetchDependents()
+      // if (button === "Next") {
+      //   setActiveTab("Residency Details");
+      // }
+      if (result) {
+        toast.success("Dependents saved successfully!");
+        setDeletedDependentIds([]);
+        await fetchDependents();
+        if (button === "Next") {
+          setActiveTab("Residency Details");
+        }
       }
     } catch (error) {
       console.error("Failed to save dependents:", error);
@@ -240,6 +334,91 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
     return part1;
   };
 
+  const formatDate = (date?: string | null) => {
+    if (!date) return "";
+    const parts = date.split('T')[0].split('-');
+    if (parts.length !== 3) return "";
+
+    const [yyyy, mm, dd] = parts;
+    return `${mm}/${dd}/${yyyy}`;
+  };
+
+  const fetchDependents = async () => {
+    try {
+      setIsLoading(true)
+      const { dependents, latestNote } = await getDependents();
+
+      if (!dependents.length) return;
+
+      setDependents(
+        dependents.map((dep: any) => ({
+          dependentId: dep.dependentId,
+          firstName: dep.firstName ?? "",
+          middleName: dep.middleName ?? "",
+          lastName: dep.lastName ?? "",
+          dob: formatDate(dep.dob),
+          months: dep.months ? String(dep.months) : "",
+          depOneSSN: dep.depOneSSN ?? "",
+          date: formatDate(dep.firstEntryDate),
+          isUSCitizen: Boolean(dep.isUSCitizen),
+          notes: dep.notes ?? "",
+          idType: dep.idType ?? "SSN",
+          hasChildcare: Boolean(dep.hasChildcare),
+        }))
+      );
+      setNotes(latestNote);
+    } catch (err) {
+      console.error("Failed to load dependents", err);
+      toast.error("Failed to load dependent data");
+    } finally {
+      setIsLoading(false)
+    }
+  };
+
+  useEffect(() => {
+    fetchDependents();
+  }, []);
+
+  const confirmDeleteDependent = async () => {
+    if (pendingDeleteIndex === null) return;
+
+    const dep = dependents[pendingDeleteIndex];
+
+    try {
+      setIsDeleting(true);
+      if (dep.dependentId) {
+        await deleteDependentById(dep.dependentId);
+      }
+
+      setDependents((prev) =>
+        prev.filter((_, i) => i !== pendingDeleteIndex)
+      );
+
+      toast.success("Dependent deleted successfully");
+    } catch (error) {
+      toast.error("Failed to delete dependent. Please try again.");
+    } finally {
+      setIsDeleting(false);
+      setPendingDeleteIndex(null);
+      setIsDeleteOpen(false);
+    }
+  };
+
+
+  const cancelDeleteDependent = () => {
+    setPendingDeleteIndex(null);
+    setIsDeleteOpen(false);
+  };
+
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center text-[#1D2B48] min-h-[70vh]">
+        <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-white p-6 sm:p-8 w-[100%] max-w-3xl mx-auto">
       <h2 className="text-xl font-semibold text-[#1D2B48] mb-2">DEPENDENTS</h2>
@@ -250,17 +429,24 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
       </p>
 
       {dependents.map((dep, index) => (
-        <div key={index} className="mb-6 relative">
+        <div key={dep.dependentId ?? `new-${index}`} className="mb-6 relative">
           <div className="flex justify-between items-center mb-4">
             <span className="text-lg font-semibold text-[#1D2B48]">
               DEPENDENT {index + 1}
             </span>
 
             {index !== 0 && (
-              <div className="h-6 w-6 flex items-center justify-center bg-red-500 rounded-full cursor-pointer" onClick={() => removeDependent(index)}>
+              <div className="h-6 w-6 flex items-center justify-center bg-red-500 rounded-full cursor-pointer"
+                //onClick={() => removeDependent(index)}
+                onClick={() => {
+                  setPendingDeleteIndex(index);
+                  setIsDeleteOpen(true);
+                }}
+              >
                 <button
                   type="button"
-                  onClick={() => removeDependent(index)}
+                  //onClick={() => removeDependent(index)}
+
                   aria-label={`Remove dependent ${index + 1}`}
                   className="text-white font-bold text-xl leading-none cursor-pointer"
                 >
@@ -313,7 +499,16 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
                 placeholder="MM/DD/YYYY"
                 className="w-1/2 mt-1 border text-[#616161] border-gray-300 rounded-md px-3 py-2 text-sm outline-0"
                 value={dep.dob}
-                onChange={handleDateChangeForDependent(index, "dob")}
+                //onChange={handleDateChangeForDependent(index, "dob")}
+                onChange={handleDateChange(
+                  (val) =>
+                    setDependents((prev) =>
+                      prev.map((d, i) =>
+                        i === index ? { ...d, dob: val } : d
+                      )
+                    ),
+                  getRowRef(dobRefs, index)
+                )}
               />
             </div>
             <div className="flex justify-center items-center">
@@ -389,7 +584,16 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
                 placeholder="MM/DD/YYYY"
                 className="w-1/2 mt-1 border text-[#616161] border-gray-300 rounded-md px-3 py-2 text-sm outline-0"
                 value={dep.date}
-                onChange={handleDateChangeForDependent(index, "date")}
+                //onChange={handleDateChangeForDependent(index, "date")}
+                onChange={handleDateChange(
+                  (val) =>
+                    setDependents((prev) =>
+                      prev.map((d, i) =>
+                        i === index ? { ...d, date: val } : d
+                      )
+                    ),
+                  getRowRef(entryDateRefs, index)
+                )}
               />
             </div>
           </div>
@@ -434,6 +638,12 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
           Next
         </button>
       </div>
+      <DeleteModal
+        isOpen={isDeleteOpen}
+        onConfirm={confirmDeleteDependent}
+        onCancel={cancelDeleteDependent}
+        isLoading={isDeleting}
+      />
     </div>
   );
 }
