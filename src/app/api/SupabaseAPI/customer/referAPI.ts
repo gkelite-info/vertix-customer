@@ -133,3 +133,16 @@ export const createReferral = async (payload: {
 
   if (error) throw error;
 };
+
+export const markReferralAsDeletedByEmail = async (email: string) => {
+  const { error } = await supabase
+    .from("referrals")
+    .update({
+      is_deleted: true,
+      updatedAt: new Date(),
+    })
+    .eq("email", email)
+    .eq("is_deleted", false);
+
+  if (error) throw error;
+};

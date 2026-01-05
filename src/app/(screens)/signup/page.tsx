@@ -8,6 +8,7 @@ import { supabase } from "../../../../utils/supabase/client"
 import { insertCustomer } from "@/app/api/SupabaseAPI/customer/customerApi"
 import TimezoneSelect from "../../../../utils/timezone"
 import RegistrationSuccessModal from "@/components/modals/registrationModal"
+import { markReferralAsDeletedByEmail } from "@/app/api/SupabaseAPI/customer/referAPI"
 
 
 export default function Page() {
@@ -170,6 +171,13 @@ export default function Page() {
           phone: `+${normalizePhone(`${phoneCode}${formData.phone}`)}`,
           timezone: formData.timezone,
         });
+
+        try {
+          await markReferralAsDeletedByEmail(formData.email);
+        } catch (err) {
+          console.warn("Referral cleanup failed:", err);
+        }
+
       }
       setShowSuccessModal(true);
     } catch (err: any) {
