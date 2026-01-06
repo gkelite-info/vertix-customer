@@ -1,6 +1,6 @@
 "use client";
 
-import { getFeeSummaryById } from "@/app/api/SupabaseAPI/customer/feeSummaryAPI";
+import { getFeeSummaryById, markFeeSummaryAsPaid } from "@/app/api/SupabaseAPI/customer/feeSummaryAPI";
 import { acceptPaymentSummary } from "@/app/api/SupabaseAPI/customer/paymentTaxSummaryAPI";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -8,12 +8,10 @@ import { useEffect, useRef, useState } from "react";
 export default function SuccessPage() {
     const searchParams = useSearchParams();
     const summaryId = searchParams.get("summaryId");
-
     const [summary, setSummary] = useState<any>(null);
     const [loading, setLoading] = useState(true);
 
     const hasRun = useRef(false);
-
 
     useEffect(() => {
         const loadSummary = async () => {
@@ -29,6 +27,7 @@ export default function SuccessPage() {
                 const summaryData = await getFeeSummaryById(Number(summaryId));
                 setSummary(summaryData);
 
+                await markFeeSummaryAsPaid(Number(summaryId));
                 await acceptPaymentSummary(Number(summaryId));
             } catch (err) {
                 console.error("Error loading summary:", err);
@@ -85,7 +84,7 @@ export default function SuccessPage() {
 
             <div className="mt-7 text-center">
                 <a
-                    href="/taxfiling?tab=uploaded-by-vertix"
+                    href="/taxfiling?tab=bank-info"
                     className="px-4 py-2 bg-[#1D2B48] text-white lg:text-sm rounded"
                 >
                     Continue Filing

@@ -99,7 +99,7 @@ export default function Page() {
   }, [selectedYear, router])
 
 
-  if (checkingConsent) return <div className="flex justify-center items-center text-[#1D2B48] h-[100vh]">
+  if (checkingConsent) return <div className="bg-white flex justify-center items-center text-[#1D2B48] h-[100vh]">
     <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
   </div>
 
@@ -145,7 +145,7 @@ export default function Page() {
             <AboutYou
               setActiveTab={setActiveTab}
               setHasDependents={setHasDependents}
-              dependent
+              dependent={hasDependents}
             />
           )}
 

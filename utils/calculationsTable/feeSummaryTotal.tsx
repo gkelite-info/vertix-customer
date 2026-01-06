@@ -142,6 +142,7 @@ export default function FeeSummaryTotals({
                     value={row.value}
                     onChange={(e) => row.onChange!(e.target.value)}
                     className="border border-gray-400 rounded px-2 py-1 text-sm text-center w-24 focus:outline-none"
+                    onWheel={(e) => e.currentTarget.blur()}
                   />
                 ) : (
                   <input
@@ -149,6 +150,7 @@ export default function FeeSummaryTotals({
                     value={row.value}
                     onChange={(e) => row.onChange!(Number(e.target.value))}
                     className="border border-gray-400 rounded px-2 py-1 text-sm text-center w-24 focus:outline-none"
+                    onWheel={(e) => e.currentTarget.blur()}
                   />
                 )}
               </td>

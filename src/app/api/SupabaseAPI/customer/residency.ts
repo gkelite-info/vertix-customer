@@ -16,6 +16,59 @@ export type ResidencyPayload = {
     filingYearId: number
 };
 
+export const getResidencyDetails = async (filingYearId: number) => {
+    try {
+        const { data: { user }, error: authError } = await supabase.auth.getUser();
+        if (authError || !user) throw new Error("Not authenticated");
+
+        const { data: customer, error: customerError } = await supabase
+            .from("vertixcustomers")
+            .select("customerId")
+            .eq("auth_id", user.id)
+            .single();
+
+        if (customerError || !customer) throw new Error("Customer not found");
+
+        const customerId = customer.customerId;
+
+        const { data: residency, error: residencyError } = await supabase
+            .from("residencydetails")
+            .select("*")
+            .eq("customerId", customerId)
+            .eq("filingYearId", filingYearId)
+            .is("deletedAt", null)
+            .single();
+
+        if (residencyError?.code === "PGRST116") {
+            return null;
+        }
+        if (residencyError) throw residencyError;
+
+        const { data: migrations, error: migrationError } = await supabase
+            .from("residencymigrations")
+            .select("*")
+            .eq("residencyId", residency.residencyId)
+            // .order("fromDate", { ascending: true });
+
+        if (migrationError) throw migrationError;
+
+        const taxpayerMigrations = migrations.filter(m => !m.isSpouse);
+        const spouseMigrations = migrations.filter(m => m.isSpouse);
+
+        return {
+            residencyId: residency.residencyId,
+            notes: residency.notes ?? "",
+            spouseResidency: residency.spouseResidency,
+            migrations: taxpayerMigrations,
+            spouseMigrations,
+        };
+
+    } catch (error: any) {
+        console.error("Error fetching residency details:", error.message);
+        throw error;
+    }
+};
+
 
 export const upsertResidencyDetails = async (payload: ResidencyPayload) => {
     try {
@@ -47,39 +100,53 @@ export const upsertResidencyDetails = async (payload: ResidencyPayload) => {
         const spouseId = spouse?.spouseId ?? null;
 
         const first = payload.migrations[0];
-        // if (!first.fromDate || !first.toDate) {
-        //     throw new Error("Residency dates are required");
-        // }
-        const { data: residencyRow, error: residencyError } = await supabase
+        const { data: existingResidency } = await supabase
             .from("residencydetails")
-            .insert([
-                {
-                    customerId,
-                    filingYearId: payload.filingYearId,
-                    fromDate: first.fromDate,
-                    toDate: first.toDate,
-                    state: first.state,
-                    country: first.country,
+            .select("residencyId")
+            .eq("customerId", customerId)
+            .eq("filingYearId", payload.filingYearId)
+            .is("deletedAt", null)
+            .single();
+
+        let residencyId: number;
+
+        if (existingResidency) {
+            const { data, error } = await supabase
+                .from("residencydetails")
+                .update({
                     notes: payload.notes || null,
                     spouseResidency: payload.spouseResidency,
                     updatedAt: now,
+                })
+                .eq("residencyId", existingResidency.residencyId)
+                .select()
+                .single();
+
+            if (error) throw error;
+            residencyId = data.residencyId;
+        } else {
+            const { data, error } = await supabase
+                .from("residencydetails")
+                .insert([{
+                    customerId,
+                    filingYearId: payload.filingYearId,
+                    fromDate: payload.migrations[0].fromDate,
+                    toDate: payload.migrations[0].toDate,
+                    state: payload.migrations[0].state,
+                    country: payload.migrations[0].country,
+                    spouseResidency: payload.spouseResidency,
+                    notes: payload.notes || null,
                     createdAt: now,
-                    deletedAt: null,
-                }
-            ])
-            .select()
-            .single();
-        if (residencyError) {
-            if (residencyError.code === "23505") {
-                return { alreadyExists: true };
-            }
-            throw residencyError;
+                    updatedAt: now,
+                    deletedAt: null
+                }])
+                .select()
+                .single();
+
+            if (error) throw error;
+            residencyId = data.residencyId;
         }
 
-        // return { success: true, residencyId: residencyRow.residencyId };
-        // if (residencyError) throw residencyError;
-
-        const residencyId = residencyRow.residencyId;
         await supabase
             .from("residencymigrations")
             .delete()
@@ -131,3 +198,13 @@ export const upsertResidencyDetails = async (payload: ResidencyPayload) => {
         throw error;
     }
 };
+
+export const deleteResidencyMigration = async (migrationId: number) => {
+    const { error } = await supabase
+        .from("residencymigrations")
+        .delete()
+        .eq("migrationId", migrationId);
+
+    if (error) throw error;
+};
+

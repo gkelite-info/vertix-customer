@@ -44,7 +44,7 @@ export default function Page() {
               <br className="hidden sm:inline" />
               claim exemptions for spouses or dependent children if they:
             </p>
- 
+
             <p className="text-[#1C2A46] text-sm mt-3">
               Live with the student in the U.S. during the tax year
               <br className="hidden sm:inline" />
@@ -73,18 +73,17 @@ export default function Page() {
             Dependent Exemption: F-1 and J-1 students can claim exemptions for
             spouses or dependent children if they:
           </p>
- 
           <p className="text-[#1C2A46] text-sm mt-3">
             Live with the student in the U.S. during the tax year Are not
             claimed as dependents by another taxpayer Do not have any U.S. gross
             income Are not on F-2 or J-2 visas (except spouses meeting the above
             criteria) Are U.S. citizen children
           </p>
- 
+
           <p className="text-[#1C2A46] font-semibold text-sm mt-6">
             Dependent Personal Services (Article 16)
           </p>
- 
+
           <p className="text-[#1C2A46] text-sm mt-3">
             Provides treaty exemption for income from work performed in the U.S.
             if both the employee and employer are residents of the other treaty
@@ -97,11 +96,11 @@ export default function Page() {
             back the U.S. income, the exemption may not apply.
             <br className="hidden sm:inline" />
           </p>
- 
+
           <p className="text-[#1C2A46] font-semibold text-sm mt-6">
             Professors, Teachers & Research Scholars (Article 22)
           </p>
- 
+
           <p className="text-[#1C2A46] text-sm mt-3">
             Exempts remuneration from U.S. tax for teaching or research at a
             recognized educational institution for up to two years.
@@ -110,11 +109,11 @@ export default function Page() {
             not primarily for private gain.
             <br className="hidden sm:inline" />
           </p>
- 
+
           <p className="text-[#1C2A46] font-semibold text-sm mt-6">
             Why This Matters:
           </p>
- 
+
           <p className="text-[#1C2A46] text-sm mt-3 mb-10">
             Helps you reduce U.S. taxes legally
             <br className="hidden sm:inline" />

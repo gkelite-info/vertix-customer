@@ -31,7 +31,7 @@ export default function RegistrationSuccessModal({
 
                     <p className="mt-2 text-sm text-gray-500 leading-relaxed">
                         Registration successful! Please check your email to confirm your
-                        account before logging in.
+                        account before logging.
                     </p>
                 </div>
 

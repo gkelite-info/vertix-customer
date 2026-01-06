@@ -2,7 +2,6 @@ export default function Page() {
   return (
     <>
       <div className="flex flex-col items-center bg-[#FFFEFE] overflow-y-auto px-4 gap-6 pb-10 lg:px-4 lg:gap-2 lg:pb-10">
-
         <div className="h-auto w-full flex flex-col items-center mt-6 lg:h-[20%] lg:w-[45%] lg:mt-10">
           <h1 className="border border-b-4 border-l-0 border-t-0 border-r-0 text-[#1D2B48] text-xl font-bold w-fit">
             HEALTHCARE
@@ -10,7 +9,6 @@ export default function Page() {
         </div>
 
         <div className="w-full flex flex-col gap-6 lg:w-[90%] lg:mt-0 lg:flex-row">
-
           <div className="w-full lg:w-[60%] lg:pt-0 lg:pr-7">
             <p className="text-[#1C2A46] text-sm mt-0 lg:mt-0">
               The individual shared responsibility provision of the Health Care
@@ -59,7 +57,6 @@ export default function Page() {
         </div>
 
         <div className="w-full lg:w-[90%]">
-
           <h1 className="text-[#1C2A46] font-medium mt-0 lg:mt-0">
             Will I have to make a payment?
           </h1>

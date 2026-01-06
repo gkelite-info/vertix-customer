@@ -6,9 +6,10 @@ type DeleteModalProps = {
   isOpen: boolean;
   onConfirm: () => void;
   onCancel: () => void;
+  isLoading?: boolean;
 };
 
-export default function DeleteModal({ isOpen, onConfirm, onCancel }: DeleteModalProps) {
+export default function DeleteModal({ isOpen, onConfirm, onCancel , isLoading=false}: DeleteModalProps) {
   return (
     <AnimatePresence>
       {isOpen && (
@@ -31,9 +32,10 @@ export default function DeleteModal({ isOpen, onConfirm, onCancel }: DeleteModal
             <div className="flex justify-center gap-4 mt-6">
               <button
                 onClick={onConfirm}
+                disabled={isLoading}
                 className="bg-red-500 cursor-pointer hover:bg-red-600 text-sm text-white font-medium px-6 py-2 rounded-full transition duration-200"
               >
-                Yes, Delete
+                {isLoading ? "Deleting..." : "Yes, Delete"}
               </button>
               <button
                 onClick={onCancel}

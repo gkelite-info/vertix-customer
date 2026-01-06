@@ -187,7 +187,6 @@ function Header() {
                         ITIN Application Help
                       </Link>
                     </li>
-
                     <div
                       onClick={() => router.push("/amendement_tax_returns")}
                       className="flex items-center justify-between hover:bg-gray-100 px-4 py-2 cursor-pointer"
@@ -230,6 +229,30 @@ function Header() {
                       </div>
                     </li>
 
+                    <li>
+                      <Link
+                        href="/our_accuracy_promise"
+                        className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
+                      >
+                        Accuracy & Support
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/data_protection_privacy"
+                        className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
+                      >
+                        Data Protection & Privacy
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/smart_tax_strategy"
+                        className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
+                      >
+                        Smart Tax Strategy
+                      </Link>
+                    </li>
 
                     <li>
                       <Link
@@ -307,6 +330,15 @@ function Header() {
                     <li>
                       <Link
                         href="/foreign_earned_income_exclusion"
+                        href="/professionals_and_hnis"
+                        className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
+                      >
+                        Professionals and HNIs
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/unreimbursed_expenses"
                         className="block px-4 py-2 hover:bg-gray-100 lg:text-sm"
                       >
                         US Experts (FEIE)

@@ -1,4 +1,5 @@
 export interface Dependent {
+  dependentId?: number;
   firstName: string;
   middleName?: string;
   lastName: string;

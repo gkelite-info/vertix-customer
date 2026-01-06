@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Foreign Earned Income Exclusion (FEIE) | Vertix Tax Solutions",
+  title: "US Experts (FEIE) | Vertix Tax Solutions",
   description:
     "Learn how to exclude up to $130,000 of foreign earnings for tax year 2025. Discover the bona fide residence and physical presence tests with expert guidance from Vertix Tax Solutions.",
   keywords: [

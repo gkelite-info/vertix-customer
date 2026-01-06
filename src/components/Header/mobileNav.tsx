@@ -39,6 +39,7 @@ export default function MobileNav({
       "/tax_treaties",
       "/hsa_ira",
       "/foreign_earned_income_exclusion",
+      "/professionals_and_hnis",
       "/elections",
       "/healthcare",
       "/bankaccount_reporting",
@@ -176,6 +177,8 @@ export default function MobileNav({
                 ["/unreimbursed_expenses", "Unreimbursed Expenses"],
                 ["/hsa", "HSA"],
                 ["/ira", "IRA"]
+                ["/professionals_and_hnis", "Professionals and HNIs"],
+
               ].map(([href, label]) => (
                 <Link
                   key={href}

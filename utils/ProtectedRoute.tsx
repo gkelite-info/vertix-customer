@@ -56,6 +56,7 @@ export default function ProtectedRoute({
       "/foreign_earned_income_exclusion",
       "/hsa",
       "/ira"
+      "/professionals_and_hnis",
     ];
 
     if (!token) {

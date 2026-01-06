@@ -8,6 +8,9 @@ export interface AboutYouPayload {
   customerId: number;
   spouseId?: number | null;
   isMarried: boolean;
+  dob?: string | null;
+  occupation?: string | null;
+  isCitizen?: boolean | null;
 
   firstName: string;
   middleName?: string | null;
@@ -28,7 +31,7 @@ export interface AboutYouPayload {
   updatedAt?: string;
 }
 
-export const getAboutYou = async (customerId: any): Promise<AboutYouPayload | null> => {
+export const getAboutYou = async (): Promise<AboutYouPayload | null> => {
   try {
     const {
       data: { user },
@@ -65,20 +68,12 @@ export const upsertAboutYou = async (
   try {
     const { data, error } = await supabase
       .from("aboutyou")
-      .upsert([payload])
+      .upsert(payload, { onConflict: "customerId" })
       .select()
       .single();
 
-    // if (error) throw error;
-    if (error) {
-      if (error.code === "23505") {
-        return { alreadyExists: true };
-      }
-      throw error;
-    }
-
-    // return data;
-    return { success: true, data };
+    if (error) throw error
+    return data;
   } catch (error: any) {
     console.error("Error saving about you:", error.message);
     throw error;

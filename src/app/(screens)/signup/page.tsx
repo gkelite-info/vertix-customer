@@ -8,6 +8,7 @@ import { supabase } from "../../../../utils/supabase/client"
 import { insertCustomer } from "@/app/api/SupabaseAPI/customer/customerApi"
 import TimezoneSelect from "../../../../utils/timezone"
 import RegistrationSuccessModal from "@/components/modals/registrationModal"
+import { markReferralAsDeletedByEmail } from "@/app/api/SupabaseAPI/customer/referAPI"
 
 
 export default function Page() {
@@ -95,19 +96,15 @@ export default function Page() {
     }
   }
 
-  // const handlePhoneChange = (e: { target: { value: string } }) => {
-  //   let value = e.target.value.replace(/[^0-9-()+ ]/g, "")
-  //   if (value.length > 10 || value.length < 10) {
-  //     value = value.substring(0, 10)
-  //   }
-  //   setPhone(value)
-  //   setFormData((prev) => ({ ...prev, phone: value }))
-  // }
-
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value.replace(/\D/g, "").slice(0, 10);
     setFormData((prev) => ({ ...prev, phone: value }));
   };
+
+  const normalizePhone = (phone: string) => {
+    return phone.replace(/\D/g, "").replace(/^0+/, "");
+  };
+
 
   const handleSignup = async () => {
 
@@ -170,16 +167,45 @@ export default function Page() {
           firstname: formData.firstname,
           lastname: formData.lastname,
           //phone: phoneCode + formData.phone,
-          phone : `${phoneCode}${formData.phone}`,
           email: formData.email,
+          phone: `+${normalizePhone(`${phoneCode}${formData.phone}`)}`,
           timezone: formData.timezone,
         });
+
+        try {
+          await markReferralAsDeletedByEmail(formData.email);
+        } catch (err) {
+          console.warn("Referral cleanup failed:", err);
+        }
+
       }
       setShowSuccessModal(true);
     } catch (err: any) {
-      console.error(err);
-      toast.error(err.message);
-    } finally {
+      console.error("Signup error:", err);
+
+      if (err.code === "23505") {
+        if (err.message.includes("vertixcustomers_email_key")) {
+          toast.error("Email already exists. Please use a different email.");
+          return;
+        }
+
+        if (err.message.includes("vertixcustomers_phone_key")) {
+          toast.error("Mobile number already exists. Please use a different number.");
+          return;
+        }
+
+        toast.error("Account already exists with provided details.");
+        return;
+      }
+
+      if (err.message?.toLowerCase().includes("user already registered")) {
+        toast.error("Email already registered. Please login instead.");
+        return;
+      }
+
+      toast.error("Signup failed. Please try again.");
+    }
+    finally {
       setLoading(false);
     }
   };

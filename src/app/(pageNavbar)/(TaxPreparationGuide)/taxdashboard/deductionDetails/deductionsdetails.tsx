@@ -1,10 +1,10 @@
 'use client'
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Contributions from "./contributions";
 import DeductionAndRent from "./deduction";
 import MedicalExpenses from "./medicalExpenses";
-import { upsertDeductionDetails } from "@/app/api/SupabaseAPI/customer/deductions";
+import { getDeductionDetails, upsertDeductionDetails } from "@/app/api/SupabaseAPI/customer/deductions";
 import toast from "react-hot-toast";
 import { useYear } from "@/app/api/context/yearContext";
 
@@ -69,7 +69,7 @@ export default function DeductionDetails({ setActiveTab }: DeductionProps) {
     const [haveBadDebts, setHaveBadDebts] = useState(false);
     const [additionalExpenses, setAdditionalExpenses] = useState("");
     const [studentLoanUS, setStudentLoanUS] = useState(false);
-
+    const [isLoading, setIsLoading] = useState(false)
     const handleSave = async (button: Buttontype) => {
         const dataToSave: DeductionsInput = {
             hasHealthCoverage,
@@ -101,12 +101,13 @@ export default function DeductionDetails({ setActiveTab }: DeductionProps) {
         try {
             const res = await upsertDeductionDetails([dataToSave]);
 
-            if (res?.alreadyExists) {
-                toast.error("Data already exists");
-                return;
-            }
+            // if (res?.alreadyExists) {
+            //     toast.error("Data already exists");
+            //     return;
+            // }
 
             toast.success("Deduction details saved successfully!");
+            await fetchDeductionDetails();
             if (button === "Next") {
                 setActiveTab("FBAR/FATCA");
             }
@@ -117,6 +118,59 @@ export default function DeductionDetails({ setActiveTab }: DeductionProps) {
             setLoading(false);
         }
     };
+
+    const fetchDeductionDetails = async () => {
+        try {
+            setIsLoading(true)
+            const data = await getDeductionDetails();
+
+            if (!data?.length) return;
+
+            const d = data[0];
+
+            setHasHealthCoverage(d.hasHealthCoverage);
+            setPaidRent(d.paidRent);
+            setRentState(d.rentState ?? "");
+            setRentAmount(d.rentAmount ?? "");
+
+            setOwnHomeUSA(d.ownHomeUSA);
+            setOwnHomeAbroad(d.ownHomeAbroad);
+            setFamilyInsurance(d.familyInsurance);
+            setMedicalExpenses(d.medicalExpenses);
+            setPaidPropertyTax(d.paidPropertyTax);
+            setPropertyTaxName(d.propertyTaxName ?? "");
+            setPropertyTaxDescription(d.propertyTaxDescription ?? "");
+            setPropertyTaxAmount(d.propertyTaxAmount ?? "");
+
+            setCashCharity(d.cashCharity);
+            setContributedIRA(d.contributedIRA);
+            setContributedHSA(d.contributedHSA);
+            setPaidTuition(d.paidTuition);
+            setPaidPriorStateTaxes(d.paidPriorStateTaxes);
+            setHaveBadDebts(d.haveBadDebts);
+            setAdditionalExpenses(d.additionalExpenses ?? "");
+            setStudentLoanUS(d.studentLoanUS);
+        } catch (err) {
+            console.error("Failed to fetch deduction details", err);
+            toast.error("Failed to fetch deduction details")
+        } finally {
+            setIsLoading(false)
+        }
+    };
+
+    useEffect(() => {
+        fetchDeductionDetails();
+    }, []);
+
+
+    if (isLoading) {
+        return (
+            <div className="flex justify-center items-center text-[#1D2B48] min-h-[70vh]">
+                <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+            </div>
+        );
+    }
+
 
     return (
         <div className="bg-red-00">

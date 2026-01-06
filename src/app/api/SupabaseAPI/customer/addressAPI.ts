@@ -12,14 +12,10 @@ export interface AddressPayload {
     state: string;
     zipcode: string;
     note?: string | null;
-
-    createdAt?: string;
-    updatedAt?: string;
+    isDependent?: boolean;
 }
 
-export const getAddress = async (
-    customerId: number
-): Promise<AddressPayload | null> => {
+export const getAddress = async (): Promise<AddressPayload | null> => {
     try {
         const {
             data: { user },
@@ -41,7 +37,7 @@ export const getAddress = async (
             .select("*")
             .eq("customerId", customer.customerId)
             .is("deletedAt", null)
-            .single();
+            .maybeSingle();
 
         if (error && error.code !== "PGRST116") throw error;
 
@@ -52,30 +48,28 @@ export const getAddress = async (
     }
 };
 
-
 export const upsertAddress = async (
     payload: AddressPayload
 ): Promise<UpsertResult> => {
     try {
+        const now = new Date().toISOString();
         const { data, error } = await supabase
             .from("addresses")
-            .insert(
-                [
-                    {
-                        ...payload,
-                        updatedAt: new Date().toISOString(),
-                    },
-                ],
+            .upsert(
+                {
+                    ...payload,
+                    createdAt: now,
+                    updatedAt: now,
+                    deletedAt: null,
+                },
+                {
+                    onConflict: "customerId",
+                }
             )
             .select()
             .single();
 
-        if (error) {
-            if (error.code === "23505") {
-                return { alreadyExists: true };
-            }
-            throw error;
-        }
+        if (error) throw error;
 
         return { success: true, data };
     } catch (error: any) {

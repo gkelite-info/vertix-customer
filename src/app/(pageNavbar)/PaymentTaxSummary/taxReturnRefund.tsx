@@ -9,7 +9,6 @@ import toast from "react-hot-toast";
 import CommentModal from "@/components/modals/commentModal";
 import { useHandleMagicLinkAuth } from "../../../../utils/useHandleMagicLinkAuth";
 import DateForDue from "../BankingInformation/dateForDue";
-import { motion, AnimatePresence } from "framer-motion";
 import PaymentGateway from "../../(screens)/payment-gateway/page";
 import { useRouter } from "next/navigation";
 import { getFeeSummary } from "@/app/api/SupabaseAPI/customer/feeSummaryAPI";
@@ -137,13 +136,13 @@ export default function TaxReturnRefund() {
     setIsModalOpen(true);
   };
 
-  const handleGateway = () => {
-    if (!selectedFeeSummary?.summaryId) {
-      toast.error("Fee summary not found!");
-      return;
-    }
-    router.push(`/payment-gateway?summaryId=${selectedFeeSummary.summaryId}`);
-  };
+  // const handleGateway = () => {
+  //   if (!selectedFeeSummary?.summaryId) {
+  //     toast.error("Fee summary not found!");
+  //     return;
+  //   }
+  //   router.push(`/payment-gateway?summaryId=${selectedFeeSummary.summaryId}`);
+  // };
 
   const handleSaveComment = async (comment: string) => {
     try {

@@ -77,7 +77,7 @@ function Page() {
 
           <div className="w-full mt-5 flex justify-center lg:mt-0 lg:w-[40%]">
             <img
-              src="/non_resident.jpg"
+              src="/assistants_free.jpg"
               alt="tax_forms_guidance"
               className="
                 h-auto w-[90%] rounded-lg object-cover

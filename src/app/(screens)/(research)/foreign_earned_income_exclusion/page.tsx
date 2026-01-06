@@ -6,11 +6,10 @@ function Page() {
       <div className="flex flex-col items-center bg-[#FFFEFE] overflow-y-auto px-3 gap-4 pb-6 lg:px-4 lg:gap-2 lg:pb-10">
         <div className="mt-6 lg:h-[20%] lg:w-[45%] flex flex-col items-center lg:mt-10">
           <h1 className="border border-b-4 border-l-0 border-t-0 border-r-0 text-[#1D2B48] text-xl font-bold w-fit">
-            Foreign Earned Income Exclusion
+            US Experts (FEIE)
           </h1>
         </div>
 
-        {/* This container holds both the top sections and now the Expert Assistance section */}
         <div className="w-full mt-4 flex flex-col lg:flex-row lg:w-[90%] lg:mt-10 lg:flex-wrap">
           <div className="w-full lg:w-[60%] lg:pt-5 lg:pr-7">
             <p className="text-[#1C2A46] text-sm lg:mt-3">
@@ -62,7 +61,6 @@ function Page() {
               , providing further tax relief for qualified living expenses.
             </p>
 
-            {/* Expert Assistance is now inside the 60% column so it doesn't wait for the image */}
             <div className="w-full mt-4 lg:mt-8">
               <h1 className="text-[#1C2A46] font-semibold mt-0">
                 Expert Assistance
@@ -85,8 +83,8 @@ function Page() {
 
           <div className="w-full mt-4 flex justify-center lg:mt-0 lg:w-[40%] lg:pl-10">
             <img
-              src="/outside_accounts.jpg"
-              alt="outside_accounts.jpg"
+              src="/feie.jpg"
+              alt="feie.jpg"
               className="h-auto w-[90%] rounded-lg object-cover lg:w-[80%]"
             />
           </div>
