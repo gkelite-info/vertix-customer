@@ -68,7 +68,6 @@ export default function Page() {
             />
           </div>
         </div>
- 
         <div className="w-full lg:w-[90%] flex flex-col">
           <p className="text-[#1C2A46] text-sm mt-3">
             Dependent Exemption: F-1 and J-1 students can claim exemptions for
