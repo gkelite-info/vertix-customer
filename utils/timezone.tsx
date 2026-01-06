@@ -12,7 +12,7 @@ export default function TimezoneSelect({ value, onChange, width = "w-[100%] mb-0
 
     const handleChange = (e: { target: { value: SetStateAction<string>; }; }) => {
         setTimezone(e.target.value);
-    };
+    }; 
 
     return (
         <div className={`bg-red-00 flex flex-col ${width}`}>
