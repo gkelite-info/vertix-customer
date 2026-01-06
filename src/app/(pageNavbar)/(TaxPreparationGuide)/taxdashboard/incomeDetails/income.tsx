@@ -63,7 +63,7 @@ export default function IncomeDetails({
                         />
                         <select
                             className="text-xs text-[#1D2B48] focus:outline-none"
-                            onChange={(e)=> setSpouseCount(Number(e.target.value))}
+                            onChange={(e) => setSpouseCount(Number(e.target.value))}
                         >
                             <option value="">Choose</option>
                             {Array.from({ length: 10 }, (_, i) => i + 1).map(num => (
