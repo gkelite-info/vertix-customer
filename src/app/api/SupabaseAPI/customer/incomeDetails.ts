@@ -18,10 +18,11 @@ interface IncomeDetailsInput {
   receivedDividendIncome?: boolean;
   receivedPriorYearStateRefund?: boolean;
   additionalIncome?: string | null;
-  w2UploadPath?: string | null;
 }
 
-export const getIncomeDetails = async () => {
+export const getIncomeDetails = async (filingYearId?: number | null) => {
+  if (!filingYearId) return null;
+
   try {
     const {
       data: { user },
@@ -43,11 +44,14 @@ export const getIncomeDetails = async () => {
     const { data, error } = await supabase
       .from("incomedetails")
       .select("*")
-      .eq("customerId", customerId);
+      .eq("customerId", customerId)
+      .eq("filingYearId", filingYearId)
+      .maybeSingle();
 
     if (error) throw error;
 
-    return data || [];
+    // return data || [];
+    return data ?? null;
   } catch (error: any) {
     console.error("Error fetching income details:", error.message);
     throw error;
@@ -80,37 +84,31 @@ export const upsertIncomeDetails = async (
     const dbIncomeDetails = incomeDetailsArray.map((income) => ({
       customerId,
       filingYearId: income.filingYearId,
-      hasWagesSalaryTipsTaxpayer: income.hasWagesSalaryTipsTaxpayer,
+      hasWagesSalaryTipsTaxpayer: income.hasWagesSalaryTipsTaxpayer ?? false,
       taxpayerEmployer: income.taxpayerEmployer ?? [],
-      hasWagesSalaryTipsSpouse: income.hasWagesSalaryTipsSpouse,
+      hasWagesSalaryTipsSpouse: income.hasWagesSalaryTipsSpouse ?? false,
       spouseEmployer: income.spouseEmployer ?? [],
-      earnedWagesOrSalary: income.earnedWagesOrSalary,
-      receivedBusinessEntityIncome: income.receivedBusinessEntityIncome,
-      receivedContractOrGigIncome: income.receivedContractOrGigIncome,
-      hadRentalPropertyIncomeOrLoss: income.hadRentalPropertyIncomeOrLoss,
-      receivedHsaOrMsaDistribution: income.receivedHsaOrMsaDistribution,
-      receivedIraDistribution: income.receivedIraDistribution,
+      earnedWagesOrSalary: income.earnedWagesOrSalary ?? false,
+      receivedBusinessEntityIncome: income.receivedBusinessEntityIncome ?? false,
+      receivedContractOrGigIncome: income.receivedContractOrGigIncome ?? false,
+      hadRentalPropertyIncomeOrLoss: income.hadRentalPropertyIncomeOrLoss ?? false,
+      receivedHsaOrMsaDistribution: income.receivedHsaOrMsaDistribution ?? false,
+      receivedIraDistribution: income.receivedIraDistribution ?? false,
       soldInvestments: income.soldInvestments ?? false,
       receivedInterestIncome: income.receivedInterestIncome ?? false,
       receivedDividendIncome: income.receivedDividendIncome ?? false,
       receivedPriorYearStateRefund: income.receivedPriorYearStateRefund ?? false,
       additionalIncome: income.additionalIncome ?? null,
-      w2UploadPath: income.w2UploadPath ?? null,
       createdAt: income.createdAt ?? new Date(),
       updatedAt: now,
     }));
 
     const { data, error } = await supabase
       .from("incomedetails")
-      .insert(dbIncomeDetails,)
+      .upsert(dbIncomeDetails, {
+        onConflict: "customerId,filingYearId",
+      })
       .select();
-
-    if (error) {
-      if (error.code === "23505") {
-        return { alreadyExists: true };
-      }
-      throw error;
-    }
 
     return { success: true, data };
     // return data || [];

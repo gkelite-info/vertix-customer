@@ -34,7 +34,11 @@ export default function TaxPayerInfo({
             type="text"
             value={taxpayerEmployer[i] || ""}
             onChange={(e) => {
-              const updated = [...taxpayerEmployer];
+              // const updated = [...taxpayerEmployer];
+              const updated = Array.isArray(taxpayerEmployer)
+                ? [...taxpayerEmployer]
+                : [];
+
               updated[i] = e.target.value;
 
               if (!validateEmployer(e.target.value)) {
@@ -58,7 +62,11 @@ export default function TaxPayerInfo({
             type="text"
             value={spouseEmployer[i] || ""}
             onChange={(e) => {
-              const updated = [...spouseEmployer];
+              // const updated = [...spouseEmployer];
+              const updated = Array.isArray(spouseEmployer)
+                ? [...spouseEmployer]
+                : [];
+
               updated[i] = e.target.value;
 
               if (!validateEmployer(e.target.value)) {
