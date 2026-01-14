@@ -35,7 +35,7 @@ const Footer = () => {
 
               <div className="flex">
                 <strong className="text-white flex-shrink-0">Email :</strong>
-                <p className="pl-3 text-[#D1D5DC]">Vertixtax@gmail.com</p>
+                <p className="pl-3 text-[#D1D5DC]">info@vertixtax.com</p>
               </div>
             </div>
 
