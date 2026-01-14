@@ -26,11 +26,11 @@ export default function TimezoneSelect({ value, onChange, width = "w-[100%] mb-0
                     className="border border-gray-300 w-[90%] rounded text-[#1D2B48] px-2 py-2 mt-1 focus:outline-none w-full text-sm"
                 >
                     <option>Choose</option>
-                    <option value="America/New_York">Eastern time (EST)</option>
-                    <option value="Europe/London">Central time (CST)</option>
-                    <option value="Asia/Dubai">Mountain time (MST)</option>
-                    <option value="Australia/Sydney">Pacific time (PST)</option>
-                    <option value="Asia/Kolkata">India (IST)</option>
+                    <option value="Eastern time (EST)">Eastern time (EST)</option>
+                    <option value="Central time (CST)">Central time (CST)</option>
+                    <option value="Mountain time (MST)">Mountain time (MST)</option>
+                    <option value="Pacific time (PST)">Pacific time (PST)</option>
+                    <option value="India (IST)">India (IST)</option>
                 </select>
             </div>
         </div>
