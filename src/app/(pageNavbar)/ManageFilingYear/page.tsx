@@ -13,7 +13,7 @@ export default function ManageFilingYear() {
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
 
-  const currentYear = new Date().getFullYear();
+  const currentYear = new Date().getFullYear() - 1;
   const startYear = 2020;
   const years = Array.from(
     { length: currentYear - startYear + 1 },

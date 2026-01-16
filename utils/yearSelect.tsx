@@ -16,7 +16,7 @@ export default function YearSelect({ style = "" }: YearSelectProps) {
   const [customerId, setCustomerId] = useState<string | number>("");
   const { selectedYear, setSelectedYear } = useYear();
 
-  const currentYear = new Date().getFullYear();
+  const currentYear = new Date().getFullYear() - 1;
   const startYear = 2020;
   const years = Array.from(
     { length: currentYear - startYear + 1 },
