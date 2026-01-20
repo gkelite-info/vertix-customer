@@ -41,9 +41,9 @@ export default function TaxPayerInfo({
 
               updated[i] = e.target.value;
 
-              if (!validateEmployer(e.target.value)) {
-                toast.error("Taxpayer employer must contain at least one alphabet");
-              }
+              // if (!validateEmployer(e.target.value)) {
+              //   toast.error("Taxpayer employer must contain at least one alphabet");
+              // }
 
               setTaxpayerEmployer(updated);
             }}
@@ -69,9 +69,9 @@ export default function TaxPayerInfo({
 
               updated[i] = e.target.value;
 
-              if (!validateEmployer(e.target.value)) {
-                toast.error("Spouse employer must contain at least one alphabet");
-              }
+              // if (!validateEmployer(e.target.value)) {
+              //   toast.error("Spouse employer must contain at least one alphabet");
+              // }
 
               setSpouseEmployer(updated);
             }}

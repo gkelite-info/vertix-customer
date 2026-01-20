@@ -70,7 +70,14 @@ export default function DeductionDetails({ setActiveTab }: DeductionProps) {
     const [additionalExpenses, setAdditionalExpenses] = useState("");
     const [studentLoanUS, setStudentLoanUS] = useState(false);
     const [isLoading, setIsLoading] = useState(false)
+
     const handleSave = async (button: Buttontype) => {
+
+        if (!filingYearId) {
+            toast.error("Filing year not selected. Please try again.");
+            return;
+        }
+
         const dataToSave: DeductionsInput = {
             hasHealthCoverage,
             paidRent,
@@ -97,9 +104,9 @@ export default function DeductionDetails({ setActiveTab }: DeductionProps) {
             filingYearId: filingYearId
 
         };
-        setLoading(true);
         try {
-            const res = await upsertDeductionDetails([dataToSave]);
+            setLoading(true);
+            await upsertDeductionDetails([dataToSave]);
 
             // if (res?.alreadyExists) {
             //     toast.error("Data already exists");

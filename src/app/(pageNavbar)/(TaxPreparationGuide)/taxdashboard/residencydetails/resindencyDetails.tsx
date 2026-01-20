@@ -86,16 +86,16 @@ export default function ResidencyDetails({ setActiveTab }: { setActiveTab: (tab:
         }
         setLoading(true);
         try {
-            const isValidMigration = migrationList.every(m =>
-                m.fromDate && m.toDate && m.state && m.country
-            );
+            // const isValidMigration = migrationList.every(m =>
+            //     m.fromDate && m.toDate && m.state && m.country
+            // );
 
-            if (!isValidMigration) {
-                toast.error("Please fill all residency details");
-                return;
-            }
+            // if (!isValidMigration) {
+            //     toast.error("Please fill all residency details");
+            //     return;
+            // }
 
-            const res = await upsertResidencyDetails({
+            await upsertResidencyDetails({
                 migrations: migrationList,
                 spouseMigrations: spouseResidency ? [] : spouseMigrationList,
                 notes,

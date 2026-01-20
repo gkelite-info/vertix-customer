@@ -210,20 +210,20 @@ export default function AboutYou({ setActiveTab, setHasDependents, dependent }: 
                 setter(formatted);
             };
 
-    const validateBeforeSubmit = () => {
+    // const validateBeforeSubmit = () => {
 
-        if (!firstName || !lastName) return "First and Last Name are required";
-        if (!dob) return "Date of Birth is required";
-        if (!occupation) return "Occupation is required";
-        if (!yourSSNValue) return "SSN / ITIN value is required";
-        if (!monthsInUS || isNaN(Number(monthsInUS))) return "Months in US must be a number";
+    // if (!firstName || !lastName) return "First and Last Name are required";
+    // if (!dob) return "Date of Birth is required";
+    // if (!occupation) return "Occupation is required";
+    // if (!yourSSNValue) return "SSN / ITIN value is required";
+    // if (!monthsInUS || isNaN(Number(monthsInUS))) return "Months in US must be a number";
 
-        if (isMarried) {
-            if (!spouseFirstName || !spouseLastName) return "Spouse First and Last Name are required";
-            if (!spouseDOB) return "Spouse Date of Birth is required";
-        }
-        return null;
-    };
+    // if (isMarried) {
+    //     if (!spouseFirstName || !spouseLastName) return "Spouse First and Last Name are required";
+    //     if (!spouseDOB) return "Spouse Date of Birth is required";
+    // }
+    // return null;
+    // };
 
     function parseDateToISOString(dateStr: string): string | null {
         if (!dateStr) return null;
@@ -242,11 +242,11 @@ export default function AboutYou({ setActiveTab, setHasDependents, dependent }: 
 
 
     const handleSave = async (button: Buttontype) => {
-        const validationError = validateBeforeSubmit();
-        if (validationError) {
-            toast.error(validationError);
-            return false;
-        }
+        // const validationError = validateBeforeSubmit();
+        // if (validationError) {
+        //     toast.error(validationError);
+        //     return false;
+        // }
 
         setLoading(true);
 
@@ -289,8 +289,8 @@ export default function AboutYou({ setActiveTab, setHasDependents, dependent }: 
                 };
 
 
-                const spouseRes = await upsertSpouse(spousePayload);
-                spouseId = spouseRes?.spouseId ?? null;
+                // const spouseRes = await upsertSpouse(spousePayload);
+                // spouseId = spouseRes?.spouseId ?? null;
             }
 
             const aboutPayload = {
@@ -318,32 +318,42 @@ export default function AboutYou({ setActiveTab, setHasDependents, dependent }: 
                 citizenshipCountry: citizenshipCountry || null,
             };
 
-            if (!street || !city || !state || !zipcode) {
-                toast.error("Please complete address details");
-                setLoading(false);
-                return;
-            }
+            // if (!street || !city || !state || !zipcode) {
+            //     toast.error("Please complete address details");
+            //     setLoading(false);
+            //     return;
+            // }
 
             await upsertAboutYou(aboutPayload);
 
-            if (street || city || state || zipcode || note) {
-                await upsertAddress({
-                    customerId,
-                    street: street.trim(),
-                    city: city.trim(),
-                    state: state.trim(),
-                    zipcode: zipcode.trim(),
-                    note: note || null,
-                    isDependent: isDependent
-                });
-            }
+            // if (street || city || state || zipcode || note) {
+            // await upsertAddress({
+            //     customerId,
+            //     street: street.trim(),
+            //     city: city.trim(),
+            //     state: state.trim(),
+            //     zipcode: zipcode.trim(),
+            //     note: note || null,
+            //     isDependent: isDependent
+            // });
+            // }
+
+            await upsertAddress({
+                customerId,
+                street: street.trim(),
+                city: city.trim(),
+                state: state.trim(),
+                zipcode: zipcode.trim(),
+                note: note || null,
+                isDependent: isDependent
+            });
 
             toast.success("Details saved successfully!");
             await loadAboutYou();
             return true;
         } catch (error) {
-            console.error("Error saving data:", error);
             toast.error("Failed to save details.");
+            console.error("Error saving data:", error);
             return false;
         } finally {
             setLoading(false);

@@ -253,39 +253,39 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
   };
 
   const handleSave = async (button: Buttontype) => {
-    const errors = dependents
-      .map((dep, index) => {
-        const label = `Dependent ${index + 1}`;
+    // const errors = dependents
+    //   .map((dep, index) => {
+    //     const label = `Dependent ${index + 1}`;
 
-        if (!dep.firstName.trim())
-          return `${label}: First Name is required`;
+    //     if (!dep.firstName.trim())
+    //       return `${label}: First Name is required`;
 
-        if (!dep.lastName.trim())
-          return `${label}: Last Name is required`;
+    //     if (!dep.lastName.trim())
+    //       return `${label}: Last Name is required`;
 
-        if (!dep.dob.trim())
-          return `${label}: Date of Birth is required`;
+    //     if (!dep.dob.trim())
+    //       return `${label}: Date of Birth is required`;
 
-        if (!dep.months.trim())
-          return `${label}: Months stayed in US is required`;
+    //     if (!dep.months.trim())
+    //       return `${label}: Months stayed in US is required`;
 
-        if (isNaN(Number(dep.months)))
-          return `${label}: Months must be a number`;
+    //     if (isNaN(Number(dep.months)))
+    //       return `${label}: Months must be a number`;
 
-        if (dep.idType !== "NEED TO APPLY" && !dep.depOneSSN.trim())
-          return `${label}: SSN / ITIN number is required`;
+    //     if (dep.idType !== "NEED TO APPLY" && !dep.depOneSSN.trim())
+    //       return `${label}: SSN / ITIN number is required`;
 
-        if (!dep.date.trim())
-          return `${label}: First date of entry in US is required`;
+    //     if (!dep.date.trim())
+    //       return `${label}: First date of entry in US is required`;
 
-        return null;
-      })
-      .find(Boolean);
+    //     return null;
+    //   })
+    //   .find(Boolean);
 
-    if (errors) {
-      toast.error(errors);
-      return;
-    }
+    // if (errors) {
+    //   toast.error(errors);
+    //   return;
+    // }
 
     try {
       setLoading(true);
@@ -298,21 +298,20 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
         dependentsWithNotes,
         deletedDependentIds
       );
-      // toast.success("Dependents saved successfully!");
-      // // setNotes("");
-      // setDeletedDependentIds([]);
-      // await fetchDependents()
-      // if (button === "Next") {
-      //   setActiveTab("Residency Details");
-      // }
-      if (result) {
-        toast.success("Dependents saved successfully!");
-        setDeletedDependentIds([]);
-        await fetchDependents();
-        if (button === "Next") {
-          setActiveTab("Residency Details");
-        }
+      toast.success("Dependents saved successfully!");
+      // setNotes("");
+      setDeletedDependentIds([]);
+      await fetchDependents()
+      if (button === "Next") {
+        setActiveTab("Residency Details");
       }
+      // if (result) {
+      //   setDeletedDependentIds([]);
+      //   await fetchDependents();
+      //   if (button === "Next") {
+      //     setActiveTab("Residency Details");
+      //   }
+      // }
     } catch (error) {
       console.error("Failed to save dependents:", error);
       toast.error("Failed to save dependents. Please try again.");
