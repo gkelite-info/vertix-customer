@@ -7,6 +7,7 @@ import { deleteDependentById, getDependents, upsertDependents } from "@/app/api/
 import toast from "react-hot-toast";
 import { useYear } from "@/app/api/context/yearContext";
 import DeleteModal from "@/components/modals/deleteModal";
+import { isFbarFatcaSubmitted } from "@/app/api/SupabaseAPI/customer/fbarAPI";
 
 type Tab =
   | "About You"
@@ -61,7 +62,30 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [pendingDeleteIndex, setPendingDeleteIndex] = useState<number | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
-  const { selectedYear } = useYear();
+  const { selectedYear, filingYearId } = useYear();
+  const [isLocked, setIsLocked] = useState(false);
+  const [checkingStatus, setCheckingStatus] = useState(true);
+
+  useEffect(() => {
+    checkYearLockStatus();
+  }, [selectedYear, filingYearId]);
+
+  const checkYearLockStatus = async () => {
+    try {
+      setCheckingStatus(true);
+
+      const yearNumber = Number(filingYearId);
+      if (!yearNumber) return;
+
+      const alreadySubmitted = await isFbarFatcaSubmitted(yearNumber);
+      setIsLocked(alreadySubmitted);
+    } catch (error) {
+      console.error("Failed to check year lock status:", error);
+    } finally {
+      setCheckingStatus(false);
+    }
+  };
+
 
   const handleDateChange =
     (
@@ -410,7 +434,7 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
   };
 
 
-  if (isLoading) {
+  if (isLoading || checkingStatus) {
     return (
       <div className="flex justify-center items-center text-[#1D2B48] min-h-[70vh]">
         <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
@@ -462,8 +486,11 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
               <input
                 type="text"
                 placeholder="Enter First Name"
-                className="w-1/2 mt-1 border text-[#616161] border-gray-300 rounded-md px-3 py-2 text-sm outline-0"
+                className={`w-1/2 mt-1 border text-[#616161] border-gray-300 rounded-md px-3 py-2 text-sm outline-0
+                  ${isLocked && "cursor-not-allowed"}
+                  `}
                 value={dep.firstName}
+                disabled={isLocked}
                 onChange={(e) => handleNameChange(e.target.value, index, "firstName")}
               />
             </div>
@@ -472,8 +499,11 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
               <input
                 type="text"
                 placeholder="Enter Middle Name"
-                className="w-1/2 mt-1 border text-[#616161] border-gray-300 rounded-md px-3 py-2 text-sm outline-0"
+                className={`w-1/2 mt-1 border text-[#616161] border-gray-300 rounded-md px-3 py-2 text-sm outline-0
+                  ${isLocked && "cursor-not-allowed"}
+                  `}
                 value={dep.middleName}
+                disabled={isLocked}
                 onChange={(e) => handleNameChange(e.target.value, index, "middleName")}
               />
             </div>
@@ -484,8 +514,11 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
               <input
                 type="text"
                 placeholder="Enter Last Name"
-                className="w-1/2 mt-1 border text-[#616161] border-gray-300 rounded-md px-3 py-2 text-sm outline-0"
+                className={`w-1/2 mt-1 border text-[#616161] border-gray-300 rounded-md px-3 py-2 text-sm outline-0
+                  ${isLocked && "cursor-not-allowed"}
+                  `}
                 value={dep.lastName}
+                disabled={isLocked}
                 onChange={(e) => handleNameChange(e.target.value, index, "lastName")}
               />
             </div>
@@ -496,8 +529,11 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
               <input
                 type="text"
                 placeholder="MM/DD/YYYY"
-                className="w-1/2 mt-1 border text-[#616161] border-gray-300 rounded-md px-3 py-2 text-sm outline-0"
+                className={`w-1/2 mt-1 border text-[#616161] border-gray-300 rounded-md px-3 py-2 text-sm outline-0
+                  ${isLocked && "cursor-not-allowed"}
+                  `}
                 value={dep.dob}
+                disabled={isLocked}
                 //onChange={handleDateChangeForDependent(index, "dob")}
                 onChange={handleDateChange(
                   (val) =>
@@ -515,8 +551,11 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
               <input
                 type="text"
                 placeholder="Enter months"
-                className="w-1/2 mt-1 border text-[#616161] border-gray-300 rounded-md px-3 py-2 text-sm outline-0"
+                className={`w-1/2 mt-1 border text-[#616161] border-gray-300 rounded-md px-3 py-2 text-sm outline-0
+                  ${isLocked && "cursor-not-allowed"}
+                  `}
                 value={dep.months}
+                disabled={isLocked}
                 onChange={(e) => handleInputChange(e.target.value, index, "months", /[^0-9]/g)}
               />
             </div>
@@ -528,6 +567,7 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
                   labelLeft="No"
                   labelRight="Yes"
                   onToggle={(val) => handleToggleChange(val, index, "hasChildcare")}
+                  disabled={isLocked}
                 />
               </div>
             </div>
@@ -539,8 +579,9 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
                 <ThreeOptionToggle
                   options={["SSN", "ITIN", "NEED TO APPLY"] as ("SSN" | "ITIN" | "NEED TO APPLY")[]}
                   value={dep.idType}
-                  onChange={(val) => handleIdTypeChange(val as "SSN" | "ITIN" | "NEED TO APPLY", index)}
+                  onChange={(val) => !isLocked && handleIdTypeChange(val as "SSN" | "ITIN" | "NEED TO APPLY", index)}
                   style="w-full"
+                  disabled={isLocked}
                 />
               </div>
             </div>
@@ -549,8 +590,9 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
               <input
                 type="text"
                 placeholder="XXX-XX-XXXX"
-                className="w-1/2 mt-1 border text-[#616161] border-gray-300 rounded-md px-3 py-2 text-sm outline-0"
+                className={`w-1/2 mt-1 border text-[#616161] border-gray-300 rounded-md px-3 py-2 text-sm outline-0 ${isLocked && "cursor-not-allowed"}`}
                 value={dep.depOneSSN}
+                disabled={isLocked}
                 //onChange={(e) => handleInputChange(e.target.value, index, "depOneSSN", /[^0-9-]/g, 11)}
                 onChange={(e) => {
                   const formatted = formatSSN(e.target.value);
@@ -572,6 +614,7 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
                   labelLeft="No"
                   labelRight="Yes"
                   onToggle={(val) => handleToggleChange(val, index, "isUSCitizen")}
+                  disabled={isLocked}
                 />
               </div>
             </div>
@@ -581,9 +624,10 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
               <input
                 type="text"
                 placeholder="MM/DD/YYYY"
-                className="w-1/2 mt-1 border text-[#616161] border-gray-300 rounded-md px-3 py-2 text-sm outline-0"
+                className={`w-1/2 mt-1 border text-[#616161] border-gray-300 rounded-md px-3 py-2 text-sm outline-0 ${isLocked && "cursor-not-allowed"}`}
                 value={dep.date}
                 //onChange={handleDateChangeForDependent(index, "date")}
+                disabled={isLocked}
                 onChange={handleDateChange(
                   (val) =>
                     setDependents((prev) =>
@@ -600,7 +644,11 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
       ))}
       <button
         onClick={addDependent}
-        className="bg-[#1D2A46] cursor-pointer w-[30%] text-white px-5 py-2 rounded-md text-sm font-medium mt-4 hover:bg-opacity-90"
+        disabled={isLocked}
+        style={{
+          cursor: isLocked ? "not-allowed" : "pointer",
+        }}
+        className={`bg-[#1D2A46] cursor-pointer w-[30%] text-white px-5 py-2 rounded-md text-sm font-medium mt-4 hover:bg-opacity-90 ${isLocked && "cursor-not-allowed"}`}
       >
         Add Dependent
       </button>
@@ -609,8 +657,9 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
         <textarea
           rows={4}
           value={notes}
+          disabled={isLocked}
           onChange={(e) => setNotes(e.target.value)}
-          className="w-full text-[#616161] mt-1 border border-gray-300 rounded-md px-3 py-2 text-sm outline-0"
+          className={`w-full text-[#616161] mt-1 border border-gray-300 rounded-md px-3 py-2 text-sm outline-0 ${isLocked && "cursor-not-allowed"}`}
         />
       </div>
 
@@ -622,8 +671,11 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
         </button>
         <button
           onClick={() => handleSave("Save")}
-          className="py-2 w-[13%] cursor-pointer bg-[#1D2A46] text-white rounded-md text-sm font-medium hover:bg-opacity-90"
-          disabled={loading}
+          className={`py-2 w-[13%] bg-[#1D2A46] text-white rounded-md text-sm font-medium hover:bg-opacity-90 cursor-pointer`}
+          style={{
+            cursor: isLocked ? "not-allowed" : "pointer",
+          }}
+          disabled={loading || isLocked}
         >
           {loading ? "Saving..." : "Save"}
         </button>
@@ -632,7 +684,10 @@ export default function Dependents({ setActiveTab }: DependentsProps) {
             handleSave("Next")
           }
           className="py-2 w-[13%] cursor-pointer bg-[#1D2A46] text-white rounded-md text-sm font-medium hover:bg-opacity-90"
-          disabled={loading}
+          disabled={loading || isLocked}
+          style={{
+            cursor: isLocked ? "not-allowed" : "pointer",
+          }}
         >
           Next
         </button>

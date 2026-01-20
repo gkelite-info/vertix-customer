@@ -26,7 +26,7 @@ export interface FilingYearData {
 }
 
 export const updateFilingYearWithDetails = async (
-    year: number,
+    filingYearId: number,
     hasForeignAccount: boolean,
     exceededLimit: string,
 ): Promise<FilingYearData> => {
@@ -49,18 +49,29 @@ export const updateFilingYearWithDetails = async (
         const customerId = customer.customerId;
         const now = new Date().toISOString();
 
+        const { data: filingYear, error: filingYearError } = await supabase
+            .from("filing_year")
+            .select("filingYearId")
+            .eq("filingYearId", filingYearId)
+            .eq("customerId", customerId)
+            .single();
+
+        if (filingYearError || !filingYear) {
+            throw new Error("Invalid filing year");
+        }
+
         const { data: fbarData, error: fbarError } = await supabase
             .from("fbar_fatca")
             .upsert([
                 {
                     customerId,
-                    year,
+                    filingYearId,
                     hasForeignAccount,
                     exceededLimit,
                     updatedAt: now,
                     createdAt: now,
                 }
-            ], { onConflict: "customerId, year" })
+            ], { onConflict: "filingYearId" })
             .select()
             .single();
 
@@ -114,7 +125,7 @@ export const updateFilingYearWithDetails = async (
                 updatedAt: now,
             })
             .eq("customerId", customerId)
-            .eq("year", year)
+            .eq("filingYearId", filingYearId)
             .select()
             .single();
 
@@ -127,3 +138,24 @@ export const updateFilingYearWithDetails = async (
         throw error;
     }
 };
+
+export const isFbarFatcaSubmitted = async (
+    filingYearId: number
+): Promise<boolean> => {
+    if (!filingYearId) return false;
+
+    const { data, error } = await supabase
+        .from("fbar_fatca")
+        .select("fbarFatcaId")
+        .eq("filingYearId", filingYearId)
+        .maybeSingle();
+
+    if (error) {
+        console.error("FBAR/FATCA check error:", error);
+        return false; // 🔧 CHANGE: fail-safe for UI
+    }
+
+    return Boolean(data); // true = already submitted
+};
+
+

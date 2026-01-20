@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import MigrationCard from "./migrationCard";
 import DeleteModal from "@/components/modals/deleteModal";
+import { isFbarFatcaSubmitted } from "@/app/api/SupabaseAPI/customer/fbarAPI";
 
 type Tab = "Dependents" | "Residency Details" | "Income Details";
 
@@ -41,6 +42,28 @@ export default function ResidencyDetails({ setActiveTab }: { setActiveTab: (tab:
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
     const [selectedMigrationId, setSelectedMigrationId] = useState<number | null>(null);
     const [deleteLoading, setDeleteLoading] = useState(false);
+    const [isLocked, setIsLocked] = useState(false);
+    const [checkingStatus, setCheckingStatus] = useState(true);
+
+    useEffect(() => {
+        checkYearLockStatus();
+    }, [selectedYear, filingYearId]);
+
+    const checkYearLockStatus = async () => {
+        try {
+            setCheckingStatus(true);
+
+            const yearNumber = Number(filingYearId);
+            if (!yearNumber) return;
+
+            const alreadySubmitted = await isFbarFatcaSubmitted(yearNumber);
+            setIsLocked(alreadySubmitted);
+        } catch (error) {
+            console.error("Failed to check year lock status:", error);
+        } finally {
+            setCheckingStatus(false);
+        }
+    };
 
 
     const updateField = (index: number, field: MigrationField, value: string) => {
@@ -217,7 +240,7 @@ export default function ResidencyDetails({ setActiveTab }: { setActiveTab: (tab:
 
 
 
-    if (isLoading) {
+    if (isLoading || checkingStatus) {
         return (
             <div className="flex justify-center items-center text-[#1D2B48] min-h-[70vh]">
                 <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
@@ -247,6 +270,7 @@ export default function ResidencyDetails({ setActiveTab }: { setActiveTab: (tab:
                                 setCountry={(v) => updateField(index, "country", v)}
                                 onAddMore={index === migrationList.length - 1 ? addMore : undefined}
                                 onDelete={() => requestDelete(item, index, false)}
+                                disabled={isLocked}
                             />
                         ))}
                     </div>
@@ -255,18 +279,19 @@ export default function ResidencyDetails({ setActiveTab }: { setActiveTab: (tab:
                     <div className="bg-red-00 flex gap-28 w-[100%] items-center mt-4">
                         <h4 className="text-[#3E3E3E] font-medium text-sm">Same details applicable for your spouse ?</h4>
 
-                        <div className="flex items-center gap-2">
+                        <div className={`flex items-center gap-2 ${isLocked && "cursor-not-allowed"}`}>
                             <span className={`text-sm font-semibold ${!spouseResidency ? 'text-[#2F3F5F]' : 'text-[#2F3F5F]'}`}>
                                 No
                             </span>
 
                             <button
                                 onClick={() => setSpouseResidency(!spouseResidency)}
-                                className={`w-12 h-6 flex cursor-pointer items-center rounded-full p-1 transition-colors duration-300
+                                disabled={isLocked}
+                                className={`w-12 h-6 flex cursor-pointer items-center rounded-full p-1 transition-colors duration-300 ${isLocked && "cursor-not-allowed"}
             ${spouseResidency ? 'bg-blue-500' : 'bg-gray-300'}`}
                             >
                                 <div
-                                    className={`bg-white w-4 h-4 rounded-full shadow-md transform duration-300
+                                    className={`bg-white w-4 h-4 rounded-full shadow-md transform duration-300 ${isLocked && "cursor-not-allowed"}
               ${spouseResidency ? 'translate-x-6' : 'translate-x-0'}`}
                                 ></div>
                             </button>
@@ -294,6 +319,7 @@ export default function ResidencyDetails({ setActiveTab }: { setActiveTab: (tab:
                                     setCountry={(v) => updateSpouseField(index, "country", v)}
                                     onAddMore={index === spouseMigrationList.length - 1 ? addSpouseMore : undefined}
                                     onDelete={() => requestDelete(item, index, true)}
+                                    disabled={isLocked}
                                 />
                             ))}
                         </div>
@@ -304,8 +330,9 @@ export default function ResidencyDetails({ setActiveTab }: { setActiveTab: (tab:
                         <textarea
                             value={notes}
                             onChange={(e) => setNotes(e.target.value)}
+                            disabled={isLocked}
                             rows={6}
-                            className="w-full p-2 rounded-md border border-[#B5B5B5] text-[#616A74] text-sm mt-2 resize-none outline-none"
+                            className={`w-full p-2 rounded-md border border-[#B5B5B5] text-[#616A74] text-sm mt-2 resize-none outline-none ${isLocked && "cursor-not-allowed"}`}
                             placeholder="Enter any notes here"
                         />
                     </div>
@@ -319,12 +346,19 @@ export default function ResidencyDetails({ setActiveTab }: { setActiveTab: (tab:
                             onClick={() => handleSave("Save")}
                             className="bg-[#1D2B48] rounded-md px-4 py-2 w-[15%] text-[#FFFEFE] cursor-pointer font-medium text-sm"
                             disabled={loading}
+                            style={{
+                                cursor : isLocked ? "not-allowed" : "cursor-pointer"
+                            }}
                         >
                             {loading ? "Saving..." : "Save"}
                         </button>
                         <button
                             onClick={() => {
                                 handleSave("Next");
+                            }}
+                            disabled={loading || isLocked}
+                            style={{
+                                cursor : isLocked ? "not-allowed" : "cursor-pointer"
                             }}
                             className="bg-[#1D2B48] rounded-md px-4 py-2 w-[15%] text-[#FFFEFE] cursor-pointer font-medium text-sm">
                             Next
