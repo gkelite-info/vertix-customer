@@ -86,26 +86,26 @@ export default function Page() {
       if (data.session && data.user) {
         login(data.session.access_token);
 
-        const { data: customerData, error: profileError } =
-          await supabase
-            .from("vertixcustomers")
-            .select("is_consent_filled")
-            .eq("email", email)
-            .single();
+        // const { data: customerData, error: profileError } =
+        //   await supabase
+        //     .from("vertixcustomers")
+        //     .select("is_consent_filled")
+        //     .eq("email", email)
+        //     .single();
 
-        if (profileError) {
-          toast.error("Login successful, but profile failed to load.");
-          router.push("/");
-          return;
-        }
+        // if (profileError) {
+        //   toast.error("Login successful, but profile failed to load.");
+        //   router.push("/");
+        //   return;
+        // }
 
-        const isConsentFilled = customerData?.is_consent_filled;
+        // const isConsentFilled = customerData?.is_consent_filled;
         toast.success("Login successful");
 
-        if (!isConsentFilled) {
-          router.push("/consent");
-          return;
-        }
+        // if (!isConsentFilled) {
+        //   router.push("/consent");
+        //   return;
+        // }
         router.push("/taxfiling?tab=filingyear");
         setLoading(false);
       } else {
