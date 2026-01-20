@@ -110,7 +110,6 @@ export default function SubIncomeDetails({ setActiveTab }: IncomeProps) {
 
 
     const handleSave = async (button: Buttontype) => {
-        setIsLoading(true);
 
         if (!filingYearId) {
             toast.error("Filing year not selected. Please try again.");
@@ -118,6 +117,7 @@ export default function SubIncomeDetails({ setActiveTab }: IncomeProps) {
         }
 
         try {
+            setIsLoading(true);
             const updatedIncomeDetails = [...incomeDetails];
             if (!updatedIncomeDetails[0]) {
                 updatedIncomeDetails[0] = { ...defaultIncomeObject };

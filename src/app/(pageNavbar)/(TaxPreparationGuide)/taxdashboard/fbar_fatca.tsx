@@ -20,9 +20,7 @@ export default function FBARFATCA({ setActiveTab }: FbarProps) {
     const { selectedYear } = useYear();
     const [hasForeignAccount, setHasForeignAccount] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [exceededLimit, setExceededLimit] = useState<
-        "yes" | "no" | "not_sure" | null
-    >(null);
+    const [exceededLimit, setExceededLimit] = useState<"yes" | "no" | "not_sure" | null>(null);
 
 
     const handleToggle = (newValue: boolean) => {
@@ -47,6 +45,7 @@ export default function FBARFATCA({ setActiveTab }: FbarProps) {
             await updateFilingYearWithDetails(yearNumber, hasForeignAccount, exceededLimit);
 
             toast.success("FBAR/FATCA details successfully saved");
+            return
         } catch (error: any) {
             toast.error(error?.message || "Failed to save FBAR/FATCA details");
         } finally {
