@@ -11,6 +11,7 @@ type DeductionAndRentProps = {
     setRentState: (val: string) => void;
     rentAmount: string;
     setRentAmount: (val: string) => void;
+    isLocked?: boolean;
 };
 
 
@@ -23,6 +24,7 @@ export default function DeductionAndRent({
     setRentState,
     rentAmount,
     setRentAmount,
+    isLocked = false,
 }: DeductionAndRentProps) {
 
     const { selectedYear } = useYear();
@@ -53,6 +55,7 @@ export default function DeductionAndRent({
                     <div className="flex flex-col bg-green-00 gap-3">
                         <p className="text-[#3E3E3E] font-medium text-sm">Do you and your family(if any) have health coverage for the entire year {selectedYear}</p>
                         <ToggleSwitch
+                            disabled={isLocked}
                             value={hasHealthCoverage}
                             onToggle={setHasHealthCoverage}
                         />
@@ -63,6 +66,7 @@ export default function DeductionAndRent({
                     <div className="flex items-center justify-between pr-15">
                         <h5 className="text-[#3E3E3E] font-medium text-sm">Did you pay rent to maintain residence in US?</h5>
                         <ToggleSwitch labelLeft="No" labelRight="Yes"
+                            disabled={isLocked}
                             value={paidRent} onToggle={setPaidRent}
                         />
                     </div>
@@ -81,9 +85,10 @@ export default function DeductionAndRent({
                                     <input
                                         type="text"
                                         value={rentState}
+                                        disabled={isLocked}
                                         onChange={handleStateChange}
                                         placeholder="STATE"
-                                        className="focus:outline-none text-[#2F3F5F] text-sm w-[100%]"
+                                        className={`focus:outline-none text-[#2F3F5F] text-sm w-[100%] ${isLocked && "cursor-not-allowed"}`}
                                     />
                                 </div>
                             </div>
@@ -94,8 +99,9 @@ export default function DeductionAndRent({
                                         value={rentAmount}
                                         onChange={handleRentAmountChange}
                                         placeholder="$USD"
+                                        disabled={isLocked}
                                         inputMode="decimal"
-                                        className="focus:outline-none text-[#2F3F5F] text-sm w-[100%]"
+                                        className={`focus:outline-none text-[#2F3F5F] text-sm w-[100%] ${isLocked && "cursor-not-allowed"}`}
                                     />
                                 </div>
                             </div>

@@ -6,16 +6,18 @@ type ThreeOptionToggleProps = {
   value: string;
   onChange: (selected: string) => void;
   style?: string;
+  disabled?: boolean;
 };
 
 export default function ThreeOptionToggle({
   options,
   value,
   onChange,
-  style = "w-[35%]"
+  style = "w-[35%]",
+  disabled = false
 }: ThreeOptionToggleProps) {
   return (
-    <div className={`flex ${style}`}>
+    <div className={`flex ${style} ${disabled && "cursor-not-allowed"}`}>
       {options.map((option, index) => {
         const isActive = value === option;
 
@@ -26,14 +28,14 @@ export default function ThreeOptionToggle({
         return (
           <div
             key={option}
-            onClick={() => onChange(option)}
-            className={`flex-1 flex items-center border border-[#BCBCBC] justify-center cursor-pointer py-1 transition-colors ${
-              isActive
+            onClick={() => !disabled && onChange(option)}
+            className={`flex-1 flex items-center border border-[#BCBCBC] justify-center cursor-pointer py-1 transition-colors
+              ${isActive
                 ? "bg-[#2F3F5F] text-[#FFFEFE]"
                 : "bg-[#E8E8E8] text-[#3E3E3E]"
-            } ${roundedClass}`}
+              } ${roundedClass}`}
           >
-            <p className="text-xs font-medium">{option}</p>
+            <p className={`text-xs font-medium ${disabled && "cursor-not-allowed"}`}>{option}</p>
           </div>
         );
       })}

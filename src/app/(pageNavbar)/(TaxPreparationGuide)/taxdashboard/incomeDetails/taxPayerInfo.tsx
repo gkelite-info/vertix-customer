@@ -8,6 +8,7 @@ type TaxPayerInfoProps = {
   setSpouseEmployer: (value: string[]) => void;
   taxpayerCount: number;
   spouseCount: number;
+  isLocked?: boolean;
 };
 
 export default function TaxPayerInfo({
@@ -16,7 +17,8 @@ export default function TaxPayerInfo({
   spouseEmployer,
   setSpouseEmployer,
   taxpayerCount,
-  spouseCount
+  spouseCount,
+  isLocked = false,
 }: TaxPayerInfoProps) {
   const validateEmployer = (value: string) => /[a-zA-Z]/.test(value);
 
@@ -32,6 +34,7 @@ export default function TaxPayerInfo({
           <input
             key={i}
             type="text"
+            disabled={isLocked}
             value={taxpayerEmployer[i] || ""}
             onChange={(e) => {
               // const updated = [...taxpayerEmployer];
@@ -47,7 +50,7 @@ export default function TaxPayerInfo({
 
               setTaxpayerEmployer(updated);
             }}
-            className="border border-[#B5B5B5] p-3 mt-4 w-[40%] rounded-lg text-xs text-[#616161] font-semibold focus:outline-none"
+            className={`border border-[#B5B5B5] p-3 mt-4 w-[40%] rounded-lg text-xs text-[#616161] font-semibold focus:outline-none ${isLocked && "cursor-not-allowed"}`}
             placeholder={`Enter taxpayer employer ${i + 1}`}
           />
         ))}
@@ -60,6 +63,7 @@ export default function TaxPayerInfo({
           <input
             key={i}
             type="text"
+            disabled={isLocked}
             value={spouseEmployer[i] || ""}
             onChange={(e) => {
               // const updated = [...spouseEmployer];
@@ -75,7 +79,7 @@ export default function TaxPayerInfo({
 
               setSpouseEmployer(updated);
             }}
-            className="border border-[#B5B5B5] p-3 mt-4 w-[40%] rounded-lg text-xs text-[#616161] font-semibold focus:outline-none"
+            className={`border border-[#B5B5B5] p-3 mt-4 w-[40%] rounded-lg text-xs text-[#616161] font-semibold focus:outline-none ${isLocked && "cursor-not-allowed"}`}
             placeholder={`Enter spouse employer ${i + 1}`}
           />
         ))}

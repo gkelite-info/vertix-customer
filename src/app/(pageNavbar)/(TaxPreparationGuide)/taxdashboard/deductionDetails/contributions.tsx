@@ -20,6 +20,7 @@ type ContributionsProps = {
     setHaveBadDebts: (val: boolean) => void;
     additionalExpenses: string;
     setAdditionalExpenses: (val: string) => void;
+    isLocked?: boolean;
 };
 
 export default function Contributions({
@@ -40,6 +41,7 @@ export default function Contributions({
 
     additionalExpenses,
     setAdditionalExpenses,
+    isLocked = false,
 }: ContributionsProps) {
 
     const { selectedYear } = useYear();
@@ -55,6 +57,7 @@ export default function Contributions({
                         )}
                     </div>
                     <ToggleSwitch labelLeft="No" labelRight="Yes"
+                        disabled={isLocked}
                         value={contributedIRA} onToggle={setContributedIRA}
                     />
                 </div>
@@ -66,6 +69,7 @@ export default function Contributions({
                         )}
                     </div>
                     <ToggleSwitch labelLeft="No" labelRight="Yes"
+                        disabled={isLocked}
                         value={contributedHSA} onToggle={setContributedHSA}
                     />
                 </div>
@@ -77,6 +81,7 @@ export default function Contributions({
                         )}
                     </div>
                     <ToggleSwitch labelLeft="No" labelRight="Yes"
+                        disabled={isLocked}
                         value={cashCharity} onToggle={setCashCharity}
                     />
                 </div>
@@ -88,6 +93,7 @@ export default function Contributions({
                         )}
                     </div>
                     <ToggleSwitch labelLeft="No" labelRight="Yes"
+                        disabled={isLocked}
                         value={studentLoanUS} onToggle={setStudentLoanUS}
                     />
                 </div>
@@ -100,6 +106,7 @@ export default function Contributions({
                         )}
                     </div>
                     <ToggleSwitch labelLeft="No" labelRight="Yes"
+                        disabled={isLocked}
                         value={paidTuition} onToggle={setPaidTuition}
                     />
                 </div>
@@ -111,12 +118,14 @@ export default function Contributions({
                         )}
                     </div>
                     <ToggleSwitch labelLeft="No" labelRight="Yes"
+                        disabled={isLocked}
                         value={paidPriorStateTaxes} onToggle={setPaidPriorStateTaxes}
                     />
                 </div>
                 <div className="flex items-center justify-between py-1">
                     <h5 className="text-[#616161] font-medium text-sm">Do you have any bad debts or unrecoverable amounts for {selectedYear}?</h5>
                     <ToggleSwitch labelLeft="No" labelRight="Yes"
+                        disabled={isLocked}
                         value={haveBadDebts} onToggle={setHaveBadDebts}
                     />
                 </div>
@@ -125,8 +134,9 @@ export default function Contributions({
                     <label htmlFor="" className="text-sm text-[#3E3E3E] font-medium">Please list any additional deductible expenses.</label>
                     <textarea
                         id="additionalExpenses"
-                        className="border-1 border-[#9E9E9E] p-2 focus:outline-none rounded-md text-[#3E3E3E] text-xs"
+                        className={`border-1 border-[#9E9E9E] p-2 focus:outline-none rounded-md text-[#3E3E3E] text-xs ${isLocked && "cursor-not-allowed"}`}
                         rows={8}
+                        disabled={isLocked}
                         value={additionalExpenses}
                         onChange={(e) => setAdditionalExpenses(e.target.value)}
                     />

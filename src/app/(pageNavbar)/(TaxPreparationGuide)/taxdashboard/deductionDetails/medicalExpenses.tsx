@@ -19,6 +19,7 @@ type MedicalExpensesProps = {
     setPropertyTaxDescription: (val: string) => void;
     propertyTaxAmount: string;
     setPropertyTaxAmount: (val: string) => void;
+    isLocked?: boolean;
 };
 
 export default function MedicalExpenses({
@@ -38,6 +39,7 @@ export default function MedicalExpenses({
     setPropertyTaxDescription,
     propertyTaxAmount,
     setPropertyTaxAmount,
+    isLocked = false,
 }: MedicalExpensesProps) {
 
     const { selectedYear } = useYear();
@@ -54,6 +56,7 @@ export default function MedicalExpenses({
                         )}
                     </div>
                     <ToggleSwitch labelLeft="No" labelRight="Yes"
+                        disabled={isLocked}
                         value={ownHomeUSA} onToggle={setOwnHomeUSA}
                     />
                 </div>
@@ -65,6 +68,7 @@ export default function MedicalExpenses({
                         )}
                     </div>
                     <ToggleSwitch labelLeft="No" labelRight="Yes"
+                        disabled={isLocked}
                         value={ownHomeAbroad} onToggle={setOwnHomeAbroad}
                     />
                 </div>
@@ -76,6 +80,7 @@ export default function MedicalExpenses({
                         )}
                     </div>
                     <ToggleSwitch labelLeft="No" labelRight="Yes"
+                        disabled={isLocked}
                         value={familyInsurance} onToggle={setFamilyInsurance}
                     />
                 </div>
@@ -87,6 +92,7 @@ export default function MedicalExpenses({
                         )}
                     </div>
                     <ToggleSwitch labelLeft="No" labelRight="Yes"
+                        disabled={isLocked}
                         value={medicalExpenses} onToggle={setMedicalExpenses}
                     />
                 </div>
@@ -98,6 +104,7 @@ export default function MedicalExpenses({
                         )}
                     </div>
                     <ToggleSwitch labelLeft="No" labelRight="Yes"
+                        disabled={isLocked}
                         value={paidPropertyTax} onToggle={setPaidPropertyTax}
                     />
                 </div>
@@ -119,9 +126,10 @@ export default function MedicalExpenses({
                             <div className="bg-white shadow-md w-[70%] p-2 rounded-md flex items-center justify-center">
                                 <input
                                     type="text"
-                                    className="focus:outline-none text-[#2F3F5F] text-sm w-[100%]"
+                                    className={`focus:outline-none text-[#2F3F5F] text-sm w-[100%] ${isLocked && "cursor-not-allowed"}`}
                                     placeholder="State"
                                     value={propertyTaxName}
+                                    disabled={isLocked}
                                     onChange={(e) => {
                                         const val = e.target.value;
                                         if (/^[a-zA-Z\s]*$/.test(val)) {
@@ -135,9 +143,10 @@ export default function MedicalExpenses({
                             <div className="bg-white shadow-md w-[70%] p-2 rounded-md flex text-center items-center justify-center">
                                 <input
                                     type="text"
-                                    className="focus:outline-none text-[#2F3F5F] text-sm w-[100%]"
+                                    className={`focus:outline-none text-[#2F3F5F] text-sm w-[100%] ${isLocked && "cursor-not-allowed"}`}
                                     placeholder="Enter property tax description"
                                     value={propertyTaxDescription}
+                                    disabled={isLocked}
                                     onChange={(e) => {
                                         const val = e.target.value;
                                         if (/^[a-zA-Z\s]*$/.test(val)) {
@@ -152,8 +161,9 @@ export default function MedicalExpenses({
                             <div className="bg-white shadow-md w-[70%] p-2 rounded-md flex items-center justify-center">
                                 <input
                                     type="text"
-                                    className="focus:outline-none text-[#2F3F5F] text-sm w-[100%]"
+                                    className={`focus:outline-none text-[#2F3F5F] text-sm w-[100%] ${isLocked && "cursor-not-allowed"}`}
                                     placeholder="$USD"
+                                    disabled={isLocked}
                                     value={propertyTaxAmount}
                                     onChange={(e) => {
                                         let val = e.target.value.replace("$", "");

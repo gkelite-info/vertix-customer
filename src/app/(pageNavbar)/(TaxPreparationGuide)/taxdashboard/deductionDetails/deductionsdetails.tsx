@@ -7,6 +7,7 @@ import MedicalExpenses from "./medicalExpenses";
 import { getDeductionDetails, upsertDeductionDetails } from "@/app/api/SupabaseAPI/customer/deductions";
 import toast from "react-hot-toast";
 import { useYear } from "@/app/api/context/yearContext";
+import { isFbarFatcaSubmitted } from "@/app/api/SupabaseAPI/customer/fbarAPI";
 
 type Tab = "Income Details" | "Deduction Details" | "FBAR/FATCA";
 
@@ -70,7 +71,28 @@ export default function DeductionDetails({ setActiveTab }: DeductionProps) {
     const [additionalExpenses, setAdditionalExpenses] = useState("");
     const [studentLoanUS, setStudentLoanUS] = useState(false);
     const [isLoading, setIsLoading] = useState(false)
+    const [isLocked, setIsLocked] = useState(false);
+    const [checkingStatus, setCheckingStatus] = useState(true);
 
+    useEffect(() => {
+        checkYearLockStatus();
+    }, [filingYearId]);
+
+    const checkYearLockStatus = async () => {
+        try {
+            setCheckingStatus(true);
+
+            const yearNumber = Number(filingYearId);
+            if (!yearNumber) return;
+
+            const alreadySubmitted = await isFbarFatcaSubmitted(yearNumber);
+            setIsLocked(alreadySubmitted);
+        } catch (error) {
+            console.error("Failed to check year lock status:", error);
+        } finally {
+            setCheckingStatus(false);
+        }
+    };
     const handleSave = async (button: Buttontype) => {
 
         if (!filingYearId) {
@@ -170,7 +192,7 @@ export default function DeductionDetails({ setActiveTab }: DeductionProps) {
     }, []);
 
 
-    if (isLoading) {
+    if (isLoading || checkingStatus) {
         return (
             <div className="flex justify-center items-center text-[#1D2B48] min-h-[70vh]">
                 <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
@@ -190,6 +212,7 @@ export default function DeductionDetails({ setActiveTab }: DeductionProps) {
                 setRentState={setRentState}
                 rentAmount={rentAmount}
                 setRentAmount={setRentAmount}
+                isLocked={isLocked}
             />
             <MedicalExpenses
                 ownHomeUSA={ownHomeUSA}
@@ -208,6 +231,7 @@ export default function DeductionDetails({ setActiveTab }: DeductionProps) {
                 setPropertyTaxDescription={setPropertyTaxDescription}
                 propertyTaxAmount={propertyTaxAmount}
                 setPropertyTaxAmount={setPropertyTaxAmount}
+                isLocked={isLocked}
             />
             <Contributions
                 contributedIRA={contributedIRA}
@@ -226,7 +250,7 @@ export default function DeductionDetails({ setActiveTab }: DeductionProps) {
                 setHaveBadDebts={setHaveBadDebts}
                 additionalExpenses={additionalExpenses}
                 setAdditionalExpenses={setAdditionalExpenses}
-
+                isLocked={isLocked}
             />
 
             <div className="flex justify-center w-full gap-3 mt-6">
@@ -239,7 +263,10 @@ export default function DeductionDetails({ setActiveTab }: DeductionProps) {
                 <button
                     onClick={() => handleSave("Save")}
                     className="py-2 w-[13%] cursor-pointer bg-[#1D2A46] text-white rounded-md text-sm font-medium hover:bg-opacity-90"
-                    disabled={loading}
+                    disabled={loading || isLocked}
+                    style={{
+                        cursor: isLocked ? "not-allowed" : "pointer"
+                    }}
                 >
                     {loading ? "Saving..." : "Save"}
                 </button>
@@ -247,6 +274,10 @@ export default function DeductionDetails({ setActiveTab }: DeductionProps) {
                     onClick={() =>
                         handleSave("Next")
                     }
+                    disabled={loading || isLocked}
+                    style={{
+                        cursor: isLocked ? "not-allowed" : "pointer"
+                    }}
                     className="py-2 w-[13%] cursor-pointer bg-[#1D2A46] text-white rounded-md text-sm font-medium hover:bg-opacity-90"
                 >
                     Next

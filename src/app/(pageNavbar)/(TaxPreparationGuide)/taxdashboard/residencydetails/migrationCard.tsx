@@ -12,7 +12,8 @@ export default function MigrationCard({
     setState,
     setCountry,
     onAddMore,
-    onDelete
+    onDelete,
+    disabled = false,
 }: {
     fromDate: string;
     toDate: string;
@@ -24,6 +25,7 @@ export default function MigrationCard({
     setCountry: (val: string) => void;
     onAddMore?: () => void;
     onDelete?: () => void;
+    disabled?: boolean;
 }) {
     const prevValueRef = useRef("");
 
@@ -127,8 +129,9 @@ export default function MigrationCard({
                                     type="text"
                                     placeholder="MM/DD/YYYY"
                                     value={fromDate}
+                                    disabled={disabled}
                                     onChange={handleDateChange(setFromDate)}
-                                    className="w-full text-[#666A74] bg-transparent text-sm outline-none placeholder-[#666A74]"
+                                    className={`w-full text-[#666A74] bg-transparent text-sm outline-none placeholder-[#666A74] ${disabled && "cursor-not-allowed"}`}
                                 />
                             </div>
                         </div>
@@ -139,8 +142,9 @@ export default function MigrationCard({
                                     type="text"
                                     placeholder="MM/DD/YYYY"
                                     value={toDate}
+                                    disabled={disabled}
                                     onChange={handleDateChange(setToDate)}
-                                    className="w-full text-[#666A74] bg-transparent text-sm outline-none placeholder-[#666A74]"
+                                    className={`w-full text-[#666A74] bg-transparent text-sm outline-none placeholder-[#666A74] ${disabled && "cursor-not-allowed"}`}
                                 />
                             </div>
                         </div>
@@ -151,8 +155,9 @@ export default function MigrationCard({
                                     type="text"
                                     placeholder="Enter state"
                                     value={state}
+                                    disabled={disabled}
                                     onChange={handleTextInput(setState)}
-                                    className="w-full text-[#666A74] bg-transparent text-sm outline-none placeholder-[#666A74]"
+                                    className={`w-full text-[#666A74] bg-transparent text-sm outline-none placeholder-[#666A74] ${disabled && "cursor-not-allowed"}`}
                                 />
                             </div>
                         </div>
@@ -163,27 +168,29 @@ export default function MigrationCard({
                                     type="text"
                                     placeholder="Enter country"
                                     value={country}
+                                    disabled={disabled}
                                     onChange={handleTextInput(setCountry)}
-                                    className="w-full text-[#666A74] bg-transparent text-sm outline-none placeholder-[#666A74]"
+                                    className={`w-full text-[#666A74] bg-transparent text-sm outline-none placeholder-[#666A74] ${disabled && "cursor-not-allowed"}`}
                                 />
                             </div>
                         </div>
                     </div>
                     {onDelete && (
                         <button
-                            onClick={onDelete}
-                            className="p-2 rounded-full cursor-pointer"
+                            onClick={disabled ? undefined : onDelete}
+                            disabled={disabled}
+                            className={`p-2 rounded-full cursor-pointer ${disabled && "cursor-not-allowed"}`}
                         >
-                            <MinusCircle size={20} color="#CC0000" />
+                            <MinusCircle size={20} color="#CC0000" className={`${disabled && "cursor-not-allowed"}`}/>
                         </button>
                     )}
                 </div>
                 {onAddMore && (
                     <div className="flex items-end bg-green-00 gap-1 justify-start cursor-pointer"
-                        onClick={onAddMore}
+                        onClick={ disabled ? undefined : onAddMore}
                     >
-                        <p className="text-xs font-medium text-[#1D2B48]">Add more</p>
-                        <PlusCircle size={16} weight="fill" color="#1D2B48" />
+                        <p className={`text-xs font-medium text-[#1D2B48] ${disabled && "cursor-not-allowed"}`}>Add more</p>
+                        <PlusCircle size={16} weight="fill" color="#1D2B48" className={`${disabled && "cursor-not-allowed"}`}/>
                     </div>
                 )}
             </div>

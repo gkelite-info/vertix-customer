@@ -10,6 +10,7 @@ type IncomeDetailsProps = {
     setActiveTab: (tab: Tab) => void;
     setTaxpayerCount: (count: number) => void;
     setSpouseCount: (count: number) => void;
+    isLocked?: boolean;
 };
 
 export default function IncomeDetails({
@@ -18,7 +19,8 @@ export default function IncomeDetails({
     handleToggleChange,
     setActiveTab,
     setTaxpayerCount,
-    setSpouseCount
+    setSpouseCount,
+    isLocked = false,
 }: IncomeDetailsProps) {
     const index = 0;
 
@@ -43,12 +45,14 @@ export default function IncomeDetails({
                     </div>
                     <div className="bg-indigo-00 w-[33%] flex flex-col items-center justify-center gap-2 lg:pt-3">
                         <ToggleSwitch labelLeft="No" labelRight="Yes"
+                            disabled={isLocked}
                             value={incomeDetails[index]?.hasWagesSalaryTipsTaxpayer || false}
                             onToggle={(val) => handleToggleChange(index, "hasWagesSalaryTipsTaxpayer", val)}
                         />
                         <select
-                            className="text-xs text-[#1D2B48] focus:outline-none"
+                            className={`text-xs text-[#1D2B48] focus:outline-none ${isLocked && "cursor-not-allowed"}`}
                             onChange={(e) => setTaxpayerCount(Number(e.target.value))}
+                            disabled={isLocked}
                         >
                             <option value="">Choose</option>
                             {Array.from({ length: 10 }, (_, i) => i + 1).map(num => (
@@ -58,12 +62,14 @@ export default function IncomeDetails({
                     </div>
                     <div className="bg-indigo-00 w-[33%] flex flex-col items-center justify-center gap-2 lg:pt-3">
                         <ToggleSwitch labelLeft="No" labelRight="Yes"
+                            disabled={isLocked}
                             value={incomeDetails[index]?.hasWagesSalaryTipsSpouse || false}
                             onToggle={(val) => handleToggleChange(index, "hasWagesSalaryTipsSpouse", val)}
                         />
                         <select
-                            className="text-xs text-[#1D2B48] focus:outline-none"
+                            className={`text-xs text-[#1D2B48] focus:outline-none ${isLocked && "cursor-not-allowed"}`}
                             onChange={(e) => setSpouseCount(Number(e.target.value))}
+                            disabled={isLocked}
                         >
                             <option value="">Choose</option>
                             {Array.from({ length: 10 }, (_, i) => i + 1).map(num => (

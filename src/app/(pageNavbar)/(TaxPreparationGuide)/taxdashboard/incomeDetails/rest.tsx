@@ -9,9 +9,10 @@ type RestProps = {
     handleSpouseToggleChange: (index: number, field: string, value: boolean) => void;
     additionalIncome: string;
     setAdditionalIncome: (val: string) => void;
+    isLocked?: boolean;
 };
 
-export default function Rest({ incomeDetails, spouseIncomeDetails, handleToggleChange, handleSpouseToggleChange, additionalIncome, setAdditionalIncome }: RestProps) {
+export default function Rest({ incomeDetails, spouseIncomeDetails, handleToggleChange, handleSpouseToggleChange, additionalIncome, setAdditionalIncome, isLocked = false }: RestProps) {
     const index = 0;
     const { selectedYear } = useYear();
 
@@ -59,9 +60,11 @@ export default function Rest({ incomeDetails, spouseIncomeDetails, handleToggleC
                             onToggle={(val) =>
                                 handleSpouseToggleChange(index, "spouseEarnedWagesOrSalary", val)
                             }
+                            disabled={isLocked}
                         />
                         <ToggleSwitch labelLeft="No" labelRight="Yes"
                             value={incomeDetails[index]?.earnedWagesOrSalary || false}
+                            disabled={isLocked}
                             onToggle={(val) => handleToggleChange(index, "earnedWagesOrSalary", val)}
                         />
                     </div>
@@ -81,10 +84,12 @@ export default function Rest({ incomeDetails, spouseIncomeDetails, handleToggleC
                     </div>
                     <div className="bg-red-00 flex items-center gap-5">
                         <ToggleSwitch labelLeft="No" labelRight="Yes"
+                            disabled={isLocked}
                             value={spouseIncomeDetails[index]?.spouseReceivedBusinessEntityIncome || false}
                             onToggle={(val) => handleSpouseToggleChange(index, "spouseReceivedBusinessEntityIncome", val)}
                         />
                         <ToggleSwitch labelLeft="No" labelRight="Yes"
+                            disabled={isLocked}
                             value={incomeDetails[index]?.receivedBusinessEntityIncome || false}
                             onToggle={(val) => handleToggleChange(index, "receivedBusinessEntityIncome", val)}
                         />
@@ -104,10 +109,12 @@ export default function Rest({ incomeDetails, spouseIncomeDetails, handleToggleC
                     </div>
                     <div className="bg-red-00 flex items-center gap-5">
                         <ToggleSwitch labelLeft="No" labelRight="Yes"
+                            disabled={isLocked}
                             value={spouseIncomeDetails[index]?.spouseReceivedContractOrGigIncome || false}
                             onToggle={(val) => handleSpouseToggleChange(index, "spouseReceivedContractOrGigIncome", val)}
                         />
                         <ToggleSwitch labelLeft="No" labelRight="Yes"
+                            disabled={isLocked}
                             value={incomeDetails[index]?.receivedContractOrGigIncome || false}
                             onToggle={(val) => handleToggleChange(index, "receivedContractOrGigIncome", val)}
                         />
@@ -127,10 +134,12 @@ export default function Rest({ incomeDetails, spouseIncomeDetails, handleToggleC
                     </div>
                     <div className="bg-red-00 flex items-center gap-5">
                         <ToggleSwitch labelLeft="No" labelRight="Yes"
+                            disabled={isLocked}
                             value={spouseIncomeDetails[index]?.spouseHadRentalPropertyIncomeOrLoss || false}
                             onToggle={(val) => handleSpouseToggleChange(index, "spouseHadRentalPropertyIncomeOrLoss", val)}
                         />
                         <ToggleSwitch labelLeft="No" labelRight="Yes"
+                            disabled={isLocked}
                             value={incomeDetails[index]?.hadRentalPropertyIncomeOrLoss || false}
                             onToggle={(val) => handleToggleChange(index, "hadRentalPropertyIncomeOrLoss", val)}
                         />
@@ -150,10 +159,12 @@ export default function Rest({ incomeDetails, spouseIncomeDetails, handleToggleC
                     </div>
                     <div className="bg-red-00 flex items-center gap-5">
                         <ToggleSwitch labelLeft="No" labelRight="Yes"
+                            disabled={isLocked}
                             value={spouseIncomeDetails[index]?.spouseReceivedHsaOrMsaDistribution || false}
                             onToggle={(val) => handleSpouseToggleChange(index, "spouseReceivedHsaOrMsaDistribution", val)}
                         />
                         <ToggleSwitch labelLeft="No" labelRight="Yes"
+                            disabled={isLocked}
                             value={incomeDetails[index]?.receivedHsaOrMsaDistribution || false}
                             onToggle={(val) => handleToggleChange(index, "receivedHsaOrMsaDistribution", val)}
                         />
@@ -173,10 +184,12 @@ export default function Rest({ incomeDetails, spouseIncomeDetails, handleToggleC
                     </div>
                     <div className="bg-red-00 flex items-center gap-5">
                         <ToggleSwitch labelLeft="No" labelRight="Yes"
+                            disabled={isLocked}
                             value={spouseIncomeDetails[index]?.spouseReceivedIraDistribution || false}
                             onToggle={(val) => handleSpouseToggleChange(index, "spouseReceivedIraDistribution", val)}
                         />
                         <ToggleSwitch labelLeft="No" labelRight="Yes"
+                            disabled={isLocked}
                             value={incomeDetails[index]?.receivedIraDistribution || false}
                             onToggle={(val) => handleToggleChange(index, "receivedIraDistribution", val)}
                         />
@@ -196,10 +209,12 @@ export default function Rest({ incomeDetails, spouseIncomeDetails, handleToggleC
                     </div>
                     <div className="bg-red-00 flex items-center gap-5">
                         <ToggleSwitch labelLeft="No" labelRight="Yes"
+                            disabled={isLocked}
                             value={spouseIncomeDetails[index]?.spouseSoldInvestments || false}
                             onToggle={(val) => handleSpouseToggleChange(index, "spouseSoldInvestments", val)}
                         />
                         <ToggleSwitch labelLeft="No" labelRight="Yes"
+                            disabled={isLocked}
                             value={incomeDetails[index]?.soldInvestments || false}
                             onToggle={(val) => handleToggleChange(index, "soldInvestments", val)}
                         />
@@ -219,10 +234,12 @@ export default function Rest({ incomeDetails, spouseIncomeDetails, handleToggleC
                     </div>
                     <div className="bg-red-00 flex items-center gap-5">
                         <ToggleSwitch labelLeft="No" labelRight="Yes"
+                            disabled={isLocked}
                             value={spouseIncomeDetails[index]?.spouseReceivedInterestIncome || false}
                             onToggle={(val) => handleSpouseToggleChange(index, "spouseReceivedInterestIncome", val)}
                         />
                         <ToggleSwitch labelLeft="No" labelRight="Yes"
+                            disabled={isLocked}
                             value={incomeDetails[index]?.receivedInterestIncome || false}
                             onToggle={(val) => handleToggleChange(index, "receivedInterestIncome", val)}
                         />
@@ -242,10 +259,12 @@ export default function Rest({ incomeDetails, spouseIncomeDetails, handleToggleC
                     </div>
                     <div className="bg-red-00 flex items-center gap-5">
                         <ToggleSwitch labelLeft="No" labelRight="Yes"
+                            disabled={isLocked}
                             value={spouseIncomeDetails[index]?.spouseReceivedDividendIncome || false}
                             onToggle={(val) => handleSpouseToggleChange(index, "spouseReceivedDividendIncome", val)}
                         />
                         <ToggleSwitch labelLeft="No" labelRight="Yes"
+                            disabled={isLocked}
                             value={incomeDetails[index]?.receivedDividendIncome || false}
                             onToggle={(val) => handleToggleChange(index, "receivedDividendIncome", val)}
                         />
@@ -265,10 +284,12 @@ export default function Rest({ incomeDetails, spouseIncomeDetails, handleToggleC
                     </div>
                     <div className="bg-red-00 flex items-center gap-5">
                         <ToggleSwitch labelLeft="No" labelRight="Yes"
+                            disabled={isLocked}
                             value={spouseIncomeDetails[index]?.spouseReceivedPriorYearStateRefund || false}
                             onToggle={(val) => handleSpouseToggleChange(index, "spouseReceivedPriorYearStateRefund", val)}
                         />
                         <ToggleSwitch labelLeft="No" labelRight="Yes"
+                            disabled={isLocked}
                             value={incomeDetails[index]?.receivedPriorYearStateRefund || false}
                             onToggle={(val) => handleToggleChange(index, "receivedPriorYearStateRefund", val)}
                         />
@@ -278,8 +299,9 @@ export default function Rest({ incomeDetails, spouseIncomeDetails, handleToggleC
                     <label htmlFor="" className="text-sm text-[#3E3E3E] font-medium">Please list any other additional income in Note</label>
                     <textarea
                         id="additionalExpenses"
-                        className="border-1 border-[#9E9E9E] p-2 focus:outline-none rounded-md h-25 text-[#3E3E3E] text-xs"
+                        className={`border-1 border-[#9E9E9E] p-2 focus:outline-none rounded-md h-25 text-[#3E3E3E] text-xs ${isLocked && "cursor-not-allowed"}`}
                         rows={1}
+                        disabled={isLocked}
                         value={additionalIncome}
                         onChange={(e) => setAdditionalIncome(e.target.value)}
                     />

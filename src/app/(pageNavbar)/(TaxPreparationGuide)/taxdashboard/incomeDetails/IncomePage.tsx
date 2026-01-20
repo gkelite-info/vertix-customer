@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import { useYear } from "@/app/api/context/yearContext";
 import { Tab } from "../aboutyou/aboutYou";
 import { getSpouseIncomeDetails, upsertSpouseIncomeDetails } from "@/app/api/SupabaseAPI/customer/spouseIncomeDetailsAPI";
+import { isFbarFatcaSubmitted } from "@/app/api/SupabaseAPI/customer/fbarAPI";
 
 const defaultIncomeObject = {
     earnedWagesOrSalary: false,
@@ -60,11 +61,35 @@ export default function SubIncomeDetails({ setActiveTab }: IncomeProps) {
     const [additionalIncome, setAdditionalIncome] = useState('')
 
     const { selectedYear, filingYearId } = useYear();
+    const [isLoadingData, setIsLoadingData] = useState(false);
+    const [isLocked, setIsLocked] = useState(false);
+    const [checkingStatus, setCheckingStatus] = useState(true);
+
+    useEffect(() => {
+        checkYearLockStatus();
+    }, [selectedYear, filingYearId]);
+
+    const checkYearLockStatus = async () => {
+        try {
+            setCheckingStatus(true);
+
+            const yearNumber = Number(filingYearId);
+            if (!yearNumber) return;
+
+            const alreadySubmitted = await isFbarFatcaSubmitted(yearNumber);
+            setIsLocked(alreadySubmitted);
+        } catch (error) {
+            console.error("Failed to check year lock status:", error);
+        } finally {
+            setCheckingStatus(false);
+        }
+    };
 
     useEffect(() => {
         if (filingYearId === null) return;
 
         const loadIncomeDetails = async () => {
+            setIsLoadingData(true);
             try {
                 const record = await getIncomeDetails(filingYearId);
                 const spouseRecord = await getSpouseIncomeDetails(filingYearId);
@@ -101,6 +126,8 @@ export default function SubIncomeDetails({ setActiveTab }: IncomeProps) {
             } catch (err) {
                 console.error("Failed to load income details", err);
                 toast.error("Failed to load income details");
+            } finally {
+                setIsLoadingData(false);
             }
         };
 
@@ -188,6 +215,14 @@ export default function SubIncomeDetails({ setActiveTab }: IncomeProps) {
         setSpouseIncomeDetails(updated);
     };
 
+    if (isLoadingData || checkingStatus) {
+        return (
+            <div className="flex justify-center items-center text-[#1D2B48] min-h-[70vh]">
+                <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+            </div>
+        );
+    }
+
 
     return (
         <>
@@ -204,6 +239,7 @@ export default function SubIncomeDetails({ setActiveTab }: IncomeProps) {
                         setActiveTab={setActiveTab}
                         setTaxpayerCount={setTaxpayerCount}
                         setSpouseCount={setSpouseCount}
+                        isLocked={isLocked}
                     />
 
                     <TaxPayerInfo
@@ -213,6 +249,7 @@ export default function SubIncomeDetails({ setActiveTab }: IncomeProps) {
                         setSpouseEmployer={setSpouseEmployer}
                         taxpayerCount={taxpayerCount}
                         spouseCount={spouseCount}
+                        isLocked={isLocked}
                     />
 
                     <Rest
@@ -222,6 +259,7 @@ export default function SubIncomeDetails({ setActiveTab }: IncomeProps) {
                         handleSpouseToggleChange={handleSpouseToggleChange}
                         additionalIncome={additionalIncome}
                         setAdditionalIncome={setAdditionalIncome}
+                        isLocked={isLocked}
 
                     />
                     <div className="flex justify-center w-[100%] gap-3 mt-6">
@@ -233,13 +271,20 @@ export default function SubIncomeDetails({ setActiveTab }: IncomeProps) {
                         <button
                             onClick={() => handleSave("Save")}
                             className="py-2 w-[13%] cursor-pointer bg-[#1D2A46] text-white rounded-md text-sm font-medium hover:bg-opacity-90"
-                            disabled={isLoading}
+                            disabled={isLoading || isLocked}
+                            style={{
+                                cursor: isLocked ? 'not-allowed' : 'pointer'
+                            }}
                         >
                             {isLoading ? "Saving..." : "Save"}
                         </button>
                         <button
                             onClick={() => {
                                 handleSave("Next")
+                            }}
+                            disabled={isLoading || isLocked}
+                            style={{
+                                cursor: isLocked ? 'not-allowed' : 'pointer'
                             }}
                             className="py-2 w-[13%] cursor-pointer bg-[#1D2A46] text-white rounded-md text-sm font-medium hover:bg-opacity-90">
                             Next
