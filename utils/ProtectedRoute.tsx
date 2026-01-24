@@ -16,7 +16,7 @@ export default function ProtectedRoute({
     const token =
       typeof window !== "undefined"
         ? localStorage.getItem("sb-wieinzdarxemefrzitog-auth-token") ??
-          localStorage.getItem("token")
+        localStorage.getItem("token")
         : "";
 
     const normalizedPath = (pathname || "/").replace(/\/+$/g, "") || "/";
@@ -55,6 +55,8 @@ export default function ProtectedRoute({
       "/refer-friend",
       "/foreign_earned_income_exclusion",
       "/professionals_and_hnis",
+      "/hsa",
+      "/ira"
     ];
 
     if (!token) {

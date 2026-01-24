@@ -153,7 +153,7 @@ export default function Page() {
               <div>
                 <h4 className="font-semibold text-[#1D2B48]">Location:</h4>
                 <p className="text-[#1D2B48]">
-                  8 The Green Ste RDover, DE 19901, USA
+                  8 The Green Ste R Dover, DE 19901, USA
                 </p>
               </div>
             </div>
@@ -162,7 +162,7 @@ export default function Page() {
               <span className="text-indigo-600 text-xl">✉️</span>
               <div>
                 <h4 className="font-semibold text-[#1D2B48]">Email:</h4>
-                <p className="text-[#1D2B48]">vertixtax@gmail.com</p>
+                <p className="text-[#1D2B48]">info@vertixtax.com</p>
               </div>
             </div>
 
