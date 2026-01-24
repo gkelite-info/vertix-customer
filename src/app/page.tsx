@@ -23,10 +23,12 @@ import { useRouter } from "next/navigation";
 
 export default function Page() {
   const router = useRouter();
-  const cards = [
-    { icon: Users, title: "REFER A FRIEND", route: "/refer-friend" },
-    { icon: ThumbsUp, title: "SUPPORT", route: "/contact" },
-  ];
+  const cards: {
+    icon: any;
+    title: string;
+    route: string;
+  }[] = [];
+
 
   const serviceData = [
     {
@@ -408,17 +410,6 @@ export default function Page() {
                   Read More →
                 </button>
               </div>
-              <p className="text-white text-sm sm:text-base md:text-lg lg:text-sm leading-relaxed max-w-3xl">
-                We prepare personal tax returns for people from all walks of
-                life. The base forms are Forms
-                <br className="hidden sm:inline" />
-                1040 with all types of income, deductions and credits. This
-                includes any supporting tax and
-                <br className="hidden sm:inline" />
-                reporting forms if you have dependents, itemized deductions, tax
-                benefits, investments, <br className="hidden sm:inline" />
-                accounts or property outside the United States.
-              </p>
             </div>
           </div>
         </div>
