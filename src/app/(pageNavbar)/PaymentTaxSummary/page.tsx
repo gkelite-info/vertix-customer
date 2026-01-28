@@ -19,6 +19,7 @@ export default function PaymentTaxSummary() {
   const [checkingConsent, setCheckingConsent] = useState(true)
   const hasRedirectedRef = useRef(false)
   const router = useRouter()
+  const pageRef = useRef<HTMLDivElement | null>(null);
 
   const handleTotalsChange = useCallback((values: any) => {
     console.log("Received totals:", values);
@@ -81,7 +82,7 @@ export default function PaymentTaxSummary() {
   if (!isMounted) return null;
 
   return (
-    <div className="bg-white lg:h-[100vh] overflow-y-auto">
+    <div ref={pageRef} className="bg-white lg:h-[100vh] overflow-y-auto">
       <YearSelect />
       {isTemporary &&
         <>
@@ -112,7 +113,7 @@ export default function PaymentTaxSummary() {
         {isTemporary ?
           <>
             {activeTab === "tax" ? (
-              <TaxRefund />
+              <TaxRefund scrollContainerRef={pageRef}/>
             ) : (
               <FeeSummary onTotalsChange={handleTotalsChange} />
             )}

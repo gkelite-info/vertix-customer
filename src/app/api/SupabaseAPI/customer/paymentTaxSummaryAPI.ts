@@ -39,7 +39,8 @@ export const getPaymentTaxSummary = async (filingYearId: number) => {
       .select("*")
       .eq("customerId", customer.customerId)
       .eq("filingYearId", filingYearId)
-      .order("createdAt", { ascending: false });
+      .eq("isDeleted", false)
+      .order("createdAt", { ascending: true });
 
     if (error) throw error;
 
@@ -50,7 +51,7 @@ export const getPaymentTaxSummary = async (filingYearId: number) => {
   }
 };
 
-export const upsertPaymentTaxSummary = async (summary: PaymentTaxSummaryInput) => {
+export const upsertPaymentTaxSummary = async (summary: PaymentTaxSummaryInput & { taxsummaryId?: number }) => {
   try {
     const {
       data: { user },
@@ -76,6 +77,7 @@ export const upsertPaymentTaxSummary = async (summary: PaymentTaxSummaryInput) =
     const now = new Date().toISOString();
 
     const payload = {
+      taxsummaryId: summary.taxsummaryId,
       customerId,
       filingYearId: summary.filingYearId,
       taxType: summary.taxType,
@@ -201,3 +203,28 @@ export const acceptPaymentSummary = async (taxsummaryId: number) => {
     throw err;
   }
 };
+
+export const softDeletePaymentTaxSummary = async (taxsummaryId: number) => {
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser();
+
+  if (authError || !user) throw new Error("Not authenticated");
+
+  const now = new Date().toISOString();
+
+  const { data, error } = await supabase
+    .from("payment_tax_summary")
+    .update({
+      isDeleted: true,
+      updatedAt: now,
+    })
+    .eq("taxsummaryId", taxsummaryId)
+    .select()
+    .single();
+
+  if (error) throw error;
+  return data;
+};
+
