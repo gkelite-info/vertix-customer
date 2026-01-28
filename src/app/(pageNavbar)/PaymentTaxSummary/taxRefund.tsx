@@ -1,13 +1,20 @@
 'use client';
 
 import { useYear } from "@/app/api/context/yearContext";
-import { getPaymentTaxSummary, upsertPaymentTaxSummary } from "@/app/api/SupabaseAPI/customer/paymentTaxSummaryAPI";
+import { getPaymentTaxSummary, softDeletePaymentTaxSummary, upsertPaymentTaxSummary } from "@/app/api/SupabaseAPI/customer/paymentTaxSummaryAPI";
 import { useAuth } from "@/components/AuthContext";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import toast from "react-hot-toast";
+import { State } from "country-state-city";
 import TableComponent from "../../../../utils/table/page";
+import { PencilSimple, Trash } from "@phosphor-icons/react";
+import DeleteModal from "@/components/modals/deleteModal";
 
-export default function TaxRefund() {
+type TaxRefundProps = {
+    scrollContainerRef?: React.RefObject<HTMLDivElement | null>;
+};
+
+export default function TaxRefund({ scrollContainerRef }: TaxRefundProps) {
 
     const { selectedYear, filingYearId } = useYear();
     const { user } = useAuth();
@@ -21,6 +28,13 @@ export default function TaxRefund() {
     const [loading, setLoading] = useState(false);
     const [summaries, setSummaries] = useState<Record<string, any>[]>([]);
     const [fetchingData, setFetchingData] = useState(true);
+    const [editingId, setEditingId] = useState<number | null>(null);
+    const [deleteId, setDeleteId] = useState<number | null>(null);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const localScrollRef = useRef<HTMLDivElement | null>(null);
+
+    const US_STATES = State.getStatesOfCountry("US");
+
 
     const handleTextInput = (
         e: React.ChangeEvent<HTMLInputElement>,
@@ -43,28 +57,42 @@ export default function TaxRefund() {
         }
     };
 
+    const fetchData = async () => {
+        setFetchingData(true);
+        if (!user || !filingYearId) {
+            setSummaries([]);
+            setFetchingData(false);
+            return;
+        }
+        try {
+            const data = await getPaymentTaxSummary(filingYearId);
+            setSummaries(data || []);
+        } catch (err) {
+            console.error("Error fetching payment summary:", err);
+            setSummaries([]);
+        } finally {
+            setFetchingData(false);
+        }
+    };
+
     useEffect(() => {
         if (!user || !filingYearId) {
             setSummaries([]);
             setFetchingData(false);
             return;
         }
-
-        const fetchData = async () => {
-            setFetchingData(true);
-            try {
-                const data = await getPaymentTaxSummary(filingYearId);
-                setSummaries(data || []);
-            } catch (err) {
-                console.error("Error fetching payment summary:", err);
-                setSummaries([]);
-            } finally {
-                setFetchingData(false);
-            }
-        };
-
         fetchData();
     }, [user, filingYearId]);
+
+    useEffect(() => {
+        if (localScrollRef.current) {
+            localScrollRef.current.scrollTo({
+                top: 0,
+                behavior: "auto",
+            });
+        }
+    }, []);
+
 
     const handleSubmit = async () => {
         if (
@@ -90,6 +118,7 @@ export default function TaxRefund() {
 
         try {
             const payload = {
+                taxsummaryId: editingId ?? undefined,
                 filingYearId,
                 taxType,
                 state,
@@ -109,7 +138,8 @@ export default function TaxRefund() {
             const newSummary = await upsertPaymentTaxSummary(payload);
             toast.success("Payment tax summary saved successfully!", { id: "submit" });
 
-            setSummaries((prev) => [newSummary, ...prev]);
+            // setSummaries((prev) => [...prev, newSummary]);
+            await fetchData()
 
             setTaxType("");
             setState("");
@@ -118,6 +148,7 @@ export default function TaxRefund() {
             setTypeOfFiling("");
             setOriginalUpdated("");
             setBelongsTo("");
+            setEditingId(null);
         } catch (error: any) {
             console.error(error);
             toast.error("Failed to save payment tax summary", { id: "submit" });
@@ -125,6 +156,48 @@ export default function TaxRefund() {
             setLoading(false);
         }
     };
+
+    const handleEdit = (row: any) => {
+        setEditingId(row.taxsummaryId);
+        setTaxType(row.taxType);
+        setState(row.state);
+        setBeforePlanning(String(row.beforePlanning));
+        setAfterPlanning(String(row.afterPlanning));
+        setTypeOfFiling(row.typeOfFiling);
+        setOriginalUpdated(row.originalUpdated);
+        setBelongsTo(row.belongsTo);
+
+        if (scrollContainerRef?.current) {
+            scrollContainerRef.current.scrollTo({
+                top: 0,
+                behavior: "smooth",
+            });
+        }
+
+        if (localScrollRef.current) {
+            localScrollRef.current.scrollTo({
+                top: 0,
+                behavior: "smooth",
+            });
+        }
+    };
+
+
+    const confirmDelete = async () => {
+        if (!deleteId) return;
+
+        try {
+            await softDeletePaymentTaxSummary(deleteId);
+            toast.success("Record deleted successfully");
+            await fetchData();
+        } catch (err) {
+            toast.error("Failed to delete record");
+        } finally {
+            setShowDeleteModal(false);
+            setDeleteId(null);
+        }
+    };
+
 
     const columns = [
         "TAX Type",
@@ -149,14 +222,14 @@ export default function TaxRefund() {
 
     return (
         <>
-            <div className="flex flex-col items-center lg:pt-5 pb-7 bg-pink-00 overflow-y-auto">
+            <div ref={localScrollRef} className="flex flex-col items-center lg:pt-5 pb-7 bg-pink-00 overflow-y-auto">
                 <div className="flex flex-col w-[45%] gap-6 bg-green-00">
                     <div className="flex items-center gap-3">
                         <label
                             htmlFor="taxType"
                             className="text-[#1D2B48] font-medium text-sm min-w-[150px]"
                         >
-                            TAX Type:
+                            Tax Type:
                         </label>
                         <input
                             id="taxType"
@@ -175,14 +248,26 @@ export default function TaxRefund() {
                         >
                             State:
                         </label>
-                        <input
+                        {/* <input
                             id="state"
                             type="text"
                             value={state}
                             onChange={(e) => handleTextInput(e, setState)}
                             placeholder="Enter state..."
                             className="border border-[#B5B5B5] text-[#616161] rounded-md px-3 py-2 text-sm w-full focus:outline-none"
-                        />
+                        /> */}
+                        <select
+                            value={state}
+                            onChange={(e) => setState(e.target.value)}
+                            className="border border-[#B5B5B5] text-[#616161] rounded-md px-3 py-2 text-sm w-full focus:outline-none"
+                        >
+                            <option value="">Select state</option>
+                            {US_STATES.map((s) => (
+                                <option key={s.isoCode} value={s.name}>
+                                    {s.name}
+                                </option>
+                            ))}
+                        </select>
                     </div>
 
                     <div className="flex items-center gap-3">
@@ -294,10 +379,44 @@ export default function TaxRefund() {
                             data={summaries}
                             columns={columns}
                             columnKeys={columnKeys}
+                            actions={(row) => (
+                                <>
+                                    <button
+                                        onClick={() => handleEdit(row)}
+                                        title="Edit"
+                                        className="text-blue-600 cursor-pointer hover:text-blue-800"
+                                    >
+                                        <PencilSimple size={18} weight="bold" />
+                                    </button>
+
+                                    <button
+                                        onClick={() => {
+                                            setDeleteId(row.taxsummaryId);
+                                            setShowDeleteModal(true);
+                                        }}
+                                        title="Delete"
+                                        className="text-red-600 cursor-pointer hover:text-red-800"
+                                    >
+                                        <Trash size={18} weight="bold" />
+                                    </button>
+                                </>
+                            )}
                             onUpdateClick={() => console.log("No update action yet")}
                         />
                     </div>
                 )}
+
+                {showDeleteModal && (
+                    <DeleteModal
+                        isOpen={showDeleteModal}
+                        onCancel={() => {
+                            setShowDeleteModal(false);
+                            setDeleteId(null);
+                        }}
+                        onConfirm={confirmDelete}
+                    />
+                )}
+
             </div>
         </>
     )
