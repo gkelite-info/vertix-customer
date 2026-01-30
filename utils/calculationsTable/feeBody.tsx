@@ -23,6 +23,27 @@ export default function FeeSummaryBody({
   onTotalChange,
   onDataChange,
 }: FeeSummaryBodyProps) {
+
+  useEffect(() => {
+    const initialStatus: Record<number, number> = {};
+    const initialFee: Record<number, number> = {};
+
+    data.forEach((row) => {
+      if (!row.noStatus && row.status != null) {
+        initialStatus[row.id] = row.status;
+      }
+
+      if (row.fee != null) {
+        initialFee[row.id] = row.fee;
+      } else {
+        initialFee[row.id] = row.baseFee;
+      }
+    });
+
+    setStatusValues(initialStatus);
+    setFeeValues(initialFee);
+  }, [data]);
+
   const [statusValues, setStatusValues] = useState<Record<number, number>>({});
   const [feeValues, setFeeValues] = useState<Record<number, number>>({});
 
@@ -73,7 +94,7 @@ export default function FeeSummaryBody({
     }));
 
     onDataChange(updatedRows);
-  }, [statusValues, feeValues]);
+  }, [statusValues, feeValues, data]);
 
   return (
     <tbody>

@@ -11,6 +11,7 @@ type FeeSummaryTotalsProps = {
   netFee?: number;
   dueAmount?: number;
   width?: string;
+
   onTotalsChange: (values: {
     totalFee: number;
     discount: number;
@@ -20,9 +21,11 @@ type FeeSummaryTotalsProps = {
     code: string;
     netFee: number;
   }) => void;
+
   readOnly?: boolean;
   showCodeRow?: boolean;
 };
+
 
 type NumberRow = {
   type: "number";

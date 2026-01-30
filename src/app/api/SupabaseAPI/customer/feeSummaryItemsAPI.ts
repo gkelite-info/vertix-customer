@@ -1,5 +1,14 @@
 import { supabase } from "../../../../../utils/supabase/client"
 
+export interface FeeSummaryItemRow {
+  itemId: number;
+  summaryId: number;
+  description: string;
+  status: number | null;
+  fee: number;
+  total: number;
+  hasStatus: boolean;
+}
 export interface FeeSummaryItemInput {
   summaryId: number
   description: string
@@ -7,6 +16,31 @@ export interface FeeSummaryItemInput {
   fee: number
   total: number
 }
+
+export const getFeeSummaryItems = async (summaryId: number) => {
+  try {
+    const { data, error } = await supabase
+      .from("fee_summary_items")
+      .select(`
+        itemId,
+        summaryId,
+        description,
+        status,
+        fee,
+        total,
+        hasStatus
+      `)
+      .eq("summaryId", summaryId)
+      .is("deletedAt", null)
+      .order("itemId");
+
+    if (error) throw error;
+    return data as FeeSummaryItemRow[];
+  } catch (error: any) {
+    console.error("Error fetching fee summary items:", error.message);
+    throw error;
+  }
+};
 
 export const upsertFeeSummaryItem = async (item: FeeSummaryItemInput) => {
   try {

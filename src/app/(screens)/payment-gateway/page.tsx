@@ -8,11 +8,12 @@ import UPIModal from "@/components/modals/upiModal";
 import toast from "react-hot-toast";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowBendUpLeft } from "@phosphor-icons/react";
+import { FeeSummaryItemRow, getFeeSummaryItems } from "@/app/api/SupabaseAPI/customer/feeSummaryItemsAPI";
+import FeeSummaryReadOnlyTable from "../../../../utils/calculationsTable/FeeSummaryReadOnlyTable";
 
 function PaymentGatewayContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const summaryId = searchParams.get("summaryId");
   const { filingYearId } = useYear();
 
   const [totals, setTotals] = useState({
@@ -29,6 +30,27 @@ function PaymentGatewayContent() {
   const [noRecord, setNoRecord] = useState(false);
   const [showPayment, setShowPayment] = useState(false);
   const [isUpiModalOpen, setIsUpiModalOpen] = useState(false);
+  const [items, setItems] = useState<FeeSummaryItemRow[]>([]);
+  const summaryIdParam = searchParams.get("summaryId");
+  const summaryId = summaryIdParam ? Number(summaryIdParam) : null;
+
+
+  useEffect(() => {
+    if (!summaryId) return;
+
+    const fetchItems = async () => {
+      try {
+        const data = await getFeeSummaryItems(summaryId);
+        console.log("data is", data);
+        setItems(data);
+      } catch (err) {
+        console.error("Error fetching fee summary items", err);
+      }
+    };
+
+    fetchItems();
+  }, [summaryId]);
+
 
   const handleUPIConfirm = (upiId: string, transactionId: string) => {
     setIsUpiModalOpen(false);
@@ -145,6 +167,9 @@ function PaymentGatewayContent() {
 
       <div className="bg-red-00 flex">
         <div className="flex flex-col items-center w-[50%] bg-blue-00">
+
+          <FeeSummaryReadOnlyTable items={items} />
+
           <FeeSummaryTotals
             total={totals.totalFee}
             discount={totals.discount}
@@ -172,7 +197,7 @@ function PaymentGatewayContent() {
             <p className="text-[#1D2B48] text-sm font-semibold">Choose your payment</p>
           )}
           {showPayment && (
-            <div className="flex items-center justify-center gap-5 bg-red-00 h-[30%] w-[70%] mt-5">
+            <div className="flex items-center justify-center gap-5 bg-red-00 h-[10%] w-[70%] mt-5">
               <div className="flex flex-col items-center justify-between bg-yellow-00 w-[30%] h-[70%]" onClick={handleStripe}>
                 <img src="debitcard.png" alt="stripe" className="w-10 h-10 cursor-pointer" />
                 <span className="text-[#1D2B48] font-bold text-xs mt-1">Card</span>
