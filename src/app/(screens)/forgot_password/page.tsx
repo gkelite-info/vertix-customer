@@ -1,5 +1,6 @@
 "use client"
 
+import { checkCustomerEmailExists, sendPasswordResetLink } from "@/app/api/SupabaseAPI/customer/forgotPasswordAPI"
 import { useAuth } from "@/components/AuthContext"
 import { Icon } from "@iconify/react/dist/iconify.js"
 import { useRouter } from "next/navigation"
@@ -11,6 +12,7 @@ export default function Page() {
 
   const [email, setEmail] = useState("")
   const [emailError, setEmailError] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
   // const [alertMsg, setAlertMsg] = useState<string | null>(null);
 
   const handleEmailChange = (e: { target: { value: string } }) => {
@@ -26,21 +28,49 @@ export default function Page() {
     }
   }
 
+  // const handleForgotPassword = async () => {
+  //   if (email.trim() === "") {
+  //     toast.error("Email is required")
+  //     return
+  //   }
+  //   try {
+  //     localStorage.setItem("emailAddress", email)
+  //     router.push("/verification")
+  //     setTimeout(() => {
+  //       toast.success("OTP send to registered email")
+  //     }, 1000)
+  //   } catch (error) {
+  //     console.log("email verification failed.", error)
+  //   }
+  // }
+
+  // ✅ CHANGE
   const handleForgotPassword = async () => {
     if (email.trim() === "") {
-      toast.error("Email is required")
-      return
+      toast.error("Email is required");
+      return;
     }
+    setIsLoading(true);
+
     try {
-      localStorage.setItem("emailAddress", email)
-      router.push("/verification")
-      setTimeout(() => {
-        toast.success("OTP send to registered email")
-      }, 1000)
-    } catch (error) {
-      console.log("email verification failed.", error)
+      // ✅ STEP 1: Check email exists
+      const emailExists = await checkCustomerEmailExists(email);
+
+      if (!emailExists) {
+        toast.error("Email not registered. Please check your email.");
+        return;
+      }
+
+      await sendPasswordResetLink(email);
+
+      toast.success("Password reset link sent to your registered email.");
+    } catch (error: any) {
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
-  }
+  };
+
 
   const handleLogin = () => {
     router.push("/login")
@@ -49,7 +79,7 @@ export default function Page() {
   return (
     <>
       <div className="bg-white min-h-screen lg:h-[100vh] flex justify-center items-center p-4 sm:p-6 md:p-0 lg:p-0">
-        <div className="flex flex-col lg:flex-row w-full max-w-5xl lg:max-w-7xl lg:h-[100%] shadow-2xl overflow-hidden">
+        <div className="flex flex-col lg:flex-row w-full  lg:w-full lg:h-[100%] shadow-2xl overflow-hidden">
           <div className="hidden lg:flex lg:w-1/2 w-[100%] bg-[url('/forgot-password.png')] bg-cover bg-center justify-center items-center p-0 text-white"></div>
           <div className="w-full lg:w-1/2 p-4 sm:p-8 md:p-12 flex flex-col items-center justify-center bg-white lg:rounded-l-none">
             <h1 className="text-xl sm:text-2xl lg:text-3xl font-semibold text-black mb-20">
@@ -83,8 +113,9 @@ export default function Page() {
                 <button
                   className="cursor-pointer text-white h-12 w-full text-base sm:text-lg font-medium rounded-full bg-[#1D2B48] hover:bg-opacity-90 transition duration-150"
                   onClick={handleForgotPassword}
+                  disabled={isLoading}
                 >
-                  Send
+                  {isLoading ? "Sending..." : "Send Reset Link"}
                 </button>
                 <div className="flex gap-1 items-center justify-center h-8 w-full">
                   <h5 className="font-medium text-[#979797] text-sm">

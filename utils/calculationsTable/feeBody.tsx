@@ -25,6 +25,9 @@ export default function FeeSummaryBody({
 }: FeeSummaryBodyProps) {
   const [statusValues, setStatusValues] = useState<Record<number, number>>({});
   const [feeValues, setFeeValues] = useState<Record<number, number>>({});
+  // 🔹 CHANGE 1: Prevent infinite hydration loop
+  const [isHydrated, setIsHydrated] = useState(false);
+
 
   const handleStatusChange = (id: number, value: number) => {
     setStatusValues((prev) => ({ ...prev, [id]: value }));
@@ -49,8 +52,14 @@ export default function FeeSummaryBody({
   };
 
   const calculateRowTotal = (id: number, noStatus?: boolean) => {
-    const multiplier = noStatus ? 1 : statusValues[id] || 0;
-    const fee = feeValues[id] || 0;
+    // const multiplier = noStatus ? 1 : statusValues[id] ?? 0;
+    const multiplier = noStatus
+      ? 1
+      : typeof statusValues[id] === "number"
+        ? statusValues[id]
+        : 0;
+
+    const fee = feeValues[id] ?? 0;
     return multiplier * fee;
   };
 
@@ -62,6 +71,7 @@ export default function FeeSummaryBody({
   };
 
   useEffect(() => {
+    if (!isHydrated) return;
     const total = calculateTotal();
     onTotalChange(total);
 
@@ -74,6 +84,28 @@ export default function FeeSummaryBody({
 
     onDataChange(updatedRows);
   }, [statusValues, feeValues]);
+
+  // 🔹 CHANGE 2: Hydrate local state only once from API data
+  useEffect(() => {
+    if (isHydrated) return;
+
+    const initialStatus: Record<number, number> = {};
+    const initialFees: Record<number, number> = {};
+
+    data.forEach((item) => {
+      if (!item.noStatus && item.status !== null && item.status !== undefined) {
+        initialStatus[item.id] = item.status;
+      }
+
+      initialFees[item.id] = item.fee ?? item.baseFee;
+    });
+
+    setStatusValues(initialStatus);
+    setFeeValues(initialFees);
+    setIsHydrated(true);
+  }, [data, isHydrated]);
+
+
 
   return (
     <tbody>
@@ -91,7 +123,8 @@ export default function FeeSummaryBody({
               <td className="border border-gray-300 text-xs py-2">
                 <input
                   type="number"
-                  value={feeValues[item.id] || ""}
+                  //value={feeValues[item.id] || ""}
+                  value={feeValues[item.id] ?? item.baseFee}
                   onChange={(e) =>
                     handleFeeChange(item.id, Number(e.target.value))
                   }
@@ -113,7 +146,8 @@ export default function FeeSummaryBody({
 
               <td className="border border-gray-300 text-xs px-4 py-2">
                 <select
-                  value={statusValues[item.id] || 0}
+                  //value={statusValues[item.id] || 0}
+                  value={statusValues[item.id] ?? 0}
                   onChange={(e) =>
                     handleStatusChange(item.id, Number(e.target.value))
                   }
