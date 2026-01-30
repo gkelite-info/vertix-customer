@@ -220,6 +220,35 @@ export default function TaxRefund({ scrollContainerRef }: TaxRefundProps) {
         "payment_status",
     ];
 
+    // 🔹 CHANGE 1: Add TOTAL row logic
+    const tableDataWithTotal = (() => {
+        if (!summaries || summaries.length === 0) return [];
+
+        const totalBeforePlanning = summaries.reduce(
+            (sum, item) => sum + (Number(item.beforePlanning) || 0),
+            0
+        );
+
+        const totalAfterPlanning = summaries.reduce(
+            (sum, item) => sum + (Number(item.afterPlanning) || 0),
+            0
+        );
+
+        const totalRow = {
+            taxType: "Total",
+            state: "-",
+            beforePlanning: totalBeforePlanning,
+            afterPlanning: totalAfterPlanning,
+            typeOfFiling: "-",
+            originalUpdated: "-",
+            belongsTo: "-",
+            payment_status: "-",
+        };
+
+        return [...summaries, totalRow];
+    })();
+
+
     return (
         <>
             <div ref={localScrollRef} className="flex flex-col items-center lg:pt-5 pb-7 bg-pink-00 overflow-y-auto">
@@ -376,10 +405,12 @@ export default function TaxRefund({ scrollContainerRef }: TaxRefundProps) {
                 {!fetchingData && summaries.length > 0 && (
                     <div className="mt-5 bg-green-00 overflow-x-auto w-full pb-7">
                         <TableComponent
-                            data={summaries}
+                            // data={summaries}
+                            data={tableDataWithTotal}
                             columns={columns}
                             columnKeys={columnKeys}
                             actions={(row) => (
+                                row.taxType !== "Total" &&
                                 <>
                                     <button
                                         onClick={() => handleEdit(row)}

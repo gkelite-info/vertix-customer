@@ -195,6 +195,41 @@ export default function TaxReturnRefund() {
     );
   }
 
+  const tableDataWithTotal = (() => {
+    if (!summaries || summaries.length === 0) return [];
+
+    const totalBeforePlanning = summaries.reduce(
+      (sum, item) => sum + (Number(item.beforePlanning) || 0),
+      0
+    );
+
+    const totalAfterPlanning = summaries.reduce(
+      (sum, item) => sum + (Number(item.afterPlanning) || 0),
+      0
+    );
+
+    const totalRow = {
+      taxType: "Total",
+      state: "-",
+      beforePlanning: totalBeforePlanning,
+      afterPlanning: totalAfterPlanning,
+      typeOfFiling: "-",
+      originalUpdated: "-",
+      belongsTo: "-",
+      payment_status: "-",
+      comment: "-",
+    };
+
+    return [
+      ...summaries.map((item) => ({
+        ...item,
+        comment: item.comment || "—",
+      })),
+      totalRow,
+    ];
+  })();
+
+
   return (
     <>
       <div className="bg-red-00 p-4 flex flex-col items-center w-full">
@@ -214,10 +249,11 @@ export default function TaxReturnRefund() {
             <>
               <div className="bg-red-00 flex flex-col items-start">
                 <TableComponent
-                  data={summaries.map((item) => ({
-                    ...item,
-                    comment: item.comment || "—",
-                  }))}
+                  // data={summaries.map((item) => ({
+                  //   ...item,
+                  //   comment: item.comment || "—",
+                  // }))}
+                  data={tableDataWithTotal}
                   columns={columns}
                   style="w-[100%]"
                   columnKeys={columnKeys}

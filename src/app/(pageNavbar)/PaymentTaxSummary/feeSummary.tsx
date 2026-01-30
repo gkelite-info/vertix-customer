@@ -70,6 +70,29 @@ export default function FeeSummary({ onTotalsChange }: { onTotalsChange: (values
 
     const handleTotalsChange = (values: typeof totals) => setTotals(values);
 
+    const hydrateTableData = (
+        baseRows: FeeRow[],
+        dbItems: any[]
+    ): FeeRow[] => {
+        if (!dbItems || dbItems.length === 0) return baseRows;
+
+        return baseRows.map((row) => {
+            const matchedItem = dbItems.find(
+                (item) => item.description === row.description
+            );
+
+            if (!matchedItem) return row;
+
+            return {
+                ...row,
+                status: matchedItem.status,
+                baseFee: matchedItem.fee ?? row.baseFee,
+                total: matchedItem.total,
+            };
+        });
+    };
+
+
     useEffect(() => {
         const fetchExistingSummary = async () => {
             try {
@@ -99,6 +122,12 @@ export default function FeeSummary({ onTotalsChange }: { onTotalsChange: (values
 
                 if (summaries && summaries.length > 0) {
                     const latest = summaries[0];
+
+                    if (latest.fee_summary_items?.length) {
+                        setTableData((prev) =>
+                            hydrateTableData(prev, latest.fee_summary_items)
+                        );
+                    }
 
                     const safeTotal = latest.totalAmount ?? latest.totalFee ?? 0;
 
@@ -173,15 +202,19 @@ export default function FeeSummary({ onTotalsChange }: { onTotalsChange: (values
             });
 
             for (const row of tableData) {
-                const calculatedTotal =
-                    row.status && !row.noStatus ? row.baseFee * row.status : row.baseFee;
+                // const calculatedTotal =
+                //     row.status && !row.noStatus ? row.baseFee * row.status : row.baseFee;
+                const calculatedTotal = row.total ?? 0;
 
                 await upsertFeeSummaryItem({
                     summaryId: feeSummary.summaryId,
                     description: row.description,
-                    status: row.status ?? null,
-                    fee: row.baseFee,
-                    total: calculatedTotal,
+                    // status: row.status ?? null,
+                    // fee: row.baseFee,
+                    // total: calculatedTotal,
+                    status: row.noStatus ? null : row.status ?? null,
+                    fee: row.fee ?? row.baseFee,
+                    total: row.total ?? 0,
                 });
             }
 
@@ -218,6 +251,7 @@ export default function FeeSummary({ onTotalsChange }: { onTotalsChange: (values
             <h3 className="text-[#1D2B48] font-semibold text-lg mb-2">Fee Summary</h3>
 
             <FeeSummaryTable
+                key={selectedYear}
                 data={tableData}
                 onTotalsChange={handleTotalsChange}
                 onDataChange={setTableData}

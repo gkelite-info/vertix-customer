@@ -12,24 +12,63 @@ export const upsertFeeSummaryItem = async (item: FeeSummaryItemInput) => {
   try {
     const now = new Date().toISOString()
 
-    const payload = {
-      summaryId: item.summaryId,
-      description: item.description,
-      status: item.status ?? null,
-      fee: item.fee,
-      total: item.total,
-      createdAt: now,
-      updatedAt: now,
+    // const payload = {
+    //   summaryId: item.summaryId,
+    //   description: item.description,
+    //   status: item.status ?? null,
+    //   fee: item.fee,
+    //   total: item.total,
+    //   createdAt: now,
+    //   updatedAt: now,
+    // }
+
+    // const { data, error } = await supabase
+    //   .from("fee_summary_items")
+    //   .upsert(payload)
+    //   .select()
+    //   .single()
+
+    // if (error) throw error
+    // return data
+    
+    const { data: updated, error: updateError } = await supabase
+      .from("fee_summary_items")
+      .update({
+        status: item.status ?? null,
+        fee: item.fee,
+        total: item.total,
+        updatedAt: now,
+      })
+      .eq("summaryId", item.summaryId)
+      .eq("description", item.description)
+      .is("deletedAt", null)
+      .select("itemId");
+
+    if (updateError) throw updateError;
+
+    // 🔹 STEP 2: If updated → done
+    if (updated && updated.length > 0) {
+      return updated[0];
     }
 
-    const { data, error } = await supabase
+    // 🔹 STEP 3: Else INSERT
+    const { data: inserted, error: insertError } = await supabase
       .from("fee_summary_items")
-      .upsert(payload)
+      .insert({
+        summaryId: item.summaryId,
+        description: item.description,
+        status: item.status ?? null,
+        fee: item.fee,
+        total: item.total,
+        createdAt: now,
+        updatedAt: now,
+      })
       .select()
-      .single()
+      .single();
 
-    if (error) throw error
-    return data
+    if (insertError) throw insertError;
+
+    return inserted;
   } catch (error: any) {
     console.error("Error upserting fee summary item:", error.message)
     throw error

@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import { Icon } from "@iconify/react/dist/iconify.js"
 import toast from "react-hot-toast"
+import { getResetSession, logoutAfterReset, updatePassword } from "@/app/api/SupabaseAPI/customer/forgotPasswordAPI"
 
 export default function NewPasswordPage() {
   const router = useRouter()
@@ -15,27 +16,42 @@ export default function NewPasswordPage() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [emailAddress, setEmailAddress] = useState<string | null>(null)
 
+  // useEffect(() => {
+  //   const storedEmail = localStorage.getItem("emailAddress")
+  //   const verifyotp = localStorage.getItem("verifyotp")
+  //   if (!storedEmail) {
+  //     router.replace("/forgot_password")
+  //     setTimeout(() => {
+  //       toast.error("Unauthorized access! Please enter your email again")
+  //     }, 500)
+  //   } else if (storedEmail && verifyotp !== "true") {
+  //     router.replace("/verification")
+  //     setTimeout(() => {
+  //       toast.error("Please verify your otp before proceeding")
+  //     }, 500)
+  //   } else {
+  //     setEmailAddress(storedEmail)
+  //   }
+  // }, [router])
+
+  // ✅ CHANGE
   useEffect(() => {
-    const storedEmail = localStorage.getItem("emailAddress")
-    const verifyotp = localStorage.getItem("verifyotp")
-    if (!storedEmail) {
-      router.replace("/forgot_password")
-      setTimeout(() => {
-        toast.error("Unauthorized access! Please enter your email again")
-      }, 500)
-    } else if (storedEmail && verifyotp !== "true") {
-      router.replace("/verification")
-      setTimeout(() => {
-        toast.error("Please verify your otp before proceeding")
-      }, 500)
-    } else {
-      setEmailAddress(storedEmail)
-    }
-  }, [router])
+    const validateSession = async () => {
+      const session = await getResetSession();
+
+      if (!session) {
+        router.replace("/forgot_password");
+        toast.error("Invalid or expired reset link");
+      }
+    };
+
+    validateSession();
+  }, [router]);
+
 
   if (!emailAddress) return null
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (!password) {
       setError("Please fill out both fields")
       toast.error("Password is required")
@@ -61,15 +77,15 @@ export default function NewPasswordPage() {
     }
 
     try {
-      console.log("Password updated successfully!")
-      localStorage.removeItem("emailAddress")
-      localStorage.removeItem("verifyotp")
-      router.push("/login")
-      setTimeout(() => {
-        toast.success("Password updated successfully!")
-      }, 1000)
-    } catch (error) {
-      console.log("Failed to set your password", error)
+      await updatePassword(password);
+
+      toast.success("Password updated successfully");
+
+      await logoutAfterReset();
+
+      router.push("/login");
+    } catch (error: any) {
+      toast.error("Failed to update password. Please try again.");
     }
   }
 
