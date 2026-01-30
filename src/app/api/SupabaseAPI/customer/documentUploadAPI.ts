@@ -13,7 +13,7 @@ export interface UserDocument {
   comment?: string;
 }
 
-export const getUserDocuments = async (filingYearId: number): Promise<UserDocument[]> => {
+export const getUserDocuments = async (filingYearId: number) => {
   try {
     const {
       data: { user },
@@ -32,19 +32,38 @@ export const getUserDocuments = async (filingYearId: number): Promise<UserDocume
 
     const { data, error } = await supabase
       .from("userdocuments")
-      .select("*")
+      .select(`
+        documentId,
+        customerId,
+        filingYearId,
+        doc_type,
+        file_path,
+        public_url,
+        description,
+        createdAt,
+        updatedAt,
+        filing_year (
+          last_actor
+        )
+      `)
       .eq("customerId", customer.customerId)
       .eq("filingYearId", filingYearId)
       .order("createdAt", { ascending: false });
 
     if (error) throw error;
 
-    return data || [];
+    const formatted = (data || []).map((doc: any) => ({
+      ...doc,
+      last_actor: doc.filing_year?.last_actor ?? "",
+    }));
+
+    return formatted;
   } catch (error: any) {
     console.error("Error fetching user documents:", error.message);
     throw error;
   }
 };
+
 
 export const uploadUserDocument = async (
   file: File,
@@ -69,8 +88,13 @@ export const uploadUserDocument = async (
     if (customerError || !customer) throw new Error("Customer not found");
     const customerId = customer.customerId;
 
+    // const sanitizedFileName = file.name.replace(/\s+/g, "_");
+    // const filePath = `${customerId}/${filingYearId}/${doc_type}/${sanitizedFileName}`;
+
     const sanitizedFileName = file.name.replace(/\s+/g, "_");
-    const filePath = `${customerId}/${filingYearId}/${doc_type}/${sanitizedFileName}`;
+    const uniqueSuffix = Date.now();
+
+    const filePath = `${customerId}/${filingYearId}/${doc_type}/${uniqueSuffix}_${sanitizedFileName}`;
 
     const { error: uploadError } = await supabase.storage
       .from("user-uploads")

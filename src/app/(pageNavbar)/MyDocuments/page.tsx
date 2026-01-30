@@ -135,11 +135,6 @@ export default function MyDocuments() {
       return;
     }
 
-    if (uploadedDocTypes.includes(selectedDocType)) {
-      toast.error("This document type is already uploaded");
-      return;
-    }
-
     if (
       selectedDocType === "Form 8879" &&
       documents.some((doc) => doc.file_path?.toLowerCase().includes("8879"))
@@ -233,10 +228,6 @@ export default function MyDocuments() {
     "Others",
   ];
 
-  const availableOptions = docTypeOptions.filter(
-    (type) => !uploadedDocTypes.includes(type)
-  );
-
   return (
     <div className="bg-white lg:h-[100vh] overflow-y-auto overflow-x-hidden pb-7">
       <YearSelect />
@@ -251,7 +242,7 @@ export default function MyDocuments() {
             onChange={handleDocTypeChange}
           >
             <option value="">Select one</option>
-            {availableOptions.map((opt) => (
+            {docTypeOptions.map((opt) => (
               <option key={opt} value={opt}>
                 {opt}
               </option>
