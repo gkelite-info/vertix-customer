@@ -52,7 +52,10 @@ export default function TaxRefund({ scrollContainerRef }: TaxRefundProps) {
         setter: (val: string) => void
     ) => {
         const value = e.target.value;
-        if (/^\d*\.?\d*$/.test(value) || value === ".") {
+        // if (/^\d*\.?\d*$/.test(value) || value === ".") {
+        //     setter(value);
+        // }
+        if (/^-?\d*\.?\d*$/.test(value)) {
             setter(value);
         }
     };
@@ -97,7 +100,6 @@ export default function TaxRefund({ scrollContainerRef }: TaxRefundProps) {
     const handleSubmit = async () => {
         if (
             !taxType ||
-            !state ||
             !beforePlanning ||
             !afterPlanning ||
             !typeOfFiling ||
@@ -121,9 +123,9 @@ export default function TaxRefund({ scrollContainerRef }: TaxRefundProps) {
                 taxsummaryId: editingId ?? undefined,
                 filingYearId,
                 taxType,
-                state,
-                beforePlanning: Number(beforePlanning),
-                afterPlanning: Number(afterPlanning),
+                state: state || "",
+                beforePlanning: beforePlanning,
+                afterPlanning: afterPlanning,
                 typeOfFiling: typeOfFiling as "Paper Filing" | "E-Filing",
                 originalUpdated: originalUpdated as "Original" | "Updated",
                 belongsTo: belongsTo as
@@ -220,7 +222,6 @@ export default function TaxRefund({ scrollContainerRef }: TaxRefundProps) {
         "payment_status",
     ];
 
-    // 🔹 CHANGE 1: Add TOTAL row logic
     const tableDataWithTotal = (() => {
         if (!summaries || summaries.length === 0) return [];
 
