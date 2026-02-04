@@ -4,8 +4,8 @@ export interface PaymentTaxSummaryInput {
   filingYearId: number;
   taxType: string;
   state: string;
-  beforePlanning: number;
-  afterPlanning: number;
+  beforePlanning: string;
+  afterPlanning: string;
   typeOfFiling: "Paper Filing" | "E-Filing";
   originalUpdated: "Original" | "Updated";
   belongsTo:
@@ -40,7 +40,7 @@ export const getPaymentTaxSummary = async (filingYearId: number) => {
       .eq("customerId", customer.customerId)
       .eq("filingYearId", filingYearId)
       .eq("isDeleted", false)
-      .order("createdAt", { ascending: true });
+      .order("taxsummaryId", { ascending: true });
 
     if (error) throw error;
 
