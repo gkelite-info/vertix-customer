@@ -112,6 +112,7 @@ export default function ManageFilingYear() {
           <button
             onClick={handleAddService}
             className="bg-[#1D2B48] text-white font-medium p-2 cursor-pointer rounded-lg text-sm"
+            disabled={isLoading}
           >
             {isLoading ? "ADDING..." : "ADD NEW SERVICE"}
           </button>
