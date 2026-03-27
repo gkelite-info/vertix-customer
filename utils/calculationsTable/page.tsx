@@ -3,46 +3,13 @@
 import { useState } from "react";
 import FeeSummaryBody from "./feeBody";
 import FeeSummaryTotals from "./feeSummaryTotal";
+import { FeeRow, FeeTotals } from "./types/feeSummary";
 
 type FeeSummaryTableProps = {
-  data: {
-    id: number;
-    description: string;
-    baseFee: number;
-    noStatus?: boolean;
-    status?: number | null;
-    total?: number;
-    fee?: number;
-  }[];
-  onTotalsChange: (values: {
-    totalFee: number;
-    discount: number;
-    referral: number;
-    feePaid: number;
-    dueAmount: number;
-    code: string;
-    netFee: number;
-  }) => void;
-  onDataChange: (
-    updatedRows: {
-      id: number;
-      description: string;
-      baseFee: number;
-      noStatus?: boolean;
-      status?: number | null;
-      total?: number;
-      fee?: number;
-    }[]
-  ) => void;
-  initialTotals?: {
-    totalFee: number;
-    discount: number;
-    referral: number;
-    feePaid: number;
-    dueAmount: number;
-    code: string;
-    netFee: number;
-  };
+  data: FeeRow[];
+  onTotalsChange: (values: FeeTotals) => void;
+  onDataChange: (updatedRows: FeeRow[]) => void;
+  initialTotals?: FeeTotals;
 };
 
 export default function FeeSummaryTable({
